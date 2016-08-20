@@ -1,0 +1,67 @@
+{% extends "../../theme/bage.html" %}
+
+{% block zhuti %}
+
+<div class="container">
+
+    <div class="alert alert-info">Current Location：<a href="/"> Home </a> > label > Search Results</div>
+    <br>
+
+    <div class="two-thirds column">
+
+        <div class="titleborder">
+            <span class="title colorme">Search Results</span>
+        </div>
+        <br><br>
+
+        <ul class="list-group">
+            {% for rec in infos %}
+            <li class="list-group-item"><a href="/info/{{ rec.infor['uid'][0] }}">{{ rec.infor['title'][0] }}</a>
+
+            </li>
+            {% end %}
+        </ul>
+
+
+        <br><Br>
+
+        <ul class="pagination">
+            {% raw pager %}
+        </ul>
+
+    </div>
+    <div class="one-third column ">
+        <BR><Br>
+
+        <div class="titleborder">
+            <span class="title colorme">Navigation directory </span>
+        </div>
+        <Br>
+        <ul class="list-group">
+
+            <li class="list-group-item"><a href="/list/0100">RSD Remotely Sensed</a></li>
+            <li class="list-group-item"><a href="/list/0200">GIS</a></li>
+            <li class="list-group-item"><a href="/list/0300">Document Data</a></li>
+            <li class="list-group-item"><a href="/list/0400">Multimedia</a></li>
+            <li class="list-group-item"><a href="/list/0500">Formatting Data</a></li>
+            <li class="list-group-item"><a href="/post/recent">DOC</a></li>
+            <li class="list-group-item"><a href="/spec/">spec</a></li>
+
+        </ul>
+        <BR><Br>
+
+        <div class="titleborder">
+            <span class="title colorme"> Document categorization </span>
+        </div>
+        <Br>
+        <ul class="list-group">
+
+            {% module category_menu()%}
+
+        </ul>
+
+    </div>
+</div>
+
+
+{% end %}

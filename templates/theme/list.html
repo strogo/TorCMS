@@ -1,0 +1,54 @@
+{% extends "./bage.html" %}
+
+
+{% block mainbody %}
+
+
+<div class="row">
+    <div class="col-sm-9">
+        {% block list %}
+
+        {% end %}
+    </div>
+    <div class="col-sm-3">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    最多关注</h3>
+            </div>
+            <ul class="list-group" id="mostall">
+                    {% module post_most_view(10, with_date = False, with_catalog= False) %}
+                </ul>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    近期文章</h3>
+            </div>
+
+            <ul class="list-group">
+                {% module post_recent(5, with_date = False, with_catalog= False) %}
+            </ul>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+
+                    分类目录</h3>
+            </div>
+
+            <div id="fl_btn">
+                    {% module category_menu() %}
+                </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+{% end %}

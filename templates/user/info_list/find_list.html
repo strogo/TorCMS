@@ -1,0 +1,39 @@
+{% extends "../../theme/bage.html" %}
+
+
+{% block mainbody %}
+<ol class="breadcrumb">
+  <li>当前位置: <a href="http://www.osgeo.cn">首页</a> </li>
+  <li>用户 </li>
+  <li>查找列表</li>
+</ol>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        {{ kwd['title'] }}
+    </div>
+
+
+    <ul class="list-group">
+
+        {% for rec in recs %}
+        <li class="list-group-item"><a href="/map/{{ rec.uid }}">{{ rec.title }}</a>
+            <span class="app_tag"> {% module app_tags(rec.uid) %}</span>
+        </li>
+        {% end %}
+    </ul>
+
+
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        随机地图
+    </div>
+    <ul class="list-group">
+        {% module app_random_choose(8) %}
+    </ul>
+</div>
+{% end %}

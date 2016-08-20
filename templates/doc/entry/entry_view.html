@@ -1,0 +1,22 @@
+{% extends "../../theme/bage.html" %}
+
+{% block mainbody %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                文件上传
+            </div>
+            <div class="panel-body">
+                 <input type="text" value="/static/upload/{{filename}}" width="400" size="100"/>
+                <br>   <br>
+                <img src="/static/upload/{{filename}}" border="1" width="500"/>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+

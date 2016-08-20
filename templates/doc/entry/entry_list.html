@@ -1,0 +1,14 @@
+{% extends "../../theme/bage.html" %}
+
+{% block mainbody %}
+
+<div class="single">
+{% for x in imgs %}
+
+<a href="{{ static_url('upload/') }}{{ x['impath'] }}" target="_blank">
+    <img src="{{ static_url('upload/') }}{{ x['impath'] }}" width="300px"/>
+    </a>
+{% end %}
+</div>
+{% end %}
+

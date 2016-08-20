@@ -1,0 +1,72 @@
+{% extends "../../theme/bage.html" %}
+
+
+{% block mainbody %}
+
+
+<div class="container">
+
+
+    <div class="content">
+
+        {% block content %}
+        {% end %}
+
+    </div>
+
+
+    <div class="sidebar">
+        <ul>
+
+
+            <li id="recent-posts-5" class="widget widget_recent_entries">
+                <h3>业务范围</h3>
+                <ul>
+
+                    <li><a href="/spec/add">添加数据</a></li>
+                    <li><a href="/spec/">列出数据</a></li>
+
+
+                </ul>
+
+
+            </li>
+
+
+            <li id="recent-posts-4" class="widget widget_recent_entries">
+                <h3>近期文章</h3>
+                <ul>
+                    {% module post_recent(10, with_date = False, with_catalog= False) %}
+                </ul>
+            </li>
+
+
+            <li id="categories-3" class="widget widget_categories">
+                <h3>分类目录</h3>
+                <ul>
+
+                    {% module category_menu() %}
+                </ul>
+            </li>
+
+
+            <li class="widget">
+                <h3>在线地理计算工具</h3>
+                <ul>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3200">1比50万新旧地形图分幅编号在线转换</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3202">1比25万新旧地形图分幅编号在线转换</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3204">1比10万新旧地形图分幅编号在线转换</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3206">1比5万新旧地形图分幅编号在线转换</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3208">1比2.5万新旧地形图分幅编号在线转换</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3218">根据经纬度求算所在图幅号</a></li>
+                    <li><a target="_blank" href="http://yunsuan.org/app/3216">地形图分幅编号在线查询、浏览</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+
+</div>
+
+
+{% end %}

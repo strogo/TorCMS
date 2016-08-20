@@ -1,0 +1,46 @@
+{% extends "meta_theme.html" %}
+{% block content %}
+
+    <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+        <a href="http://www.osgeo.cn/spec/">业务范围</a> > 正文
+    </div>
+    <div class="single">
+        <h1 class="title">{{ spec.name }}</h1>
+
+        <div class="meta singlemeta">{{ str(spec.date)[:10] }}<span class="split">|</span> 发布者: admin<span
+                class="split">|</span> 查看: <em id="_viewnum"></em>
+            <em>
+                {% if kwd['editable'] == 1 %}
+                <a href="/spec/{{ spec.uid }}/edit">编辑</a>
+                {% else %}
+                {% end %}
+            </em>
+        </div>
+
+
+        <div class="entrycontent">
+            {% raw unescape(spec.desc) %}
+        </div>
+
+
+        <div class="relatedrandom">
+            <div class="related">
+
+                <h3>专题资讯</h3>
+                <ul class="articleList">
+                    {% for x in spec_recs %}
+
+                    <li class="cl"><a href="/post/{{x.uid }}.html" title="{{ x.title }}">{{ x.title }} </a>
+
+                        <span>{{ str(x.date)[:10] }}</span></li>
+
+                    {% end %}
+                </ul>
+
+            </div>
+        </div>
+        <div class="pagebar clear"></div>
+    </div>
+
+
+{% end %}

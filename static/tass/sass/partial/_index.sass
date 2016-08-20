@@ -1,0 +1,189 @@
+@charset "UTF-8"
+
+@import "_com"
+
+// 首页
+///////////////////////////////////////////////////////////////
+//  indexsimple 20110521
+//  首页导航
+// 首页的图标
+//
+
+.square_cat
+  display: inline-block
+  float: left
+
+  overflow: auto
+  width: 95%
+  padding-left: 6px
+
+  // 标题
+  .header_cat
+    font-size: 16px
+    height: 28px
+    *height: 30px
+    span
+      line-height: 26px
+      float: left
+      display: block
+      margin-top: 6px
+      a
+        color: #4F4F4F
+        font-size: $font16
+        font-weight: 600
+        margin-left: 10px
+    // font-size: 1em
+    #title
+      background: url("../images/index-icon.jpg") no-repeat
+      display: inline-block
+      float: left
+      height: 20px
+      width: 20px
+    // 12 -302 金币
+    // 8 -192 狗
+    // 6 - -224  车
+    //2 -22 博士帽
+
+    #title_1
+      @extend #title
+      background-position: 0 0
+    #title_2
+      @extend #title
+      background-position: 0 -192px
+    #title_3
+      @extend #title
+      background-position: 0 -133px
+    #title_4
+      @extend #title
+      background-position: 0 -77px
+    #title_0
+      @extend #title
+      background-position: 0 -406px
+    #title_5
+      @extend #title
+      background-position: 0 -224px
+    #title_6
+      @extend #title
+      background-position: 0 -48px
+    #title_7
+      @extend #title
+      background-position: 0 -100px
+    #title_8
+      @extend #title
+      background-position: 0 -432px
+    #title_9
+      @extend #title
+      background-position: 0 -331px
+    #title_10
+      @extend #title
+      background-position: 0 -406px
+    #title_19
+      background-position: 0 -278px
+    #title_21
+      background-position: 0 -497px
+    #title_22
+      background-position: 0 -548px
+
+
+    #title_11, #title_12
+      background-position: 0 -103px
+    #title_13
+      background-position: 0 -406px
+    #title_14
+      background-position: 0 -331px
+    #title_15
+      background-position: 0 -77px
+    #title_16
+      background-position: 0 -432px
+    #title_17
+      background-position: 0 -452px
+    #title_18
+      background-position: 0 -474px
+    #title_20
+      background-position: 0 -524px
+    .same_fl
+      h2
+        border: 0
+        padding-left: 0
+      .fl_main_sel
+        margin-top: 0
+  // 里面内容
+  .bd_cka
+
+    height: auto
+    overflow: auto
+    padding-bottom: 5px
+    border-top: $border1
+    // font-size: 18px
+    ul
+      margin: 0 10px
+      font-size: 16px
+      li
+        height: 30px
+        line-height: 30px
+        font-family: $font_zh
+        font-size: 14px
+        a
+          @include link-colors($color_link,$color_fl168)
+          @include hover-link
+          // font-family: $font_zh
+          padding: 0 1px
+          // font-size: $font13
+        span
+          color: #acaeac
+          padding-left: 2px
+          // font-size: $font13 !important
+
+
+/* 常用服务导航
+
+.cyfwmenu
+  overflow: hidden
+  margin-top: 10px
+  padding: 17px 0
+  // height: 117px
+  // border:  $border1
+  //font-size:1em
+  font-size: 16px
+  .dh_block
+    // margin: 1px 1px 1px 0px
+    padding: 8px 8px 8px 18px
+    // border-right: 1px solid #dadbdf
+    // border-right:  $border1
+    text-align: left
+
+    a
+      @include link-colors($color_link,$color_link)
+      @include hover-link
+      font-family: $font_zh
+      line-height: 24px
+      font-size: $font13
+      // font-size: 13px
+    h2
+      border-bottom: $border1
+      font-weight: bold
+      margin-bottom: 0.3em
+      font-size: $font16
+
+
+.coupon
+  a
+    @include link-colors(#f00, #f00)
+    @include hover-link
+    font-size: 1em
+    line-height: 2em
+
+.link_list
+  li
+    line-height: 1.5em
+    border: none
+    background-color: transparent
+    margin: 0px
+    paddding: 0px
+    a
+      @include link-colors($color_link,$color_link)
+      @include hover-link
+      border: none
+      background-color: transparent
+      margin: 0px
+      paddding: 0px

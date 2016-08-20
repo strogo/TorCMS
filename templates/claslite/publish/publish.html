@@ -1,0 +1,58 @@
+{% extends "../../theme/tpl_add.html" %}
+{% block headinfo %}
+
+<script type="text/javascript">
+    function select(html2) {
+        $('#showCnt').load(html2);
+    }
+</script>
+
+{% end %}
+{% block typebody %}
+
+<div class="container" id="guarantee">
+    <div class="alert alert-info">Current Location：<a href="/"> Home </a> > Select publish classification</div>
+    <br>
+
+    <div class="sixteen columns">
+        <div class="titleborder">
+            <span class="title colorme">Select publish classification </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="block">
+
+        <p>
+            {% module BreadcrumbPublish(1) %}
+        </p>
+
+        <h2>Select large classes </h2>
+
+
+        <p>   <!--  htmlstr -->
+            {% raw kwd['class1str'] %}
+        </p>
+
+        <h2> Select two levels </h2>
+
+        <div>
+
+            <span id='showCnt'></span>
+        </div>
+
+
+        <div class="alert alert-warning">
+            Note: above for the first level classification, the following is the two class classification
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+
+{% block footinfo %}
+
+{% end %}

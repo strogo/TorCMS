@@ -1,0 +1,270 @@
+{% extends "tpl_basic.html" %}
+
+{% block headinfo %}
+
+<script type="text/javascript" src="{{ static_url('jslib/validate/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('jslib/validate/message_cn.js') }}"></script>
+
+<script type="text/javascript">
+
+    jQuery.validator.addMethod("isMobile", function (value, element) {
+        var length = value.length;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        return this.optional(element) || (length == 11 && mobile.test(value));
+    }, "请正确填写您的手机号码");
+
+    jQuery.validator.addMethod("isphone", function (value, element) {
+        var length = value.length;
+        var phone = /(^(\d{3,4}-)?\d{6,8}$)|(^(\d{3,4}-)?\d{6,8}(-\d{1,5})?$)|(\d{11})/;
+        return this.optional(element) || (phone.test(value));
+    }, "请填写正确的电话号码");
+
+    $().ready(function () {
+        $("#form_add_info").validate(
+                {
+
+                    errorPlacement: function (error, element) { //指定错误信息位置
+                        if (element.is(':radio') || element.is(':checkbox')) { //如果是radio或checkbox
+                            var eid = element.attr('name'); //获取元素的name属性
+                            error.appendTo(element.parent()); //将错误信息添加当前元素的父结点后面
+                        } else {
+                            error.insertAfter(element);
+                        }
+                    }
+                }
+        );
+    });
+
+    // 提交预约刷新的动作
+    function chuli_kw() {
+        $.ajaxSetup({cache: false});
+        // 预约刷新
+        // 模拟Form提交
+        var myVAriable = $("#keywords")[0].value;
+        // alert(myVAriable);
+        var stringArray = myVAriable.split(",");
+        var out_str = '<span class="btn btn-warning btn-xs">';
+        out_str += stringArray.join('</span> <span class="btn btn-warning btn-xs">');
+        out_str += '</span';
+        // alert(out_str);
+        // $('#kwlist').html('');
+        $('#kwlist').html(out_str);
+
+    }
+
+</script>
+
+
+{% end %}
+
+
+{% block typebody %}
+
+<div class="container" id="guarantee">
+ <ol class="breadcrumb"> Current Location：<a href="/"> Home </a>  /   <li> {% module BreadcrumbPublish(2) %} </li></ol>
+    <div class="sixteen columns">
+        <div class="titleborder">
+            <span class="title colorme">Release information</span>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="block">
+
+
+        <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
+              enctype="multipart/form-data" action="/meta/to_add">
+
+
+            <input type='hidden' name="uid" value="{% raw kwd['uid'] %}">
+
+            <input type='hidden' name="def_cat_uid" value="{% raw kwd['def_cat_uid'] %}">
+
+
+            <input name="action" value="dopost" type="hidden">
+            <input name="ismember" value="0" type="hidden">
+
+            <input name="id" value="" type="hidden">
+            <input name="mixcode" value="4c9734774f6b40682d35c0ccee0b0845" type="hidden">
+            <input id="logo" name="logo" class="form-control" value="" type="hidden">
+
+
+            <label>
+                Basic data information : {{ kwd['parentname'] }} > {{ kwd['catname'] }}
+
+
+            </label>
+
+
+            <label>
+
+                <span><a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                Title：</span> <input type="text" class="input_text" name="title" id="title" value="">
+
+            </label>
+
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                Information content (please specify) ：
+            </span>
+
+                <textarea id="extra_content" name="extra_content" class="input_text" rows="8"></textarea>
+
+            </label>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                desc ：
+            </span>
+
+                <input id="desc" name="desc" class="input_text">
+
+            </label>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                tags ：
+            </span>
+
+                <input id="tags" name="tags" class="input_text">
+
+            </label>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                cnt_md ：
+            </span>
+
+                <input id="cnt_md" name="cnt_md" class="input_text">
+
+            </label>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                cnt_html ：
+            </span>
+
+                <input id="cnt_html" name="cnt_html" class="input_text">
+
+            </label>
+
+
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+               Keywords (comma separated) ： </span>
+
+                <input type="text" class="input_text" name="keywords" id="keywords" onkeyup="chuli_kw();">
+            </label>
+            <label>
+
+                <span></span>
+
+                <p id="kwlist"></p>
+
+            </label>
+            <bR>
+            <label>
+                 <span>
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Data references and declarations ： </span>
+
+                <input type="text" class="input_text" name="extra_statement" id="extra_statement" value="">
+
+            </label>
+
+
+            <hr/>
+
+            {% block extrainfo %}{% end %}
+
+            <hr/>
+<!--
+            <label>
+                <span> <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;" for="mymps_img"></a> Picture</span>
+                <input type="text" class="input_text" id="mymps_img" name="extra_mymps_img">
+            </label>
+            <label>
+                <span></span>
+                <input type="text" class="input_text" id="mymps_img" name="extra_mymps_img">
+            </label>
+            <label>
+                <span></span>
+                <input type="text" class="input_text" id="mymps_img" name="extra_mymps_img">
+            </label>
+            <label>
+                <span></span>
+                <input type="text" class="input_text" id="mymps_img" name="extra_mymps_img">
+            </label>
+            <br>
+            <label>
+                <span></span>
+                <a href="/entry/add" target="_blank" class="contactbutton" role="button">Upload pictures </a>
+
+            </label>
+            <br>
+-->
+            <label>
+                <span for="baidumap1">
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Map location (click on the icon to get the location).
+                </span>
+
+                <a id="baidumap1">
+                        <textarea id="extra_baidumap" name="extra_baidumap" class="input_text" readonly="readonly">
+                        </textarea>
+                </a>
+
+            </label>
+
+            <div style="clear: both"></div>
+
+            <label>
+             <span> <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Contributor： </span>
+
+                        <textarea class="input_text" name="extra_contributor" id="extra_contributor" rows="4">
+                            Contributor：
+                            Company：
+                            Contact information：
+                        </textarea>
+
+
+            </label>
+
+
+            <label>
+               <span>
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                   Contacts： </span>
+
+                        <textarea class="input_text" name="extra_contact_who" id="extra_contact_who" rows="6">
+                           Contacts：
+                            Company：
+                            telephone：
+                            Email:
+                            Contact information:
+                        </textarea>
+
+            </label>
+
+
+            <label>
+
+
+                <span></span>
+                <input type="submit" name="post_submit" value="Submit" id="Button1"
+                       class="contactbutton" role="button"/>
+
+            </label>
+
+
+        </form>
+
+
+    </div>
+</div>
+
+
+{% end %}

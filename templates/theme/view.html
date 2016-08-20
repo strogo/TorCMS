@@ -1,0 +1,44 @@
+{% extends "bage.html" %}
+
+{% block zhuti %}
+
+
+<div class="row">
+    <div class="col-sm-3 " id="sidebar">
+        {% block left_nav %}
+        {% end %}
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+               Categorized catalogue
+            </div>
+            <ul class="list-group">
+                {% module ModuleCatMenu(with_count = False) %}
+            </ul>
+
+
+        </div>
+
+    </div>
+
+    <div class="col-sm-9">
+
+        {% block content %}
+        {% end %}
+        <div class="pagebar clear">
+            <!-- 翻页: -->
+            <ul id="yw0" class="yiiPager">
+
+
+            </ul>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+{% end %}
+
+

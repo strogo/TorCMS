@@ -1,0 +1,47 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+        <a href="http://www.osgeo.cn/page/epubs.html">教程与文档</a>
+    </div>
+    <div class="panel-body">
+        <form action="" method="post" class="form-horizontal" role="form">
+
+            <input type=hidden name=slug value="{{ kwd['slug'] }}">
+
+
+            <fieldset>
+                <div class="form-group">
+
+
+                    <label for="title" class="col-sm-2 control-label">标题</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" id="title" name="title" class="form-control" >
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="cnt_md" class="col-sm-2 control-label">内容</label>
+
+                    <div class="col-sm-10">
+                        <textarea rows=16 id="cnt_md" name="cnt_md" cols="76" class="form-control" ></textarea>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sub1" class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-10">
+                        <input id="sub1" type="submit" value="添加数据" class="btn btn-primary"/>
+                    </div>
+                </div>
+
+            </fieldset>
+
+        </form>
+    </div>
+</div>
+{% end %}

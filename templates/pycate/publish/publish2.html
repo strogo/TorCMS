@@ -1,0 +1,47 @@
+{% extends "../../theme/tpl_add.html" %}
+{% block headinfo %}
+
+
+<script type="text/javascript">
+    function select(html2) {
+        $('#showCnt').load(html2);
+    }
+
+</script>
+
+
+{% end %}
+{% block typebody %}
+
+<div class="container" id="guarantee">
+    <div class="alert alert-info">Current Location：<a href="/"> Home </a> > Select publish classification</div>
+    <br>
+
+    <div class="sixteen columns">
+        <div class="titleborder">
+            <span class="title colorme">Select publish classification </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="block">
+    <p>{% module BreadcrumbPublish(1) %}</p>
+
+
+    <h2>Select two levels </h2>
+
+
+    <p>{% raw kwd['class1str'] %}</p>
+
+
+</div>
+</div>
+
+
+{% end %}
+
+{% block footinfo %}
+
+{% end %}

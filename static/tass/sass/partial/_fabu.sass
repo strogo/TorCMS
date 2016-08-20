@@ -1,0 +1,1120 @@
+// 发布页面
+@charset "UTF-8"
+// @import "compass/reset"
+
+@import "_com"
+
+#contentx
+  width: 500px
+  height: 150px
+  overflow-y: visible
+.iga_side_tip_inner
+  margin: 130px 5px 5px 5px
+  font-size: 14px
+  color: #555
+  line-height: 1.5em
+
+#menu_fabu_1
+  @include horizontal-list
+  width: 90%
+  margin: 10px auto 0 auto
+  padding: 8px 12px
+  li
+    // @include no-bullet
+    // display: inline
+    // list-style-type: none
+    padding: 0 3px
+    line-height: 30px
+    a
+      // @include link-colors(#fff,#ff0,#ff0,#fff,#fff)
+
+      @include link-colors($color_link,$color_fl168,$color_fl168, $color_link, $color_link)
+      @include hover-link
+      margin: 0px 5px 0px 5px
+      // padding: 0px 5px 0px 5px
+      // background: #a6e1ec
+      float: left
+      margin-right: 8px
+      padding: 2px 5px
+
+      &#current
+        color: #c00
+        // border: 1px solid #fff
+        background: #fff
+
+#menu_fabu_2
+  @extend #menu_fabu_1
+/*foot styles
+
+#botlink
+  height: 20px
+  line-height: 20px
+  border-top: 1px solid #ccc
+  padding-top: 10px
+  margin-top: 10px
+
+#quck_link
+  float: right
+  line-height: 65px
+  padding-right: 8px
+
+#crumb
+  background: #F0FFDF
+  border-top: 1px #d6d6d6 solid
+  border-left: 1px #d6d6d6 solid
+  border-right: 1px #d6d6d6 solid
+  border-bottom: 1px #C4C4C4 solid
+  height: 39px
+  overflow: hidden
+  line-height: 39px
+  padding: 0 25px 0 0
+  text-align: left
+  margin-top: 10px
+  _margin-top: 0
+  .pre
+    /*background:url(../images/subnavpre_bg.png) no-repeat;
+    width: 150px
+    margin-left: 20px
+    _margin-left: 10px
+    height: 41px
+    float: left
+    font-size: 14px
+    font-weight: bold
+    color: #4f7404 !important
+
+#crumb_on
+  font-size: 18px
+  float: left
+  font-weight: 700
+  color: #ff6203
+
+.step
+  float: right
+  li
+    display: inline
+    padding-right: 8px
+  .white
+    background: url(../images/step_out.gif) 0 0 no-repeat
+    padding: 3px 15px 5px 7px
+  li.step_on
+    color: #49AA41
+    .white
+      background: url(../images/step_on.gif) 0 0 no-repeat
+
+#bt
+  text-align: center
+  height: 55px
+  line-height: 55px
+  padding: 0 15px
+
+.bt
+  background: url(../images/bt_icon.gif) left center no-repeat
+  float: left
+  padding: 0 25px
+
+.tip
+  border: 1px solid #feca7f
+  /*display:inline;
+   *padding:7px 12px 6px 32px;
+  padding-left: 32px
+  height: 28px
+  line-height: 28px
+  text-align: left
+  background: url(../images/tip.gif) 11px center no-repeat #fffee2
+  margin: 6px auto 8px auto
+
+.zhuce_ok .tip
+  *padding: 7px 12px 5px 32px
+  *zoom: 1
+
+#fenlei
+  height: 236px
+  margin: 20px 0 80px 0
+  padding-left: 120px
+  li
+    width: 224px
+    float: left
+    margin-left: 13px
+    display: inline
+  dl
+    height: 236px
+    cursor: default
+  a:hover
+    text-decoration: none
+  dt
+    height: 68px
+    text-align: left
+    font: 22px Microsoft YaHei
+    padding-left: 63px
+    margin-left: -3px
+    position: relative
+    line-height: 68px
+    color: #333
+    background: url(../images/mianfei.gif) left center no-repeat
+  dd.ms
+    text-align: left
+    height: 58px
+    line-height: 22px
+    padding: 25px
+    font-size: 14px
+    color: #666
+
+.fbdd a
+  &:link, &:visited
+    display: block
+    line-height: 33px
+    font-size: 14px
+    font-weight: 700
+    color: #fff
+    padding-right: 20px
+
+// 分类发布的外框
+#fenlei2
+  // border: $border_light2
+  height: auto
+  overflow: hidden
+  padding: 10px 0px 10px 20px
+  text-align: left
+  background-color: white !important
+  li
+    cursor: pointer
+
+#subcontent
+  @extend #fenlei2
+
+
+.obot
+  height: 4px
+  overflow: hidden
+  background: url(../images/obot.gif) 0 0 no-repeat
+
+#big_class, #small_small_class, #small_class
+  width: 265px
+  padding: 10px 40px 5px 0
+
+.otop
+  height: 4px
+  overflow: hidden
+  background: url(../images/otop.gif) 0 0 no-repeat
+
+
+
+
+.fenlei_box td
+  vertical-align: top
+
+.jianyi
+  text-align: right
+  padding: 10px 10px 0 0
+
+.location_class
+  height: 46px
+  line-height: 55px
+  text-align: right
+  padding: 0 20px
+  overflow: hidden
+  background: url(../images/location_class.gif) 0 0 no-repeat
+  margin: 10px auto
+
+.ok_next
+  /*width:190px;
+  height: 36px
+  /*border:0 none;
+   *background:url(../images/ok_next.gif) no-repeat;
+  margin-bottom: -8px
+  cursor: pointer
+  padding: 0 24px
+  *padding: 0
+
+.post_box
+  height: 36px
+  margin-top: 30px
+  text-align: left
+  padding-left: 113px
+  border-top: 1px #D7D7D7 solid
+  padding-top: 20px
+
+.ljfb
+  width: 147px
+  height: 34px
+  border: 0 none
+  background: url(../images/dl_button.gif) 0 0 no-repeat
+  font-weight: 700
+  color: #fff
+  font-size: 16px
+  cursor: pointer
+  text-align: left
+  padding-left: 30px
+
+
+
+#newbg_top
+  width: 980px
+  background: url(../images/newbg_top.gif) 0 0 no-repeat
+  margin-bottom: -5px !important
+  height: 10px
+
+#subreg
+  border-left: 1px solid #d6d6d6
+  border-right: 1px solid #d6d6d6
+  border-bottom: 1px solid #d6d6d6
+  height: auto
+  overflow: auto
+  width: 978px
+  background-color: #ffffff
+  padding-bottom: 20px
+  padding-top: 10px
+
+.apart
+  background: url(../images/apart.gif) 590px 40px no-repeat
+
+#newbg_bottom
+  width: 980px
+  height: 10px
+  background: url(../images/newbg_bottom.gif) 0 0 no-repeat
+
+.iga_add_content
+
+  margin: 0
+  // display: inline
+  // background-color: white
+  padding: 5px 5px
+  // border-right: 1px #D7D7D7 solid
+  height: auto
+  font-size: 14px
+  color: #333
+  a
+    @include link-colors($color_link, $color_link)
+    @include hover-link
+
+  .fb_bt
+    height: 27px
+    line-height: 27px
+    border-bottom: 1px solid $color_fl168
+    // text-align: right
+    padding: 0 10px
+    margin-top: 15px
+    margin-bottom: 10px
+    *margin-bottom: 0
+    .add_title_left
+      color: #333333
+
+    .add_title_mid
+      a
+        @include link-colors($color_link, $color_link)
+        @include hover-link
+      color: #333
+      font-size: 13px
+
+    .add_title_right
+      font-size: 13px
+      color: #888
+
+
+
+.fb_form
+  cellpadding: 0
+  cellspacing: 0
+  text-align: left
+  width: 100%
+  background: #FFF
+  margin-top: 10px
+  margin-bottom: 10px
+  td
+    height: 30px !important
+
+  .tdr
+    width: 110px
+    text-align: right
+    padding-right: 8px
+    vertical-align: top
+    line-height: 28px
+
+.jiaban
+  float: left
+  td
+    bordeR: 1px solid #f00
+    text-align: center
+    padding: 0 8px
+    border: 1px solid #b5b5b5
+  th
+    bordeR: 1px solid #f00
+    text-align: center
+    padding: 0 8px
+    border: 1px solid #b5b5b5
+    background: #fff2c5
+
+#span_over_money
+  margin: 40px 0 0 8px
+  float: left
+
+.up_photo
+  width: 100%
+  margin: 10px 0
+  img
+    border: 1px solid #a5acb2
+  input
+    cursor: pointer
+    padding: 3px 11px
+    *padding: 3px 8px
+    margin-right: 8px
+
+#side_tip
+  width: 240px
+  float: right
+  background-color: white
+
+.side_tip
+  text-align: left
+
+#side_tip dl
+  padding: 12px 8px 12px 10px
+  text-align: left
+  line-height: 24px
+  overflow: hidden
+
+#side_tio dd
+  overflow: auto
+  height: 100%
+
+.niu_ok
+  float: left
+  margin: 10px
+
+.fb_ok
+  width: 510px
+  height: 200px
+  float: left
+  text-align: left
+  padding-top: 15px
+  p
+    text-indent: 24px
+    line-height: 24px
+  .ok_tip
+    font: 26px Microsoft YaHei,SimHei
+    color: #60b301
+    line-height: 55px
+  .post_box
+    padding-left: 24px
+
+.fb_ok1
+  width: 500px
+  height: 230px
+  overflow: hidden
+  padding-left: 10px
+  p
+    text-indent: 0
+
+.you_can
+  line-height: 30px
+  a
+    &:link, &:visited
+      text-decoration: underline
+
+.other_content
+  width: 960px
+  overflow: hidden
+  margin: 0 auto
+
+.fw4
+  width: 958px
+  height: 88px
+  border: 1px solid #b6d4de
+  ul
+    width: 956px
+    height: 86px
+    border: 1px solid #fff
+    overflow: hidden
+    background: #ecf5ff
+  li
+    width: 157px
+    padding-left: 80px
+    height: 80px
+    border-left: 1px solid #fff
+    border-right: 1px solid #b6d4de
+    margin: 3px 0
+    float: left
+    text-align: left
+    h3
+      font-size: 12px
+      font-weight: 700
+      line-height: 25px
+    p
+      line-height: 16px
+      margin-bottom: 5px
+      color: #666
+    &#fw4-wd
+      border-left: 0 none
+      background: url(../images/wdb.gif) 18px center no-repeat
+    &#fw4-yx
+      background: url(../images/mailb.gif) 16px center no-repeat
+    &#fw4-sm
+      background: url(../images/idb.gif) 16px center no-repeat
+    &#fw4-jg
+      border-right: 0 none
+      background: url(../images/cardb.gif) 16px center no-repeat
+
+.zlt-ad
+  width: 958px
+  height: 170px
+  margin: 10px auto
+  border: 1px solid #b6d4de
+  background: url(../images/zlt-ad.gif) 0 0 repeat-x
+  dl
+    width: 851px
+    height: 168px
+    background: url(../images/zlt-icon.gif) 0 15px no-repeat
+    border: 1px solid #fff
+    text-align: left
+    padding-left: 105px
+  dt
+    padding: 15px 0 6px 0
+    clear: both
+    &.dturl
+      padding-top: 8px
+      a
+        background: url(../images/arrow_link.gif) left center no-repeat
+        padding-left: 10px
+        padding-right: 6px
+  dd
+    float: left
+    margin-right: 18px
+
+/*zhu ce
+
+.member_show
+  padding-left: 20px
+
+#reg_box
+  width: 630px
+  float: left
+  text-align: left
+  margin: 10px 0 15px 10px
+  height: auto
+  overflow: auto
+  text-align: left
+
+.regtab
+  text-align: left
+  width: 590px
+  .tdright
+    height: 30px
+  .tdr
+    height: 40px
+
+.tdright
+  text-align: right
+  width: 80px
+  vertical-align: top
+  line-height: 25px
+  height: 40px
+  line-height: 40px !important
+
+.tdr
+  text-align: right
+  width: 160px
+  vertical-align: top
+  line-height: 35px
+
+.error_tip
+  line-height: 20px
+  height: 20px
+  padding: 5px 0 5px 30px
+  float: left
+
+.acc_tip
+  height: 20px
+  padding: 5px 0 5px 30px
+  float: left
+
+.regtab .gray
+  line-height: 18px
+  float: left
+  clear: both
+
+input.go_reg
+  border: 1px solid
+  cursor: pointer
+  border-color: #85c16a #356121 #356121 #85c16a !important
+  background: #67a54b !important
+  color: white !important
+  // line-height: 20px
+  // cursor: pointer
+
+.xiyi
+  width: 440px
+  border: 1px solid #ccc
+  background: #fafafa
+  padding: 10px
+  margin: 10px 10px 10px 30px
+
+#xieyi
+  width: 440px
+  height: 100px
+  overflow: hidden
+  overflow-y: scroll
+  font-size: 12px
+  border: 1px solid #eee
+  text-align: left
+  line-height: 20px
+  color: #666
+  p
+    text-indent: 2em
+    strong
+      line-height: 22px
+
+.xieye_nr
+  padding: 5px
+
+
+
+.mem_can
+  line-height: 20px
+  margin: 8px 0
+  dt
+    line-height: 40px
+    font-size: 14px
+    font-weight: 700
+    margin-bottom: 8px
+  strong
+    display: block
+  dd
+    padding-left: 45px
+    margin-bottom: 15px
+    &.mem_can1
+      background: url(../images/mem_can1.gif) 5px 3px no-repeat
+    &.mem_can2
+      background: url(../images/mem_can2.gif) 5px 3px no-repeat
+    &.mem_can3
+      background: url(../images/mem_can3.gif) 5px 3px no-repeat
+
+
+
+.zhuce_ok
+  width: 500px
+  height: 340px
+
+
+
+#lightBox
+  width: 100%
+  position: absolute
+  background: #fff
+  left: 0
+  top: 0
+  -moz-opacity: 0.85
+  filter: alpha(opacity = 85)
+  opacity: 0.82
+  z-index: 111
+
+.lightBox_wrap
+  background: #ccc
+  position: absolute
+  left: 50%
+  z-index: 1111
+  display: inline
+
+.lightBox
+  border: 1px solid #ffca80
+  background: #fff
+  margin: -5px 0 0 -5px
+  *margin: -5px 0 0 -8px
+  position: relative
+  overflow: hidden
+  dd
+    _width: 100px
+  dt
+    height: 25px
+    color: #fff
+    padding: 0 15px
+    strong
+      font-size: 14px
+      float: left
+      line-height: 25px
+
+#close
+  float: right
+  margin-top: 4px
+  cursor: pointer
+
+/*lightBox styles
+/*tab_box style
+
+.tab_box
+  width: 757px
+  height: 26px
+  overflow: hidden
+  text-align: right
+  padding: 0 10px
+  margin-top: 10px
+  li
+    float: left
+    line-height: 26px
+    *line-height: 28px
+    overflow: hidden
+    height: 26px
+    margin-right: 5px
+    padding-right: 5px
+    a
+      &:link, &:visited, &:hover
+        display: block
+        text-decoration: none
+        color: #000
+        padding: 0 20px 0 25px
+
+
+// tab_box style
+.up_photo_list
+  width: 777px
+  text-align: left
+  margin: 10px 0
+  /*display:none;
+  li
+    padding: 5px 35px
+  .file
+    width: 370px
+
+.tip_li
+  height: 30px
+
+.submit
+  padding: 5px 30px
+  *padding: 7px 15px 3px 15px
+  margin: 10px 0
+  font-size: 14px
+  cursor: pointer
+
+#checkPhoto
+  width: 777px
+  /*display:none;
+
+
+#checkPhotoBox
+  width: 630px
+  height: 360px
+  float: left
+  overflow: hidden
+  overflow-y: scroll
+  border-top: 1px solid #ccc
+  border-bottom: 1px solid #ccc
+
+#checkPhotoBox_ok
+  width: 140px
+  height: 360px
+  border: 1px solid #ccc
+  float: right
+  overflow: hidden
+  overflow-y: scroll
+  text-align: center
+  li
+    height: 90px
+    overflow: hidden
+  img
+    display: block
+    margin: 8px auto 0 auto
+    width: 60px
+    height: 60px
+    padding: 2px
+    border: 1px solid #ccc
+
+.querenxz
+  width: 100%
+  height: 55px
+  overflow: hidden
+
+#pos_button
+  width: 80px
+  padding-top: 21px
+  height: 0px
+  margin-bottom: -6px
+  *margin-bottom: -4px
+  overflow: hidden
+
+.fb_last
+  padding: 25px
+
+.reg_last
+  padding: 10px 25px 25px 25px
+  border-bottom: 1px solid #ccc
+  margin-bottom: 10px
+
+.youcando
+  clear: both
+  float: left
+  padding-left: 25px
+  div.fb
+    margin: 10px 0 15px 1px
+
+.ligbox_table
+  width: 100%
+  text-align: left
+  margin-top: 10px
+  td
+    height: 30px
+    padding-left: 10px
+  th
+    height: 30px
+    padding-left: 10px
+    text-align: right
+    font-weight: 400
+    vertical-align: top
+    line-height: 30px
+
+.form_tip
+  color: #999
+  line-height: 1.2em
+  margin: 5px 0
+
+.onError
+  padding: 3px 0 4px 20px
+  line-height: 14px
+  *line-height: 12px
+  color: red
+
+.onSuccess
+  padding: 3px 0 4px 20px
+  line-height: 14px
+
+.regtab
+  .onError, .onSuccess
+    float: left
+    margin-left: 8px
+    margin-top: 3px
+    *margin-top: 5px
+
+.nojs
+  border: 1px solid #feca7f
+  margin: 10px 20px 10px 0
+  padding: 6px 0 6px 135px
+  li
+    text-align: left
+    line-height: 20px
+    color: red
+
+.fbd
+  border-left: 1px solid #d6d6d6
+  border-right: 1px solid #d6d6d6
+  border-bottom: 1px solid #d6d6d6
+  padding: 20px 0px 15px 30px
+  text-align: left
+  background-color: #ffffff
+  margin-bottom: 10px
+  .pic
+    float: left
+    width: 300px
+    text-align: right
+  .text
+    float: left
+    text-align: left
+    font-size: 14px
+    margin-top: 4px
+    p
+      margin-bottom: 15px
+      line-height: 24px
+      b
+        color: #333
+      a:hover
+        color: #f30
+
+.red_skin
+  color: red !important
+
+.thd
+  font-size: 14px
+  font-weight: bold
+  color: #333
+  line-height: 33px
+  b, span
+    float: left
+    display: block
+  b
+    width: 200px
+    text-align: right
+  span
+    width: 158px
+    height: 33px
+    color: #a4a4a4
+    &.current
+      width: 158px
+      color: #fff
+
+.tips
+  border: 1px solid #ffc686
+  background: #f8f5da
+  text-align: left
+  padding: 10px
+  width: 730px
+  margin: 0 auto 15px auto
+  line-height: 20px
+
+.c_left1
+  margin: 20px auto
+  width: 730px
+
+
+
+#infobox
+  text-align: center
+  ul
+    width: 550px
+    text-align: left
+    margin-left: auto
+    margin-right: auto
+  .title
+    padding: 7px 15px
+    height: 30
+    font-size: 10pt
+    margin: 1px
+    background: #e0f0f9
+    border-bottom: 1px solid #a6cbe7
+
+#mr
+  height: 350px
+  text-align: center
+  .h
+    height: 75px
+    line-height: 75px
+    text-align: center
+    margin: 30px 0
+    font-size: 24px
+  h1
+    background: url(../images/info_icons.png) no-repeat 90px 12px
+    color: #4EBB24
+    font-weight: bold
+    font-family: "Î¢ÈíÑÅºÚ"
+    font-size: 32px
+  h2
+    background: url(../images/info_icons.png) no-repeat 90px -120px
+    color: red
+    font-weight: bold
+    font-family: "Î¢ÈíÑÅºÚ"
+    font-size: 32px
+  h3
+    background: url(../images/info_icons.png) no-repeat 90px -55px
+    color: red
+    font-weight: bold
+    font-family: "Î¢ÈíÑÅºÚ"
+    font-size: 32px
+  p
+    height: 35px
+    line-height: 35px
+    color: #666
+    margin: 0 auto
+
+.write_pwd
+  margin-top: 10px
+  margin-bottom: 20px
+  margin-left: 40px
+  td
+    font-size: 12px
+    line-height: 40px !important
+
+.formlogin
+  margin-top: 10px
+  margin-bottom: 20px
+  margin-left: 50px
+  td
+    font-size: 13px
+    margin-bottom: 10px
+    clear: both
+
+.backall
+  border-style: solid
+  border-width: 1px 0 0 0
+  border-color: #d8d8d8
+  height: 40px
+  line-height: 40px
+  font-size: 14px
+  margin: 10px 25px 0 0
+
+.qqlogin
+  border-top: 1px #dedede solid
+
+
+.pw_check
+  width: 150px
+  background: url(../images/pw_check.gif) no-repeat
+  height: 20px
+  span
+    width: 50px
+    height: 14px
+    line-height: 14px
+    margin-bottom: 6px
+    text-align: center
+    display: block
+    float: left
+
+#pw_check_1
+  background-position: 0 bottom
+
+#pw_check_2
+  background-position: -150px bottom
+
+#pw_check_3
+  background-position: -300px bottom
+
+span
+  &.yes, &.no
+    background: url(../images/user_icon.gif) no-repeat 0 -418px
+    padding: 0.2em 0 0 1.6em
+    margin-left: 0.5em
+    color: #070
+    line-height: 18px
+    height: 18px
+  &.yes
+    background-position: 0 -418px
+    display: block
+    float: left
+    margin-left: 5px
+    padding-right: 5px
+  &.no
+    background-position: 0 -450px
+    color: #B52726
+    display: block
+    background-color: #FFF2F5
+    border: 1px #EBADB0 solid
+    float: left
+    margin-left: 5px
+    padding-right: 5px
+
+.formlogin
+  .text, .txt
+    display: block
+    float: left
+
+
+.ym-mainmnu
+  a
+    font-size: 14px
+
+.ym-tab
+  float: left
+  width: 170px
+  height: 50px
+  line-height: 40px
+  text-indent: 10px
+  padding-right: 70px
+  z-index: 998
+
+
+.curren
+  float: left
+  width: 120px
+  height: 50px
+  padding-right: 312px
+  margin-right: 8px
+  position: relative
+  a
+    display: block
+    width: 124px
+    height: 40px
+    background: url(../images/select-bg.gif) no-repeat
+    position: absolute
+    top: -2px
+    left: 0
+    z-index: 1000
+    line-height: 40px
+    text-indent: 10px
+    text-decoration: underline
+    font-weight: bold
+
+.ym-submnu
+  position: absolute
+  top: -2px
+  left: 118px
+  z-index: 999
+  width: 306px
+  border: 1px solid #DFE3E6
+  padding: 4px 10px 4px
+  background: #fff
+  display: none
+  li
+    width: 50%
+    height: 30px
+    line-height: 30px
+    overflow: hidden
+    float: left
+
+.curren .ym-submnu li a
+  text-decoration: none
+  font-weight: normal
+  width: 170px
+  height: 30px
+  display: block
+  background: none
+  line-height: 30px
+  position: inherit
+  top: auto
+  left: auto
+  overflow: hidden
+  &:hover
+    // text-decoration: underline
+    font-color: $color_fl168
+
+.minheight
+  min-height: 280px
+  _height: 280px
+  background: #fff
+  clear: both
+  padding: 15px 0 15px 15px
+  margin-top: 5px
+  _height: 10px
+  position: relative
+
+.post2 li
+  width: 20%
+  float: left
+  margin-left: 10px
+
+.post3 li
+  width: 15%
+  float: left
+  margin-left: 10px
+
+.post4 li
+  width: 15%
+  height: 35px
+  line-height: 35px
+  float: left
+  margin-left: 10px
+
+#pre-next
+  padding: 10px 25px
+  font-size: 14px
+  font-weight: bold
+  a
+    text-decoration: underline
+
+.users
+  margin: 0 20px 0 10px
+  padding-bottom: 5px
+  font-size: 14px
+  margin-bottom: 10px
+  a
+    display: inline-block
+    margin-right: 15px
+    text-decoration: underline
+
+.ts1
+  padding-bottom: 5px
+  margin: 0 10px 0 10px
+  line-height: 20px
+  letter-spacing: 1px
+  img
+    margin-bottom: -2px
+  a
+    text-decoration: underline
+    font-size: 12px
+
+.ts2
+  padding-top: 5px
+  margin: 0 15px 0 5px
+  line-height: 20px
+  letter-spacing: 1px
+  a
+    font-size: 12px
+  b
+    font-weight: normal
+
+.curren .ym-submnu
+  display: block

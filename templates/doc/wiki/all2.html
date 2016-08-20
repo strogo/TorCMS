@@ -1,0 +1,42 @@
+{% extends "../../theme/bage.html" %}
+
+{% block head%}
+
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+{% end %}
+
+
+
+{% block zhuti %}
+<div class="header">
+
+</div>
+
+<div class="content">
+    <form class="pure-form pure-form-aligned" method="post" id="find_calc" action="/post/find">
+        <fieldset>
+
+
+            <input id="keyword" type="text" name="keyword" placeholder="关键词">
+            <button type="submit" id="d" type="text" name="d" class="pure-button pure-button-primary">查找文档</button>
+
+
+        </fieldset>
+    </form>
+</div>
+
+<div class="content find_equation">
+
+    <h3>{{ kwd['title'] }}</h3>
+    <ul>
+
+    </ul>
+
+
+</div>
+
+
+{% end %}

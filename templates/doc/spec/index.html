@@ -1,0 +1,47 @@
+{% extends "meta_theme.html" %}
+{% block content %}
+
+
+
+    <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+        <a href="http://www.osgeo.cn/spec/">业务范围</a>
+    </div>
+
+    <ul class="articleList">
+        {% for rec in spec_recs %}
+
+
+
+            <div class="pure-g" style="padding: 8px; border-bottom: 1px #dddddd solid;">
+
+                <div class="pure-u-1-4">
+
+                    <img src="{{rec.img}}" style="width: 95%;"></div>
+
+
+                <div class="pure-u-3-4 ywlb">
+                    <h3><a href="/spec/{{ rec.slug }}" class="title" style="">{{ rec.name }}</a></h3>
+
+                    <p class="bdesc">{{ rec.abstract }}</p>
+
+                    <p class="binfo">
+                        {% if kwd['editable'] == 1 %}
+                        <a href="/spec/{{rec.uid}}/edit" class="date">编辑</a>
+                        <a href="/spec/delete/{{rec.uid}}" class="date">删除</a>
+
+                        {% else %}
+                        {% end %}
+                        <span class="date">时间&nbsp;: {{ str(rec.date)[:10] }}</span>
+                    </p>
+
+
+                </div>
+            </div>
+
+
+        {% end %}
+    </ul>
+
+
+
+{% end %}

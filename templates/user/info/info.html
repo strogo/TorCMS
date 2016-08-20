@@ -1,0 +1,59 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block head %}
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+{% end %}
+
+
+{% block content %}
+<ol class="breadcrumb">
+  <li>当前位置: <a href="http://www.osgeo.cn">首页</a> </li>
+  <li>用户 </li>
+  <li><a href="/user/info"> 用户信息</a></li>
+</ol>
+<div class="panel panel-default">
+  <div class="panel-heading">
+        用户信息
+    </div>
+
+
+
+
+
+
+        <ul class="list-group">
+            <li class="list-group-item"> 用户名：{{ userinfo.user_name }}</li>
+           <li class="list-group-item">电子邮箱：{{ userinfo.user_email }}</li>
+            <li class="list-group-item"> 权限：{{ userinfo.privilege}}</li>
+
+
+            {% if userinfo and userinfo.privilege[1] >= '1' %}
+            <li class="list-group-item">
+                <a href="/post/add_document" class="btn btn-primary">添加文档</a>
+                </li>
+            {% end %}
+            <li class="list-group-item">
+                <a href="/publish/" class="btn btn-primary">发布信息</a></li>
+
+            <li class="list-group-item"><a href="/user/changepass" class="btn btn-primary" style="margin-right: 10px">修改密码</a>
+
+                <a href="/user/changeinfo" class="btn btn-primary" style="margin-right: 10px">修改个人信息</a>
+
+
+                <a href="/user/logout" class="btn btn-primary" >注销</a>
+            </li>
+
+        </ul>
+
+
+
+
+
+</div>
+
+
+{% end %}
+

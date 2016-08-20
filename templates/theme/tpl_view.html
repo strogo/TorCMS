@@ -1,0 +1,147 @@
+{% extends "tpl_basic.html" %}
+
+{% block head %}
+
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.js') }}"></script>
+
+<!-- CSS STYLE -->
+<link rel="stylesheet" type="text/css" href="{{ static_url('lunbo/css/style.css') }}" media="screen"/>
+
+<!-- jQuery Paradigm Slider  -->
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.cssAnimate.mini.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.waitforimages.js') }}"></script>
+
+<script type="text/javascript" src="{{ static_url('lunbo/js/jquery.themepunch.paradigm.js') }}"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ static_url('lunbo/css/settings.css') }}" media="screen"/>
+
+
+{% end %}
+
+{% block typebody %}
+
+<div class="container" id="guarantee">
+    <div class="alert alert-info">
+        {% module BreadCrumb(kwd['daohangstr']) %}
+    </div>
+</div>
+<div class="container">
+    <div class="one-third column ">
+        <div class="titleborder">
+            <span class="title colorme"> data type</span>
+        </div>
+        <Br>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="/list/0100">RSD Remotely Sensed</a></li>
+            <li class="list-group-item"><a href="/list/0200">GIS</a></li>
+            <li class="list-group-item"><a href="/list/0300">Document Data</a></li>
+            <li class="list-group-item"><a href="/list/0400">Multimedia</a></li>
+            <li class="list-group-item"><a href="/list/0500">Formatting Data</a></li>
+        </ul>
+        <Br><Br>
+
+        <div class="titleborder">
+            <span class="title colorme">Recent document </span>
+        </div>
+        <Br>
+        <ul class="list-group">
+            {% module post_recent(8) %}
+        </ul>
+    </div>
+    <div class="two-thirds column omega">
+        <div class="titleborder">
+            <span class="title colorme">{{ post_info.title }} </span>
+        </div>
+        <BR><BR>
+
+        <div class="row">
+            <!-- 根据有没有图，分成两部分显示 -->
+            <!-- 下面代码有重复部分，但为清晰起见，都保留。 -->
+            {% if kwd['has_image'] == 1 %}
+            <div class="col-sm-6">
+                {% module ImgSlide(post_info) %}
+            </div>
+            <div class="col-sm-6">
+                <div class="">
+                    <p>
+                        <span><a onclick="js_show_page('/user/shoucang/{{ post_info.uid }}')"
+                                 class="btn btn-sm btn-primary">Collect</a></span>
+                        <a href="/meta/edit/{% raw post_info.uid %}" class="btn btn-sm btn-primary">Modify</a>
+                        <a href="/delete/{% raw post_info.uid %}" class="btn btn-sm btn-primary">Delete</a>
+                        <br>
+                    </p>
+
+                    <p>{% for x in post_info.keywords %}
+                        <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                        {% end %}
+                    </p>
+
+                   <!-- <p> View： {% raw post_info.view_count %}</p>-->
+                    {% block extrainfo %} {% end %}
+                </div>
+            </div>
+            {% else %}
+            <div class="col-sm-6">
+                {% block extrainfo %} {% end %}
+            </div>
+            <div class="col-sm-6">
+                <p>
+                        <span><a onclick="js_show_page('/user/shoucang/{{ post_info.uid }}')"
+                                 class="btn btn-sm btn-primary">Collect</a></span>
+
+                    <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">Modify</a>
+                    <a href="/meta/delete/{{  post_info.uid }}" class="btn btn-sm btn-primary">Delete</a>
+                </p>
+
+                <p>{% for x in post_info.keywords.split(',') %}
+                    <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                    {% end %}
+                </p>
+
+
+                <p>View： {% raw post_info.view_count %}</p>
+            </div>
+            {% end %}
+        </div>
+
+        <Br><br>
+        {% module ContactInfo(post_info) %}
+        <Br><br>
+
+        <div class="titleborder">
+            <span class="title colorme">Data details  </span>
+        </div>
+        <BR><BR>
+
+        <div class="sixteen column">
+            <BR><BR>
+            {{ post_info.cnt_md }}
+        </div>
+        <div class="titleborder">
+            <span class="title colorme">picture information  </span>
+        </div>
+        <BR><BR>
+
+        <div class="iga_infoaddiv" style="text-align: left;width:98%;margin:1px auto;">
+
+        </div>
+        <BR><BR>
+
+        <div class="titleborder">
+            <span class="title colorme">Map location  </span>
+        </div>
+        <BR><BR>
+
+
+        <div class="panel-footer">
+            <span id="showCnt"></span>
+        </div>
+    </div>
+</div>
+
+
+{% end %}
+
+

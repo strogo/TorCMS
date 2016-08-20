@@ -1,0 +1,55 @@
+@import "_com"
+// 列表 页面，进行选择的部分
+.infoselect
+  // 即时条件选择
+  width: auto
+  border: 1px solid $color_border_2
+
+  padding: 5px
+
+  text-align: left
+  //width: auto
+  height: auto
+  overflow: hidden
+  background-color: #fff
+
+.infoselect span:hover
+  cursor: pointer
+// 页面排序
+.pages_sort
+  // font-family: $font_zh
+  // line-height: 50px
+
+  .sortname
+    font-family: $font_zh
+    color: #777
+    display: block
+    margin: 3px 0 3px 8px
+    text-align: right
+    line-height: 20px
+    font-size: 0.75em
+    background-color: #fff
+
+  .sortvalue
+    @extend .sortname
+    float: left
+    font-size: 0.813em
+
+    &:hover
+      color: $color_fl168
+    .unchecked
+      cursor: pointer
+      display: inline
+      padding: 3px 3px 3px 3px
+      color: $color_link
+    .checked
+      @extend .unchecked
+      color: $color_sortvalue
+      background-color: $color_bg_sortvalue
+
+
+
+
+
+
+

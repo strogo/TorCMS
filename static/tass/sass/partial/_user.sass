@@ -1,0 +1,231 @@
+@charset "UTF-8"
+
+@import "_com"
+body
+  line-height: 1.5em
+  font-size: 0.875em
+#pop_change_touxiang
+  margin: 0 auto
+  padding: 30px
+  background-color: #efefef
+  border: 5px solid $color_fl2
+
+#user_info
+  // background-color: #eee
+  dt
+    color: #555
+    float: left
+    width: 150px
+    margin: 0px
+    padding: 3px
+    //line-height: 1em
+  dd
+    // float: left
+    clear: none
+    width: 300px
+    margin: 0px
+    padding: 3px
+    // overflow: hidden
+
+#userInfo
+  // background: #FF9966
+  @include border-radius(5px)
+  background: #CCCCFF
+
+  padding: 10px 10px 10px 10px
+  margin: 20px auto
+  // height: 40px
+  // line-height: 40px
+  // padding-left: 10px
+  font-weight: 300
+  color: $color_link
+  border: 1px soilid $color_fl168
+
+.vipmenu
+  a
+    @include link-colors($color_fl168,$color_fl168)
+    @include hover-link
+  .activemenu
+    color: $color_fl168
+
+.box-info
+  border-bottom: 1px #536a81 dashed
+  padding: 1em 1em 1em 1em
+  margin: 1px 1px 1px 1px
+  background-color: #eeeeff
+  &:hover
+    background-color: #ffffff
+
+// 预约部分
+.panel-yuyue
+  // @include sticky-footer{40px, '#con'
+  margin-top: 10px
+  padding: 8px 8px 8px 8px
+  border: 1px dashed #006b8f
+
+.yuyue_select
+  // 弹出层
+  // width: 6
+  // margin: 0px 80px 0px 80px
+  padding: 80px 40px 20px 40px
+  // width: 400px
+  // background-color: $color_fl3
+  // border: 2px solid $color_fl168
+  // padding: 15px
+  // a
+  //     color: #f00
+
+  .sel_day
+    width: 120px
+    height: 2.5em
+    font-size: 0.83em
+    // border: none
+    background: #444444 0px 0px
+    color: #ffffff
+    border: #000000 1px solid
+    padding: 5px
+  .sel_hour
+    @extend .sel_day
+    // width: 60px
+  .sel_min
+    @extend .sel_day
+    // width: 60px
+
+  // 用户后台左侧导航
+#user_navigation
+  // border-right: $border_light
+  margin: 0px
+  padding: 0px
+  text-align: center
+  // width: 147px
+  a.head
+    //@include link-colors($color_fl168, $color_fl168)
+    font: $font_zh
+    cursor: pointer
+    display: block
+    margin: 0px
+    // padding: 5px 0 5px
+
+    font-size: 1em
+    line-height: 1.5em
+    font-weight: bold
+    text-decoration: none
+  ul
+
+    // @include  horizontal-list
+    border-width: 0px
+    margin: 0px
+    padding: 0px
+    text-indent: 0px
+  li
+    // list-style: none
+    // display: inline
+    cursor: pointer
+    line-height: 1em
+    font: $font_zh
+    a
+      //@include link-colors($color_link,$color_fl168)
+      @include hover-link
+      color: #333
+      font: $font_zh
+      display: block
+      font-size: 0.875em
+      font-weight: normal
+      // text-decoration: none
+      // text-align: center
+      padding: 3px
+      // cursor: pointer
+      &:hover
+        // font: $font_zh
+        // font-size: 0.93em
+        // border: $border_light
+        // color: $color_fl168
+        background-color: #eee
+        // cursor: pointer
+
+
+#uploadPreview
+  width: 168px
+  height: 168px
+  background-position: center center
+  background-size: cover
+  border: 4px solid #fff
+  -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3)
+  display: inline-block
+.jianli
+  width: 99%
+  a
+    @include link-colors($color_link, $color_link)
+    @include hover-link
+.houtai_info
+  font-family: $font_zh
+  line-height: 1.5em
+  .houtai_info_title
+    // font-family: $font_zh
+    color: $color_link
+    font-weight: bolder
+    display: block
+    padding: 2px 1px
+    font-size: 1em
+    line-height: 1.2em
+  .houtai_info_status
+    font-size: 0.875em
+    line-height: 1.5em
+    margin: 1px 0px
+    .info_status
+      // display: block
+      margin: 3px
+      padding: 3px
+      background: #a6cbe7
+      color: #fff
+  .houtai_operate
+    a
+      @include link-colors(#fff, $color_link)
+      @include hover-link
+      font-size: 0.875em
+      line-height: 1.8em
+      display: inline-block
+      background: $color_fl4
+      padding: 1px 5px 1px 5px
+      margin: 1px 3px 1px 3px
+
+  .houtai_info_footer
+    //font-size: 1em
+    //line-height: 1.5em
+    color: #666666
+    margin: 1px 3px 1px 3px
+    font-size: 0.875em
+    line-height: 1.5em
+
+.btn_tips
+  line-height: 1.2em
+  font-size: 0.875em
+  display: inline-block
+  padding: 3px 5px 3px 5px
+  margin: 1px 2px 1px 2px
+
+.gform
+  width: 96%
+  margin: 15px auto
+  legend
+    font-weight: bold
+
+.pure-form
+  line-height: 24px
+  width: 96%
+  margin: 10px auto
+  legend
+    font-weight: bold
+    font-size: 16px
+  color: #666
+
+.gan
+  background: #0066cc
+  color: #fff
+  width: 80px
+  height: 30px
+  line-height: 30px
+  display: block
+  text-align: center
+  &:hover
+    color: #00274e

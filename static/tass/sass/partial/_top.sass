@@ -1,0 +1,161 @@
+// 菜单
+
+#topline
+  height: 27px
+  width: 100%
+  border-width: 0 0 1px 0
+  border-style: solid
+  border-color: #ccc
+  background: url(../../images/toplinebg.gif) repeat-x
+  .topline
+    text-align: left
+    padding: 0
+    height: 28px
+    line-height: 28px
+    overflow: hidden
+    margin-left: auto
+    margin-right: auto
+    width: 980px
+    .floatleft
+      float: left
+      _padding-top: 5px
+      #logininfo
+        font-size: 13px
+    .floatright
+      float: right
+      padding-right: 0
+    ul
+      float: left
+      margin: 5px 10px 0 10px
+      line-height: 18px
+      display: inline
+      position: relative
+      font-size: 15px
+      z-index: 99999
+      a
+        font-size: 15px
+      &.line
+        width: 2px
+        height: 18px
+        overflow: hidden
+        background: #fff
+        margin: 4px 0 0 0
+        u
+          display: block
+          width: 1px
+          height: 18px
+          overflow: hidden
+          background: #cfcfcf
+      &.top_sh
+        background: url(../images/top_bar_pc.gif) no-repeat -88px 1px
+        padding-left: 16px
+      &.top_home
+        background: url(../images/top_bar_home.gif) no-repeat 0px 1px
+        padding-left: 16px
+      &.top_post
+        background: url(../images/top_bar_post.gif) no-repeat 0px 1px
+        padding-left: 16px
+  a
+    &:visited
+      text-decoration: none
+
+    &:hover
+      text-decoration: none
+      color: #ff4200
+
+
+
+#btn-publish
+
+
+  margin-left: 10px
+#btn-search
+  @extend #btn-publish
+  float: left
+#iga_topmenu
+
+  @include horizontal-list
+  font-family: $font_zh
+  // background-color: #f4f4f4
+  // background-position: 0 -296px
+  // background-repeat: repeat-x
+  // border: $border_light4
+  border-bottom: 2px solid $color_fl168
+  height: 30px
+  margin-top: 15px
+  line-height: 30px
+  overflow: hidden
+  li
+    border: 1px solid $color_fl168
+    @include border-radius(5px)
+    margin: 0px 3px 0px 3px
+
+    @include border-radius(5px)
+    a
+      font-size: 14px
+      padding: 0 15px
+  .menu
+    // @include background(linear-gradient(lighten($color_fl168, 85%), lighten($color_fl168, 35%)))
+    color: #333
+    background-color: #FDE9E9
+    a
+      color: #333
+  .curmenu
+    color: #fff
+    background-color: $color_fl168
+    // @include background(linear-gradient(lighten($color_fl168, 15%), darken($color_fl168, 15%)))
+    a
+
+      color: #fff
+
+
+
+
+
+/*線性漸層*/
+
+#searchFormSubmit
+  font-family: $font_zh
+  width: 55px
+  height: 30px
+  _height: 15px
+  color: #ffffff
+  font-weight: bolder
+  @include border-radius(3px)
+  background-color: $color_fl168
+  // @include background(linear-gradient(lighten($color_fl168, 20%), $color_fl168))
+// 線性漸变
+#publicBtn
+  display: block
+  vertical-align: middle
+  // margin-top: 20px
+  // float: right
+
+  font-family: $font_zh
+  // width: 55px
+  // height: 30px
+  // _height: 15px
+  color: #ffffff
+  // padding: 15px 10px 10px 10px
+  // margin-top: 0px
+  // font-weight: bold
+  a
+    @include link-colors(#fff,#fff,#fff,#fff,#fff)
+  // @include border-radius(3px)
+  // background-color: $color_fl168
+  // @include background(linear-gradient(lighten($color_fl168, 20%), $color_fl168)) // 線性漸变
+
+#searchheader
+  width: 400px
+  float: left
+
+#cityinfo
+  font-size: $font13
+  font-weight: normal
+  margin-top: 15px
+  text-align: center
+  font-family: $font_zh
+  line-height: 1.2em
+  a
+    @include link-colors($color_link,#333)
+    @include hover-link

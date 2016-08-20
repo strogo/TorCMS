@@ -1,0 +1,32 @@
+
+<ul class="list-group" id="list-group">
+    {% for rec in recs %}
+
+    {% if rec.uid.endswith('00') %}
+    <li class="panel-heading">
+        {% if rec.uid.startswith('09') %}
+        <span class="glyphicon glyphicon-map-marker"></span>
+        {% elif rec.uid.startswith('03') %}
+         <span class="glyphicon glyphicon-hdd"></span>
+        {% elif rec.uid.startswith('32') %}
+         <span class="glyphicon glyphicon-search"></span>
+        {% elif rec.uid.startswith('05') %}
+         <span class="glyphicon glyphicon-globe"></span>
+        {% elif rec.uid.startswith('06') %}
+         <span class="glyphicon glyphicon-file"></span>
+        {% elif rec.uid.startswith('25') %}
+         <span class="glyphicon glyphicon-play-circle"></span>
+        {% end %}
+
+
+        <a href="/list/{{ rec.uid }}" class="flbt">{{ rec.name }}</a> </li>
+    {% else %}
+     <li class="list-group-item">
+    <a href="/list/{{ rec.uid }}"> {{ rec.name }} <span style="font-size:0.8em;background-color:#00adef;color:#fff;padding:1px;"> ({{ rec.count }})</span></a>
+    </li>
+
+
+    {% end %}
+
+    {% end %}
+</ul>

@@ -1,0 +1,57 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block head%}
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+
+{% end %}
+
+
+{% block content %}
+
+
+<div class="panel-heading">
+</div>
+<div class="panel-body">
+
+
+    <div class="content">
+        <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+            用户列表
+        </div>
+
+        <form class="pure-form pure-form-aligned" method="post" id="find_calc" action="/user/find">
+            <fieldset>
+
+
+                <input id="keyword" type="text" name="keyword" placeholder="用户名">
+                <button type="submit" id="d" type="text" name="d" class="pure-button pure-button-primary">查找用户</button>
+
+
+            </fieldset>
+        </form>
+        <br><br>
+
+        {% for x in view %}
+
+        <p>用户名：{{x.user_name}}&nbsp;&nbsp;&nbsp;&nbsp;当前权限：{{ x.privilege }}
+
+
+            <a class="pure-button pure-button-primary" href="/user/changeprivilege/{{x.user_name}}"
+               style="margin-left: 100px">修改权限</a>
+            <a class="pure-button pure-button-primary" href="/user/delete_user/{{x.uid}}">删除用户</a>
+
+        </p>
+
+        <p style="border-bottom: 1px dashed #dddddd; margin-bottom: 20px">&nbsp;</p>
+        {% end %}
+
+    </div>
+
+
+</div>
+
+
+{% end %}

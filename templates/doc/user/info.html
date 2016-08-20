@@ -1,0 +1,55 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block head %}
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+{% end %}
+
+
+{% block content %}
+
+<div class="panel-heading">
+</div>
+<div class="panel-body">
+
+
+    <div class="content">
+        <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+            用户信息
+        </div>
+
+
+        <ul class="articleList">
+            <li> 用户名：{{ user_info.user_name }}</li>
+            <li> 电子邮箱：{{ user_info.user_email }}</li>
+            <li> 权限：{{ user_info.privilege}}</li>
+
+
+            {% if userinfo and userinfo.privilege[2] == '1' %}
+            <li><a href="/user/info">用户信息</a></li>
+            <li><a href="/post/add_document">添加文档</a></li>
+
+            {% end %}
+
+
+            <li><a href="/user/changepass" class="pure-button pure-button-primary" style="color: #ffffff; margin-right: 10px">修改密码</a>
+
+                <a href="/user/changeinfo" class="pure-button pure-button-primary" style="color: #ffffff; margin-right: 10px">修改个人信息</a>
+
+
+                <a href="/user/logout" class="pure-button pure-button-primary" style="color: #ffffff">注销</a>
+            </li>
+
+        </ul>
+
+
+    </div>
+
+
+</div>
+
+
+{% end %}
+

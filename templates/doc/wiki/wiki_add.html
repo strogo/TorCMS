@@ -1,0 +1,89 @@
+{% extends "../../theme/bage.html" %}
+
+{% block head%}
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+
+{% end %}
+
+
+{% block mainbody %}
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        // jquery.validate.js 验证
+        $("#form_add").validate(
+                {
+                    rules: {
+                        title:{
+                            required:true
+                        },
+                        cnt_md: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        title:{
+                            required: "<span class='red'>请输入标题</span>"
+                        },
+                        cnt_md: {
+                            required: "<span class='red'>请输入内容</span>"
+                        }
+                    }
+                }
+        );
+    });
+</script>
+<div class="panel panel-default">
+    <div class="panel-heading"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
+       添加文档
+    </div>
+    <div class="panel-body">
+
+
+    <form action="/wiki/add" method="post" class="form-horizontal" id="form_add">
+
+
+        <fieldset>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" for="title">标题</label>
+                <div class="col-sm-10">
+                <input id="title" type="text" name="title" value="{{ kwd['title'] }}" class="form-control">
+            </div>
+            </div>
+
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" for="src_type">文档类型</label>
+                <div class="col-sm-10">
+                <select id="src_type" name="src_type" class="form-control">
+                    <option value="0" selected>MarkDown</option>
+                    <option value="1">RestructedText</option>
+                </select>
+            </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" for="cnt_md">内容 (下面输入内容，使用MarkDown语法)</label>
+                <div class="col-sm-10">
+                <textarea rows=26 id="cnt_md" name="cnt_md" cols="100" class="form-control"></textarea>
+            </div>
+            </div>
+
+            <div class="form-group">
+                <label  class="col-sm-2 control-label" for="sub1"></label>
+                <div class="col-sm-10">
+                <input id="sub1" type="submit" value="添加数据" class="btn btn-primary"/>
+            </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+</div>
+{% end %}

@@ -1,0 +1,107 @@
+{% extends "../../theme/bage.html" %}
+
+{% block head%}
+
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+
+{% end %}
+
+
+
+{% block zhuti %}
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        // jquery.validate.js 验证
+        $("#form_post").validate(
+                {
+                    rules: {
+                        title: {
+                            required: true
+                        },
+
+                        cnt_md: {
+                            required: true
+                        }
+
+                    },
+                    messages: {
+                        title: {
+                            required: "<span class='red'>请输入标题</span>"
+
+                        },
+                        cnt_md: {
+                            required: "<span class='red'>请输入内容</span>"
+
+                        }
+
+
+                    }
+                }
+        );
+    });
+</script>
+
+<div class="content">
+<form action="" method="post" class="pure-form pure-form-aligned" id="form_post">
+
+
+    <fieldset>
+
+
+        <input type="hidden" id="id_post" name="id_post" value="{{ kwd['view'].uid }}"/>
+
+
+        <div class="pure-control-group">
+
+
+            <label for="title">标题</label>
+            <input type="text" id="title" name="title" value="{{ kwd['view'].title }}" size=58/>
+        </div>
+
+
+
+
+
+        {% for ii in range(1,6) %}
+        <div class="pure-control-group">
+            <label for="tag{{ii}}">标签{{ii}}</label>
+            <select name="tag{{ii}}" id="tag1">
+                <option value="">请选择</option>
+                {% for taginfo in tag_infos %}
+                <option value="{{ taginfo.uid }}"
+                        {% for tt in app2tag_info %}
+                        {% if tt.order== ii and tt.catalog.uid == taginfo.uid %}
+                        selected
+                        {% end %}
+                        {% end %}
+                        >{{ taginfo.name }}
+                </option>
+                {% end %}
+            </select>
+        </div>
+        {% end %}
+
+
+
+        <div class="pure-control-group">
+
+
+            <label for="sub1"></label>
+
+
+            <input id="sub1" type="submit" value="更新数据"/>
+        </div>
+
+    </fieldset>
+
+</form>
+</div>
+
+{% end %}
+
+

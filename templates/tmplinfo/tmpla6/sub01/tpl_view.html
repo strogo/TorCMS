@@ -1,0 +1,180 @@
+{% extends "../../tmplinfo.html" %}
+
+{% block head %}
+<title>{{ post_info.title }} OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="{{ post_info.keywords }}">
+<meta name="description" content="{% module generate_description(post_info.cnt_html) %}">
+
+
+{% end %}
+
+{% block typebody %}
+
+<script>
+
+var post_uid = "{{ post_info.uid }}";
+
+
+var login = {{ kwd['login'] }};
+</script>
+<div class="row">
+
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>Current location：<a href="/">Info</a></li>
+            <li> {% module parentname(kwd['parentname']) %}</li>
+            <li> {% module catname(kwd['catname']) %}</li>
+            <li><a href="/info/{{ post_info.uid }}"> {{ post_info.title }}</a></li>
+        </ol>
+
+        <div class="panel panel-default">
+
+
+            <div class="panel-body">
+
+                <div class="col-sm-9">
+
+                <h3 class="title colorme">{{ post_info.title }}</h3>
+                    {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
+                    <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">修改</a>
+                    <a href="/meta/delete/{{ post_info.uid }}" class="btn btn-sm btn-primary">删除</a>
+                    {% end %}
+
+<div class="row bor_bottom">
+    <div class="col-sm-5"><b>Tag:</b><span class="post_cat">
+                         {% if 'def_tag_arr' in post_info.extinfo %}
+                        {% for x in post_info.extinfo['def_tag_arr'] %}
+                            <a href="/info_tag/{{ x }}" class="btn btn-primary btn-xs">{{ x }}</a>
+                            {% end %} {% end %}
+                </span></div>
+    <div class="col-sm-3"><b>Release time：</b> {{ str(post_info.date)[:10] }}</div>
+    <div class="col-sm-2"><b>Browsing times：</b> {% raw post_info.view_count %}</div>
+
+    <div class="col-sm-2"><button id="act_collect" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-heart-empty"></span>
+                        <span id="text_collect">收藏</span>
+                    </button>
+
+</div>
+</div>
+
+
+
+                    <div class="row bor_bottom">
+
+                        <div class="col-sm-6">
+
+                            {% block extrainfo %} {% end %}
+                        </div>
+
+                        <div class="col-sm-6">
+
+
+                            <p><strong>Contributor : </strong>
+                                {{ post_info.extinfo['ext_contributor'] if 'ext_contributor' in post_info.extinfo else '' }}
+                            </p>
+
+                            <p>
+
+                                <strong>Company : </strong>
+
+                                {{ post_info.extinfo['ext_company'] if 'ext_company' in post_info.extinfo else '' }}
+                            </p>
+                             <p>
+
+                                <strong>Address : </strong>
+
+                                {{ post_info.extinfo['ext_address'] if 'ext_address' in post_info.extinfo else '' }}
+                            </p>
+                              <p>
+
+                                <strong>Tel : </strong>
+
+                                {{ post_info.extinfo['ext_tel'] if 'ext_tel' in post_info.extinfo else '' }}
+                            </p>
+                               <p>
+
+                                <strong>Email : </strong>
+
+                                {{ post_info.extinfo['ext_email'] if 'ext_email' in post_info.extinfo else '' }}
+                            </p>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 "> {% raw unescape(post_info.cnt_html) %}</div>
+
+                    <div class="col-sm-12">
+                        <span id="showCnt"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+
+                    {% if post_info.logo != ''%}
+                    <div class="row">
+
+                        <div class="col-sm-12">
+                            <img src="{{ post_info.logo }}" width="100%">
+                        </div>
+
+                    </div>
+                    <br>
+                    {% end %}
+                    
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"> Related documents </h3>
+                        </div>
+                        {% module rel_app2post(calc_info.uid, 4) %}
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading"> {% for taginfo in cat_enum %}
+                            {% if taginfo.uid.endswith('00') %}
+                            {{ taginfo.name }}
+                            {% end %}
+                            {% end %}
+                        </div>
+
+
+                        <ul class="list-group">
+                            {% for taginfo in cat_enum %}
+                            {% if not taginfo.uid.endswith('00') %}
+                            <li class="list-group-item"><a href="/list/{{ taginfo.uid }}">{{ taginfo.name }}</a></li>
+                            {% end %}
+                            {% end %}
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+
+                <div class="row">
+                    <div class="col-md-9">
+                        Article link： <a href="/info/{{ post_info.uid }}" style="color: #003366">{{ post_info.title }}</a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="widget_baidu_share"> {% module baidu_share() %}</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script src="{{ static_url('jslib/mapshowm.js') }}"></script>
+
+{% end %}
+
+
+

@@ -1,0 +1,212 @@
+{% extends "tpl_basic.html" %}
+
+{% block headinfo %}
+
+
+<script type="text/javascript">
+
+    jQuery.validator.addMethod("isMobile", function (value, element) {
+        var length = value.length;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        return this.optional(element) || (length == 11 && mobile.test(value));
+    }, "请正确填写您的手机号码");
+
+    jQuery.validator.addMethod("isphone", function (value, element) {
+        var length = value.length;
+        var phone = /(^(\d{3,4}-)?\d{6,8}$)|(^(\d{3,4}-)?\d{6,8}(-\d{1,5})?$)|(\d{11})/;
+        return this.optional(element) || (phone.test(value));
+    }, "请填写正确的电话号码");
+
+    $().ready(function () {
+        $("#form_add_info").validate();
+    });
+
+    function chuli_kw() {
+        $.ajaxSetup({cache: false});
+        var myVAriable = $("#keywords")[0].value;
+        var stringArray = myVAriable.split(",");
+        var out_str = '<span class="btn btn-warning btn-xs">';
+        out_str += stringArray.join('</span> <span class="btn btn-warning btn-xs">');
+        out_str += '</span';
+        $('#kwlist').html(out_str);
+
+    }
+
+</script>
+
+
+{% end %}
+
+
+{% block typebody %}
+
+
+<div class="container" id="guarantee">
+    <div class="alert alert-info">Current Location：<a href="/"> Home </a> > {% module BreadcrumbPublish(2) %}</div>
+
+    <br>
+
+    <div class="sixteen columns">
+        <div class="titleborder">
+            <span class="title colorme">Update-{{ post_info.title }}</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="block">
+
+
+        <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
+              enctype="multipart/form-data" action="/meta/edit/{{ post_info.uid }}">
+            <input id="logo" name="logo" class="form-control" value="" type="hidden">
+            <input type='hidden' name="def_cat_uid" value="{% raw kwd['def_cat_uid'] %}">
+
+
+            <label>
+                Basic data information : {{ kwd['parentname'] }} > {{ kwd['catname'] }}
+
+
+            </label>
+
+
+            <label>
+
+                <span><a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                Title：</span>
+                <input type="text" class="input_text" name="title" id="title" value="{{ post_info.title }}">
+
+            </label>
+
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                Information content (please specify) ：
+            </span>
+                <input type="text" id="contentx" name="extra_content" class="input_text">
+
+            </label>
+            <br><br>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                desc ：
+            </span>
+
+                <input type="text" id="desc" name="desc" class="input_text" value="{{ post_info.desc }}">
+
+            </label>
+
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                cnt_md ：
+            </span>
+
+                <input type="text" id="cnt_md" name="cnt_md" class="input_text" value="{{ post_info.cnt_md }}">
+
+            </label>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                cnt_html ：
+            </span>
+
+                <input type="text" id="cnt_html" name="cnt_html" class="input_text" value="{{ post_info.cnt_html }}">
+
+            </label>
+            <label>
+                <span for="tags">标签</span>
+                <input type="text" id="tags" name="tags" value="{% for x in app2label_info %}
+                {{ x.tag.name}},
+                {% end  %}" class="input_text">
+            </label>
+
+            <div style="clear: both"></div>
+            <label>
+            <span>
+                <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+               Keywords (comma separated) ： </span>
+
+                <input type="text" class="input_text" name="keywords" id="keywords" onkeyup="chuli_kw();"
+                       value="{{ post_info.keywords }}">
+            </label>
+            <label>
+
+                <span></span>
+
+                <p id="kwlist"></p>
+
+            </label>
+            <br>
+
+            <label>
+                 <span>
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Data references and declarations ： </span>
+                <input type="text" id="extra_statement" name="extra_statement" class="input_text">
+
+            </label>
+
+
+            <hr/>
+
+            {% block extrainfo %}{% end %}
+
+            <hr/>
+       <!--     <label>
+
+                <span></span>
+                <a href="/entry/add" target="_blank" class="contactbutton" role="button">Upload pictures </a>
+
+            </label>
+            <br>
+-->
+            <label>
+                <span for="baidumap1">
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Map location (click on the icon to get the location).
+                </span>
+
+                <input type="text" id="extra_baidumap" name="extra_baidumap" class="input_text">
+
+            </label>
+
+            <br><br><br>
+            <label>
+             <span> <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    Contributor： </span>
+                <input type="text" id="extra_contributor" name="extra_contributor" class="input_text">
+
+            </label>
+
+
+            <label>
+               <span>
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                   Contacts： </span>
+
+                <input type="text" id="extra_contact_who" name="extra_contact_who" class="input_text">
+
+            </label>
+
+
+            <label>
+
+
+                <span></span>
+                <input type="submit" name="post_submit" value="Submit" id="Button1"
+                       class="contactbutton" role="button"/>
+
+            </label>
+
+
+        </form>
+
+
+    </div>
+</div>
+
+
+{% end %}

@@ -1,0 +1,86 @@
+{% extends "../../tmpldoc/tmpldoc.html" %}
+
+{% block content %}
+<ol class="breadcrumb">
+    <li>Current location: <a href="/">Home</a></li>
+    <li class="active">{{ view.title }}</li>
+</ol>
+<div id="list-group" class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <h2>{{ view.title }}</h2>
+
+        <span>{{ str(view.date)[:10] }}</span>
+        <span>Author: <a href="http://www.osgeo.cn">OSGeo中国中心</a></span>
+
+        <span>Browse: {{ view.view_count }} 次</span>
+
+        {% if userinfo and userinfo.privilege[2] == '1' %}
+            <span class="cmts">
+            <a href="/page/modify/{{ view.slug }}">编辑</a></span>
+        {% end %}
+
+    </div>
+
+    <div class="panel-body">
+
+        <div class="entry">
+            <p class="summary"><strong>Abstract</strong>:
+                {% module generate_abstract(view.cnt_html) %}
+            </p>
+
+            <div class="entrycontent">
+
+                {% raw unescape(view.cnt_html) %}
+
+
+            </div>
+        </div>
+
+        <div class="postmeta">
+            <div class="wpyouvote"></div>
+            <div class="clear"></div>
+            <br/>
+            <strong>Article link:</strong> <a href="http://www.osgeo.cn/page/{{ view.slug }}.html" class="underline">
+            {{ view.title }}</a><br/>
+            <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
+            source：
+            <a href="http://www.osgeo.cn" class="underline">OSGeo中国中心</a>
+
+        </div>
+
+    </div>
+
+    <div class="panel-footer">
+        <div class="row">
+            <div class="bdsharebuttonbox" style=" padding-left:20px;">
+                <a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"
+                                                                    title="分享到QQ空间"></a><a href="#" class="bds_tsina"
+                                                                                           data-cmd="tsina"
+                                                                                           title="分享到新浪微博"></a><a
+                    href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren"
+                                                                                   data-cmd="renren" title="分享到人人网"></a><a
+                    href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+            <script>window._bd_share_config = {
+                "common": {
+                    "bdSnsKey": {},
+                    "bdText": "",
+                    "bdMini": "2",
+                    "bdMiniList": false,
+                    "bdPic": "",
+                    "bdStyle": "0",
+                    "bdSize": "16"
+                }, "share": {}
+            };
+            with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+
+</div>
+
+
+{% end %}
+

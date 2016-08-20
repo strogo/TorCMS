@@ -1,0 +1,27 @@
+{% extends "../theme/bage.html" %}
+
+{% block zhuti %}
+<div class="container" id="guarantee">
+    <div class="sixteen columns">
+        <div class="titleborder">
+            <span class="title colorme">对不起，出错了</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="block">
+        <p>非常抱歉，由于下面原因，网站出错了。</p>
+
+        <div class="alert alert-warning">
+            <h3>详细信息</h3>
+            {% if kwd is not None %}
+            <div> {% raw kwd['info'] %}</div>
+            {% end %}
+        </div>
+    </div>
+</div>
+
+
+{% end %}
+

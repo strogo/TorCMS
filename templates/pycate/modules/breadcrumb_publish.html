@@ -1,0 +1,25 @@
+<div class="location">
+
+    <div class="iga_bread_crumb">
+        <span>Publish classified information ：</span>
+
+
+        <span
+        {% if kwd['sig'] == 1 %}
+        class="active"
+        {% end %}
+        >1 Select information classification </span>
+
+        <span
+        {% if kwd['sig'] == 2 %}
+        class="active"
+        {% end %}>2 Fill in information </span>
+
+        <span
+        {% if kwd['sig'] == 3 %}
+        class="active"
+        {% end %}>3 Publishing Success </span>
+
+    </div>
+
+</div>

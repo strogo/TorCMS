@@ -1,0 +1,76 @@
+{% extends "../../theme/content.html" %}
+{% block headinfo %}
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+{% end %}
+
+
+{% block content %}
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#form_login").validate(
+                {
+                    rules: {
+                        user_name: {
+                            required: true
+                        },
+                        user_pass: {
+                            required: true
+
+                        }
+
+
+                    },
+                    messages: {
+                        user_name: {
+                            required: "<span class='red'>请输入用户名</span>"
+
+                        },
+
+                        user_pass: {
+                            required: "<span class='red'>请输入密码</span>"
+
+                        }
+
+                    }
+                }
+        );
+    });
+</script>
+<div>
+
+    <div>
+        <form id="form_login" action="" method="post" class="pure-form pure-form-aligned">
+            <legend>用户登录</legend>
+            <fieldset>
+                <div class="pure-control-group">
+                    <label for="user_name">用户名: </label>
+                    <input type="text" name="user_name" id="user_name" class="form-control" placeholder="请输入你的用户名"/>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="user_pass">密码: </label>
+
+                    <input type="password" name="user_pass" id="user_pass" class="form-control" placeholder="请输入你的密码">
+
+
+                </div>
+
+                <div class="pure-control-group">
+                    <label></label>
+                    <button type="submit" class="pure-button pure-button-primary">登陆</button>
+                </div>
+
+
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="panel_footer">本站点不开放注册。需要对网站进行管理请联系： bukun#osgeo.cn 。</div>
+</div>
+
+{% end %}
+

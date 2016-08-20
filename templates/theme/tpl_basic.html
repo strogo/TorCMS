@@ -1,0 +1,217 @@
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap-3.3.5-dist/css/bootstrap.min.css') }}">
+    <link href="{{ static_url('tass/css/style.css') }}" rel="stylesheet" type="text/css">
+
+
+    <script type="text/javascript" src="{{ static_url('jslib/jquery-2.1.4.min.js') }}"></script>
+
+
+    <script src="{{ static_url('css/bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
+
+
+    <script type="text/javascript" src="{{ static_url('jslib/validate/jquery.validate.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ static_url('jslib/validate/message_cn.js') }}"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#searchForm").validate({
+                rules: {
+                    searchheader: "required"
+                },
+                messages: {
+                    searchheader: "<span class='red'>Please enter keywords</span>"
+
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript" src="{{ static_url('jslib/jquery.SuperSlide.2.1.1.js') }}"></script>
+
+
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#searchForm").validate();
+        });
+    </script>
+
+    {% block headinfo %}
+
+    {% end %}
+
+    {% block head %}
+
+    {% end %}
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"> Geodata</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Menu
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+
+                        <li><a href="/list/a100">Marine</a></li>
+                        <li><a href="/list/a200">Physical Geography</a></li>
+                        <li><a href="/list/a300">Geology</a></li>
+                        <li><a href="/list/a400">Astronomy</a></li>
+                        <li><a href="/list/a500">Geography</a></li>
+                        <li><a href="/list/a600">Aerography</a></li>
+                        <li><a href="/list/a700">Survey</a></li>
+                        <li><a href="/list/a800">Ecology</a></li>
+                        <li><a href="/list/a900">Agriculture</a></li>
+                        <li><a href="/list/b100">Environtology</a></li>
+                    </ul>
+                </li>
+
+
+
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">user
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user_list/user_recent">Recent use</a></li>
+                        <li><a href="/user_list/user_most">Most use</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/collect/list">My collection</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/user/info">Personal Data</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Help
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/page/about.html">About</a></li>
+                        <li><a href="/page/contact.html">Content</a></li>
+
+                    </ul>
+                </li>
+
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div>
+                        {% module widget_search() %}
+                    </div>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<br><Br><br>
+
+<div class="container">
+    <a href="/"><img src="{{ static_url('images/logo1.png') }}" class="img-responsive"></a>
+</div>
+
+<br>
+
+<div class="container">
+    {% block typebody %}{% end %}
+</div>
+
+<div class="panel-footer">
+
+
+    <div class="container" style="color: #333">
+        <div class="col-sm-12">
+            <div class="col-sm-3">
+
+                <h4><b>Contact Us</b></h4>
+
+                <p class="home">Changchun city of jilin province high and new north district, 4888 north
+                    street</p>
+
+                <p class="telephone">+86 431 85542316</p>
+
+                <p class="mobile"></p>
+
+                <p class="email">bukun#iga.ac.cn</p>
+
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <h4><b>RELATED DOCUMENTS</b></h4>
+                <a href="/page/intro.html">Introduction</a> <br/>
+                <a href="/page/scope.html">Paas Security</a> <br/>
+                <a href="/page/team.html">Expert members</a> <br/>
+                <a href="/page/contact.html">Contact Us</a> <br/>
+                <a href="/page/terms.html">The instructions on data information</a> <br/>
+                <a href="/page/management.html">Measures for the management of data</a>
+
+
+            </div>
+            <div class="col-sm-3">
+
+                <h4><b>Science database subsystem</b></h4>
+                <a href="http://cmi.wetland.ac.cn/"
+                   title="Chinese marsh wetland survey data entry and management information system">Chinese
+                    marsh wetland survey data entry and management information system</a><br/>
+                <a href="http://wetland.ac.cn/wetland/"
+                   title="Chinese marsh wetland database query and management information system">Chinese marsh
+                    wetland database query and management information system</a><br/>
+                <a href="http://wetland.ac.cn/veglib/" title="The Chinese wetland plant herbarium database">The
+                    Chinese wetland plant herbarium database</a>
+
+            </div>
+            <div class="col-sm-3">
+
+                <h4><b>Thanks!</b></h4>
+
+                This website is based on <a href="http://torcms.yunsuan.org" target="_blank">TorCMS</a> (MIT
+                protocol) development
+                <br>
+
+
+                The operation of this website is supported by the following units and agencies: <br>
+
+                <a href="http://www.igsnrr.ac.cn" target="_blank">
+                    Institute of Geographic Sciences and Natural Resources Research, CAS
+                </a><br>
+                <a href="http://www.iga.ac.cn" target="_blank">Northeast Institute of Geography and Agroecology,
+                    Chinese Academy of Sciences</a><br>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align: center">
+
+        Copyright &copy; 2015 Northeast Institute of Geography and Agroecology, Chinese Academy of Sciences<br>
+        Ji ICP 14004848
+    </div>
+
+</div>
+
+
+</body>
+</html>

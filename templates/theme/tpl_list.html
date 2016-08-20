@@ -1,0 +1,166 @@
+{% extends "tpl_basic.html" %}
+
+{% block headinfo %}
+
+<script type="text/javascript">
+    $().ready(function () {
+        $("#searchForm").validate({
+            rules: {
+                searchheader: "required"
+            },
+            messages: {
+                searchheader: "<span class='red'>请输入关键词</span>"
+            }
+        });
+    });
+</script>
+<script type="text/javascript"
+        src="/static/jslib/jquery.SuperSlide.2.1.1.js?v=c6cf03b3b9d9e61837381df18a1982ad"></script>
+
+<script type="text/javascript">
+    var obj = {};
+    function change(span) {
+        $('span[name="' + $(span).attr('name') + '"]').each(function () {
+            if (this.checked && this != span) {
+                this.className = "label label-default";
+                this.checked = false;
+            }
+        });
+        obj[$(span).attr('name')] = $(span).attr('value');
+        span.className = "label label-primary";
+        span.checked = true;
+        tt = span.value;
+        select();
+    }
+    function select() {
+
+        // 选择之后，将条件放到 url 中，
+        var html_condition = window.location.href + '/con';
+        var html_pagination = window.location.href + '/num';
+        for (var ii in obj) {
+            if (obj[ii] != '') {
+                html_condition += '/' + ii + '/' + obj[ii];
+                html_pagination += '/' + ii + '/' + obj[ii];
+            }
+        }
+
+        $('#resultSpan').load(html_condition);
+        $('#resultFenye').load(html_pagination);
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        select();
+    });
+</script>
+
+<script type="text/javascript">
+    function keyword_del(key_name, id_num) {
+
+        id_num = id_num.toString();
+
+        var AjaxUrl = "/info_tag/remove/" + key_name;
+
+        $.getJSON(AjaxUrl, function (Json) {
+
+            $("#del_key_" + id_num).html('');
+
+            select();
+        });
+    }
+</script>
+
+
+{% end %}
+
+{% block typebody %}
+
+
+<div class="container">
+    <ol class="breadcrumb">
+        {% module BreadCrumb(kwd['daohangstr']) %}
+
+
+        <li>
+            There are ( <span class="red">{{ kwd['rec_num'] }}</span> ) records in this category.
+            <a href="/publish/{{ widget_info['parentid'] }}" class="contactbutton">Published
+                {{ widget_info['catname'] }} Data</a></li>
+    </ol>
+
+    <div class="one-third column ">
+
+        <div class="titleborder">
+            <span class="title colorme">search</span>
+        </div>
+        <Br>
+
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="alert alert-warning">keyword filter：
+                    {% set ii = 0 %}
+
+                    {% for x in condition_arr %}
+                        <span id="del_key_{{ ii }}">
+                            <a href="/info_tag/{{ x }}">{{ x }}</a>
+                            <a onclick="keyword_del('{{ x }}', {{ ii }} );">
+                                <span style="color: red; cursor: pointer">x</span></a>
+                        </span>
+                    {% set ii = ii + 1 %}
+                    {% end %}
+                </div>
+            </li>
+            {% block infoselect %} {% end %}
+        </ul>
+        <Br><Br>
+
+        <div class="titleborder">
+            <span class="title colorme"> data type</span>
+        </div>
+        <Br>
+
+
+        <ul class="list-group">
+            <li class="list-group-item"><a href="/list/0100">RSD Remotely Sensed</a></li>
+            <li class="list-group-item"><a href="/list/0200">GIS</a></li>
+            <li class="list-group-item"><a href="/list/0300">Document Data</a></li>
+            <li class="list-group-item"><a href="/list/0400">Multimedia</a></li>
+            <li class="list-group-item"><a href="/list/0500">Formatting Data</a></li>
+        </ul>
+        <Br><Br>
+
+        <div class="titleborder">
+            <span class="title colorme">Recent document </span>
+        </div>
+        <Br>
+        <ul class="list-group">
+            {% module post_recent(8) %}
+        </ul>
+
+
+    </div>
+    <div class="two-thirds column">
+
+
+        <ul class="list-group">
+            {% block infolist %} {% end %}
+        </ul>
+
+
+        <div class="clear"></div>
+
+        <div class="iga_pagination">
+
+
+            <span id="resultFenye"></span>
+        </div>
+        <div class="clear"></div>
+
+
+    </div>
+</div>
+
+
+{% end %}

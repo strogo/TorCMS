@@ -1,0 +1,57 @@
+{% extends "../../theme/bage.html" %}
+
+
+
+
+{% block head %}
+
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+
+<script type="text/javascript">
+    $().ready(function () {
+
+        $("#find_calc").validate(
+                {
+                    rules: {
+                        keyword: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        keyword: {
+                            required: "<span class='red'>请输入要查询的关键词</span>"
+                        }
+                    }
+                }
+        );
+    });
+
+</script>
+
+{% end %}
+
+
+{% block zhuti %}
+
+<div class="content">
+    <form class="pure-form pure-form-aligned" method="post" id="find_calc" action="/post/find">
+        <fieldset>
+            <legend>输入关键词对计算名称进行查找</legend>
+
+            <div class="pure-control-group">
+                <label for="keyword">输入关键词</label>
+                <input id="keyword" type="text" name="keyword" placeholder="关键词">
+            </div>
+            <div class="pure-control-group">
+                <label for="d"></label>
+                <button type="submit" id="d" name="d" class="pure-button pure-button-primary">查找</button>
+            </div>
+
+
+        </fieldset>
+    </form>
+</div>
+
+{% end %}

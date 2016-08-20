@@ -1,0 +1,306 @@
+{% extends "../../tmplinfo.html" %}
+
+{% block headinfo %}
+<title>OSGeo中国中心 | 开放地理空间实验室</title>
+<meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
+<meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+<script src="{{ static_url('jslib/codemirror-5.6/lib/codemirror.js') }}"></script>
+    <script src="{{ static_url('jslib/codemirror-5.6/addon/edit/continuelist.js') }}"></script>
+    <script src="{{ static_url('jslib/codemirror-5.6/mode/xml/xml.js') }}"></script>
+    <script src="{{ static_url('jslib/codemirror-5.6/mode/markdown/markdown.js') }}"></script>
+    <link rel="stylesheet" href="{{ static_url('jslib/codemirror-5.6/lib/codemirror.css') }}">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var editor = CodeMirror.fromTextArea(document.getElementById("cnt_md"), {
+                 lineWrapping: true,
+                mode: 'markdown',
+                lineNumbers: true,
+                theme: "default",
+                extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+            });
+        });
+    </script>
+
+
+    <style type="text/css">
+       .CodeMirror {
+           border-top: 1px solid #666; border-bottom: 1px solid #666;}
+      .cm-s-default .cm-trailing-space-a:before,
+      .cm-s-default .cm-trailing-space-b:before {position: absolute; content: "\00B7"; color: #777;}
+      .cm-s-default .cm-trailing-space-new-line:before {position: absolute; content: "\21B5"; color: #777;}
+    </style>
+
+<script type="text/javascript" src="{{ static_url('jslib/validate/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('jslib/validate/message_cn.js') }}"></script>
+
+<script type="text/javascript">
+
+    jQuery.validator.addMethod("isMobile", function (value, element) {
+        var length = value.length;
+        var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        return this.optional(element) || (length == 11 && mobile.test(value));
+    }, "请正确填写您的手机号码");
+
+    jQuery.validator.addMethod("isphone", function (value, element) {
+        var length = value.length;
+        var phone = /(^(\d{3,4}-)?\d{6,8}$)|(^(\d{3,4}-)?\d{6,8}(-\d{1,5})?$)|(\d{11})/;
+        return this.optional(element) || (phone.test(value));
+    }, "请填写正确的电话号码");
+
+    $().ready(function () {
+        $("#form_add_info").validate(
+                {
+
+                    errorPlacement: function (error, element) { //指定错误信息位置
+                        if (element.is(':radio') || element.is(':checkbox')) { //如果是radio或checkbox
+                            var eid = element.attr('name'); //获取元素的name属性
+                            error.appendTo(element.parent()); //将错误信息添加当前元素的父结点后面
+                        } else {
+                            error.insertAfter(element);
+                        }
+                    }
+                }
+        );
+    });
+
+    // 提交预约刷新的动作
+    function chuli_kw() {
+        $.ajaxSetup({cache: false});
+        // 预约刷新
+        // 模拟Form提交
+        var myVAriable = $("#keywords")[0].value;
+        // alert(myVAriable);
+        var stringArray = myVAriable.split(",");
+        var out_str = '<span class="btn btn-warning btn-xs">';
+        out_str += stringArray.join('</span> <span class="btn btn-warning btn-xs">');
+        out_str += '</span';
+        // alert(out_str);
+        // $('#kwlist').html('');
+        $('#kwlist').html(out_str);
+
+    }
+
+</script>
+
+
+{% end %}
+
+
+{% block typebody %}
+<div class="panel panel-default" id="guarantee">
+
+    <div class="alert alert-info">
+        <div class="row">
+            <div class="col-sm-3"> 当前位置：<a href="/"> 首页 </a> ></div>
+            <div class="col-sm-9"> {% module BreadcrumbPublish(2) %}</div>
+        </div>
+    </div>
+
+
+    <div class="panel-body">
+
+        <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
+              enctype="multipart/form-data" action="/meta/to_add">
+
+
+            <input type='hidden' name="uid" value="{% raw kwd['uid'] %}">
+
+            <input type='hidden' name="def_cat_uid" value="{% raw kwd['def_cat_uid'] %}">
+
+
+            <input name="action" value="dopost" type="hidden">
+            <input name="ismember" value="0" type="hidden">
+
+            <input name="id" value="" type="hidden">
+            <input name="mixcode" value="4c9734774f6b40682d35c0ccee0b0845" type="hidden">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"> </label>
+
+                <div class="col-sm-10">
+                    <b> 基本数据信息 : {{ kwd['parentname'] }} > {{ kwd['catname'] }}</b>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    标题： </label>
+
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="title" id="title">
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    标签 ： </label>
+
+                <div class="col-sm-10">
+                    <input id="tags" name="tags" class="form-control">
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                     关键词（逗号分隔） ： </label>
+
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="keywords" id="keywords" onkeyup="chuli_kw();">
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                </label>
+
+                <div class="col-sm-10">
+                    <p id="kwlist"></p>
+
+
+                </div>
+            </div>
+ <div class="form-group">
+             <label class="col-sm-2 control-label">
+               <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;" for="ext_logo"></a> 图片   </label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" id="logo" name="logo">
+
+                </div>
+                </div>
+
+            <div class="form-group">
+            <label class="col-sm-2 control-label">    </label>
+<div class="col-sm-10">
+                <a href="/entry/add" target="_blank" class="contactbutton" role="button">上传图片 </a>
+
+
+                </div>
+                </div>
+           <div class="form-group">
+
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    内容（Markdown） ：
+
+                </label>
+
+                <div class="col-sm-10">
+
+                    <textarea class="form-control" rows=26 id="cnt_md" name="cnt_md" cols="100"></textarea>
+                </div>
+            </div>
+
+            <hr/>
+
+            {% block extrainfo %}{% end %}
+
+            <hr/>
+
+
+
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    贡献者： </label>
+
+                <div class="col-sm-10">
+                        <textarea class="form-control" name="ext_contributor" id="ext_contributor" rows="4">
+
+                        </textarea>
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    联系单位：
+                </label>
+
+                <div class="col-sm-10">
+                        <input class="form-control" name="ext_company" id="ext_company">
+
+
+
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    联系地址：
+                </label>
+
+                <div class="col-sm-10">
+                        <input class="form-control" name="ext_address" id="ext_address">
+
+
+
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    联系电话：
+                </label>
+
+                <div class="col-sm-10">
+                        <input class="form-control" name="ext_tel" id="ext_tel">
+
+
+
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+
+                    <a class="glyphicon glyphicon-star" style="color: red;font-size: xx-small;"></a>
+                    联系邮箱：
+                </label>
+
+                <div class="col-sm-10">
+                        <input class="form-control" name="ext_email" id="ext_email">
+
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"> </label>
+
+                <div class="col-sm-10">
+                    <input type="submit" name="post_submit" value="提交" id="Button1"
+                           class="btn btn-primary" role="button"/>
+
+                </div>
+            </div>
+
+
+        </form>
+
+
+    </div>
+</div>
+
+
+{% end %}
