@@ -21,9 +21,7 @@ class MCatalog(MSingleTable):
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-
-        a = self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
-        return (a)
+        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
     def query_pcat(self):
         return  self.tab.select().where(self.tab.uid.endswith('00')).order_by(self.tab.order)
     def query_uid_starts_with(self, qian2):

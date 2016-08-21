@@ -22,6 +22,9 @@ class MPost(MSingleTable):
             pass
 
     def update(self, uid, post_data, update_time=False):
+        title = post_data['title'][0].strip()
+        if len(title) < 2:
+            return False
 
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
 
@@ -36,7 +39,7 @@ class MPost(MSingleTable):
 
         try:
             entry = CabPost.update(
-                title=post_data['title'][0],
+                title=title,
                 cnt_html=cnt_html,
                 user_name=post_data['user_name'],
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
@@ -48,18 +51,22 @@ class MPost(MSingleTable):
             return False
 
     def insert_data(self, id_post, post_data):
+        title = post_data['title'][0].strip()
+        if len(title) < 2:
+            return False
+
         if len(post_data['title'][0].strip()) == 0:
             return False
 
         cur_rec = self.get_by_id(id_post)
-        if cur_rec :
+        if cur_rec:
             return (False)
 
         entry = CabPost.create(
-            title=post_data['title'][0],
+            title=title,
             date=datetime.datetime.now(),
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
-            cnt_html= tools.markdown2html(post_data['cnt_md'][0]) ,
+            cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
             uid=id_post,
             time_create=time.time(),
             user_name=post_data['user_name'],
@@ -110,9 +117,6 @@ class MPost(MSingleTable):
             CabPost.time_update.desc()).paginate(cureent, config.page_num)
         return tt
 
-    def update_view_count(self, citiao):
-        entry = CabPost.update(view_count=CabPost.view_count + 1).where(CabPost.title == citiao)
-        entry.execute()
 
     def update_view_count_by_uid(self, uid):
         entry = CabPost.update(view_count=CabPost.view_count + 1).where(CabPost.uid == uid)
@@ -126,13 +130,6 @@ class MPost(MSingleTable):
         entry = CabPost.update(keywords=inkeywords).where(CabPost.uid == uid)
         entry.execute()
 
-    def get_by_wiki(self, citiao):
-        tt = CabPost.select().where(CabPost.title == citiao).count()
-        if tt == 0:
-            return None
-        else:
-            self.update_view_count(citiao)
-            return CabPost.get(CabPost.title == citiao)
 
     def get_next_record(self, in_uid):
         current_rec = self.get_by_id(in_uid)
@@ -150,4 +147,3 @@ class MPost(MSingleTable):
             return None
         else:
             return query.get()
-

@@ -10,7 +10,6 @@ from torcms.model.msingle_table import MSingleTable
 
 
 class MWiki(MSingleTable):
-
     def __init__(self):
         self.tab = CabWiki
         try:
@@ -19,12 +18,14 @@ class MWiki(MSingleTable):
             pass
 
     def update(self, uid, post_data):
-
+        title = post_data['title'][0].strip()
+        if len(title) < 2:
+            return False
 
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
 
         entry = CabWiki.update(
-            title=post_data['title'][0],
+            title=title,
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
             user_name=post_data['user_name'],
@@ -34,18 +35,18 @@ class MWiki(MSingleTable):
         entry.execute()
 
     def insert_data(self, post_data):
-        title = post_data['title'][0]
-        uu = self.get_by_wiki(title)
-        if uu is None:
-            pass
-        else:
-            return (False)
+        title = post_data['title'][0].strip()
+        if len(title) < 2:
+            return False
 
+        uu = self.get_by_wiki(title)
+        if uu :
+            return (False)
 
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
 
         entry = CabWiki.create(
-            title=post_data['title'][0],
+            title=title,
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
             uid=tools.get_uu8d(),
@@ -57,14 +58,7 @@ class MWiki(MSingleTable):
         )
         return (entry.uid)
 
-
-
-    def get_by_title(self, in_title):
-        try:
-            return CabWiki.get(CabWiki.title == in_title)
-        except:
-            return None
-    def query_dated(self, num = 10):
+    def query_dated(self, num=10):
         return CabWiki.select().order_by(CabWiki.time_update.desc()).limit(num)
 
     def query_most(self, num=8):
@@ -79,11 +73,14 @@ class MWiki(MSingleTable):
         entry.execute()
 
     def get_by_wiki(self, citiao):
-        tt = CabWiki.select().where(CabWiki.title == citiao).count()
-        if tt == 0:
+        q_res = CabWiki.select().where(CabWiki.title == citiao)
+        tt = q_res.count()
+        if tt == 0 or tt > 1:
             return None
         else:
             self.update_view_count(citiao)
-            return CabWiki.get(CabWiki.title == citiao)
+            return q_res.get()
 
-
+    def get_by_title(self, in_title):
+        # Aka get_by_wiki
+        return self.get_by_wiki(in_title)

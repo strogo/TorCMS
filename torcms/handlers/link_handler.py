@@ -118,7 +118,6 @@ class LinkHandler(BaseHandler):
     @tornado.web.authenticated
     def to_add(self, uid):
         kwd = {
-
             'uid': uid,
             'pager': '',
         }

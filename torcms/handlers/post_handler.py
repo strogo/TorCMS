@@ -74,7 +74,6 @@ class PostHandler(BaseHandler):
         output = {
             'status': 1 if self.mpost.update_view_count_by_uid(uid) else 0,
         }
-
         return json.dump(output, self)
 
     def recent(self, with_catalog=True, with_date=True):

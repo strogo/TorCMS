@@ -31,7 +31,6 @@ class MAppLabel(MLabel):
          entry.execute()
 
     def get_all_by_count(self,  current_page_num=1):
-
          return self.tab.select().order_by(self.tab.count.asc()).paginate(current_page_num,config.page_num)
 
 class MApp2Label(MPost2Label):
@@ -44,7 +43,6 @@ class MApp2Label(MPost2Label):
             TabApp2Label.create_table()
         except:
             pass
-
 
     def query_count(self, uid):
         return self.tab.select().where(self.tab.tag == uid).count()
