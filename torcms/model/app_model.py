@@ -171,8 +171,10 @@ class MApp(MAppBase):
         :param data_dic:
         :return:
         '''
-        if len(data_dic['title'][0].strip()) == 0:
+        title = data_dic['title'][0].strip()
+        if len(title) < 2:
             return False
+
         cur_info = self.get_by_uid(uid)
         if cur_info:
             cur_extinfo = cur_info.extinfo
@@ -180,7 +182,7 @@ class MApp(MAppBase):
             for key in extinfo:
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
-                title=data_dic['title'][0],
+                title= title,
                 keywords=','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
                 time_update=int(time.time()),
                 date=datetime.now(),
@@ -212,11 +214,12 @@ class MApp(MAppBase):
         return (all_list)
 
     def add_meta(self, uid, data_dic, extinfo={}):
-        if len(data_dic['title'][0].strip()) == 0:
+        title = data_dic['title'][0].strip()
+        if len(title) < 2:
             return False
         entry = self.tab_app.create(
             uid=uid,
-            title=data_dic['title'][0],
+            title= title,
             keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
             time_update=int(time.time()),
             date=datetime.now(),
@@ -253,6 +256,10 @@ class MApp(MAppBase):
         return (uid)
 
     def addata_init(self, data_dic, ext_dic={}):
+        title = data_dic['title'][0].strip()
+        if len(title) < 2:
+            return False
+
         if self.get_by_uid(data_dic['sig']):
             uu = self.get_by_uid(data_dic['sig'])
             if data_dic['title'] == uu.title and data_dic['type'] == uu.type:
