@@ -5,9 +5,8 @@ import time
 
 import peewee
 import tornado.escape
-from torcms.core import tools
-
 import config
+from torcms.core import tools
 from torcms.model.core_tab import CabPost
 from torcms.model.core_tab import CabPost2Catalog
 from torcms.model.msingle_table import MSingleTable
@@ -25,9 +24,7 @@ class MPost(MSingleTable):
         title = post_data['title'][0].strip()
         if len(title) < 2:
             return False
-
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
-
         try:
             if update_time:
                 entry2 = CabPost.update(
