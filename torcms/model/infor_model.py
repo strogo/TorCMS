@@ -146,7 +146,7 @@ class MInforBase(object):
             self.tab_app.time_update.desc()).limit(20)
 
     def query_recent(self, num=8):
-        return self.tab_app.select(self.tab_app.valid == 1).order_by(self.tab_app.time_update.desc()).limit(num)
+        return self.tab_app.select().where(self.tab_app.valid == 1).order_by(self.tab_app.time_update.desc()).limit(num)
 
     def get_by_uid(self, sig):
         try:
