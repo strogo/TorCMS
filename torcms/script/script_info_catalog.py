@@ -8,7 +8,6 @@ class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q
 sig_name_arr = []
 mappcat = MInforCatalog()
 
-
 def uu():
     # 在分类中排序
     order_index = 1

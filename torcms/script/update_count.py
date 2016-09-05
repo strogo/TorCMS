@@ -2,14 +2,14 @@ __author__ = 'bukun'
 
 import sys
 
-
 from torcms.model.mcatalog import MCatalog
-from torcms.model.mappcatalog import MAppCatalog
+from torcms.model.minforcatalog import MInforCatalog
 from torcms.model.app_model import MApp
 
-if __name__ == '__main__':
 
-    mappcat = MAppCatalog()
+def update_app_count():
+
+    mappcat = MInforCatalog()
     mapp = MApp()
     for rec in mappcat.query_all():
         uid= rec.uid

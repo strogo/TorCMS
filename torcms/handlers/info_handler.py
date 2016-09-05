@@ -42,6 +42,7 @@ class InfoHandler(BaseHandler):
                 'title': '',
                 'info': '',
             }
+            self.set_status(404)
             self.render('html/404.html',
                         kwd=kwd,
                         userinfo=self.userinfo, )
