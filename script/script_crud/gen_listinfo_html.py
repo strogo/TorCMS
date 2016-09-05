@@ -7,7 +7,6 @@ from base_crud import crud_path
 def do_for_dir(html_tpl):
     var_names = globals().copy().keys()
     out_dir = os.path.join(os.getcwd(), crud_path, 'infolist')
-    # out_dir = os.getcwd()
     if os.path.exists(out_dir):
         pass
     else:

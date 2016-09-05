@@ -48,7 +48,6 @@ class MAppBase(object):
         u5 = self.tab_usage.delete().where(self.tab_usage.signature == del_id)
         u5.execute()
 
-
         reply_arr = []
         for reply in self.tab_app2reply.select().where(self.tab_app2reply.post_id == del_id):
             reply_arr.append(reply.reply_id.uid)
@@ -57,7 +56,7 @@ class MAppBase(object):
         u6.execute()
 
         for replyid in reply_arr:
-            self.cab_reply.delete().where(self.cab_reply.uid == replyid ).execute()
+            self.cab_reply.delete().where(self.cab_reply.uid == replyid).execute()
 
         uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
         uu.execute()
@@ -182,7 +181,7 @@ class MApp(MAppBase):
             for key in extinfo:
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
-                title= title,
+                title=title,
                 keywords=','.join([x.strip() for x in data_dic['keywords'][0].strip().strip(',').split(',')]),
                 time_update=int(time.time()),
                 date=datetime.now(),
@@ -215,11 +214,11 @@ class MApp(MAppBase):
 
     def add_meta(self, uid, data_dic, extinfo={}):
         title = data_dic['title'][0].strip()
-        if len(title) < 2 or len(title)==0:
+        if len(title) < 2 or len(title) == 0:
             return False
         entry = self.tab_app.create(
             uid=uid,
-            title= title,
+            title=title,
             keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
             time_update=int(time.time()),
             date=datetime.now(),
