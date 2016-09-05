@@ -5,8 +5,8 @@ from torcms.core.base_handler import BaseHandler
 from torcms.core.tool.whoosh_tool import yunsearch
 
 from torcms.core import tools
-from torcms.model.minforcatalog import MInforCatalog
-from torcms.model.mpost import MPost
+from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.post_model import MPost
 
 
 class SearchHandler(BaseHandler):

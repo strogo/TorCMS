@@ -1,15 +1,14 @@
 # -*- coding:utf-8 -*-
 import math
-import redis
+
 import config
 import tornado.escape
-from torcms.model.minforcatalog import MInforCatalog as  MCatalog
-from torcms.model.app_model import MApp as  MInfor
-from torcms.core.base_handler import BaseHandler
-from torcms.model.minforcatalog import MInforCatalog
 
-redisvr = redis.Redis(host='localhost', port=6379, db=0, password=None, socket_timeout=None, connection_pool=None,
-                      charset='utf-8', errors='strict', unix_socket_path=None)
+from torcms.model.infor_model import MInfor as  MInfor
+from torcms.core.base_handler import BaseHandler
+from torcms.model.inforcatalog_model import MInforCatalog
+
+from torcms.core.torcms_redis import redisvr
 
 from html2text import html2text
 
@@ -24,7 +23,6 @@ class InfoListHandler(BaseHandler):
         self.init()
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
-        self.mcat = MCatalog()
         self.mappcat = MInforCatalog()
 
     def get(self, url_str=''):
@@ -191,17 +189,17 @@ class InfoListHandler(BaseHandler):
 
         if input.endswith('00'):
             parent_id = input
-            parent_catname = self.mcat.get_by_id(parent_id).name
+            parent_catname = self.mappcat.get_by_id(parent_id).name
             condition['parentid'] = [parent_id]
-            catname = self.mcat.get_by_id(sig).name
+            catname = self.mappcat.get_by_id(sig).name
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
             bread_title = '{1}'.format(sig, catname)
 
         else:
             condition['catid'] = [sig]
             parent_id = sig[:2] + '00'
-            parent_catname = self.mcat.get_by_id(parent_id).name
-            catname = self.mcat.get_by_id(sig).name
+            parent_catname = self.mappcat.get_by_id(parent_id).name
+            catname = self.mappcat.get_by_id(sig).name
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(parent_id, parent_catname)
 
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
@@ -215,7 +213,7 @@ class InfoListHandler(BaseHandler):
             'daohangstr': bread_crumb_nav_str,
             'breadtilte': bread_title,
             'parentid': parent_id,
-            'parentlist': self.mcat.get_parent_list(),
+            'parentlist': self.mappcat.get_parent_list(),
             'condition': condition,
             'catname': catname,
             'rec_num': num,

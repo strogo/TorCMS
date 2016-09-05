@@ -3,12 +3,12 @@
 import bs4
 import tornado.escape
 import tornado.web
-from torcms.model.mpost import MPost
-from torcms.model.mlink import MLink
-from torcms.model.mpost2catalog import MPost2Catalog
+from torcms.model.post_model import MPost
+from torcms.model.link_model import MLink
+from torcms.model.post2catalog_model import MPost2Catalog
 import config
 import tornado.web
-from torcms.model.mcatalog import MCatalog
+from torcms.model.postcatalog_model import MPostCatalog
 from config import menu_arr
 
 
@@ -26,7 +26,7 @@ class reply_panel(tornado.web.UIModule):
 
 class get_footer(tornado.web.UIModule):
     def render(self):
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         all_cats = self.mcat.query_all()
         kwd = {
             'cats': all_cats,
@@ -94,7 +94,7 @@ class post_recent_most_view(tornado.web.UIModule):
 
 class catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         recs = self.mcat.query_uid_starts_with(uid_with_str)
 
         return self.render_string('doc/modules/catalog_of.html',
@@ -207,7 +207,7 @@ class generate_description(tornado.web.UIModule):
 
 class category_menu(tornado.web.UIModule):
     def render(self):
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         recs = self.mcat.query_all()
         return self.render_string('doc/modules/showcat_list.html',
                                   recs=recs,
@@ -250,7 +250,7 @@ class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
 
 class ModuleCatMenu(tornado.web.UIModule):
     def render(self, with_count=True):
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         all_cats = self.mcat.query_all(by_count=True)
         kwd = {
             'cats': all_cats,
@@ -285,7 +285,7 @@ class baidu_share(tornado.web.UIModule):
 class catalog_pager(tornado.web.UIModule):
     def render(self, *args, **kwargs):
         self.mpost2catalog = MPost2Catalog()
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
 
         cat_slug = args[0]
         current = int(args[1])

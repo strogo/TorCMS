@@ -7,7 +7,7 @@ import tornado.web
 
 import config
 from torcms.core.base_handler import BaseHandler
-from torcms.model.mentity import MEntity
+from torcms.model.picture_model import MEntity
 
 from PIL import Image
 

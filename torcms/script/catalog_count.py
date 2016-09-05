@@ -4,7 +4,7 @@
 import yaml
 import json
 
-from torcms.model.mcatalog import MCatalog
+from torcms.model.postcatalog_model import MPostCatalog
 from openpyxl.reader.excel import load_workbook
 from torcms.model.minforcatalog import MInforCatalog
 
@@ -60,7 +60,7 @@ def update_app_count():
 
 
 def update_doc_count():
-    mcat  = MCatalog()
+    mcat  = MPostCatalog()
 
 
     f = open('./database/meta/doc_catalog.yaml')

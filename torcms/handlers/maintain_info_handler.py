@@ -4,17 +4,17 @@ import tornado.escape
 import tornado.web
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.minforcatalog import MInforCatalog as   MPycateCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 
 from torcms.core import tools
-from torcms.model.muser import MUser
+from torcms.model.user_model import MUser
 
 
 class MaintainPycateCategoryHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.muser = MUser()
-        self.mclass = MPycateCatalog()
+        self.mclass = MInforCatalog()
         if self.get_current_user():
             self.userinfo = self.muser.get_by_id(self.get_current_user())
         else:

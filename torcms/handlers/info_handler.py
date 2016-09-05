@@ -8,14 +8,14 @@ import tornado.web
 import config
 from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app2label_model import MApp2Label
-from torcms.model.app_model import MApp
-from torcms.model.app_rel_model import MAppRel
-from torcms.model.app_reply_model import MApp2Reply
+from torcms.model.infor2label_model import MInfor2Label
+from torcms.model.infor_model import MInfor
+from torcms.model.info_relation_model import MInforRel
+from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 from torcms.model.usage_model import MUsage
-from torcms.model.app2catalog_model import MApp2Catalog
+from torcms.model.infor2catalog_model import MInfor2Catalog
 
 import tornado.gen
 import tornado.web
@@ -25,13 +25,13 @@ class InfoHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
         self.mevaluation = MEvaluation()
-        self.mapp2catalog = MApp2Catalog()
-        self.mapp2tag = MApp2Label()
-        self.minfo = MApp()
+        self.mapp2catalog = MInfor2Catalog()
+        self.mapp2tag = MInfor2Label()
+        self.minfo = MInfor()
         self.musage = MUsage()
         self.mcat = MInforCatalog()
-        self.mrel = MAppRel()
-        self.mreply = MApp2Reply()
+        self.mrel = MInforRel()
+        self.mreply = MInfor2Reply()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)

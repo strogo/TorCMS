@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 from torcms.handlers.post2reply_handler import Post2ReplyHandler
-from torcms.model.app_reply_model import MApp2Reply
-from torcms.model.mreply import MReply
-from torcms.model.mreply2user import MReply2User
+from torcms.model.info_reply_model import MInfor2Reply
+from torcms.model.reply_model import MReply
+from torcms.model.reply2user_model import MReply2User
 
 
 class Info2ReplyHandler(Post2ReplyHandler):
@@ -10,4 +10,4 @@ class Info2ReplyHandler(Post2ReplyHandler):
         self.init()
         self.mreply = MReply()
         self.mreply2user = MReply2User()
-        self.mpost2reply = MApp2Reply()
+        self.mpost2reply = MInfor2Reply()

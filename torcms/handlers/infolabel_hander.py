@@ -1,18 +1,18 @@
 # -*- coding:utf-8 -*-
 import tornado.escape
-from torcms.model.app2label_model import MAppLabel, MApp2Label
+from torcms.model.infor2label_model import MInforLabel, MInfor2Label
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app_model import MApp
+from torcms.model.infor_model import MInfor
 
 
 class InfoLabelHandler(BaseHandler):
     def initialize(self):
         self.init()
 
-        self.mequa = MApp()
-        self.mtag = MAppLabel()
-        self.mapp2tag = MApp2Label()
+        self.mequa = MInfor()
+        self.mtag = MInforLabel()
+        self.mapp2tag = MInfor2Label()
 
     def get(self, url_str=''):
 

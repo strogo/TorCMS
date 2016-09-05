@@ -1,32 +1,25 @@
 # -*- coding:utf-8 -*-
 
 import json
-import redis
+
 import tornado.web
 import config
-from torcms.model.minforcatalog import MInforCatalog as  MCatalog
-from torcms.model.app_model import MApp as  MInfor
+from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.infor_model import MInfor as  MInfor
 from torcms.core.base_handler import BaseHandler
 
-redisvr = redis.Redis(host='localhost',
-                      port=6379, db=0,
-                      password=None,
-                      socket_timeout=None,
-                      connection_pool=None,
-                      charset='utf-8',
-                      errors='strict',
-                      unix_socket_path=None)
+from torcms.core.torcms_redis import redisvr
+
 
 class InfoTagHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
-        self.mcat = MCatalog()
+        self.mcat = MInforCatalog
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-
 
         if len(url_arr) == 1:
             self.list(url_str)
@@ -36,13 +29,10 @@ class InfoTagHandler(BaseHandler):
             else:
                 self.list(url_arr[0], url_arr[1])
 
-
-
     @tornado.web.authenticated
     def remove_redis_keyword(self, kw):
         redisvr.srem(config.redis_kw + self.userinfo.user_name, kw)
         return json.dump({}, self)
-
 
     def list(self, tag_slug, cur_p=''):
 

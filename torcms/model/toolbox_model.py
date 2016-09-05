@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from torcms.core import tools
-from torcms.model.ext_tab import *
+from torcms.model.core_tab import TabToolbox
 
 
 class MToolbox(object):

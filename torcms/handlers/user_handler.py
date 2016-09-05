@@ -14,7 +14,7 @@ import config
 from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
 from torcms.core.tool.send_email import send_mail
-from torcms.model.muser import MUser
+from torcms.model.user_model import MUser
 
 
 class SumForm(Form):

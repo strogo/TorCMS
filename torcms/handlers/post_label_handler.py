@@ -6,9 +6,9 @@ import tornado.web
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.mlabel_model import MLabel
-from torcms.model.mlabel_model import MPost2Label
-from torcms.model.mpost import MPost
+from torcms.model.label_model import MLabel
+from torcms.model.label_model import MPost2Label
+from torcms.model.post_model import MPost
 
 
 class PostLabelHandler(BaseHandler):

@@ -3,9 +3,9 @@ import json
 import tornado.escape
 import tornado.web
 from torcms.core.base_handler import BaseHandler
-from torcms.model.mpost2reply import MPost2Reply
-from torcms.model.mreply import MReply
-from torcms.model.mreply2user import MReply2User
+from torcms.model.post2reply_model import MPost2Reply
+from torcms.model.reply_model import MReply
+from torcms.model.reply2user_model import MReply2User
 
 
 class Post2ReplyHandler(BaseHandler):

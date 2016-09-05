@@ -1,19 +1,19 @@
 # -*- coding:utf-8 -*-
 import json
 import tornado.web
-from torcms.model.app_model import MApp
+from torcms.model.infor_model import MInfor
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.usage_model import MUsage
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app_rel_model import MAppRel
+from torcms.model.info_relation_model import MInforRel
 
 
 class EvaluationHandler(BaseHandler):
     def initialize(self):
         self.init()
-        self.mequa = MApp()
+        self.mequa = MInfor()
         self.musage = MUsage()
-        self.mrel = MAppRel()
+        self.mrel = MInforRel()
         self.mcollect = MEvaluation()
 
 
