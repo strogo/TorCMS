@@ -1,8 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from torcms.core import tools
-from torcms.model.ext_tab import *
-from torcms.model.ext_tab import TabApp
+from torcms.model.core_tab import TabApp, TabEvaluation
 
 
 class MEvaluation(object):

@@ -6,17 +6,17 @@ import tornado.web
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.mcatalog import MCatalog
-from torcms.model.mlink import MLink
-from torcms.model.mpage import MPage
-from torcms.model.mpost import MPost
+from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.link_model import MLink
+from torcms.model.page_model import MPage
+from torcms.model.post_model import MPost
 
 
 class IndexHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         self.mpage = MPage()
         self.mlink = MLink()
 

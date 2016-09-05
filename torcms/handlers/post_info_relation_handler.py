@@ -1,19 +1,19 @@
 # -*- coding:utf-8 -*-
 
-from torcms.model.app_model import MApp
+from torcms.model.infor_model import MInfor
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app_rel_model import MRelApp2Post
-from torcms.model.app_rel_model import MRelPost2App
-from torcms.model.mpost import MPost
+from torcms.model.info_relation_model import MRelInfor2Post
+from torcms.model.info_relation_model import MRelPost2Infor
+from torcms.model.post_model import MPost
 
 
 class RelHandler(BaseHandler):
     def initialize(self):
         self.init()
-        self.mapp = MApp()
+        self.mapp = MInfor()
         self.mpost = MPost()
-        self.rel_post2app = MRelPost2App()
-        self.rel_app2post = MRelApp2Post()
+        self.rel_post2app = MRelPost2Infor()
+        self.rel_app2post = MRelInfor2Post()
 
     def get(self, url_str=''):
         if len(url_str) > 0:

@@ -3,11 +3,10 @@
 import time
 
 import peewee
-from torcms.model.app2catalog_model import MApp2Catalog
-from torcms.model.core_tab import CabMember
-from torcms.model.ext_tab import TabUsage
+from torcms.model.infor2catalog_model import MInfor2Catalog
+from torcms.model.core_tab import CabMember, TabUsage, TabUsage
 from torcms.core import tools
-from torcms.model.muser import MUser
+from torcms.model.user_model import MUser
 
 class MUsage(object):
     def __init__(self):
@@ -17,7 +16,7 @@ class MUsage(object):
             TabUsage.create_table()
         except:
             pass
-        self.mapp2catalog = MApp2Catalog()
+        self.mapp2catalog = MInfor2Catalog()
         self.muser = MUser()
 
     def get_all(self):

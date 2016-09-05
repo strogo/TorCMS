@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
 
 import random
-import torcms.model.app_model
+import torcms.model.infor_model
 import tornado.web
-from torcms.model.app2label_model import MApp2Label
-from torcms.model.app_model import MApp
-from torcms.model.app_rel_model import *
-from torcms.model.minforcatalog import MInforCatalog
-import torcms.model.app2catalog_model
-from torcms.model.mpost import MPost
+from torcms.model.infor2label_model import MInfor2Label
+from torcms.model.infor_model import MInfor
+from torcms.model.info_relation_model import *
+from torcms.model.inforcatalog_model import MInforCatalog
+import torcms.model.infor2catalog_model
+from torcms.model.post_model import MPost
 from html2text import html2text
 
 
@@ -58,7 +58,7 @@ class app_user_recent_by_cat(tornado.web.UIModule):
 
 class app_most_used(tornado.web.UIModule):
     def render(self, num, with_tag=False):
-        self.mcat = torcms.model.app_model.MApp()
+        self.mcat = torcms.model.infor_model.MInfor()
         all_cats = self.mcat.query_most(num)
         kwd = {
             'with_tag': with_tag,
@@ -70,21 +70,21 @@ class app_most_used(tornado.web.UIModule):
 
 class app_most_used_by_cat(tornado.web.UIModule):
     def render(self, num, cat_str):
-        self.mcat = torcms.model.app_model.MApp()
+        self.mcat = torcms.model.infor_model.MInfor()
         all_cats = self.mcat.query_most_by_cat(num, cat_str)
         return self.render_string('infor/modules/list_equation_by_cat.html', recs=all_cats)
 
 
 class app_least_use_by_cat(tornado.web.UIModule):
     def render(self, num, cat_str):
-        self.mcat = torcms.model.app_model.MApp()
+        self.mcat = torcms.model.infor_model.MInfor()
         all_cats = self.mcat.query_least_by_cat(num, cat_str)
         return self.render_string('infor/modules/list_equation_by_cat.html', recs=all_cats)
 
 
 class app_recent_used(tornado.web.UIModule):
     def render(self, num, with_tag=False):
-        self.mcat = torcms.model.app_model.MApp()
+        self.mcat = torcms.model.infor_model.MInfor()
         all_cats = self.mcat.query_recent(num)
         kwd = {
             'with_tag': with_tag,
@@ -96,14 +96,14 @@ class app_recent_used(tornado.web.UIModule):
 
 class app_random_choose(tornado.web.UIModule):
     def render(self, num):
-        self.mcat = torcms.model.app_model.MApp()
+        self.mcat = torcms.model.infor_model.MInfor()
         all_cats = self.mcat.query_random(num)
         return self.render_string('infor/modules/list_equation.html', recs=all_cats)
 
 
 class app_tags(tornado.web.UIModule):
     def render(self, signature):
-        self.mapp2tag = torcms.model.app2catalog_model.MApp2Catalog()
+        self.mapp2tag = torcms.model.infor2catalog_model.MInfor2Catalog()
         tag_infos = self.mapp2tag.query_by_entry_uid(signature)
         out_str = ''
         ii = 1
@@ -117,7 +117,7 @@ class app_tags(tornado.web.UIModule):
 
 class label_count(tornado.web.UIModule):
     def render(self, signature):
-        self.mapp2tag = MApp2Label()
+        self.mapp2tag = MInfor2Label()
         tag_infos = self.mapp2tag.query_count(signature)
 
         return tag_infos
@@ -255,8 +255,8 @@ class amazon_ad(tornado.web.UIModule):
 
 class rel_post2app(tornado.web.UIModule):
     def render(self, uid, num, ):
-        self.app = MApp()
-        self.relation = MRelPost2App()
+        self.app = MInfor()
+        self.relation = MRelPost2Infor()
         kwd = {
             'app_f': 'post',
             'app_t': 'info',
@@ -275,7 +275,7 @@ class rel_post2app(tornado.web.UIModule):
 class rel_app2post(tornado.web.UIModule):
     def render(self, uid, num, ):
         self.mpost = MPost()
-        self.relation = MRelApp2Post()
+        self.relation = MRelInfor2Post()
         kwd = {
             'app_f': 'info',
             'app_t': 'post',

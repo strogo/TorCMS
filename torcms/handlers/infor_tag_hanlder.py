@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 from  math import ceil as math_ceil
 import tornado.escape
-from torcms.model.app_model import MApp
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.infor_model import MInfor
+from torcms.model.inforcatalog_model import MInforCatalog
 
 import config
 from torcms.core.base_handler import BaseHandler
-from torcms.model.app2catalog_model import MApp2Catalog
+from torcms.model.infor2catalog_model import MInfor2Catalog
 
 
 class InforTagHandler(BaseHandler):
@@ -17,9 +17,9 @@ class InforTagHandler(BaseHandler):
     def initialize(self):
         self.init()
 
-        self.mequa = MApp()
+        self.mequa = MInfor()
         self.mtag = MInforCatalog()
-        self.mapp2tag = MApp2Catalog()
+        self.mapp2tag = MInfor2Catalog()
 
     def get(self, url_str=''):
         if len(url_str.strip()) == 0:

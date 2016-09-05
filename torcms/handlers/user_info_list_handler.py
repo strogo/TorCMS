@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
-from torcms.model.app_model import MApp
+from torcms.model.infor_model import MInfor
 from torcms.core.base_handler import BaseHandler
 from torcms.model.usage_model import MUsage
 
@@ -9,7 +9,7 @@ from torcms.model.usage_model import MUsage
 class UserListHandler(BaseHandler):
     def initialize(self):
         self.init()
-        self.mequa = MApp()
+        self.mequa = MInfor()
         self.musage = MUsage()
 
     def get(self, url_str=''):

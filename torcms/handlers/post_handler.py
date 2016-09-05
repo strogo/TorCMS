@@ -7,20 +7,20 @@ import tornado.web
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.mcatalog import MCatalog
-from torcms.model.mlabel_model import MPost2Label
-from torcms.model.mpost import MPost
-from torcms.model.mpost2catalog import MPost2Catalog
-from torcms.model.mpost2reply import MPost2Reply
-from torcms.model.mpost_hist import MPostHist
-from torcms.model.mrelation import MRelation
+from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.label_model import MPost2Label
+from torcms.model.post_model import MPost
+from torcms.model.post2catalog_model import MPost2Catalog
+from torcms.model.post2reply_model import MPost2Reply
+from torcms.model.post_hist_model import MPostHist
+from torcms.model.relation_model import MRelation
 
 
 class PostHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         self.cats = self.mcat.query_all()
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
@@ -405,7 +405,7 @@ class PostAjaxHandler(PostHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
-        self.mcat = MCatalog()
+        self.mcat = MPostCatalog()
         self.cats = self.mcat.query_all()
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()

@@ -7,8 +7,8 @@ import tornado.web
 from torcms.core.base_handler import BaseHandler
 
 from torcms.core import tools
-from torcms.model.mwiki import MWiki
-from torcms.model.mwiki_hist import MWikiHist
+from torcms.model.wiki_model import MWiki
+from torcms.model.wiki_hist_model import MWikiHist
 import config
 
 

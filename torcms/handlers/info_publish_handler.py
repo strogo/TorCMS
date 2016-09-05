@@ -4,7 +4,7 @@ import tornado
 import tornado.web
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 
 
 class InfoPublishHandler(BaseHandler):
