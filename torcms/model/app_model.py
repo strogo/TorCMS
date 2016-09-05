@@ -215,7 +215,7 @@ class MApp(MAppBase):
 
     def add_meta(self, uid, data_dic, extinfo={}):
         title = data_dic['title'][0].strip()
-        if len(title) < 2:
+        if len(title) < 2 or len(title)==0:
             return False
         entry = self.tab_app.create(
             uid=uid,
@@ -229,6 +229,7 @@ class MApp(MAppBase):
             extinfo=extinfo,
             user_name=data_dic['user_name'],
         )
+        return (entry.uid)
 
     def get_list(self, condition):
         db_data = self.tab_app.select().where(self.tab_app.extinfo.contains(condition)).order_by(

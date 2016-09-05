@@ -8,7 +8,7 @@ from torcms.model.core_tab import CabPost2Label
 from torcms.model.msingle_table import MSingleTable
 
 
-class MLabel():
+class MLabel(MSingleTable):
     def __init__(self):
         self.tab = CabLabel
         try:
@@ -18,12 +18,21 @@ class MLabel():
 
     def get_id_by_name(self, tag_name):
         uu = self.tab.select().where(self.tab.name == tag_name)
-        if uu.count() > 0:
+        if uu.count() == 1:
             return uu.get().uid
+        elif uu.count() > 1:
+            for x in uu:
+                self.delete(x.uid)
         else:
             return self.create_tag(tag_name)
 
     def create_tag(self, tag_name):
+
+        cur_count = self.tab.select().where(self.tab.name == tag_name).count()
+        if cur_count > 0:
+            return False
+
+
         uid = tools.get_uu8d()
         while self.tab.select().where(self.tab.uid == uid).count() > 0:
             uid = tools.get_uu8d()
@@ -93,7 +102,7 @@ class MPost2Label(MSingleTable):
                 tag=tag_id,
                 order=order,
             )
-
+            return entry.uid
 
 
     def total_number(self, slug):

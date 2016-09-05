@@ -7,9 +7,10 @@ import tornado.escape
 
 from torcms.core import tools
 from torcms.model.core_tab import CabReply, CabVoter2Reply
+from torcms.model.msingle_table import MSingleTable
 
 
-class MReply():
+class MReply(MSingleTable):
     def __init__(self):
         try:
             CabReply.create_table()
@@ -24,6 +25,7 @@ class MReply():
         entry.execute()
 
     def update(self, uid, post_data, update_time=False):
+
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
         entry = CabReply.update(
             title=post_data['title'][0],

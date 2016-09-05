@@ -40,11 +40,14 @@ class MCatalog(MSingleTable):
         return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
-        uu = self.tab.select().where(self.tab.slug ==  slug)
-        if uu.count() > 0:
-            return uu.get()
+        uu = self.tab.select().where(self.tab.slug == slug)
+        if uu.count() == 1:
+            return uu.get().uid
+        elif uu.count() > 1:
+            for x in uu:
+                self.delete(x.uid)
         else:
-            return None
+            return False
 
     def update_count(self, cat_id, num):
         entry = self.tab.update(
@@ -82,6 +85,5 @@ class MCatalog(MSingleTable):
                 slug=post_data['slug'][0],
                 order=post_data['order'][0],
                 uid=id_post,
-
             )
             return (entry.uid)

@@ -7,7 +7,7 @@ from torcms.model.ext_tab import *
 class MToolbox(object):
     def __init__(self):
         try:
-            TabToolbox.create_table()
+                TabToolbox.create_table()
         except:
             pass
 

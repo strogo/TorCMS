@@ -45,30 +45,46 @@ class MUser(BaseModel):
         entry = CabMember.update(
             user_pass=tools.md5(newpass),
         ).where(CabMember.user_name == u_name)
-        entry.execute()
-        return entry
+        try:
+            entry.execute()
+            return True
+        except:
+            return False
 
     def update_info(self, u_name, newemail):
         entry = CabMember.update(
             user_email=newemail,
 
         ).where(CabMember.user_name == u_name)
-        entry.execute()
-        return entry
+        try:
+            entry.execute()
+            return True
+        except:
+            return False
+
+
 
     def update_reset_passwd_timestamp(self, uname, timeit):
         entry = CabMember.update(
             reset_passwd_timestamp=timeit,
         ).where(CabMember.user_name == uname)
-        entry.execute()
-        return entry
+        try:
+            entry.execute()
+            return True
+        except:
+            return False
+
 
     def update_privilege(self, u_name, newprivilege):
         entry = CabMember.update(
             privilege=newprivilege
         ).where(CabMember.user_name == u_name)
-        entry.execute()
-        return entry
+        try:
+            entry.execute()
+            return True
+        except:
+            return False
+        # return entry
 
     def insert_data(self, post_data):
         if '/' in post_data['user_name'][0]:
@@ -100,7 +116,7 @@ class MUser(BaseModel):
                              user_pass=tools.md5(post_data['user_pass'][0]),
                              user_email=post_data['user_email'][0],
                              privilege='10000',
-                             reset_passwd_timestamp=0, )
+                             reset_passwd_timestamp=0,)
             return True
         except:
             return False
