@@ -20,8 +20,7 @@ class MEntity(MSuperTable):
         if uu.count() == 1:
             return uu.get().uid
         elif uu.count() > 1:
-            for x in uu:
-                self.delete(x.uid)
+            return False
         else:
             return False
 
