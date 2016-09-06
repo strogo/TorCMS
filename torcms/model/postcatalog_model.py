@@ -42,10 +42,9 @@ class MPostCatalog(MSuperTable):
     def get_by_slug(self, slug):
         uu = self.tab.select().where(self.tab.slug == slug)
         if uu.count() == 1:
-            return uu.get().uid
+            return uu.get()
         elif uu.count() > 1:
-            for x in uu:
-                self.delete(x.uid)
+            return False
         else:
             return False
 
