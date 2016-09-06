@@ -222,7 +222,6 @@ class copyright(tornado.web.UIModule):
 
 
 class post_tags(tornado.web.UIModule):
-    # Todo: 看起来与 post_catalogs是一样的。
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
         tag_infos = self.mapp2tag.query_by_entry_uid(signature)
@@ -234,9 +233,6 @@ class post_tags(tornado.web.UIModule):
             out_str += tmp_str
             ii += 1
         return out_str
-
-
-post_catalogs = post_tags
 
 
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
