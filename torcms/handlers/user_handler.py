@@ -135,7 +135,6 @@ class UserHandler(BaseHandler):
 
     @tornado.web.authenticated
     def changepassword(self):
-
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -143,7 +142,7 @@ class UserHandler(BaseHandler):
         uu = self.muser.check_user(self.user_name, post_data['rawpass'][0])
         if uu == 1:
             self.muser.update_pass(self.user_name, post_data['user_pass'][0])
-            self.redirect(('/{0}/info').format(self.tmpl_router))
+            self.redirect('/user/info')
         else:
             return False
 
@@ -189,26 +188,31 @@ class UserHandler(BaseHandler):
     def changepass(self):
 
         self.render('user/{0}/changepass.html'.format(self.tmpl_router),
-                    userinfo=self.muser.get_by_id(self.user_name))
+
+                    userinfo=self.userinfo,
+
+                    )
 
     @tornado.web.authenticated
     def change_info(self):
         self.render('user/{0}/changeinfo.html'.format(self.tmpl_router),
-                    userinfo=self.muser.get_by_id(self.user_name))
+                    userinfo=self.userinfo,
+                    )
 
     @tornado.web.authenticated
     def change_privilege(self, xg_username):
         self.render('user/{0}/changeprivilege.html'.format(self.tmpl_router),
-
                     userinfo=self.muser.get_by_id(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
         self.render('user/{0}/info.html'.format(self.tmpl_router),
-                    userinfo=self.muser.get_by_id(self.user_name), )
+                    userinfo=self.userinfo,
+                    )
 
     def to_reset_password(self):
-        self.render('user/{0}/reset_password.html'.format(self.tmpl_router))
+        self.render('user/{0}/reset_password.html'.format(self.tmpl_router),
+                    userinfo=self.userinfo, )
 
     def to_login(self):
         if self.get_current_user():
@@ -404,9 +408,9 @@ class UserHandler(BaseHandler):
             <div>您在"{0}"网站（{1}）申请了密码重置，如果确定要进行密码重置，请打开下面链接：</div>
             <div><a href={2}>{2}</a></div>
             <div>如果无法确定本信息的有效性，请忽略本邮件。</div>
-            '''.format(config.site_name, config.site_url, url_reset)
+            '''.format(config.smtp_cfg['name'], config.site_url, url_reset)
 
-                if send_mail([userinfo.user_email], "{0}|密码重置".format(config.site_name), email_cnt):
+                if send_mail([userinfo.user_email], "{0}|密码重置".format(config.smtp_cfg['name']), email_cnt):
                     self.muser.update_reset_passwd_timestamp(username, timestamp)
                     self.set_status(200)
                     return True

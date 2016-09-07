@@ -13,28 +13,19 @@
 <div class="panel-heading">
 </div>
 <div class="panel-body">
-
-
     <div class="content">
         <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
             修改用户权限
         </div>
-
-
-        <form class="pure-form pure-form-aligned" action="/user/changeprivilege/{{ user_info.user_name}}" method="post"
-              id="form_changeinfo">
-
-
+        <form class="pure-form pure-form-aligned" action="/user/changeprivilege/{{ user_info.user_name}}"
+              method="post" id="form_changeinfo">
             <div class="pure-control-group">
                 <label for="privilege">用户权限</label>
                 <input type="text" name="privilege" id="privilege" class="form-control" placeholder="请输入管理权限，例10000"/>
             </div>
-
-
             <div class="pure-control-group">
                 <label></label>
                 <button type="submit" class="pure-button pure-button-primary">修改</button>
-
             </div>
         </form>
 
