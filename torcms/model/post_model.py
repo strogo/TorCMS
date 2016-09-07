@@ -97,7 +97,7 @@ class MPost(MSuperTable):
         return CabPost.select().where(CabPost.keywords == '')
 
     def query_dated(self, num=8):
-        return CabPost.select().order_by(CabPost.time_update.asc()).limit(num)
+        return CabPost.select().order_by(CabPost.time_update.desc()).limit(num)
 
     def query_most_pic(self, num):
         return CabPost.select().where(CabPost.logo != "").order_by(CabPost.view_count.desc()).limit(num)
