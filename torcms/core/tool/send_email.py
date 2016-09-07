@@ -2,11 +2,9 @@
 import smtplib
 from email.mime.text import MIMEText
 from config import smtp_cfg
-from config import Email_site_name
-
 
 def send_mail(to_list, sub, content):
-    me = Email_site_name + "<" + smtp_cfg['user'] + ">"
+    me = smtp_cfg['name'] + "<" + smtp_cfg['user'] + ">"
     msg = MIMEText(content, _subtype='html', _charset='utf-8')
     msg['Subject'] = sub
     msg['From'] = me
