@@ -16,49 +16,42 @@
 
         // 提交修改密码的动作
 
-            // 模拟Form提交
-            $.ajax({
-                type: "POST",
-                url: "/user/j_regist",
-                data: {user_name: user_name, user_pass: user_pass, user_email: user_email},
+        // 模拟Form提交
+        $.ajax({
+            type: "POST",
+            url: "/user/j_regist",
+            data: {user_name: user_name, user_pass: user_pass, user_email: user_email},
 
-                success: function (msg) {
+            success: function (msg) {
+                json_res = $.parseJSON(msg);
+                if (json_res['success'] == true) {
+                    $("#errorinfo").html('注册成功');
+                }
+                else {
+                    if (json_res['code'] == '11') {
+                        $("#errorinfo").html('用户名无效');
+                    }
+                    else if (json_res['code'] == '12') {
+                        $("#errorinfo").html('用户名已存在');
+                    }
 
-                    json_res = $.parseJSON(msg);
-                    if (json_res['success'] == true)
-                    {
-                        $("#errorinfo").html('注册成功');
+                    else if (json_res['code'] == '21') {
+                        $("#errorinfo").html('Email无效');
+                    }
+
+                    else if (json_res['code'] == '22') {
+                        $("#errorinfo").html('Email已存在');
                     }
                     else {
-                        if (json_res['code'] == '11')
-                        {
-                            $("#errorinfo").html('用户名无效');
-                        }
-                        else if (json_res['code'] == '12')
-                        {
-                            $("#errorinfo").html('用户名已存在');
-                        }
-
-                        else if (json_res['code'] == '21')
-                        {
-                            $("#errorinfo").html('Email无效');
-                        }
-
-                        else if (json_res['code'] == '22')
-                        {
-                            $("#errorinfo").html('Email已存在');
-                        }
-                        else
-                        {
-                            $("#errorinfo").html('Error2');
-                        }
+                        $("#errorinfo").html('Error2');
                     }
-                    // location.href = '/user/info';
-                },
-                error: function () {
-                    alert('未知错误');
                 }
-            })
+                // location.href = '/user/info';
+            },
+            error: function () {
+                alert('未知错误');
+            }
+        })
     }
 </script>
 
@@ -121,10 +114,8 @@
         </script>
 
 
-        <form id="form_regist" class="form-horizontal" >
+        <form id="form_regist" class="form-horizontal">
             <fieldset>
-
-
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="user_name">用户名： </label>
 

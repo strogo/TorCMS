@@ -230,6 +230,7 @@ class UserHandler(BaseHandler):
 
     def __check_valid(self, post_data):
         user_create_status = {'success': False, 'code': '00'}
+
         if tools.check_username_valid(post_data['user_name'][0]) == False:
             user_create_status['code'] = '11'
             print('Gotit')
@@ -237,10 +238,10 @@ class UserHandler(BaseHandler):
         elif tools.check_email_valid(post_data['user_email'][0]) == False:
             user_create_status['code'] = '21'
             return user_create_status
-        elif self.muser.get_by_name(post_data['user_name'][0]) == False:
+        elif self.muser.get_by_name(post_data['user_name'][0]) :
             user_create_status['code'] = '12'
             return user_create_status
-        elif self.muser.get_by_email(post_data['user_email'][0]) == False:
+        elif self.muser.get_by_email(post_data['user_email'][0]) :
             user_create_status['code'] = '22'
             return user_create_status
         user_create_status['success'] = True
@@ -258,28 +259,18 @@ class UserHandler(BaseHandler):
                 '2' for already exists.
         '''
 
-        def register(self):
-            post_data = {}
+    def register(self):
+        post_data = {}
 
-            for key in self.request.arguments:
-                post_data[key] = self.get_arguments(key)
+        for key in self.request.arguments:
+            post_data[key] = self.get_arguments(key)
 
-            form = SumForm(self.request.arguments)
+        form = SumForm(self.request.arguments)
 
-            if form.validate():
-                res_dic = self.muser.insert_data(post_data)
-                if res_dic['success']:
-                    self.redirect('/user/login')
-                else:
-                    kwd = {
-                        'info': '注册不成功',
-                    }
-                    self.set_status(400)
-                    self.render('html/404.html',
-                                cfg=config.cfg,
-                                kwd=kwd,
-                                userinfo=None, )
-
+        if form.validate():
+            res_dic = self.muser.insert_data(post_data)
+            if res_dic['success']:
+                self.redirect('/user/login')
             else:
                 kwd = {
                     'info': '注册不成功',
@@ -289,6 +280,16 @@ class UserHandler(BaseHandler):
                             cfg=config.cfg,
                             kwd=kwd,
                             userinfo=None, )
+
+        else:
+            kwd = {
+                'info': '注册不成功',
+            }
+            self.set_status(400)
+            self.render('html/404.html',
+                        cfg=config.cfg,
+                        kwd=kwd,
+                        userinfo=None, )
 
     def json_register(self):
         '''
@@ -302,15 +303,9 @@ class UserHandler(BaseHandler):
                 '2' for already exists.
         '''
         user_create_status = {'success': False, 'code': '00'}
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
-
-        print (post_data)
-
+        post_data = tools.get_post_data(self)
         user_create_status = self.__check_valid(post_data)
         if user_create_status['success'] == False:
-            print(user_create_status)
             return json.dump(user_create_status, self)
 
         form = SumForm(self.request.arguments)
@@ -318,20 +313,6 @@ class UserHandler(BaseHandler):
         if form.validate():
             user_create_status = self.muser.insert_data(post_data)
             return json.dump(user_create_status, self)
-
-
-            # if user_insert_status['success'] == True:
-            #     self.redirect('/user/login')
-            # else:
-            #     kwd = {
-            #         'info': '注册不成功',
-            #     }
-            #     self.set_status(400)
-            #     self.render('html/404.html',
-            #                 cfg=config.cfg,
-            #                 kwd=kwd,
-            #                 userinfo=None, )
-
         else:
             return json.dump(user_create_status, self)
 
