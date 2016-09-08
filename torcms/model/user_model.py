@@ -52,14 +52,35 @@ class MUser(BaseModel):
             return False
 
     def update_info(self, u_name, newemail):
-        entry = CabMember.update(
-            user_email=newemail,
-        ).where(CabMember.user_name == u_name)
+
+        out_dic = {'success': False, 'code': '00'}
+
+
+
+        if tools.check_email_valid(newemail):
+            pass
+        else:
+            out_dic['code'] = '21'
+            return out_dic
+
+
         try:
-            entry.execute()
-            return True
+            CabMember.update( user_email=newemail).where(CabMember.user_name == u_name)
+            out_dic['success'] = True
+            return out_dic
         except:
-            return False
+            return out_dic
+
+
+
+        #entry = CabMember.update(
+        #    user_email=newemail,
+        #).where(CabMember.user_name == u_name)
+        #try:
+        #    entry.execute()
+        #    return True
+        #except:
+        #    return False
 
     def update_reset_passwd_timestamp(self, uname, timeit):
         entry = CabMember.update(
