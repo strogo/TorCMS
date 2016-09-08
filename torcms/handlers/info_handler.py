@@ -214,6 +214,23 @@ class InfoHandler(BaseHandler):
             return False
         if f_uid == t_uid:
             return False
+
+        # 针对分类进行处理。只有落入相同分类的，才加1
+        f_cats = self.mapp2catalog.query_entity_category_relation(f_uid)
+        t_cats = self.mapp2catalog.query_entity_category_relation(t_uid)
+        flag = False
+
+        for f_cat in f_cats:
+            print(f_cat.catalog)
+            for t_cat in t_cats:
+                print(t_cat.catalog)
+                if f_cat.catalog == t_cat.catalog:
+                    flag = True
+        if flag:
+            pass
+        else:
+            return False
+
         self.mrel.add_relation(f_uid, t_uid, 2)
         self.mrel.add_relation(t_uid, f_uid, 1)
         return True

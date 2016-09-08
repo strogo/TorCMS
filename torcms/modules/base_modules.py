@@ -178,7 +178,7 @@ class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
         format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in
-                      MPost2Catalog().query_entry_catalog(post_id)]
+                      MPost2Catalog().query_entity_category_relation(post_id)]
         return ', '.join(format_arr)
 
 
@@ -224,7 +224,7 @@ class copyright(tornado.web.UIModule):
 class post_tags(tornado.web.UIModule):
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
-        tag_infos = self.mapp2tag.query_by_entry_uid(signature)
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -289,7 +289,7 @@ class catalog_pager(tornado.web.UIModule):
         # current 当前页面
 
         cat_rec = self.mcat.get_by_slug(cat_slug)
-        num_of_cat = self.mpost2catalog.count_of_certain_catalog(cat_rec.uid)
+        num_of_cat = self.mpost2catalog.count_of_certain_category(cat_rec.uid)
 
         tmp_page_num = int(num_of_cat / config.page_num)
 

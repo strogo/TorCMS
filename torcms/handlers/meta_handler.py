@@ -186,7 +186,7 @@ class MetaHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mappcat.get_qian2(catid[:2]),
                     tag_infos=self.mappcat.query_all(by_order=True),
-                    app2tag_info=self.mapp2catalog.query_by_entry_uid(infoid),
+                    app2tag_info=self.mapp2catalog.query_by_entity_uid(infoid),
                     app2label_info=self.mapp2tag.get_by_id(infoid), )
 
     @tornado.web.authenticated
@@ -249,6 +249,10 @@ class MetaHandler(BaseHandler):
             post_data['uid'][0] = uid
 
         post_data['user_name'] = self.userinfo.user_name
+        if 'valid' in post_data:
+            post_data['valid'] =  int(post_data['valid'][0])
+        else:
+            post_data['valid'] = 1
 
         ext_dic['def_uid'] = str(uid)
         if 'def_cat_uid' in post_data:
@@ -257,7 +261,7 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
-        print(post_data)
+
         self.mapp.modify_meta(ext_dic['def_uid'],
                               post_data,
                               extinfo=ext_dic)
@@ -300,7 +304,7 @@ class MetaHandler(BaseHandler):
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
-        current_catalog_infos = self.mapp2catalog.query_by_entry_uid(signature)
+        current_catalog_infos = self.mapp2catalog.query_by_entity_uid(signature)
 
         new_tag_arr = []
         for idx, key in enumerate(['cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5', 'def_cat_uid']):

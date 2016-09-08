@@ -6,9 +6,9 @@ from torcms.model.info_relation_model import MInforRel
 from torcms.model.usage_model import MUsage
 from torcms.core.base_handler import BaseHandler
 from torcms.model.collect_model import MCollect
+import json
 
-
-class CollectHandler(BaseHandler, ):
+class CollectHandler(BaseHandler ):
     def initialize(self):
         self.init()
         self.mequa = MInfor()
@@ -34,6 +34,9 @@ class CollectHandler(BaseHandler, ):
     @tornado.web.authenticated
     def add_or_update(self, app_id):
         self.mcollect.add_or_update(self.userinfo.uid, app_id)
+        out_dic = {'success': True}
+        return json.dump(out_dic, self)
+
 
     @tornado.web.authenticated
     def list(self):
