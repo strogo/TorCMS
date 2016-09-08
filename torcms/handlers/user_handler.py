@@ -77,6 +77,10 @@ class UserHandler(BaseHandler):
             self.register()
         elif url_str == 'j_regist':
             self.json_register()
+        elif url_str == 'j_changeinfo':
+
+
+            self.json_changeinfo()
         elif url_str == 'login':
             self.login()
         elif url_str == 'changepass':
@@ -150,6 +154,7 @@ class UserHandler(BaseHandler):
 
     @tornado.web.authenticated
     def changeinfo(self):
+
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
@@ -161,6 +166,10 @@ class UserHandler(BaseHandler):
             self.redirect(('/user/info'))
         else:
             return False
+
+
+
+
 
     @tornado.web.authenticated
     def changeprivilege(self, xg_username):
@@ -247,6 +256,18 @@ class UserHandler(BaseHandler):
         user_create_status['success'] = True
         return user_create_status
 
+    def __check_valid2(self, post_data):
+        user_create_status = {'success': False, 'code': '00'}
+        if tools.check_email_valid(post_data['user_email'][0]) == False:
+            user_create_status['code'] = '21'
+            return user_create_status
+        elif self.muser.get_by_email(post_data['user_email'][0]):
+            user_create_status['code'] = '22'
+            return user_create_status
+
+        user_create_status['success'] = True
+        return user_create_status
+
     def register(self):
         '''
                 The first char of 'code' stands for the different field.
@@ -315,6 +336,43 @@ class UserHandler(BaseHandler):
             return json.dump(user_create_status, self)
         else:
             return json.dump(user_create_status, self)
+
+    def json_changeinfo(self):
+        '''
+                The first char of 'code' stands for the different field.
+                '1' for user_name
+                '2' for user_email
+                '3' for user_pass
+                '4' for user_privilege
+                The seconde char of 'code' stands for different status.
+                '1' for invalide
+                '2' for already exists.
+        '''
+
+        user_create_status = {'success': False, 'code': '00'}
+        post_data = tools.get_post_data(self)
+        uu = self.muser.check_user(self.user_name, post_data['rawpass'][0])
+
+        if uu == 1:
+
+
+            user_create_status = self.__check_valid2(post_data)
+            if user_create_status['success'] == False:
+                return json.dump(user_create_status, self)
+
+
+
+
+            user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
+            print("/*" * 50)
+            print(user_create_status)
+            return json.dump(user_create_status, self)
+
+
+
+
+
+
 
     def __to_register__(self):
         kwd = {
