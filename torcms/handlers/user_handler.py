@@ -79,7 +79,6 @@ class UserHandler(BaseHandler):
             self.json_register()
         elif url_str == 'j_changeinfo':
 
-
             self.json_changeinfo()
         elif url_str == 'login':
             self.login()
@@ -167,10 +166,6 @@ class UserHandler(BaseHandler):
         else:
             return False
 
-
-
-
-
     @tornado.web.authenticated
     def changeprivilege(self, xg_username):
         post_data = {}
@@ -247,10 +242,10 @@ class UserHandler(BaseHandler):
         elif tools.check_email_valid(post_data['user_email'][0]) == False:
             user_create_status['code'] = '21'
             return user_create_status
-        elif self.muser.get_by_name(post_data['user_name'][0]) :
+        elif self.muser.get_by_name(post_data['user_name'][0]):
             user_create_status['code'] = '12'
             return user_create_status
-        elif self.muser.get_by_email(post_data['user_email'][0]) :
+        elif self.muser.get_by_email(post_data['user_email'][0]):
             user_create_status['code'] = '22'
             return user_create_status
         user_create_status['success'] = True
@@ -267,18 +262,6 @@ class UserHandler(BaseHandler):
 
         user_create_status['success'] = True
         return user_create_status
-
-    def register(self):
-        '''
-                The first char of 'code' stands for the different field.
-                '1' for user_name
-                '2' for user_email
-                '3' for user_pass
-                '4' for user_privilege
-                The seconde char of 'code' stands for different status.
-                '1' for invalide
-                '2' for already exists.
-        '''
 
     def register(self):
         post_data = {}
@@ -355,24 +338,14 @@ class UserHandler(BaseHandler):
 
         if uu == 1:
 
-
             user_create_status = self.__check_valid2(post_data)
             if user_create_status['success'] == False:
                 return json.dump(user_create_status, self)
-
-
-
 
             user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
             print("/*" * 50)
             print(user_create_status)
             return json.dump(user_create_status, self)
-
-
-
-
-
-
 
     def __to_register__(self):
         kwd = {
@@ -400,6 +373,7 @@ class UserHandler(BaseHandler):
         result = self.muser.check_user(u_name, u_pass)
         if result == 1:
             self.set_secure_cookie("user", u_name)
+            self.muser.update_time_login(u_name)
             self.redirect("{0}".format(next_url))
         elif result == 0:
             self.set_status(401)
@@ -505,7 +479,7 @@ class UserHandler(BaseHandler):
         if 'email' in post_data:
             userinfo = self.muser.get_by_email(post_data['email'][0])
 
-            if tools.timestamp() - userinfo.reset_passwd_timestamp < 70:
+            if tools.timestamp() - userinfo.time_reset_passwd < 70:
                 self.set_status(400)
                 kwd = {
                     'info': '两次重置密码时间应该大于1分钟',
@@ -528,7 +502,7 @@ class UserHandler(BaseHandler):
             '''.format(config.smtp_cfg['name'], config.site_url, url_reset)
 
                 if send_mail([userinfo.user_email], "{0}|密码重置".format(config.smtp_cfg['name']), email_cnt):
-                    self.muser.update_reset_passwd_timestamp(username, timestamp)
+                    self.muser.update_time_reset_passwd(username, timestamp)
                     self.set_status(200)
                     return True
                 else:

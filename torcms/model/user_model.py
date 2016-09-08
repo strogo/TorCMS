@@ -61,7 +61,7 @@ class MUser(BaseModel):
             return out_dic
 
         try:
-            CabMember.update( user_email=newemail).where(CabMember.user_name == u_name)
+            CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
             out_dic['success'] = True
             return out_dic
         except:
@@ -69,18 +69,18 @@ class MUser(BaseModel):
 
 
 
-        #entry = CabMember.update(
-        #    user_email=newemail,
-        #).where(CabMember.user_name == u_name)
-        #try:
-        #    entry.execute()
-        #    return True
-        #except:
-        #    return False
+            # entry = CabMember.update(
+            #    user_email=newemail,
+            # ).where(CabMember.user_name == u_name)
+            # try:
+            #    entry.execute()
+            #    return True
+            # except:
+            #    return False
 
-    def update_reset_passwd_timestamp(self, uname, timeit):
+    def update_time_reset_passwd(self, uname, timeit):
         entry = CabMember.update(
-            reset_passwd_timestamp=timeit,
+            time_reset_passwd=timeit,
         ).where(CabMember.user_name == uname)
         try:
             entry.execute()
@@ -98,6 +98,12 @@ class MUser(BaseModel):
         except:
             return False
             # return entry
+
+    def update_time_login(self, u_name):
+        entry = CabMember.update(
+            time_login=tools.timestamp()
+        ).where(CabMember.user_name == u_name)
+        entry.execute()
 
     def insert_data(self, post_data):
         out_dic = {'success': False, 'code': '00'}
@@ -125,7 +131,10 @@ class MUser(BaseModel):
                              user_pass=tools.md5(post_data['user_pass'][0]),
                              user_email=post_data['user_email'][0],
                              privilege=role,
-                             reset_passwd_timestamp=0, )
+                             time_create=tools.timestamp(),
+                             time_update=tools.timestamp(),
+                             time_reset_passwd=tools.timestamp(),
+                             )
             out_dic['success'] = True
             return out_dic
         except:
