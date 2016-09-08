@@ -55,7 +55,7 @@ class CategoryHandler(BaseHandler):
 
         current_page_num = 1 if current_page_num < 1 else current_page_num
         cat_rec = self.mcat.get_by_slug(cat_slug)
-        num_of_cat = self.mpost2catalog.count_of_certain_catalog(cat_rec.uid)
+        num_of_cat = self.mpost2catalog.count_of_certain_category(cat_rec.uid)
         page_num = int(num_of_cat / config.page_num) + 1
         cat_name = cat_rec.name
         kwd = {

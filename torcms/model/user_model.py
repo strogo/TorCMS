@@ -114,13 +114,17 @@ class MUser(BaseModel):
             out_dic['code'] = '21'
             return out_dic
 
+        if 'privilege' in post_data:
+            role = post_data['privilege'][0]
+        else:
+            role = '10000'
 
         try:
             CabMember.create(uid=tools.get_uuid(),
                              user_name=post_data['user_name'][0],
                              user_pass=tools.md5(post_data['user_pass'][0]),
                              user_email=post_data['user_email'][0],
-                             privilege='10000',
+                             privilege=role,
                              reset_passwd_timestamp=0, )
             out_dic['success'] = True
             return out_dic

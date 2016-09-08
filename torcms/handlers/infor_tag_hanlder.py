@@ -43,7 +43,7 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mtag.get_by_slug(tag_slug)
-        num_of_tag = self.mapp2tag.count_of_certain_catalog(taginfo.uid)
+        num_of_tag = self.mapp2tag.count_of_certain_category(taginfo.uid)
         page_num = math_ceil(num_of_tag / config.page_num) 
         tag_name = taginfo.name
 

@@ -65,7 +65,7 @@ class MPost2Catalog(MSuperTable):
             except:
                 return False
 
-    def count_of_certain_catalog(self, cat_id):
+    def count_of_certain_category(self, cat_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.catalog == cat_id).count()
 
 
@@ -75,18 +75,18 @@ class MPost2Catalog(MSuperTable):
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return  recs
 
-    def query_by_entry_uid(self, idd):
+    def query_by_entity_uid(self, idd):
         return self.tab_post2catalog.select().join(self.tab_catalog).where(self.tab_post2catalog.post == idd).order_by(
             self.tab_post2catalog.order)
 
     def query_by_id(self, idd):
-        return self.query_by_entry_uid(idd)
+        return self.query_by_entity_uid(idd)
 
-    def query_entry_catalog(self, post_id):
+    def query_entity_category_relation(self, post_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.post == post_id).order_by(self.tab_post2catalog.order)
 
     def get_entry_catalog(self, app_uid):
-        uu = self.query_entry_catalog(app_uid)
+        uu = self.query_entity_category_relation(app_uid)
         if uu.count() > 0:
             return uu.get()
         else:

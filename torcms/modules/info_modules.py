@@ -104,7 +104,7 @@ class app_random_choose(tornado.web.UIModule):
 class app_tags(tornado.web.UIModule):
     def render(self, signature):
         self.mapp2tag = torcms.model.infor2catalog_model.MInfor2Catalog()
-        tag_infos = self.mapp2tag.query_by_entry_uid(signature)
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:

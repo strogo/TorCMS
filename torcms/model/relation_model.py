@@ -50,6 +50,9 @@ class MRelation():
         entry.execute()
 
     def get_app_relations(self, app_id, num=20):
+        '''
+        The the related infors.
+        '''
         x = self.tab_relation.select().join(self.tab_post).where(self.tab_relation.app_f == app_id).order_by(
             self.tab_relation.count.desc()).limit(num)
         return x

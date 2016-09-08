@@ -194,7 +194,8 @@ class MInfor(MInforBase):
                 cnt_md=data_dic['cnt_md'][0],
                 logo=data_dic['logo'][0],
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
-                extinfo=cur_extinfo
+                extinfo=cur_extinfo,
+                valid = data_dic['valid'],
             ).where(self.tab_app.uid == uid)
             entry.execute()
         else:
@@ -235,6 +236,7 @@ class MInfor(MInforBase):
             cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
             extinfo=extinfo,
             user_name=data_dic['user_name'],
+            valid=data_dic['valid'],
         )
         return (entry.uid)
 

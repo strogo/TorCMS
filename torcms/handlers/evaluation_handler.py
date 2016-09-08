@@ -42,5 +42,5 @@ class EvaluationHandler(BaseHandler):
             'eval0': self.mcollect.app_evaluation_count(app_id, 0),
             'eval1': self.mcollect.app_evaluation_count(app_id, 1)
         }
-        uu = json.dumps(out_dic)
-        self.write(uu)
+
+        json.dump(out_dic, self)
