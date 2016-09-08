@@ -54,15 +54,11 @@ class MUser(BaseModel):
     def update_info(self, u_name, newemail):
 
         out_dic = {'success': False, 'code': '00'}
-
-
-
         if tools.check_email_valid(newemail):
             pass
         else:
             out_dic['code'] = '21'
             return out_dic
-
 
         try:
             CabMember.update( user_email=newemail).where(CabMember.user_name == u_name)
