@@ -24,8 +24,6 @@ def check_username_valid(username):
     >>> check_username_valid('\s.adf')
     False
     '''
-    print(username)
-    print(re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username))
     if re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username) !=None:
         return True
     return False

@@ -3,7 +3,44 @@
 <title>OSGeo中国中心 | 开放地理空间实验室</title>
 <meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
 <meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
+<script>
+
+    $.ready()
+    {
+    function load_subcat(ii) {
+        // uu = $('#tag' + ii.toString() + ' option:selected').text();
+        var pid = $('#ptag' + ii.toString()).val();
+
+
+        $.ajax({
+            url: '/category/j_subcat/' + pid,
+            type: 'GET',
+            data: {},
+            timeout: 1000,
+            error: function () {
+                alert('重新加载');
+            },
+            success: function (result) {
+                json_res = $.parseJSON(result);
+                subcat_arr = json_res['arr'];
+                alert(subcat_arr);
+//                [['0101', 'gis'],
+//                    ['0102', 'rs]     ]
+
+
+                // alert(json_res['arr'][0]);
+            }
+
+        });
+    }}
+</script>
+
+
 {% end %}
+
+
+
+
 {% block content %}
 <div class="panel panel-default">
     <div class="panel-heading"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
@@ -42,14 +79,13 @@
 
                 {% for ii in range(1,6) %}
                 <div class="form-group">
-                    <label for="tag{{ii}}" class="col-sm-2 control-label">标签{{ii}}</label>
+                    <label for="ptag{{ii}}" class="col-sm-2 control-label">标签{{ii}}</label>
 
-                    <div class="col-sm-10">
-                        <select name="tag{{ii}}" id="tag1" class="form-control">
+                    <div class="col-sm-3">
+                        <select name="ptag{{ii}}" id="ptag{{ii}}" class="form-control" onchange="load_subcat({{ii}})">
                             <option value="">请选择</option>
                             {% for taginfo in tag_infos %}
                             {% if taginfo.uid.endswith('00') %}
-                            {% else %}
                             <option value="{{ taginfo.uid }}"
                                     {% for tt in app2tag_info %}
                                     {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
@@ -58,10 +94,20 @@
                                     {% end %}
                                     >{{taginfo.uid[:2]}}_{{ taginfo.name }}
                             </option>
+                            {% else %}
+
                             {% end %}
                             {% end %}
                         </select>
                     </div>
+
+                    <div class="col-sm-3">
+                        <select name="tag{{ii}}" id="tag{{ii}}" class="form-control" >
+                            <option value="">请选择</option>
+                            </option>
+                        </select>
+                    </div>
+
                 </div>
                 {% end %}
 
