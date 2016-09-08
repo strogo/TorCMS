@@ -3,6 +3,8 @@
 import tornado.escape
 import tornado.web
 import config
+import json
+
 
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
@@ -19,16 +21,31 @@ class CategoryHandler(BaseHandler):
         self.cats = self.mcat.query_all()
         self.mpost2catalog = MPost2Catalog()
 
-
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
         if len(url_arr) == 1:
             self.list_catalog(url_str)
         elif len(url_arr) == 2:
-            self.list_catalog(url_arr[0], url_arr[1])
+            if url_arr[0] == 'j_subcat':
+                self.ajax_subcat_arr(url_arr[1][:2])
+            else:
+                self.list_catalog(url_arr[0], url_arr[1])
         else:
             self.render('html/404.html')
+
+    def ajax_subcat_arr(self, qian2):
+        cur_cat = self.mcat.query_uid_starts_with(qian2)
+
+
+        out_arr = []
+        for x in cur_cat:
+            if x.uid.endswith('00'):
+                continue
+            out_arr.append([x.uid, x.name])
+
+        out_dic = {'arr': out_arr}
+        json.dump(out_dic, self)
 
     def list_catalog(self, cat_slug, cur_p=''):
         if cur_p == '':
