@@ -9,6 +9,46 @@ from markdown.extensions.wikilinks import WikiLinkExtension
 from bs4 import BeautifulSoup
 import time
 import hashlib
+import re
+
+def get_post_data(form):
+    post_data = {}
+    for key in form.request.arguments:
+        post_data[key] = form.get_arguments(key)
+    return post_data
+
+def check_username_valid(username):
+    '''
+    >>> check_username_valid('/sadf')
+    False
+    >>> check_username_valid('\s.adf')
+    False
+    '''
+    print(username)
+    print(re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username))
+    if re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username) !=None:
+        return True
+    return False
+
+
+def check_email_valid( email_str):
+    '''
+    >>> check_email_valid('')
+    False
+    >>> check_email_valid('s.adf')
+    False
+    >>> check_email_valid('sadfsdfa@comaldfsdaf.cosdafj')
+    False
+    '''
+    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email_str) !=None:
+        return True
+
+    '''
+    [\\w-\\.]+@([\\w]+\\.)+[a-z]{2,3}
+    :param email_str:
+    :return:
+    '''
+    return False
 
 
 def md5(instr):

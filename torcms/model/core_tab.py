@@ -99,23 +99,22 @@ class CabWikiHist(BaseModel):
 
 
 class CabMember(BaseModel):
-    # user_id = peewee.CharField()
     '''
     privilege:
     11111
     read,add,edit,delete,manage
     [0]: read
-    [1]: add
-    [2]: edit
-    [3]: delete
-    [4]: manage
+    [1]: for post, page, wiki,
+    [2]: for infor.
+    [3]: keep
+    [4]: keep
     And, could be extended.
     '''
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-    user_name = peewee.CharField(null=False, index=True, unique=True, max_length=16, help_text='', )
+    user_name = peewee.CharField(null=False, index=True, unique=True, max_length=16, help_text='User Name', )
+    user_email = peewee.CharField(null=False, unique=True, max_length=255, help_text='User Email', )
+    user_pass = peewee.CharField(null=False, max_length=255, help_text='User Password')
     privilege = peewee.CharField(null=False, default='10000', help_text='Member Privilege', )
-    user_pass = peewee.CharField(null=False, max_length=255, )
-    user_email = peewee.CharField(null=False, max_length=255, )
     reset_passwd_timestamp = peewee.IntegerField(null=False, default=0)
 
 
