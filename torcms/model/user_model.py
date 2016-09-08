@@ -54,15 +54,12 @@ class MUser(BaseModel):
     def update_info(self, u_name, newemail):
         entry = CabMember.update(
             user_email=newemail,
-
         ).where(CabMember.user_name == u_name)
         try:
             entry.execute()
             return True
         except:
             return False
-
-
 
     def update_reset_passwd_timestamp(self, uname, timeit):
         entry = CabMember.update(
@@ -74,7 +71,6 @@ class MUser(BaseModel):
         except:
             return False
 
-
     def update_privilege(self, u_name, newprivilege):
         entry = CabMember.update(
             privilege=newprivilege
@@ -84,22 +80,23 @@ class MUser(BaseModel):
             return True
         except:
             return False
-        # return entry
-
+            # return entry
 
     def insert_data(self, post_data):
         out_dic = {'success': False, 'code': '00'}
+
         if tools.check_username_valid(post_data['user_name'][0]):
             pass
         else:
-            out_dic['code'] = '10'
+            out_dic['code'] = '11'
             return out_dic
 
         if tools.check_email_valid(post_data['user_email'][0]):
             pass
         else:
-            out_dic['code'] = '20'
+            out_dic['code'] = '21'
             return out_dic
+
 
         try:
             CabMember.create(uid=tools.get_uuid(),
@@ -107,7 +104,7 @@ class MUser(BaseModel):
                              user_pass=tools.md5(post_data['user_pass'][0]),
                              user_email=post_data['user_email'][0],
                              privilege='10000',
-                             reset_passwd_timestamp=0,)
+                             reset_passwd_timestamp=0, )
             out_dic['success'] = True
             return out_dic
         except:
