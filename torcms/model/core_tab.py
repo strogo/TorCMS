@@ -115,7 +115,10 @@ class CabMember(BaseModel):
     user_email = peewee.CharField(null=False, unique=True, max_length=255, help_text='User Email', )
     user_pass = peewee.CharField(null=False, max_length=255, help_text='User Password')
     privilege = peewee.CharField(null=False, default='10000', help_text='Member Privilege', )
-    reset_passwd_timestamp = peewee.IntegerField(null=False, default=0)
+    time_reset_passwd = peewee.IntegerField(null=False, default=0)
+    time_login = peewee.IntegerField(null=False, default=0)
+    time_create = peewee.IntegerField(null=False,default=0)
+    time_update = peewee.IntegerField(null=False,default=0)
 
 
 class CabPic(BaseModel):
