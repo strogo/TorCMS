@@ -1,6 +1,6 @@
 # -*- coding: utf-8
 from openpyxl.reader.excel import load_workbook
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 
 wb = load_workbook(filename='./database/meta/info_tags.xlsx')
 sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]

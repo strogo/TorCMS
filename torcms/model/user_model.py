@@ -20,15 +20,15 @@ class MUser(BaseModel):
         except:
             return False
 
-    def get_by_id(self, uname):
+    def get_by_name(self, uname):
         try:
             return CabMember.get(user_name=uname)
         except:
             return False
 
-    def get_by_email(self, emai):
+    def get_by_email(self, useremail):
         try:
-            return CabMember.get(user_email=emai)
+            return CabMember.get(user_email=useremail)
         except:
             return False
 
@@ -86,29 +86,20 @@ class MUser(BaseModel):
             return False
         # return entry
 
+
     def insert_data(self, post_data):
-        if '/' in post_data['user_name'][0]:
-            return False
-        if ':' in post_data['user_name'][0]:
-            return False
-        if len(post_data['user_name'][0]) < 5 or len(post_data['user_name'][0]) > 20:
-            return False
-        if '\\' in post_data['user_name'][0]:
-            return False
-        if '#' in post_data['user_name'][0]:
-            return False
-        if '+' in post_data['user_name'][0]:
-            return False
-        if "'" in post_data['user_name'][0]:
-            return False
-        if '"' in post_data['user_name'][0]:
-            return False
-        if '(' in post_data['user_name'][0]:
-            return False
-        if ')' in post_data['user_name'][0]:
-            return False
-        if ' ' in post_data['user_name'][0]:
-            return False
+        out_dic = {'success': False, 'code': '00'}
+        if tools.check_username_valid(post_data['user_name'][0]):
+            pass
+        else:
+            out_dic['code'] = '10'
+            return out_dic
+
+        if tools.check_email_valid(post_data['user_email'][0]):
+            pass
+        else:
+            out_dic['code'] = '20'
+            return out_dic
 
         try:
             CabMember.create(uid=tools.get_uuid(),
@@ -117,9 +108,10 @@ class MUser(BaseModel):
                              user_email=post_data['user_email'][0],
                              privilege='10000',
                              reset_passwd_timestamp=0,)
-            return True
+            out_dic['success'] = True
+            return out_dic
         except:
-            return False
+            return out_dic
 
     def get_by_keyword(self, par2):
         return CabMember.select().where(CabMember.user_name.contains(par2))

@@ -16,7 +16,7 @@ class MaintainPycateCategoryHandler(BaseHandler):
         self.muser = MUser()
         self.mclass = MInforCatalog()
         if self.get_current_user():
-            self.userinfo = self.muser.get_by_id(self.get_current_user())
+            self.userinfo = self.muser.get_by_name(self.get_current_user())
         else:
             self.userinfo = None
 

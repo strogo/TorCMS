@@ -75,6 +75,8 @@ class UserHandler(BaseHandler):
 
         if url_str == 'regist':
             self.register()
+        elif url_str == 'j_regist':
+            self.json_register()
         elif url_str == 'login':
             self.login()
         elif url_str == 'changepass':
@@ -202,7 +204,7 @@ class UserHandler(BaseHandler):
     @tornado.web.authenticated
     def change_privilege(self, xg_username):
         self.render('user/{0}/changeprivilege.html'.format(self.tmpl_router),
-                    userinfo=self.muser.get_by_id(xg_username))
+                    userinfo=self.muser.get_by_name(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
@@ -226,17 +228,58 @@ class UserHandler(BaseHandler):
                         userinfo=None,
                         )
 
+    def __check_valid(self, post_data):
+        user_create_status = {'success': False, 'code': '00'}
+        if tools.check_username_valid(post_data['user_name'][0]) == False:
+            user_create_status['code'] = '11'
+            print('Gotit')
+            return user_create_status
+        elif tools.check_email_valid(post_data['user_email'][0]) == False:
+            user_create_status['code'] = '21'
+            return user_create_status
+        elif self.muser.get_by_name(post_data['user_name'][0]) == False:
+            user_create_status['code'] = '12'
+            return user_create_status
+        elif self.muser.get_by_email(post_data['user_email'][0]) == False:
+            user_create_status['code'] = '22'
+            return user_create_status
+        user_create_status['success'] = True
+        return user_create_status
+
     def register(self):
-        post_data = {}
+        '''
+                The first char of 'code' stands for the different field.
+                '1' for user_name
+                '2' for user_email
+                '3' for user_pass
+                '4' for user_privilege
+                The seconde char of 'code' stands for different status.
+                '1' for invalide
+                '2' for already exists.
+        '''
 
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        def register(self):
+            post_data = {}
 
-        form = SumForm(self.request.arguments)
+            for key in self.request.arguments:
+                post_data[key] = self.get_arguments(key)
 
-        if form.validate():
-            if self.muser.insert_data(post_data):
-                self.redirect('/user/login')
+            form = SumForm(self.request.arguments)
+
+            if form.validate():
+                res_dic = self.muser.insert_data(post_data)
+                if res_dic['success']:
+                    self.redirect('/user/login')
+                else:
+                    kwd = {
+                        'info': '注册不成功',
+                    }
+                    self.set_status(400)
+                    self.render('html/404.html',
+                                cfg=config.cfg,
+                                kwd=kwd,
+                                userinfo=None, )
+
             else:
                 kwd = {
                     'info': '注册不成功',
@@ -247,15 +290,50 @@ class UserHandler(BaseHandler):
                             kwd=kwd,
                             userinfo=None, )
 
+    def json_register(self):
+        '''
+                The first char of 'code' stands for the different field.
+                '1' for user_name
+                '2' for user_email
+                '3' for user_pass
+                '4' for user_privilege
+                The seconde char of 'code' stands for different status.
+                '1' for invalide
+                '2' for already exists.
+        '''
+        user_create_status = {'success': False, 'code': '00'}
+        post_data = {}
+        for key in self.request.arguments:
+            post_data[key] = self.get_arguments(key)
+
+        print (post_data)
+
+        user_create_status = self.__check_valid(post_data)
+        if user_create_status['success'] == False:
+            print(user_create_status)
+            return json.dump(user_create_status, self)
+
+        form = SumForm(self.request.arguments)
+
+        if form.validate():
+            user_create_status = self.muser.insert_data(post_data)
+            return json.dump(user_create_status, self)
+
+
+            # if user_insert_status['success'] == True:
+            #     self.redirect('/user/login')
+            # else:
+            #     kwd = {
+            #         'info': '注册不成功',
+            #     }
+            #     self.set_status(400)
+            #     self.render('html/404.html',
+            #                 cfg=config.cfg,
+            #                 kwd=kwd,
+            #                 userinfo=None, )
+
         else:
-            kwd = {
-                'info': '注册不成功',
-            }
-            self.set_status(400)
-            self.render('html/404.html',
-                        cfg=config.cfg,
-                        kwd=kwd,
-                        userinfo=None, )
+            return json.dump(user_create_status, self)
 
     def __to_register__(self):
         kwd = {
@@ -428,7 +506,7 @@ class UserHandler(BaseHandler):
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
-        userinfo = self.muser.get_by_id(post_data['u'][0])
+        userinfo = self.muser.get_by_name(post_data['u'][0])
 
         sub_timestamp = int(post_data['t'][0])
         cur_timestamp = tools.timestamp()

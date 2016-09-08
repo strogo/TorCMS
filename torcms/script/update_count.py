@@ -3,7 +3,7 @@ __author__ = 'bukun'
 import sys
 
 from torcms.model.postcatalog_model import MPostCatalog
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 from torcms.model.infor_model import MInfor
 
 

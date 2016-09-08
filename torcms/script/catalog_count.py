@@ -6,7 +6,7 @@ import json
 
 from torcms.model.postcatalog_model import MPostCatalog
 from openpyxl.reader.excel import load_workbook
-from torcms.model.minforcatalog import MInforCatalog
+from torcms.model.inforcatalog_model import MInforCatalog
 
 
 
