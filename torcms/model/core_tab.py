@@ -199,7 +199,7 @@ class TabApp(BaseModel):
     html_path = peewee.CharField(default='')
     cnt_md = peewee.TextField(null=True)
     cnt_html = peewee.TextField(null=True)
-    valid = peewee.IntegerField(null=False, default=0, help_text='Whether the infor would show.')
+    valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     extinfo = BinaryJSONField()
 
 

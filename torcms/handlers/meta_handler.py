@@ -201,7 +201,12 @@ class MetaHandler(BaseHandler):
 
         post_data['user_name'] = self.userinfo.user_name
 
+
         current_info = self.mapp.get_by_uid(uid)
+        if 'valid' in post_data:
+            post_data['valid'] =  int(post_data['valid'][0])
+        else:
+            post_data['valid'] = current_info.valid
 
         if current_info.user_name == self.userinfo.user_name:
             pass
