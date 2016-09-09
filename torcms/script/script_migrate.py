@@ -17,7 +17,10 @@ def run_migrate():
     except:
         pass
 
-
+    try:
+        migrate(migrator.add_column('cabmember', 'time_email', status_field))
+    except:
+        pass
 
     try:
         migrate(migrator.add_column('cabmember', 'time_login', status_field))

@@ -1,4 +1,4 @@
-__author__ = 'bukun'
+# -*- coding: utf-8
 
 import sys
 
@@ -7,7 +7,7 @@ from torcms.model.inforcatalog_model import MInforCatalog
 from torcms.model.infor_model import MInfor
 
 
-def update_app_count():
+def run_update_count():
 
     mappcat = MInforCatalog()
     mapp = MInfor()

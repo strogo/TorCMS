@@ -1,14 +1,16 @@
 # -*- coding:utf-8 -*-
 
 
-from torcms.core.base_model import BaseModel
+
 
 from torcms.core import tools
 from torcms.model.core_tab import CabMember
+from torcms.model.supertable_model import MSuperTable
 
 
-class MUser(BaseModel):
+class MUser(MSuperTable):
     def __init__(self):
+        self.tab = CabMember
         try:
             CabMember.create_table()
         except:
@@ -25,6 +27,11 @@ class MUser(BaseModel):
             return CabMember.get(user_name=uname)
         except:
             return False
+    def set_sendemail_time(self, uid):
+        entry = CabMember.update(
+            time_email = tools.timestamp(),
+        ).where(CabMember.uid == uid)
+        entry.execute()
 
     def get_by_email(self, useremail):
         try:
@@ -50,6 +57,10 @@ class MUser(BaseModel):
             return True
         except:
             return False
+    def query_nologin(self):
+        time_now = tools.timestamp()
+        # num * month * hours * minite * second
+        return self.tab.select().where( ((time_now - self.tab.time_login) > 3 * 30 * 24 * 60 * 60) & ((time_now - CabMember.time_email) > 4 * 30 * 24 * 60 * 60 ))
 
     def update_info(self, u_name, newemail):
 

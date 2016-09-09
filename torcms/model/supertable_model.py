@@ -48,7 +48,7 @@ class MSuperTable():
 
     def query_all(self, limit_num = 50, by_uid = 'False'):
         if by_uid:
-            return self.tab.select().order_by('uid').limit(limit_num)
+            return self.tab.select().order_by(self.tab.uid).limit(limit_num)
         else:
             return self.tab.select().limit(limit_num)
 
