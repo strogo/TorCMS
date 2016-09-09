@@ -21,7 +21,9 @@ class SumForm(Form):
     user_name = StringField('user_name', validators=[Required()])
     user_pass = StringField('user_pass', validators=[Required()])
     user_email = StringField('user_email', validators=[Required(), wtforms.validators.Email()])
+class SumForm2(Form):
 
+    user_email = StringField('user_email', validators=[Required(), wtforms.validators.Email()])
 
 class UserHandler(BaseHandler):
     def initialize(self):
@@ -342,10 +344,19 @@ class UserHandler(BaseHandler):
             if user_create_status['success'] == False:
                 return json.dump(user_create_status, self)
 
-            user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
+            form2 = SumForm2(self.request.arguments)
             print("/*" * 50)
             print(user_create_status)
-            return json.dump(user_create_status, self)
+            if form2.validate():
+                user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
+                return json.dump(user_create_status, self)
+            else:
+                return json.dump(user_create_status, self)
+
+
+
+        else:
+            return False
 
     def __to_register__(self):
         kwd = {
