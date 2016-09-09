@@ -8,7 +8,7 @@ class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q
 sig_name_arr = []
 mappcat = MInforCatalog()
 
-def uu():
+def gen_infor_category():
     # 在分类中排序
     order_index = 1
     # 父类索引
@@ -53,4 +53,4 @@ def uu():
 
 
 if __name__ == '__main__':
-    uu()
+    gen_infor_category()

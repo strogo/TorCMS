@@ -10,7 +10,8 @@ from torcms.model.inforcatalog_model import MInforCatalog
 
 
 
-def update_app_count():
+
+def gen_infor_category():
     wb = load_workbook(filename='./database/meta/info_tags.xlsx')
     sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
     class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
@@ -59,7 +60,7 @@ def update_app_count():
             order_index = order_index + 1
 
 
-def update_doc_count():
+def gen_doc_category():
     mcat  = MPostCatalog()
 
 
@@ -113,3 +114,7 @@ def update_doc_count():
                     }
 
                     mcat.insert_data( pid + uid, cat_dic)
+
+def run_gen_category():
+    gen_doc_category()
+    gen_infor_category()
