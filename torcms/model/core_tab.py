@@ -119,6 +119,7 @@ class CabMember(BaseModel):
     time_login = peewee.IntegerField(null=False, default=0)
     time_create = peewee.IntegerField(null=False,default=0)
     time_update = peewee.IntegerField(null=False,default=0)
+    time_email = peewee.IntegerField(null=False,default=0, help_text='Time auto send email.')
 
 
 class CabPic(BaseModel):
