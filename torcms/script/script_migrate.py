@@ -18,6 +18,21 @@ def run_migrate():
         pass
 
     try:
+        migrate(migrator.drop_column('cabwiki', 'src_type'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabpage', 'src_type'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabpost', 'src_type'))
+    except:
+        pass
+
+    try:
         migrate(migrator.add_column('cabmember', 'time_email', status_field))
     except:
         pass

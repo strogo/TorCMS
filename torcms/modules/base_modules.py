@@ -9,7 +9,6 @@ from torcms.model.post2catalog_model import MPost2Catalog
 import config
 import tornado.web
 from torcms.model.postcatalog_model import MPostCatalog
-from config import menu_arr
 
 
 class reply_panel(tornado.web.UIModule):
@@ -256,14 +255,7 @@ class ModuleCatMenu(tornado.web.UIModule):
                                   kwd=kwd)
 
 
-class TopMenu(tornado.web.UIModule):
-    def render(self):
-        outstr = ''
-        for x in menu_arr:
-            tmp_str = '''<li><a href="{0}">{1}</a></li>'''.format(x[1], x[0])
-            outstr += tmp_str
 
-        return outstr
 
 
 class ToplineModule(tornado.web.UIModule):
