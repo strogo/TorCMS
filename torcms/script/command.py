@@ -1,4 +1,5 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
+
 import sys, getopt
 
 from .script_migrate import run_migrate
