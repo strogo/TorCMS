@@ -7,10 +7,11 @@ import config
 from config import cfg
 import peewee
 from torcms.core import tools
+from torcms.model.supertable_model import MSuperTable
 from torcms.model.core_tab import TabApp, TabApp2Catalog, TabApp2Label, TabUsage, TabAppRelation, TabApp2Reply, CabReply
 
 
-class MInforBase(object):
+class MInforBase(MSuperTable):
     def __init__(self):
         self.tab_app = TabApp
         self.tab_app2catalog = TabApp2Catalog
@@ -157,6 +158,7 @@ class MInforBase(object):
 
 class MInfor(MInforBase):
     def __init__(self):
+        self.tab = TabApp
         self.tab_app = TabApp
         self.tab_app2catalog = TabApp2Catalog
         self.tab_relation = TabAppRelation
