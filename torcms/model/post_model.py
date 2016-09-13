@@ -84,6 +84,9 @@ class MPost(MSuperTable):
             return CabPost.select().join(CabPost2Catalog).where(CabPost2Catalog.catalog == cat_id).order_by(
                 peewee.fn.Rand()).limit(num)
 
+    def query_recent_edited(self, timstamp):
+        return self.tab.select().where(CabPost.time_update > timstamp).order_by(CabPost.time_update.desc())
+
     def query_recent(self, num=8):
         return self.tab.select().order_by(CabPost.time_update.desc()).limit(num)
 
