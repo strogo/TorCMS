@@ -2,35 +2,33 @@
 
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPostHist
+from torcms.model.core_tab import CabPageHist
 from torcms.model.supertable_model import MSuperTable
 
 
-class MPostHist(MSuperTable):
+class MPageHist(MSuperTable):
     def __init__(self):
-        self.tab = CabPostHist
+        self.tab = CabPageHist
         try:
-            CabPostHist.create_table()
+            CabPageHist.create_table()
         except:
             pass
 
     def insert_data(self, raw_data):
-
         uid = tools.get_uuid()
         try:
-            CabPostHist.create(
+            CabPageHist.create(
                 uid=uid,
                 title=raw_data.title,
                 date=raw_data.date,
-                post_id=raw_data.uid,
+                page_slug=raw_data.slug,
                 time_create=raw_data.time_create,
-                user_name=raw_data.user_name,
+                id_user=raw_data.id_user,
                 cnt_md=raw_data.cnt_md,
                 time_update=raw_data.time_update,
-                id_spec=raw_data.id_spec,
-                logo=raw_data.logo,
-            )
 
+
+            )
             return (uid)
         except:
             return False

@@ -9,12 +9,13 @@ from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
 from torcms.model.postcatalog_model import MPostCatalog
 from torcms.model.page_model import MPage
-
+from torcms.model.page_hist_model import MPageHist
 
 class PageHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpage = MPage()
+        self.mpage_hist = MPageHist()
         self.mcat = MPostCatalog()
         self.cats = self.mcat.query_all()
 
@@ -87,6 +88,7 @@ class PageHandler(BaseHandler):
             return False
 
         self.mpage.update(slug, post_data)
+        self.mpage_hist.insert_data(self.mpage.get_by_slug(slug))
         self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
 
     @tornado.web.authenticated
