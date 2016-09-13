@@ -18,6 +18,12 @@ def run_migrate():
         pass
 
     try:
+        migrate(migrator.drop_column('cabposthist', 'id_spec'))
+    except:
+        pass
+
+
+    try:
         migrate(migrator.drop_column('cabwiki', 'src_type'))
     except:
         pass
