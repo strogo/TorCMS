@@ -3,7 +3,7 @@
 
 import uuid
 import random
-import tornado
+import tornado.escape
 import markdown
 from markdown.extensions.wikilinks import WikiLinkExtension
 from bs4 import BeautifulSoup
@@ -11,11 +11,13 @@ import time
 import hashlib
 import re
 
+
 def get_post_data(form):
     post_data = {}
     for key in form.request.arguments:
         post_data[key] = form.get_arguments(key)
     return post_data
+
 
 def check_username_valid(username):
     '''
@@ -24,12 +26,12 @@ def check_username_valid(username):
     >>> check_username_valid('\s.adf')
     False
     '''
-    if re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username) !=None:
+    if re.match('^[a-zA-Z][a-zA-Z0-9_]{3,19}', username) != None:
         return True
     return False
 
 
-def check_email_valid( email_str):
+def check_email_valid(email_str):
     '''
     >>> check_email_valid('')
     False
@@ -38,7 +40,7 @@ def check_email_valid( email_str):
     >>> check_email_valid('sadfsdfa@comaldfsdaf.cosdafj')
     False
     '''
-    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email_str) !=None:
+    if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email_str) != None:
         return True
 
     '''
@@ -112,8 +114,10 @@ def markdown2html(markdown_text):
                                          'markdown.extensions.codehilite',
                                          'markdown.extensions.meta',
                                          ])
+    han_biaodians = ['。', '，', '；', '、', '！', '？']
+    for han_biaodian in han_biaodians:
+        html = html.replace(han_biaodian + '\n', han_biaodian)
     return tornado.escape.xhtml_escape(html)
-
 
 
 ##  弃用的函数
