@@ -232,8 +232,7 @@ class TabAppHist(BaseModel):
     type = peewee.IntegerField(null=False, default=1)
     html_path = peewee.CharField(default='')
     cnt_md = peewee.TextField(null=True)
-    app_id = peewee.CharField(null=False, unique=True, help_text='')
-
+    app_id = peewee.CharField(null=False, unique=False, help_text='')
     valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     extinfo = BinaryJSONField()
 
