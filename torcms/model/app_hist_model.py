@@ -16,7 +16,6 @@ class MAppHist(MSuperTable):
 
     def insert_data(self, raw_data):
         uid = tools.get_uuid()
-
         TabAppHist.create(
                 uid=uid,
                 title=raw_data.title,
@@ -35,7 +34,5 @@ class MAppHist(MSuperTable):
                 app_id = raw_data.app_id,
                 valid = raw_data.valid,
                 extinfo = raw_data.extinfo,
-
-
             )
         return True

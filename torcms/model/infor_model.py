@@ -97,9 +97,9 @@ class MInforBase(MSuperTable):
             return False
 
     def view_count_increase(self, uid):
-        equation_info = self.get_by_uid(uid)
+        infor = self.get_by_uid(uid)
         entry = self.tab_app.update(
-            view_count=equation_info.view_count + 1,
+            view_count=infor.view_count + 1,
         ).where(self.tab_app.uid == uid)
         entry.execute()
 
@@ -118,22 +118,29 @@ class MInforBase(MSuperTable):
 
     def query_random(self, num=8):
         fn = peewee.fn
-
         if config.dbtype == 1 or config.dbtype == 3:
             return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Random()).limit(num)
-
         elif config.dbtype == 2:
+            return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Rand()).limit(num)
 
+    def query_cat_random(self, catid, num=8):
+        fn = peewee.fn
+        if config.dbtype == 1 or config.dbtype == 3:
+            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) & (self.tab_app2catalog.catalog == catid)).order_by(fn.Random()).limit(num)
+        elif config.dbtype == 2:
             return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Rand()).limit(num)
 
     def query_most(self, num=8):
         return self.tab_app.select().where(self.tab_app.valid == 1).order_by(self.tab_app.view_count.desc()).limit(num)
 
-    def query_most_by_cat(self, num=8, cat_str=1):
-        return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) &
+    def query_most_by_cat(self, num=8, catid=None):
+        if catid:
+            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) &
                                                                       (
-                                                                          self.tab_app2catalog.catalog == cat_str)).order_by(
+                                                                          self.tab_app2catalog.catalog == catid)).order_by(
             self.tab_app.view_count.desc()).limit(num)
+        else:
+            return False
 
     def query_least_by_cat(self, num=8, cat_str=1):
         return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) &
