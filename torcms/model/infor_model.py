@@ -231,7 +231,7 @@ class MInfor(MInforBase):
             uid=uid,
             title=title,
             keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
-            time_update=int(time.time()),
+            create_time=int(time.time()),
             date=datetime.now(),
             cnt_md=data_dic['cnt_md'][0],
             logo=data_dic['logo'][0],

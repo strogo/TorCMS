@@ -16,6 +16,7 @@ from  config import cfg
 from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
+from torcms.model.app_hist_model import MAppHist
 
 
 class MetaHandler(BaseHandler):
@@ -30,6 +31,7 @@ class MetaHandler(BaseHandler):
         self.mtag = MInforCatalog()
         self.mrel = MInforRel()
         self.mreply = MInfor2Reply()
+        self.mapp_hist = MAppHist()
         if 'app_url_name' in cfg:
             self.app_url_name = cfg['app_url_name']
         else:
@@ -224,6 +226,7 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
+        self.mapp_hist.insert_data(self.mapp.get_by_id(uid))
         self.mapp.modify_meta(uid,
                               post_data,
                               extinfo=ext_dic)
