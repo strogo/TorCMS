@@ -15,6 +15,7 @@ class CabCatalog(BaseModel):
     count = peewee.IntegerField(default=0)
 
 
+
 class CabLink(BaseModel):
     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='0000',
                            max_length=4, help_text='', )
@@ -55,6 +56,7 @@ class CabPost(BaseModel):
     time_update = peewee.IntegerField()
     view_count = peewee.IntegerField()
     logo = peewee.CharField()
+    valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
 
@@ -206,12 +208,31 @@ class TabApp(BaseModel):
     run_count = peewee.IntegerField(null=False, default=0, help_text='')
     view_count = peewee.IntegerField(null=False, default=0, help_text='')
     run_time = peewee.IntegerField(null=False, default=0, help_text='')
+    create_time = peewee.IntegerField(default=0, help_text='')
+    time_update = peewee.IntegerField( default=0, help_text='')
+    type = peewee.IntegerField(null=False, default=1)
+    html_path = peewee.CharField(default='')
+    cnt_md = peewee.TextField(null=True)
+    cnt_html = peewee.TextField(null=True)
+    valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
+    extinfo = BinaryJSONField()
+
+class TabAppHist(BaseModel):
+    uid = peewee.CharField(  null=False, unique=True, help_text='', primary_key=True)
+    title = peewee.CharField(null=False, help_text='Title', )
+    keywords = peewee.CharField(null=True, default='')
+    user_name = peewee.CharField(null=False, default='', max_length=36, help_text='UserName', )
+    logo = peewee.CharField(default='')
+    date = peewee.DateTimeField(null=False, help_text='')
+    run_count = peewee.IntegerField(null=False, default=0, help_text='')
+    view_count = peewee.IntegerField(null=False, default=0, help_text='')
+    run_time = peewee.IntegerField(null=False, default=0, help_text='')
     create_time = peewee.IntegerField(null=False, default=0, help_text='')
     time_update = peewee.IntegerField(null=False, default=0, help_text='')
     type = peewee.IntegerField(null=False, default=1)
     html_path = peewee.CharField(default='')
     cnt_md = peewee.TextField(null=True)
-    cnt_html = peewee.TextField(null=True)
+    app_id = peewee.CharField(null=False, unique=False, help_text='')
     valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     extinfo = BinaryJSONField()
 

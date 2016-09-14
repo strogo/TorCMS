@@ -7,32 +7,67 @@
 
     $.ready()
     {
-    function load_subcat(ii) {
-        // uu = $('#tag' + ii.toString() + ' option:selected').text();
-        var pid = $('#ptag' + ii.toString()).val();
+        function load_subcat(ii) {
+            // uu = $('#tag' + ii.toString() + ' option:selected').text();
+            var pid = $('#ptag' + ii.toString()).val();
 
 
-        $.ajax({
-            url: '/category/j_subcat/' + pid,
-            type: 'GET',
-            data: {},
-            timeout: 1000,
-            error: function () {
-                alert('重新加载');
-            },
-            success: function (result) {
-                json_res = $.parseJSON(result);
-                subcat_arr = json_res['arr'];
-                alert(subcat_arr);
-//                [['0101', 'gis'],
-//                    ['0102', 'rs]     ]
+            $.ajax({
+                url: '/category/j_subcat/' + pid,
+                type: 'GET',
+                data: {},
+                timeout: 1000,
+                error: function () {
+                    alert('重新加载');
+                },
+                success: function (result) {
+                    json_res = $.parseJSON(result);
+                    subcat_arr = json_res['arr'];
 
 
-                // alert(json_res['arr'][0]);
-            }
+                    alert(subcat_arr);
+                    var tag = $('#tag' + ii.toString()).val();
 
-        });
-    }}
+                    var str = '';
+
+                    var data = eval("(" + subcat_arr + ")");
+
+                    alert(data);
+                    for (var o in data) {
+
+                        str += '<option value="'+data[o].zid+'">'+data[o].name+'</option>';
+
+                    }
+
+
+                    tag.append(str);
+
+
+
+
+
+                }
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+    }
 </script>
 
 
@@ -103,8 +138,8 @@
 
                     <div class="col-sm-3">
                         <select name="tag{{ii}}" id="tag{{ii}}" class="form-control" >
-                            <option value="">请选择</option>
-                            </option>
+                            <option value="0">请选择</option>
+
                         </select>
                     </div>
 
