@@ -42,7 +42,7 @@ class CategoryHandler(BaseHandler):
         for x in cur_cat:
             if x.uid.endswith('00'):
                 continue
-            out_arr.append([x.uid, x.name])
+            out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
 
         out_dic = {'arr': out_arr}
         json.dump(out_dic, self)

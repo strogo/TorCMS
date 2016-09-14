@@ -20,8 +20,10 @@ def run_migrate():
         migrate(migrator.drop_column('tabapp', 'id_cats', status_field))
     except:
         pass
-
-
+    try:
+        migrate(migrator.add_column('cabpost', 'valid', status_field))
+    except:
+        pass
     try:
         migrate(migrator.drop_column('cabmember', 'valid'))
     except:

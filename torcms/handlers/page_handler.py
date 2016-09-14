@@ -87,8 +87,9 @@ class PageHandler(BaseHandler):
             self.set_status(400)
             return False
 
-        self.mpage.update(slug, post_data)
         self.mpage_hist.insert_data(self.mpage.get_by_slug(slug))
+        self.mpage.update(slug, post_data)
+
         self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
 
     @tornado.web.authenticated

@@ -77,16 +77,18 @@ class InfoHandler(BaseHandler):
             }
         return json.dump(output, self)
 
+    # Todo:查看出错。
     def view_info(self, info_id):
+
         '''
         Render the info
         :param info_id:
         :return: Nonthing.
         '''
 
-        rec = self.minfo.get_by_uid(info_id)
+        app_rec = self.minfo.get_by_uid(info_id)
 
-        if rec:
+        if app_rec:
             pass
         else:
             kwd = {
@@ -96,30 +98,40 @@ class InfoHandler(BaseHandler):
                         kwd=kwd,
                         userinfo=self.userinfo, )
             return False
+        #
+        cats = self.mapp2catalog.query_by_entity_uid(info_id)
+        cat_uid_arr = []
+        for cat_rec in cats:
+            cat_uid = cat_rec.catalog.uid
+            cat_uid_arr.append(cat_uid)
 
         replys = self.mreply.get_by_id(info_id)
-        rel_recs = self.mrel.get_app_relations(rec.uid, 4)
-        rand_recs = self.minfo.query_random(4 - rel_recs.count() + 2)
+        rel_recs = self.mrel.get_app_relations(app_rec.uid, 4)
+        if len(cat_uid_arr) > 0:
+            rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
+        else:
+            rand_recs = self.minfo.query_random(4 - rel_recs.count() + 4)
+
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
 
-        if 'def_cat_uid' in rec.extinfo:
-            catid = rec.extinfo['def_cat_uid']
+        if 'def_cat_uid' in app_rec.extinfo:
+            ext_catid = app_rec.extinfo['def_cat_uid']
         else:
-            catid = ''
+            ext_catid = ''
 
-        parent_name = self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else ''
-        if catid != '':
-            cat_rec = self.mcat.get_by_uid(catid)
+        parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name if ext_catid != '' else ''
+        if ext_catid != '':
+            cat_rec = self.mcat.get_by_uid(ext_catid)
             priv_mask_idx = cat_rec.priv_mask.index('1')
             cat_name = cat_rec.name
         else:
             priv_mask_idx = 0
             cat_name = ''
 
-        parentname = '<a href="/list/{0}">{1}</a>'.format(catid[:2] + '00', parent_name)
+        parentname = '<a href="/list/{0}">{1}</a>'.format(ext_catid[:2] + '00', parent_name)
 
-        catname = '<a href="/list/{0}">{1}</a>'.format(catid, cat_name)
+        catname = '<a href="/list/{0}">{1}</a>'.format(ext_catid, cat_name)
 
         kwd = {
             'pager': '',
@@ -141,12 +153,12 @@ class InfoHandler(BaseHandler):
         if self.get_current_user():
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
-        tmpl = self.ext_tmpl_name(rec) if self.ext_tmpl_name(rec) else self.get_tmpl_name(rec)
-        catid = rec.extinfo['def_cat_uid'] if 'def_cat_uid' in rec.extinfo else None
-        print(rec.extinfo)
+        tmpl = self.ext_tmpl_name(app_rec) if self.ext_tmpl_name(app_rec) else self.get_tmpl_name(app_rec)
+        ext_catid2 = app_rec.extinfo['def_cat_uid'] if 'def_cat_uid' in app_rec.extinfo else None
+
         self.render(tmpl,
-                    kwd=dict(kwd, **self.extra_kwd(rec)),
-                    calc_info=rec,
+                    kwd=dict(kwd, **self.extra_kwd(app_rec)),
+                    calc_info=app_rec,
                     userinfo=self.userinfo,
                     relations=rel_recs,
                     rand_recs=rand_recs,
@@ -154,9 +166,9 @@ class InfoHandler(BaseHandler):
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mapp2tag.get_by_id(info_id),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
-                    post_info=rec,
+                    post_info=app_rec,
                     replys=replys,
-                    cat_enum=self.mcat.get_qian2(catid[:2]) if catid else [],
+                    cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
                     priv_mask_idx=priv_mask_idx,
                     )
 
