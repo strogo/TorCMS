@@ -21,11 +21,11 @@ class MPostCatalog(MSuperTable):
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-        return self.tab.select().where((self.tab.uid.startswith(qian2)) & (self.tab.valid == 1)).order_by(self.tab.order)
+        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
     def query_pcat(self):
-        return  self.tab.select().where( (self.tab.valid == 1) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
+        return  self.tab.select().where(self.tab.uid.endswith('00')).order_by(self.tab.order)
     def query_uid_starts_with(self, qian2):
-        return self.tab.select().where( (self.tab.valid == 1) & (self.tab.uid.startswith(qian2))).group_by(self.tab.uid).order_by(self.tab.order)
+        return self.tab.select().where(self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
 
     def query_all(self, by_count=False, by_order=True):
         if by_count:
@@ -40,7 +40,7 @@ class MPostCatalog(MSuperTable):
         return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
-        uu = self.tab.select().where((self.tab.valid == 1) & (self.tab.slug == slug))
+        uu = self.tab.select().where(self.tab.slug == slug)
         if uu.count() == 1:
             return uu.get()
         elif uu.count() > 1:
