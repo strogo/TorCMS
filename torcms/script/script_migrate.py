@@ -13,6 +13,16 @@ def run_migrate():
     except:
         pass
     try:
+        migrate(migrator.drop_column('cabpost', 'id_cats', status_field))
+    except:
+        pass
+    try:
+        migrate(migrator.drop_column('tabapp', 'id_cats', status_field))
+    except:
+        pass
+
+
+    try:
         migrate(migrator.drop_column('cabmember', 'valid'))
     except:
         pass
@@ -21,6 +31,11 @@ def run_migrate():
         migrate(migrator.drop_column('cabposthist', 'id_spec'))
     except:
         pass
+    try:
+        migrate(migrator.drop_column('cabposthist', 'id_cats'))
+    except:
+        pass
+
 
 
     try:
