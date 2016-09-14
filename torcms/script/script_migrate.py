@@ -13,6 +13,11 @@ def run_migrate():
     except:
         pass
     try:
+        migrate(migrator.add_column('cabpost', 'valid', status_field))
+    except:
+        pass
+
+    try:
         migrate(migrator.drop_column('cabmember', 'valid'))
     except:
         pass
