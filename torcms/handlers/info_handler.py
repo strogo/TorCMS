@@ -77,8 +77,10 @@ class InfoHandler(BaseHandler):
             }
         return json.dump(output, self)
 
+    #Todo:查看出错。
+    
     def view_info(self, info_id):
-        print("123" * 80)
+
         '''
         Render the info
         :param info_id:

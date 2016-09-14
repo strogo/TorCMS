@@ -15,6 +15,7 @@ class CabCatalog(BaseModel):
     count = peewee.IntegerField(default=0)
 
 
+
 class CabLink(BaseModel):
     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='0000',
                            max_length=4, help_text='', )
