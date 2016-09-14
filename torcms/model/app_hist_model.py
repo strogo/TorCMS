@@ -31,7 +31,7 @@ class MAppHist(MSuperTable):
                 type = raw_data.type,
                 html_path = raw_data.html_path,
                 cnt_md = raw_data.cnt_md,
-                app_id = raw_data.app_id,
+                app_id = raw_data.uid,
                 valid = raw_data.valid,
                 extinfo = raw_data.extinfo,
             )
