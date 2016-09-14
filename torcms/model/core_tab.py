@@ -55,6 +55,7 @@ class CabPost(BaseModel):
     time_update = peewee.IntegerField()
     view_count = peewee.IntegerField()
     logo = peewee.CharField()
+    valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
 
