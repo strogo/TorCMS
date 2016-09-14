@@ -16,8 +16,8 @@ class MPageHist(MSuperTable):
 
     def insert_data(self, raw_data):
         uid = tools.get_uuid()
-        try:
-            CabPageHist.create(
+
+        CabPageHist.create(
                 uid=uid,
                 title=raw_data.title,
                 date=raw_data.date,
@@ -29,6 +29,4 @@ class MPageHist(MSuperTable):
 
 
             )
-            return (uid)
-        except:
-            return False
+        return True
