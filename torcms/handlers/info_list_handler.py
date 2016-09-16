@@ -27,6 +27,7 @@ class InfoListHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
+        print(url_str)
 
         if len(url_str) == 4:
             self.list(url_str)
@@ -50,6 +51,7 @@ class InfoListHandler(BaseHandler):
         return condition
 
     def echo_html(self, url_str):
+        print(url_str)
 
         condition = self.gen_redis_kw()
 

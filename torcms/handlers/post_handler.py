@@ -170,11 +170,9 @@ class PostHandler(BaseHandler):
         else:
             return False
 
-        # post_data = {}
-        # for key in self.request.arguments:
-        #     post_data[key] = self.get_arguments(key)
 
-        post_data = tools.get_post_data(self)
+
+        post_data = self.get_post_data()
         post_data['user_name'] = self.get_current_user()
         is_update_time = True if post_data['is_update_time'][0] == '1' else False
 
@@ -187,7 +185,7 @@ class PostHandler(BaseHandler):
     @tornado.web.authenticated
     def update_tag(self, signature):
         current_tag_infos = self.mpost2label.get_by_id(signature)
-        post_data = tools.get_post_data(self)
+        post_data = self.get_post_data()
         if 'tags' in post_data:
             pass
         else:
@@ -209,23 +207,28 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_catalog(self, uid):
-
-        post_data = tools.get_post_data(self)
+        post_data = self.get_post_data()
         current_infos = self.mpost2catalog.query_by_id(uid)
         new_tag_arr = []
-        for key in ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']:
+        # 得到新的分类 list
+        for key in ['gcat{0}'.format(x) for x in range(10)]:
             if key in post_data:
                 pass
             else:
                 continue
             if post_data[key][0] == '':
-                pass
-            else:
-                new_tag_arr.append(post_data[key][0])
-                self.mpost2catalog.add_record(uid,
-                                              post_data[key][0],
-                                              int(key[-1]))
+                continue
+            print(post_data[key][0])
+            print(new_tag_arr)
+            # 有可能选重复了。保留前面的
+            if post_data[key][0] in new_tag_arr:
+                continue
 
+            new_tag_arr.append(post_data[key][0])
+        for idx, val in enumerate(new_tag_arr):
+            self.mpost2catalog.add_record(uid, val, idx)
+
+        # 对原来的进行处理，如果不在现有中，则删除
         for cur_info in current_infos:
             if str(cur_info.catalog.uid).strip() not in new_tag_arr:
                 self.mpost2catalog.remove_relation(uid, cur_info.catalog)
@@ -346,9 +349,7 @@ class PostHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
 
         post_data['user_name'] = self.userinfo.user_name
         id_post = post_data['uid'][0]
@@ -365,10 +366,7 @@ class PostHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
 
         if not ('title' in post_data):
             self.set_status(400)

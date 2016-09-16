@@ -38,14 +38,15 @@ class CategoryHandler(BaseHandler):
         cur_cat = self.mcat.query_uid_starts_with(qian2)
 
 
-        out_arr = []
+        out_arr = {}
         for x in cur_cat:
             if x.uid.endswith('00'):
                 continue
-            out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
+            # out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
+            out_arr[x.uid] = x.name
 
-        out_dic = {'arr': out_arr}
-        json.dump(out_dic, self)
+        # out_dic = {'arr': out_arr}
+        json.dump(out_arr, self)
 
     def list_catalog(self, cat_slug, cur_p=''):
         if cur_p == '':

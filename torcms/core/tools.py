@@ -12,13 +12,6 @@ import hashlib
 import re
 
 
-def get_post_data(form):
-    post_data = {}
-    for key in form.request.arguments:
-        post_data[key] = form.get_arguments(key)
-    return post_data
-
-
 def check_username_valid(username):
     '''
     >>> check_username_valid('/sadf')

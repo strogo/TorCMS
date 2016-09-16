@@ -65,8 +65,8 @@ urls = [
     ("/tag/(.*)", InforTagHandler, dict()),
 
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
-    ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict(hinfo={})),
-    ("/publish/(.*)", torcms.handlers.info_publish_handler.InfoPublishHandler, dict(hinfo={})),
+    ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict()),
+    ("/publish/(.*)", torcms.handlers.info_publish_handler.InfoPublishHandler, dict()),
     ('/info_tag/(.*)', InfoTagHandler, dict(hinfo={})),
 
     ("/collect/(.*)", CollectHandler, dict()),

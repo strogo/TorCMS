@@ -18,28 +18,14 @@
     <script type="text/javascript" src="{{ static_url('jslib/validate/jquery.validate.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ static_url('jslib/validate/message_cn.js') }}"></script>
-    <script type="text/javascript">
-        $().ready(function () {
-            $("#searchForm").validate({
-                rules: {
-                    searchheader: "required"
-                },
-                messages: {
-                    searchheader: "<span class='red'>Please enter keywords</span>"
 
-                }
-            });
-        });
-    </script>
 
     <script type="text/javascript" src="{{ static_url('jslib/jquery.SuperSlide.2.1.1.js') }}"></script>
 
+    <script type="text/javascript" src="{{ static_url('jslib/gscript.js') }}"></script>
 
-    <script type="text/javascript">
-        $().ready(function () {
-            $("#searchForm").validate();
-        });
-    </script>
+
+
 
     {% block headinfo %}
 
