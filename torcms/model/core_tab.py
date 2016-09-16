@@ -80,9 +80,9 @@ class CabWiki(BaseModel):
 class CabPostHist(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
     title = peewee.CharField(null=False, max_length=255, help_text='', )
-    date = peewee.DateTimeField()
+    # date = peewee.DateTimeField()
     post_id = peewee.CharField(null=False, max_length=5, help_text='', )
-    time_create = peewee.IntegerField()
+    # time_create = peewee.IntegerField()
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
@@ -92,9 +92,9 @@ class CabPostHist(BaseModel):
 class CabWikiHist(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
     title = peewee.CharField(null=False, max_length=255, help_text='', )
-    date = peewee.DateTimeField()
+    # date = peewee.DateTimeField()
     wiki_id = peewee.CharField(null=False, max_length=8, help_text='', )
-    time_create = peewee.IntegerField()
+    # time_create = peewee.IntegerField()
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
