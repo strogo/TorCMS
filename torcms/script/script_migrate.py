@@ -12,6 +12,27 @@ def run_migrate():
         migrate(migrator.add_column('tabapp', 'valid', status_field))
     except:
         pass
+
+    try:
+        migrate(migrator.drop_column('cabpagehist', 'cnt_html'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabpagehist', 'time_create'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabpagehist', 'date'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.rename_column('cabpagehist', 'id_user', 'user_name'))
+    except:
+        pass
+
     try:
         migrate(migrator.drop_column('cabpost', 'id_cats', status_field))
     except:
