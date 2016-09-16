@@ -13,6 +13,8 @@ def run_migrate():
     except:
         pass
 
+    ################################################################################################
+
     try:
         migrate(migrator.drop_column('cabpagehist', 'cnt_html'))
     except:
@@ -33,6 +35,42 @@ def run_migrate():
     except:
         pass
 
+    ###################################################################################################
+
+    try:
+        migrate(migrator.drop_column('cabwikihist', 'date'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabwikihist', 'time_create'))
+    except:
+        pass
+
+    ##########################################################################################
+
+    try:
+        migrate(migrator.drop_column('cabposthist', 'id_spec'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabposthist', 'id_cats'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabposthist', 'date'))
+    except:
+        pass
+
+    try:
+        migrate(migrator.drop_column('cabposthist', 'time_create'))
+    except:
+        pass
+
+
+    ##########################################################################################
     try:
         migrate(migrator.drop_column('cabpost', 'id_cats', status_field))
     except:
@@ -50,14 +88,7 @@ def run_migrate():
     except:
         pass
 
-    try:
-        migrate(migrator.drop_column('cabposthist', 'id_spec'))
-    except:
-        pass
-    try:
-        migrate(migrator.drop_column('cabposthist', 'id_cats'))
-    except:
-        pass
+
 
 
 

@@ -24,9 +24,9 @@ class MPostHist(MSuperTable):
         CabPostHist.create(
             uid=uid,
             title=raw_data.title,
-            date=raw_data.date,
+            # date=raw_data.date,
             post_id=raw_data.uid,
-            time_create=raw_data.time_create,
+            # time_create=raw_data.time_create,
             user_name=raw_data.user_name,
             cnt_md=raw_data.cnt_md,
             time_update=raw_data.time_update,
