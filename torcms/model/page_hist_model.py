@@ -20,13 +20,12 @@ class MPageHist(MSuperTable):
         CabPageHist.create(
                 uid=uid,
                 title=raw_data.title,
-                date=raw_data.date,
+                # date=raw_data.date,
                 page_slug=raw_data.slug,
-                time_create=raw_data.time_create,
-                id_user=raw_data.id_user,
+                # time_create=raw_data.time_create,
+                user_name=raw_data.id_user,
                 cnt_md=raw_data.cnt_md,
                 time_update=raw_data.time_update,
-
 
             )
         return True

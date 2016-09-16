@@ -102,11 +102,11 @@ class CabWikiHist(BaseModel):
 class CabPageHist(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
     title = peewee.CharField(null=False, max_length=255, )
-    page_slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
-    date = peewee.DateTimeField()
-    cnt_html = peewee.TextField()
-    time_create = peewee.IntegerField()
-    id_user = peewee.CharField()
+    page_slug = peewee.CharField(null=False, max_length=36, help_text='', )
+    # date = peewee.DateTimeField()
+    # cnt_html = peewee.TextField()
+    # time_create = peewee.IntegerField()
+    user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
 
