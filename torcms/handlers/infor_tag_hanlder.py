@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from  math import ceil as math_ceil
+import json
 import tornado.escape
 from torcms.model.infor_model import MInfor
 from torcms.model.inforcatalog_model import MInforCatalog
@@ -18,7 +19,7 @@ class InforTagHandler(BaseHandler):
         self.init()
 
         self.mequa = MInfor()
-        self.mtag = MInforCatalog()
+        self.mcat = MInforCatalog()
         self.mapp2tag = MInfor2Catalog()
 
     def get(self, url_str=''):
@@ -30,7 +31,25 @@ class InforTagHandler(BaseHandler):
         if len(url_arr) == 1:
             self.list(url_str)
         elif len(url_arr) == 2:
-            self.list(url_arr[0], url_arr[1])
+            if url_arr[0] == 'j_subcat':
+                self.ajax_subcat_arr(url_arr[1][:2])
+            else:
+                self.list(url_arr[0], url_arr[1])
+
+    def ajax_subcat_arr(self, qian2):
+        cur_cat = self.mcat.query_uid_starts_with(qian2)
+
+
+        out_arr = {}
+        for x in cur_cat:
+            if x.uid.endswith('00'):
+                continue
+            # out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
+            out_arr[x.uid] = x.name
+
+        # out_dic = {'arr': out_arr}
+        json.dump(out_arr, self)
+
 
     def list(self, tag_slug, cur_p=''):
         '''
@@ -42,7 +61,7 @@ class InforTagHandler(BaseHandler):
             current_page_number = 1
         else:
             current_page_number = int(cur_p)
-        taginfo = self.mtag.get_by_slug(tag_slug)
+        taginfo = self.mcat.get_by_slug(tag_slug)
         num_of_tag = self.mapp2tag.count_of_certain_category(taginfo.uid)
         page_num = math_ceil(num_of_tag / config.page_num) 
         tag_name = taginfo.name

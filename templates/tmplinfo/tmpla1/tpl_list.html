@@ -26,6 +26,7 @@
         // 选择之后，将条件放到 url 中，
         var html_condition = window.location.href + '/con';
         var html_pagination = window.location.href + '/num';
+        // alert(html_condition);
         for (var ii in obj) {
             if (obj[ii] != '') {
                 html_condition += '/' + ii + '/' + obj[ii];
@@ -33,19 +34,13 @@
             }
         }
 
-        $('#resultSpan').load(html_condition);
+        $.get(html_condition, function(result){
+    $("#resultSpan").html(result);
+  });
+        // $('#resultSpan').load(html_condition);
         $('#resultFenye').load(html_pagination);
     }
 
-</script>
-
-<script type="text/javascript">
-    $(function () {
-        select();
-    });
-</script>
-
-<script type="text/javascript">
     function keyword_del(key_name, id_num) {
 
         id_num = id_num.toString();
@@ -59,7 +54,17 @@
             select();
         });
     }
+
+
 </script>
+
+<script type="text/javascript">
+    $(function () {
+        select();
+    });
+</script>
+
+
 
 {% end %}
 
@@ -89,7 +94,6 @@
         </ul>
 
         <div class="clear"></div>
-
         <div class="iga_pagination">
 
             <span id="resultFenye"></span>
@@ -136,7 +140,6 @@
                 <li class="list-group-item"><a href="/list/{{ taginfo.uid }}">{{ taginfo.name }}</a></li>
                 {% end %}
                 {% end %}
-
             </ul>
         </div>
         <div id="list-group" >

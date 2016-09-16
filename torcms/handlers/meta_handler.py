@@ -15,27 +15,31 @@ from torcms.model.usage_model import MUsage
 from  config import cfg
 from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
+from torcms.handlers.post_handler import PostHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.app_hist_model import MAppHist
 
 
-class MetaHandler(BaseHandler):
+
+class MetaHandler( PostHandler ):
     def initialize(self):
         self.init()
-        self.mappcat = MInforCatalog()
-        self.mevaluation = MEvaluation()
-        self.mapp2catalog = MInfor2Catalog()
-        self.mapp2tag = MInfor2Label()
-        self.mapp = MInfor()
-        self.musage = MUsage()
-        self.mtag = MInforCatalog()
+        self.mpost = MInfor()
+        self.mcat = MInforCatalog()
+        self.cats = self.mcat.query_all()
+        self.mpost_hist = MAppHist()
+        self.mpost2catalog = MInfor2Catalog()
+        self.mpost2reply = MInfor2Reply()
+        self.mpost2label = MInfor2Label()
         self.mrel = MInforRel()
-        self.mreply = MInfor2Reply()
-        self.mapp_hist = MAppHist()
-        if 'app_url_name' in cfg:
-            self.app_url_name = cfg['app_url_name']
-        else:
-            self.app_url_name = 'info'
+
+
+        self.musage = MUsage()
+        self.mevaluation = MEvaluation()
+        # if 'app_url_name' in cfg:
+        #     self.app_url_name = cfg['app_url_name']
+        # else:
+        #     self.app_url_name = 'info'
 
     def get(self, url_str=''):
 
@@ -45,8 +49,8 @@ class MetaHandler(BaseHandler):
             self.user_to_add(url_arr[1])
         elif url_arr[0] == 'catalog':
             self.catalog()
-        elif len(url_arr) == 1 and len(url_str) == 4:
-            self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
+        # elif len(url_arr) == 1 and len(url_str) == 4:
+        #     self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
         elif len(url_arr) == 2:
             if url_arr[0] == 'edit':
                 self.to_edit_app(url_arr[1])
@@ -54,20 +58,20 @@ class MetaHandler(BaseHandler):
                 self.to_add_app(url_arr[1])
             elif url_arr[0] == 'delete':
                 self.to_del_app(url_arr[1])
-
-
             else:
                 '''
                 从相关计算中过来的。
                 '''
-                self.mrel.update_relation(url_arr[1], url_arr[0])
-                self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
+                pass
+                # self.mrel.update_relation(url_arr[1], url_arr[0])
+                # self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
         else:
             kwd = {
                 'title': '',
                 'info': '',
             }
-            self.render('html/404.html', kwd=kwd,
+            self.render('html/404.html',
+                        kwd=kwd,
                         userinfo=self.userinfo, )
 
     def post(self, url_str=''):
@@ -100,21 +104,21 @@ class MetaHandler(BaseHandler):
     def user_to_add(self, catid):
 
         uid = tools.get_uu4d()
-        while self.mapp.get_by_uid(uid):
+        while self.mpost.get_by_uid(uid):
             uid = tools.get_uu4d()
         kwd = {
             'uid': uid,
             'userid': self.userinfo.user_name,
             'def_cat_uid': catid,
-            'parentname': self.mtag.get_by_id(catid[:2] + '00').name,
-            'catname': self.mtag.get_by_id(catid).name,
+            'parentname': self.mcat.get_by_id(catid[:2] + '00').name,
+            'catname': self.mcat.get_by_id(catid).name,
         }
         self.render('autogen/add/add_{0}.html'.format(catid),
                     userinfo=self.userinfo,
                     kwd=kwd)
 
     def check_priv(self, userinfo, cat_id):
-        cat_rec = self.mappcat.get_by_uid(cat_id)
+        cat_rec = self.mcat.get_by_uid(cat_id)
         priv_mask_idx = cat_rec.priv_mask.index('1')
         priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
         if userinfo.privilege[priv_mask_idx] >= '1':
@@ -129,24 +133,26 @@ class MetaHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add_app(self, uid):
-        if self.mapp.get_by_uid(uid):
-            self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
+        if self.mpost.get_by_uid(uid):
+            # todo:
+            # self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
+            pass
         else:
             self.render('infor/app/add.html',
-                        tag_infos=self.mtag.query_all(),
+                        tag_infos=self.mcat.query_all(),
                         userinfo=self.userinfo,
                         kwd={'uid': uid,}
                         )
 
     @tornado.web.authenticated
     def to_del_app(self, uid):
-        current_infor = self.mapp.get_by_uid(uid)
+        current_infor = self.mpost.get_by_uid(uid)
         if self.check_priv(self.userinfo, current_infor.extinfo['def_cat_uid'])['DELETE']:
             pass
         else:
             return False
 
-        if self.mapp.delete(uid):
+        if self.mpost.delete(uid):
             self.redirect('/list/{0}'.format(current_infor.extinfo['def_cat_uid']))
         else:
             self.redirect('/info/{0}'.format(uid))
@@ -154,7 +160,7 @@ class MetaHandler(BaseHandler):
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
 
-        rec_info = self.mapp.get_by_uid(infoid)
+        rec_info = self.mpost.get_by_uid(infoid)
 
         if rec_info:
             pass
@@ -168,9 +174,9 @@ class MetaHandler(BaseHandler):
 
         kwd = {
             'def_cat_uid': catid,
-            'parentname': self.mtag.get_by_id(catid[:2] + '00').name if catid != '' else '',
-            'catname': self.mtag.get_by_id(catid).name if catid != '' else '',
-            'parentlist': self.mtag.get_parent_list(),
+            'parentname': self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else '',
+            'catname': self.mcat.get_by_id(catid).name if catid != '' else '',
+            'parentlist': self.mcat.get_parent_list(),
             'userip': self.request.remote_ip
         }
 
@@ -186,10 +192,21 @@ class MetaHandler(BaseHandler):
                     userinfo=self.userinfo,
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
-                    cat_enum=self.mappcat.get_qian2(catid[:2]),
-                    tag_infos=self.mappcat.query_all(by_order=True),
-                    app2tag_info=self.mapp2catalog.query_by_entity_uid(infoid),
-                    app2label_info=self.mapp2tag.get_by_id(infoid), )
+                    cat_enum=self.mcat.get_qian2(catid[:2]),
+                    tag_infos=self.mcat.query_all(by_order=True),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid),
+                    app2label_info=self.mpost2label.get_by_id(infoid), )
+
+    def check_update_role(self,  current_info, post_data):
+        #  to check if current user could update the meta
+        if current_info.user_name == self.userinfo.user_name:
+            return True
+        elif self.userinfo.privilege[2] >= '1':
+            return True
+        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']:
+            return True
+        else:
+            return False
 
     @tornado.web.authenticated
     def update(self, uid):
@@ -204,20 +221,19 @@ class MetaHandler(BaseHandler):
         post_data['user_name'] = self.userinfo.user_name
 
 
-        current_info = self.mapp.get_by_uid(uid)
+        current_info = self.mpost.get_by_uid(uid)
+
+        if self.check_update_role(current_info, post_data):
+            pass
+        else:
+            return False
+
         if 'valid' in post_data:
             post_data['valid'] =  int(post_data['valid'][0])
         else:
             post_data['valid'] = current_info.valid
 
-        if current_info.user_name == self.userinfo.user_name:
-            pass
-        elif self.userinfo.privilege[4] >= '1':
-            pass
-        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']:
-            pass
-        else:
-            return False
+
 
         ext_dic['def_uid'] = str(uid)
         if 'def_cat_uid' in post_data:
@@ -226,13 +242,13 @@ class MetaHandler(BaseHandler):
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
-        self.mapp_hist.insert_data(self.mapp.get_by_id(uid))
-        self.mapp.modify_meta(uid,
-                              post_data,
-                              extinfo=ext_dic)
+        self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
+        self.mpost.modify_meta(uid,
+                               post_data,
+                               extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/{0}/{1}'.format(self.app_url_name, uid))
+        self.redirect('/info/{0}'.format( uid))
 
     @tornado.web.authenticated
     def add(self, uid=''):
@@ -252,13 +268,13 @@ class MetaHandler(BaseHandler):
 
         if uid == '':
             uid = tools.get_uu4d()
-            while self.mapp.get_by_uid(uid):
+            while self.mpost.get_by_uid(uid):
                 uid = tools.get_uu4d()
             post_data['uid'][0] = uid
 
         post_data['user_name'] = self.userinfo.user_name
         if 'valid' in post_data:
-            post_data['valid'] =  int(post_data['valid'][0])
+            post_data['valid'] = int(post_data['valid'][0])
         else:
             post_data['valid'] = 1
 
@@ -270,13 +286,14 @@ class MetaHandler(BaseHandler):
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
 
-        self.mapp.modify_meta(ext_dic['def_uid'],
-                              post_data,
-                              extinfo=ext_dic)
+        self.mpost.modify_meta(ext_dic['def_uid'],
+                               post_data,
+                               extinfo=ext_dic)
         self.update_catalog(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
-        self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
+        # self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
+        self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated
     def extra_data(self, ext_dic, post_data):
@@ -287,59 +304,15 @@ class MetaHandler(BaseHandler):
         '''
         return ext_dic
 
-    @tornado.web.authenticated
-    def update_tag(self, signature):
 
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
-        current_tag_infos = self.mapp2tag.get_by_id(signature)
-        tags_arr = [x.strip() for x in post_data['tags'][0].split(',')]
-        for tag_name in tags_arr:
-            if tag_name == '':
-                pass
-            else:
-                self.mapp2tag.add_record(signature, tag_name, 1)
 
-        for cur_info in current_tag_infos:
-            if cur_info.tag.name in tags_arr:
-                pass
-            else:
-                self.mapp2tag.remove_relation(signature, cur_info.tag)
-
-    @tornado.web.authenticated
-    def update_catalog(self, signature):
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
-        current_catalog_infos = self.mapp2catalog.query_by_entity_uid(signature)
-
-        new_tag_arr = []
-        for idx, key in enumerate(['cat_1', 'cat_2', 'cat_3', 'cat_4', 'cat_5', 'def_cat_uid']):
-            if key in post_data:
-                vv = post_data[key][0]
-                if vv == '':
-                    pass
-                else:
-                    new_tag_arr.append(vv)
-                    self.mapp2catalog.add_record(signature, vv, idx)
-            else:
-                pass
-
-        for cur_info in current_catalog_infos:
-            if str(cur_info.catalog.uid).strip() in new_tag_arr:
-                pass
-            else:
-                self.mapp2catalog.remove_relation(signature, cur_info.catalog)
 
     @tornado.web.authenticated
     def add_comment(self, id_post):
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
         post_data['user_id'] = self.userinfo.uid
         post_data['user_name'] = self.userinfo.user_name
-        comment_uid = self.mreply.insert_data(post_data, id_post)
+        comment_uid = self.mpost2reply.insert_data(post_data, id_post)
         if comment_uid:
             output = {
                 'pinglun': comment_uid,
@@ -351,7 +324,7 @@ class MetaHandler(BaseHandler):
         return json.dump(output, self)
 
     def add_relation(self, f_uid, t_uid):
-        if False == self.mapp.get_by_uid(t_uid):
+        if False == self.mpost.get_by_uid(t_uid):
             return False
         if f_uid == t_uid:
             '''

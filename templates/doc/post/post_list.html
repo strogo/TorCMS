@@ -14,11 +14,7 @@
 <div class="panel panel-default">
 
 <div class="panel-heading">文档列表</div>
-
-
-
     <ul class="list-group">
-
         {% for x in view %}
         <li class="list-group-item">
             <a href="/post/{{x.uid}}.html" title="x.title">
@@ -33,8 +29,7 @@
     <div>
         <ul class="pagination">
         {% raw kwd['pager'] %}
-            </ul>
-
+        </ul>
     </div>
 
 </div>

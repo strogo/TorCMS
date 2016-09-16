@@ -45,7 +45,7 @@ class MPost2Catalog(MSuperTable):
             self.tab_post2catalog.catalog)
         return (recs)
 
-    def add_record(self, post_id, catalog_id, order=1):
+    def add_record(self, post_id, catalog_id, order=0):
         tt = self.__get_by_info(post_id, catalog_id)
         if tt:
             entry = self.tab_post2catalog.update(

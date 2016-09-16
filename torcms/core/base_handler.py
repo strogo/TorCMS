@@ -34,6 +34,12 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             self.userinfo = None
 
+    def get_post_data(self):
+        post_data = {}
+        for key in self.request.arguments:
+            post_data[key] = self.get_arguments(key)
+        return post_data
+
     def parse_url(self, url_str):
         url_str = url_str.strip()
         url_arr = [] if len(url_str) == 0 else url_str.split('/')

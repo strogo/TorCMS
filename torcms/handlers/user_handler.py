@@ -309,7 +309,7 @@ class UserHandler(BaseHandler):
                 '2' for already exists.
         '''
         user_create_status = {'success': False, 'code': '00'}
-        post_data = tools.get_post_data(self)
+        post_data = self.get_post_data()
         user_create_status = self.__check_valid(post_data)
         if user_create_status['success'] == False:
             return json.dump(user_create_status, self)
@@ -335,7 +335,7 @@ class UserHandler(BaseHandler):
         '''
 
         user_create_status = {'success': False, 'code': '00'}
-        post_data = tools.get_post_data(self)
+        post_data = self.get_post_data()
         uu = self.muser.check_user(self.user_name, post_data['rawpass'][0])
 
         if uu == 1:

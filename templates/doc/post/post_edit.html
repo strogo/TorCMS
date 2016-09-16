@@ -3,73 +3,6 @@
 <title>OSGeo中国中心 | 开放地理空间实验室</title>
 <meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
 <meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
-<script>
-
-    $.ready()
-    {
-        function load_subcat(ii) {
-            // uu = $('#tag' + ii.toString() + ' option:selected').text();
-            var pid = $('#ptag' + ii.toString()).val();
-
-
-            $.ajax({
-                url: '/category/j_subcat/' + pid,
-                type: 'GET',
-                data: {},
-                timeout: 1000,
-                error: function () {
-                    alert('重新加载');
-                },
-                success: function (result) {
-                    json_res = $.parseJSON(result);
-                    subcat_arr = json_res['arr'];
-
-
-                    alert(subcat_arr);
-                    var tag = $('#tag' + ii.toString()).val();
-
-                    var str = '';
-
-                    var data = eval("(" + subcat_arr + ")");
-
-                    alert(data);
-                    for (var o in data) {
-
-                        str += '<option value="'+data[o].zid+'">'+data[o].name+'</option>';
-
-                    }
-
-
-                    tag.append(str);
-
-
-
-
-
-                }
-
-
-
-
-
-
-            });
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-    }
-</script>
-
 
 {% end %}
 
@@ -112,22 +45,24 @@
                 </div>
 
 
-                {% for ii in range(1,6) %}
+                {% for ii in range(0,5) %}
                 <div class="form-group">
-                    <label for="ptag{{ii}}" class="col-sm-2 control-label">标签{{ii}}</label>
-
+                    {% if ii == 0 %}
+                    <label for="pcat0" class="col-sm-2 control-label">标签</label>
+                    {% else %}
+                    <label class="col-sm-2 control-label"></label>
+                    {% end %}
                     <div class="col-sm-3">
-                        <select name="ptag{{ii}}" id="ptag{{ii}}" class="form-control" onchange="load_subcat({{ii}})">
+                        <select name="pcat{{ii}}" id="pcat{{ii}}" class="form-control" onchange="g_load_postcat({{ii}})">
                             <option value="">请选择</option>
                             {% for taginfo in tag_infos %}
                             {% if taginfo.uid.endswith('00') %}
                             <option value="{{ taginfo.uid }}"
                                     {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
+                                    {% if tt.order== ii and tt.catalog.uid.startswith(taginfo.uid[:2]) %}
                                     selected
                                     {% end %}
-                                    {% end %}
-                                    >{{taginfo.uid[:2]}}_{{ taginfo.name }}
+                                    {% end %} >{{ taginfo.name }}
                             </option>
                             {% else %}
 
@@ -136,9 +71,34 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-3">
-                        <select name="tag{{ii}}" id="tag{{ii}}" class="form-control" >
+                    <div class="col-sm-4">
+                        <select name="gcat{{ii}}" id="gcat{{ii}}" class="form-control" >
                             <option value="0">请选择</option>
+                            {# 设置父类ID，用在下面子类是否显示看 #}
+                            {% for taginfo in tag_infos %}
+                                {% for tt in app2tag_info %}
+                                    {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
+                                        {% set pcatid = tt.catalog.uid[:2] %}
+                                    {% else %}
+                                        {% set pcatid = 'xx' %}
+                                    {% end %}
+                                {% end %}
+                            {% end %}
+
+                            {% for taginfo in tag_infos %}
+                            {% if taginfo.uid.startswith(pcatid) %}
+                            {% if not taginfo.uid.endswith('00') %}
+                            <option value="{{ taginfo.uid }}"
+                                    {% for tt in app2tag_info %}
+                                    {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
+                                    selected
+                                    {% end %}
+                                    {% end %}  >{{ taginfo.name }}
+                            </option>
+                            {% else %}
+                            {% end %}
+                            {% end %}
+                            {% end %}
 
                         </select>
                     </div>
