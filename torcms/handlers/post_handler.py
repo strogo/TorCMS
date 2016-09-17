@@ -210,8 +210,11 @@ class PostHandler(BaseHandler):
         post_data = self.get_post_data()
         current_infos = self.mpost2catalog.query_by_id(uid)
         new_tag_arr = []
-        # 得到新的分类 list
-        for key in ['gcat{0}'.format(x) for x in range(10)]:
+        # HTML中预定义的
+        def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
+        # todo: next line should be deleted. keep here for historical reason.
+        def_cate_arr.append('def_cat_uid')
+        for key in def_cate_arr:
             if key in post_data:
                 pass
             else:
