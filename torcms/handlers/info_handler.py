@@ -119,7 +119,12 @@ class InfoHandler(BaseHandler):
             ext_catid = app_rec.extinfo['def_cat_uid']
         else:
             ext_catid = ''
-
+        
+        print('-' * 10)
+        if len(ext_catid) == 4:
+            pass
+        else:
+            ext_catid = ''
         parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name if ext_catid != '' else ''
         if ext_catid != '':
             cat_rec = self.mcat.get_by_uid(ext_catid)

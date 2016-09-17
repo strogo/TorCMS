@@ -221,6 +221,8 @@ class PostHandler(BaseHandler):
                 continue
             if post_data[key][0] == '':
                 continue
+            if len(post_data[key][0]) != 4:
+                continue
             print(post_data[key][0])
             print(new_tag_arr)
             # 有可能选重复了。保留前面的

@@ -170,6 +170,11 @@ class MetaHandler(PostHandler):
         else:
             catid = ''
 
+        if len(catid) == 4:
+            pass
+        else:
+            catid = ''
+
         kwd = {
             'def_cat_uid': catid,
             'parentname': self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else '',
@@ -215,6 +220,7 @@ class MetaHandler(PostHandler):
         if 'gcat0' in post_data:
             ext_cat_uid['def_cat_uid'] = post_data['gcat0'][0]
             ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['gcat0'][0][:2])
+        print(ext_cat_uid)
         return ext_cat_uid
 
     @tornado.web.authenticated
@@ -242,6 +248,7 @@ class MetaHandler(PostHandler):
             post_data['valid'] = current_info.valid
 
         ext_dic['def_uid'] = str(uid)
+        print(post_data)
 
         ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
