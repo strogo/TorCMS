@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+'''
+基于分类信息模式，通过词查看
+'''
 
 import json
 
@@ -35,9 +38,10 @@ class InfoTagHandler(BaseHandler):
         return json.dump({}, self)
 
     def list(self, tag_slug, cur_p=''):
-
-        if self.get_current_user():
-            redisvr.sadd(config.redis_kw + self.userinfo.user_name, tag_slug)
+        # 下面用来使用关键字过滤信息，如果网站信息量不是很大不要开启
+        # Todo:
+        # if self.get_current_user():
+        #     redisvr.sadd(config.redis_kw + self.userinfo.user_name, tag_slug)
 
         if cur_p == '':
             current_page_num = 1

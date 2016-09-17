@@ -20,8 +20,7 @@ from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.app_hist_model import MAppHist
 
 
-
-class MetaHandler( PostHandler ):
+class MetaHandler(PostHandler):
     def initialize(self):
         self.init()
         self.mpost = MInfor()
@@ -32,7 +31,6 @@ class MetaHandler( PostHandler ):
         self.mpost2reply = MInfor2Reply()
         self.mpost2label = MInfor2Label()
         self.mrel = MInforRel()
-
 
         self.musage = MUsage()
         self.mevaluation = MEvaluation()
@@ -180,7 +178,7 @@ class MetaHandler( PostHandler ):
             'userip': self.request.remote_ip
         }
 
-        if catid:
+        if cfg['site_type'] == 2:
             tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
         else:
             tmpl = 'infor/app/edit.html'
@@ -197,7 +195,7 @@ class MetaHandler( PostHandler ):
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid),
                     app2label_info=self.mpost2label.get_by_id(infoid), )
 
-    def check_update_role(self,  current_info, post_data):
+    def check_update_role(self, current_info, post_data):
         #  to check if current user could update the meta
         if current_info.user_name == self.userinfo.user_name:
             return True
@@ -207,6 +205,17 @@ class MetaHandler( PostHandler ):
             return True
         else:
             return False
+
+    def get_def_cat_uid(self, post_data):
+        # 下面两种处理方式，上面是原有的，暂时保留以保持兼容
+        ext_cat_uid = {}
+        if 'def_cat_uid' in post_data:
+            ext_cat_uid['def_cat_uid'] = post_data['def_cat_uid'][0]
+            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
+        if 'gcat0' in post_data:
+            ext_cat_uid['def_cat_uid'] = post_data['gcat0'][0]
+            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['gcat0'][0][:2])
+        return ext_cat_uid
 
     @tornado.web.authenticated
     def update(self, uid):
@@ -220,7 +229,6 @@ class MetaHandler( PostHandler ):
 
         post_data['user_name'] = self.userinfo.user_name
 
-
         current_info = self.mpost.get_by_uid(uid)
 
         if self.check_update_role(current_info, post_data):
@@ -229,16 +237,13 @@ class MetaHandler( PostHandler ):
             return False
 
         if 'valid' in post_data:
-            post_data['valid'] =  int(post_data['valid'][0])
+            post_data['valid'] = int(post_data['valid'][0])
         else:
             post_data['valid'] = current_info.valid
 
-
-
         ext_dic['def_uid'] = str(uid)
-        if 'def_cat_uid' in post_data:
-            ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
-            ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
+
+        ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
@@ -248,7 +253,7 @@ class MetaHandler( PostHandler ):
                                extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/info/{0}'.format( uid))
+        self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated
     def add(self, uid=''):
@@ -279,9 +284,8 @@ class MetaHandler( PostHandler ):
             post_data['valid'] = 1
 
         ext_dic['def_uid'] = str(uid)
-        if 'def_cat_uid' in post_data:
-            ext_dic['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
-            ext_dic['def_cat_uid'] = post_data['def_cat_uid'][0]
+
+        ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
@@ -303,9 +307,6 @@ class MetaHandler( PostHandler ):
         :return: directory.
         '''
         return ext_dic
-
-
-
 
     @tornado.web.authenticated
     def add_comment(self, id_post):

@@ -75,12 +75,11 @@
                         <select name="gcat{{ii}}" id="gcat{{ii}}" class="form-control" >
                             <option value="0">请选择</option>
                             {# 设置父类ID，用在下面子类是否显示看 #}
+                            {% set pcatid = 'xx' %}
                             {% for taginfo in tag_infos %}
                                 {% for tt in app2tag_info %}
                                     {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
                                         {% set pcatid = tt.catalog.uid[:2] %}
-                                    {% else %}
-                                        {% set pcatid = 'xx' %}
                                     {% end %}
                                 {% end %}
                             {% end %}

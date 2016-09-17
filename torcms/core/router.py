@@ -1,15 +1,15 @@
 # -*- coding:utf-8 -*-
 
 import torcms.handlers.info_handler
-import torcms.handlers.info_list_handler
-import torcms.handlers.info_publish_handler
+import torcms.handlers.infocate_list_handler
+import torcms.handlers.infocate_publish_handler
 from torcms.handlers.admin_handler import AdminHandler
 from torcms.handlers.category_handler import CategoryHandler
 from torcms.handlers.entity_handler import EntityHandler
 from torcms.handlers.index import IndexHandler
-from torcms.handlers.infor_tag_hanlder import InforTagHandler
+from torcms.handlers.info_tag_hanlder import InforTagHandler
 
-from torcms.handlers.info_tag_hanler import InfoTagHandler
+from torcms.handlers.infocate_tag_hanler import InfoTagHandler
 from torcms.handlers.post_label_handler import PostLabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
 from torcms.handlers.maintain_handler import MaintainCategoryHandler, MaintainCategoryAjaxHandler
@@ -62,11 +62,13 @@ urls = [
     ('/meta/(.*)', MetaHandler, dict()),
     ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
-    ("/tag/(.*)", InforTagHandler, dict()),
+
 
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
-    ("/list/(.*)", torcms.handlers.info_list_handler.InfoListHandler, dict()),
-    ("/publish/(.*)", torcms.handlers.info_publish_handler.InfoPublishHandler, dict()),
+    ("/list/(.*)", torcms.handlers.infocate_list_handler.InfoListHandler, dict()),
+    ("/publish/(.*)", torcms.handlers.infocate_publish_handler.InfoPublishHandler, dict()),
+
+    ("/tag/(.*)", InforTagHandler, dict()),
     ('/info_tag/(.*)', InfoTagHandler, dict(hinfo={})),
 
     ("/collect/(.*)", CollectHandler, dict()),
