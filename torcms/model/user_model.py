@@ -71,12 +71,13 @@ class MUser(MSuperTable):
             out_dic['code'] = '21'
             return out_dic
 
-        try:
-            CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
-            out_dic['success'] = True
-            return out_dic
-        except:
-            return out_dic
+
+        CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
+
+        out_dic['success'] = True
+        print("更改邮箱" * 50)
+        return out_dic
+
 
 
 
@@ -136,20 +137,23 @@ class MUser(MSuperTable):
         else:
             role = '10000'
 
-        try:
-            CabMember.create(uid=tools.get_uuid(),
-                             user_name=post_data['user_name'][0],
-                             user_pass=tools.md5(post_data['user_pass'][0]),
-                             user_email=post_data['user_email'][0],
-                             privilege=role,
-                             time_create=tools.timestamp(),
-                             time_update=tools.timestamp(),
-                             time_reset_passwd=tools.timestamp(),
-                             )
-            out_dic['success'] = True
-            return out_dic
-        except:
-            return out_dic
+
+
+        CabMember.create(uid=tools.get_uuid(),
+                         user_name=post_data['user_name'][0],
+                         user_pass=tools.md5(post_data['user_pass'][0]),
+                         user_email=post_data['user_email'][0],
+                         privilege=role,
+                         time_create=tools.timestamp(),
+                         time_update=tools.timestamp(),
+                         time_reset_passwd=tools.timestamp(),
+                         time_login=tools.timestamp(),
+                         time_email=tools.timestamp()
+                         )
+
+        out_dic['success'] = True
+        return out_dic
+
 
     def get_by_keyword(self, par2):
         return CabMember.select().where(CabMember.user_name.contains(par2))

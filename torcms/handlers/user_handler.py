@@ -239,7 +239,7 @@ class UserHandler(BaseHandler):
 
         if tools.check_username_valid(post_data['user_name'][0]) == False:
             user_create_status['code'] = '11'
-            print('Gotit')
+
             return user_create_status
         elif tools.check_email_valid(post_data['user_email'][0]) == False:
             user_create_status['code'] = '21'
@@ -250,7 +250,9 @@ class UserHandler(BaseHandler):
         elif self.muser.get_by_email(post_data['user_email'][0]):
             user_create_status['code'] = '22'
             return user_create_status
+
         user_create_status['success'] = True
+        print(user_create_status)
         return user_create_status
 
     def __check_valid2(self, post_data):
@@ -347,6 +349,7 @@ class UserHandler(BaseHandler):
             form2 = SumForm2(self.request.arguments)
             print("/*" * 50)
             print(user_create_status)
+
             if form2.validate():
                 user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
                 return json.dump(user_create_status, self)
