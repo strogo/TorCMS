@@ -6,7 +6,7 @@ $.ready()
         $.ajax({
             type: "POST",
             url: "/user/reset-password",
-            data: "email=" + $("#user_email").val()                   ,
+            data: "email=" + $("#user_email").val(),
 
             success: function (msg) {
                 alert('已经成功重置了密码！请检查电子邮箱！');
