@@ -49,14 +49,30 @@ class MUser(MSuperTable):
         return 0
 
     def update_pass(self, u_name, newpass):
-        entry = CabMember.update(
-            user_pass=tools.md5(newpass),
-        ).where(CabMember.user_name == u_name)
-        try:
-            entry.execute()
-            return True
-        except:
-            return False
+
+        out_dic = {'success': False, 'code': '00'}
+
+
+        entry = CabMember.update(user_pass=tools.md5(newpass)).where(CabMember.user_name == u_name)
+        entry.execute()
+
+        out_dic['success'] = True
+
+        return out_dic
+
+
+        #entry = CabMember.update(
+        #    user_pass=tools.md5(newpass),
+        #).where(CabMember.user_name == u_name)
+        #try:
+        #    entry.execute()
+        #    return True
+        #except:
+        #    return False
+
+
+
+
     def query_nologin(self):
         time_now = tools.timestamp()
         # num * month * hours * minite * second
@@ -74,6 +90,7 @@ class MUser(MSuperTable):
 
         entry = CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
         entry.execute()
+
         out_dic['success'] = True
 
         return out_dic

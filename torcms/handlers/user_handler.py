@@ -21,9 +21,13 @@ class SumForm(Form):
     user_name = StringField('user_name', validators=[Required()])
     user_pass = StringField('user_pass', validators=[Required()])
     user_email = StringField('user_email', validators=[Required(), wtforms.validators.Email()])
-class SumForm2(Form):
 
+class SumForm_info(Form):
     user_email = StringField('user_email', validators=[Required(), wtforms.validators.Email()])
+
+class SumForm_pass(Form):
+    user_pass = StringField('user_pass', validators=[Required()])
+
 
 class UserHandler(BaseHandler):
     def initialize(self):
@@ -82,6 +86,9 @@ class UserHandler(BaseHandler):
         elif url_str == 'j_changeinfo':
 
             self.json_changeinfo()
+        elif url_str == 'j_changepass':
+
+            self.json_changepass()
         elif url_str == 'login':
             self.login()
         elif url_str == 'changepass':
@@ -255,14 +262,25 @@ class UserHandler(BaseHandler):
         print(user_create_status)
         return user_create_status
 
-    def __check_valid2(self, post_data):
+    def __check_valid_info(self, post_data):
         user_create_status = {'success': False, 'code': '00'}
+
         if tools.check_email_valid(post_data['user_email'][0]) == False:
             user_create_status['code'] = '21'
             return user_create_status
         elif self.muser.get_by_email(post_data['user_email'][0]):
             user_create_status['code'] = '22'
             return user_create_status
+
+        user_create_status['success'] = True
+        return user_create_status
+
+    def __check_valid_pass(self, post_data):
+        user_create_status = {'success': False, 'code': '00'}
+        #if self.muser.check_user(self.user_name,post_data['user_pass'][0]) ==0:
+        #    user_create_status['code'] = '31'
+        #    return user_create_status
+
 
         user_create_status['success'] = True
         return user_create_status
@@ -338,19 +356,58 @@ class UserHandler(BaseHandler):
 
         user_create_status = {'success': False, 'code': '00'}
         post_data = self.get_post_data()
+
         uu = self.muser.check_user(self.user_name, post_data['rawpass'][0])
 
         if uu == 1:
 
-            user_create_status = self.__check_valid2(post_data)
+            user_create_status = self.__check_valid_info(post_data)
             if user_create_status['success'] == False:
                 return json.dump(user_create_status, self)
 
-            form2 = SumForm2(self.request.arguments)
+            form_info = SumForm_info(self.request.arguments)
 
 
-            if form2.validate():
+            if form_info.validate():
                 user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
+                return json.dump(user_create_status, self)
+            else:
+                return json.dump(user_create_status, self)
+
+
+
+        else:
+            return False
+
+    def json_changepass(self):
+        '''
+                The first char of 'code' stands for the different field.
+                '1' for user_name
+                '2' for user_email
+                '3' for user_pass
+                '4' for user_privilege
+                The seconde char of 'code' stands for different status.
+                '1' for invalide
+                '2' for already exists.
+        '''
+
+
+        user_create_status = {'success': False, 'code': '00'}
+        post_data = self.get_post_data()
+
+        uu = self.muser.check_user(self.user_name, post_data['rawpass'][0])
+
+        if uu == 1:
+
+            user_create_status = self.__check_valid_pass(post_data)
+            if user_create_status['success'] == False:
+                return json.dump(user_create_status, self)
+
+            form_pass = SumForm_pass(self.request.arguments)
+
+
+            if form_pass.validate():
+                self.muser.update_pass(self.user_name, post_data['user_pass'][0])
                 return json.dump(user_create_status, self)
             else:
                 return json.dump(user_create_status, self)
