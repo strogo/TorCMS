@@ -348,3 +348,7 @@ li {
 .infoselect .list-group-item span{
     line-height: 25px;
 }
+
+
+.list-group-item ,.list-group-hover{ width: 100%;
+    float: left;}

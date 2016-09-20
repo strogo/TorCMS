@@ -72,10 +72,10 @@ class MUser(MSuperTable):
             return out_dic
 
 
-        CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
-
+        entry = CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
+        entry.execute()
         out_dic['success'] = True
-        print("更改邮箱" * 50)
+
         return out_dic
 
 

@@ -47,32 +47,7 @@
         })
     }
 </script>
-<script type="text/javascript">
-    $().ready(function () {
-        $("#form_changeinfo").validate(
-                {
-                    rules: {
 
-
-                        user_email: {
-                            required: true,
-                            email: true
-                        }
-
-                    },
-                    messages: {
-
-
-                        user_email: {
-                            required: "<span class='red'>请输入电子邮箱</span>",
-                            email: "<span class='red'>请输入正确的电子邮箱</span>"
-                        }
-
-                    }
-                }
-        );
-    });
-</script>
 {% end %}
 
 
@@ -113,7 +88,7 @@
                 <label class="col-sm-2 control-label"></label>
 
                 <div class="col-sm-10">
-                    <button onclick="change_info();"   class="btn btn-primary">修改</button>
+                    <a onclick="change_info();"   class="btn btn-primary">修改</a>
 
                 </div>
 
