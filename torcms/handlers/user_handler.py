@@ -347,8 +347,7 @@ class UserHandler(BaseHandler):
                 return json.dump(user_create_status, self)
 
             form2 = SumForm2(self.request.arguments)
-            print("/*" * 50)
-            print(user_create_status)
+
 
             if form2.validate():
                 user_create_status = self.muser.update_info(self.user_name, post_data['user_email'][0])
