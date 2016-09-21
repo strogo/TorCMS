@@ -183,10 +183,10 @@ class MetaHandler(PostHandler):
             'userip': self.request.remote_ip
         }
 
-        if cfg['site_type'] == 2:
-            tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
-        else:
-            tmpl = 'infor/app/edit.html'
+        #if cfg['site_type'] == 2:
+        tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
+        #else:
+           # tmpl = 'infor/app/edit.html'
 
         self.render(tmpl,
                     kwd=kwd,
