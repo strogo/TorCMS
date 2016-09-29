@@ -36,7 +36,7 @@ class InfoHandler(BaseHandler):
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
         if len(url_arr) == 1 and len(url_str) == 4:
-            self.view_info(url_str)
+            self.view_info('m' + url_str)
         else:
             kwd = {
                 'title': '',
