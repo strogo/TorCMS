@@ -33,7 +33,7 @@ class MSuperTable():
             return self.tab.select().order_by(peewee.fn.Rand()).limit(num)
 
     def get_parent_list(self, type = 1):
-        db_data = self.tab.select().where((self.tab.uid.endswith('00')) & ( self.tab.type == type)).order_by(
+        db_data = self.tab.select().where( ( self.tab.type == type) & (self.tab.uid.endswith('00')) ).order_by(
             self.tab.uid)
         return (db_data)
     def get_by_id(self, in_uid):

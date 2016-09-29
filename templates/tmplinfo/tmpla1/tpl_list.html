@@ -34,9 +34,11 @@
             }
         }
 
-        $.get(html_condition, function(result){
-    $("#resultSpan").html(result);
-  });
+
+        $.get(html_condition, function (result) {
+            $("#resultSpan").html(result);
+        });
+
         // $('#resultSpan').load(html_condition);
         $('#resultFenye').load(html_pagination);
     }
@@ -65,7 +67,6 @@
 </script>
 
 
-
 {% end %}
 
 {% block typebody %}
@@ -78,10 +79,10 @@
 
         <ol class="breadcrumb">
             {% module BreadCrumb(kwd['daohangstr']) %}
- {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2') %}
+            {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2') %}
             <li><a href="/publish/{{ widget_info['parentid'] }}" class="btn btn-primary btn-sm">Published
                 {{ widget_info['catname'] }} Data</a></li>
-{% end %}
+            {% end %}
         </ol>
 
 
@@ -102,8 +103,8 @@
         <div class="clear"></div>
         <div class="row">
             <div class="col-sm-12">
-            {% module baidu_share() %}
-                </div>
+                {% module baidu_share() %}
+            </div>
         </div>
         <br>
     </div>
@@ -142,7 +143,7 @@
                 {% end %}
             </ul>
         </div>
-        <div id="list-group" >
+        <div id="list-group">
             <div class="panel-heading">
                 <span class="title colorme"> Recent documents </span>
             </div>

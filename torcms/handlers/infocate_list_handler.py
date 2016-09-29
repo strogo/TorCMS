@@ -27,9 +27,10 @@ class InfoListHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        print(url_str)
+
 
         if len(url_str) == 4:
+
             self.list(url_str)
         elif len(url_str) > 4:
             self.echo_html(url_str)
@@ -183,6 +184,7 @@ class InfoListHandler(BaseHandler):
         '''
         页面打开后的渲染方法，不包含 list 的查询结果与分页导航
         '''
+
         condition = self.gen_redis_kw()
 
         sig = input

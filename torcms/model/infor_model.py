@@ -25,8 +25,8 @@ class MInforBase(MSuperTable):
         except:
             pass
 
-    def get_all(self):
-        return (self.tab_app.select().where(self.tab_app.valid == 1).order_by(self.tab_app.time_update.desc()))
+    def get_all(self, type = 2):
+        return (self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(self.tab_app.time_update.desc()))
 
     def update_jsonb(self, uid, extinfo):
         cur_extinfo = self.get_by_uid(uid).extinfo
@@ -116,45 +116,41 @@ class MInforBase(MSuperTable):
         ).where(self.tab_app.uid == uid)
         entry.execute()
 
-    def query_random(self, num=8):
+    def query_random(self, num=8, type = 2):
         fn = peewee.fn
         if config.dbtype == 1 or config.dbtype == 3:
-            return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Random()).limit(num)
+            return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(fn.Random()).limit(num)
         elif config.dbtype == 2:
-            return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Rand()).limit(num)
+            return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(fn.Rand()).limit(num)
 
-    def query_cat_random(self, catid, num=8):
+    def query_cat_random(self, catid, num=8, type = 2):
         fn = peewee.fn
         if config.dbtype == 1 or config.dbtype == 3:
-            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) & (self.tab_app2catalog.catalog == catid)).order_by(fn.Random()).limit(num)
+            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.type == type) & (self.tab_app.valid == 1) & (self.tab_app2catalog.catalog == catid)).order_by(fn.Random()).limit(num)
         elif config.dbtype == 2:
-            return self.tab_app.select().where(self.tab_app.valid == 1).order_by(fn.Rand()).limit(num)
+            return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(fn.Rand()).limit(num)
 
-    def query_most(self, num=8):
-        return self.tab_app.select().where(self.tab_app.valid == 1).order_by(self.tab_app.view_count.desc()).limit(num)
+    def query_most(self, num=8, type = 2):
+        return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(self.tab_app.view_count.desc()).limit(num)
 
-    def query_most_by_cat(self, num=8, catid=None):
+    def query_most_by_cat(self, num=8, catid=None, type = 2):
         if catid:
-            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) &
-                                                                      (
-                                                                          self.tab_app2catalog.catalog == catid)).order_by(
-            self.tab_app.view_count.desc()).limit(num)
+            return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.type == type) & (self.tab_app.valid == 1) &
+              (self.tab_app2catalog.catalog == catid)).order_by(self.tab_app.view_count.desc()).limit(num)
         else:
             return False
 
-    def query_least_by_cat(self, num=8, cat_str=1):
-        return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.valid == 1) &
-                                                                      (
-                                                                          self.tab_app2catalog.catalog == cat_str)).order_by(
-            self.tab_app.view_count).limit(num)
+    def query_least_by_cat(self, num=8, cat_str=1, type = 2):
+        return self.tab_app.select().join(self.tab_app2catalog).where((self.tab_app.type == type) & (self.tab_app.valid == 1) &
+             (self.tab_app2catalog.catalog == cat_str)).order_by(self.tab_app.view_count).limit(num)
 
-    def get_by_keyword(self, par2):
-        return self.tab_app.select().where((self.tab_app.valid == 1)
-                                           & (self.tab_app.title.contains(par2))).order_by(
-            self.tab_app.time_update.desc()).limit(20)
+    def get_by_keyword(self, par2, type = 2):
+        return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)
+           & (self.tab_app.title.contains(par2))).order_by(self.tab_app.time_update.desc()).limit(20)
 
-    def query_recent(self, num=8):
-        return self.tab_app.select().where(self.tab_app.valid == 1).order_by(self.tab_app.time_update.desc()).limit(num)
+
+    def query_recent(self, num=8, type = 2):
+        return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(self.tab_app.time_update.desc()).limit(num)
 
     def get_by_uid(self, sig):
         try:
@@ -214,13 +210,13 @@ class MInfor(MInforBase):
             return entry
         return (uid)
 
-    def query_extinfo_by_cat(self, cat_id):
-        return self.tab_app.select().where(
+    def query_extinfo_by_cat(self, cat_id, type = 2):
+        return self.tab_app.select().where((self.tab_app.type == type) &
             (self.tab_app.valid == 1) & (self.tab_app.extinfo['def_cat_uid'] == cat_id)).order_by(
             self.tab_app.time_update.desc())
 
-    def query_by_tagname(self, tag_name):
-        return self.tab_app.select().where(
+    def query_by_tagname(self, tag_name, type = 2):
+        return self.tab_app.select().where((self.tab_app.type == type) &
             (self.tab_app.valid == 1) & (self.tab_app.extinfo['def_tag_arr'].contains(tag_name))).order_by(
             self.tab_app.time_update.desc())
 
@@ -254,8 +250,8 @@ class MInfor(MInforBase):
         )
         return (entry.uid)
 
-    def get_list(self, condition):
-        db_data = self.tab_app.select().where(
+    def get_list(self, condition, type = 2):
+        db_data = self.tab_app.select().where((self.tab_app.type == type) &
             (self.tab_app.valid == 1) & (self.tab_app.extinfo.contains(condition))).order_by(
             self.tab_app.time_update.desc())
         return (db_data)
@@ -312,11 +308,11 @@ class MInfor(MInforBase):
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (current_list)
 
-    def get_cat_recs_count(self, catid):
+    def get_cat_recs_count(self, catid, type = 2):
         '''
         获取某一分类下的数目
         '''
         condition = {'catid': [catid]}
 
-        db_data = self.tab_app.select().where((self.tab_app.valid == 1) & (self.tab_app.extinfo.contains(condition)))
+        db_data = self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1) & (self.tab_app.extinfo.contains(condition)))
         return db_data.count()
