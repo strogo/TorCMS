@@ -2,7 +2,6 @@
 
 import datetime
 import time
-
 import peewee
 import tornado.escape
 import config
@@ -85,36 +84,36 @@ class MPost(MSuperTable):
             return CabPost.select().join(CabPost2Catalog).where(CabPost2Catalog.catalog == cat_id).order_by(
                 peewee.fn.Rand()).limit(num)
 
-    def query_recent_edited(self, timstamp):
-        return self.tab.select().where(CabPost.time_update > timstamp).order_by(CabPost.time_update.desc())
+    def query_recent_edited(self, timstamp, type = 1):
+        return self.tab.select().where( ( self.tab.type == type) & (CabPost.time_update > timstamp)).order_by(CabPost.time_update.desc())
 
-    def query_recent(self, num=8):
-        return self.tab.select().order_by(CabPost.time_update.desc()).limit(num)
+    def query_recent(self, num=8, type = 1):
+        return self.tab.select().where( self.tab.type == type).order_by(CabPost.time_update.desc()).limit(num)
 
-    def query_all(self):
-        return self.tab.select().order_by(CabPost.time_update.desc())
+    def query_all(self, type = 1):
+        return self.tab.select().where( self.tab.type == type).order_by(CabPost.time_update.desc())
 
-    def get_num_by_cat(self, cat_str):
-        return CabPost.select().where(CabPost.id_cats.contains(',{0},'.format(cat_str))).count()
+    def get_num_by_cat(self, cat_str, type = 1):
+        return CabPost.select().where(( self.tab.type == type) & (CabPost.id_cats.contains(',{0},'.format(cat_str)))).count()
 
-    def query_keywords_empty(self):
-        return CabPost.select().where(CabPost.keywords == '')
+    def query_keywords_empty(self, type = 1):
+        return CabPost.select().where(( self.tab.type == type) & (CabPost.keywords == ''))
 
-    def query_dated(self, num=8):
-        return CabPost.select().order_by(CabPost.time_update.asc()).limit(num)
+    def query_dated(self, num=8, type = 1):
+        return CabPost.select().where( self.tab.type == type).order_by(CabPost.time_update.asc()).limit(num)
 
-    def query_most_pic(self, num):
-        return CabPost.select().where(CabPost.logo != "").order_by(CabPost.view_count.desc()).limit(num)
+    def query_most_pic(self, num, type = 1):
+        return CabPost.select().where(( self.tab.type == type) & (CabPost.logo != "")).order_by(CabPost.view_count.desc()).limit(num)
 
-    def query_cat_recent(self, cat_id, num=8):
-        return CabPost.select().join(CabPost2Catalog).where(CabPost2Catalog.catalog == cat_id).order_by(
+    def query_cat_recent(self, cat_id, num=8, type = 1):
+        return CabPost.select().join(CabPost2Catalog).where(( self.tab.type == type) & (CabPost2Catalog.catalog == cat_id)).order_by(
             CabPost.time_update.desc()).limit(num)
 
-    def query_most(self, num=8):
-        return CabPost.select().order_by(CabPost.view_count.desc()).limit(num)
+    def query_most(self, num=8, type = 1):
+        return CabPost.select().where( self.tab.type == type).order_by(CabPost.view_count.desc()).limit(num)
 
-    def query_cat_by_pager(self, cat_str, cureent):
-        tt = CabPost.select().where(CabPost.id_cats.contains(str(cat_str))).order_by(
+    def query_cat_by_pager(self, cat_str, cureent , type = 1):
+        tt = CabPost.select().where( (self.tab.type == type ) & (CabPost.id_cats.contains(str(cat_str)))).order_by(
             CabPost.time_update.desc()).paginate(cureent, config.page_num)
         return tt
 
@@ -131,18 +130,18 @@ class MPost(MSuperTable):
         entry = CabPost.update(keywords=inkeywords).where(CabPost.uid == uid)
         entry.execute()
 
-    def get_next_record(self, in_uid):
+    def get_next_record(self, in_uid, type = 1):
         current_rec = self.get_by_id(in_uid)
-        query = CabPost.select().where(CabPost.time_update < current_rec.time_update).order_by(
+        query = CabPost.select().where((self.tab.type == type ) & (CabPost.time_update < current_rec.time_update)).order_by(
             CabPost.time_update.desc())
         if query.count() == 0:
             return None
         else:
             return query.get()
 
-    def get_previous_record(self, in_uid):
+    def get_previous_record(self, in_uid, type = 1):
         current_rec = self.get_by_id(in_uid)
-        query = CabPost.select().where(CabPost.time_update > current_rec.time_update).order_by(CabPost.time_update)
+        query = CabPost.select().where((self.tab.type == type ) & (CabPost.time_update > current_rec.time_update)).order_by(CabPost.time_update)
         if query.count() == 0:
             return None
         else:

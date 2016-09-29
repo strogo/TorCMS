@@ -62,8 +62,8 @@ class MPage(MSuperTable):
             return ''
 
 
-    def query_all(self):
-        return self.tab.select()
+    def query_all(self, type = 2):
+        return self.tab.select().where(self.tab.type == type)
 
     def view_count_plus(self, slug):
         entry = CabWiki.update(
