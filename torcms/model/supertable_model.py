@@ -46,12 +46,18 @@ class MSuperTable():
         else:
             return recs.get()
 
-    def query_all(self, limit_num = 50, by_uid = 'False'):
-        if by_uid:
-            return self.tab.select().order_by(self.tab.uid).limit(limit_num)
+    def query_all(self, limit_num = 50, by_uid = 'False', type  = None):
+        if type:
+            if by_uid:
+                return self.tab.select().where(self.tab.type == type ).order_by(self.tab.uid).limit(limit_num)
+            else:
+                return self.tab.select().where(self.tab.type == type).limit(limit_num)
         else:
-            return self.tab.select().limit(limit_num)
 
+            if by_uid:
+                return self.tab.select().order_by(self.tab.uid).limit(limit_num)
+            else:
+                return self.tab.select().limit(limit_num)
     def query_recent(self, num=8):
         return self.tab.select().limit(num)
 

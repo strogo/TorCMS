@@ -33,6 +33,8 @@ class MPost(MSuperTable):
         except:
             pass
 
+        cur_rec = self.get_by_id(uid)
+
         try:
             entry = CabPost.update(
                 title=title,
@@ -41,11 +43,20 @@ class MPost(MSuperTable):
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
                 logo=post_data['logo'][0],
                 keywords=post_data['keywords'][0],
+                type = post_data['type'] if 'type' in post_data else 1,
+                extinfo = post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
             ).where(CabPost.uid == uid)
             entry.execute()
         except:
             return False
 
+    def add_or_update(self, uid, post_data):
+
+        cur_rec = self.get_by_id(uid)
+        if cur_rec:
+            self.update(uid, post_data)
+        else:
+            self.insert_data(uid, post_data)
     def insert_data(self, id_post, post_data):
         title = post_data['title'][0].strip()
         if len(title) < 2:
@@ -57,7 +68,6 @@ class MPost(MSuperTable):
         cur_rec = self.get_by_id(id_post)
         if cur_rec:
             return (False)
-
         entry = CabPost.create(
             title=title,
             date=datetime.datetime.now(),
@@ -70,7 +80,8 @@ class MPost(MSuperTable):
             view_count=1,
             logo=post_data['logo'][0],
             keywords=post_data['keywords'][0],
-            type = 1,
+            extinfo = post_data['extinfo'] if 'extinfo'  in post_data else {},
+            type = post_data['type'] if 'type' in post_data else 1,
         )
         return (entry.uid)
 

@@ -36,8 +36,8 @@ class MPostCatalog(MSuperTable):
             recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.uid)
         return (recs)
 
-    def query_field_count(self, limit_num):
-        return self.tab.select().order_by(self.tab.count.desc()).limit(limit_num)
+    def query_field_count(self, limit_num, type = 1):
+        return self.tab.select().where(self.tab.type == type).order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
         uu = self.tab.select().where(self.tab.slug == slug)
@@ -64,12 +64,12 @@ class MPostCatalog(MSuperTable):
         return (entry)
 
     def update(self, uid, post_data):
-
+        raw_rec = self.get_by_id(uid)
         entry = self.tab.update(
-            name=post_data['name'][0],
-            slug=post_data['slug'][0],
-            order=post_data['order'][0],
-
+            name=post_data['name'][0] if 'name' in post_data else raw_rec.name,
+            slug=post_data['slug'][0] if 'slug' in post_data else raw_rec.slug,
+            order=post_data['order'][0] if 'order' in post_data else raw_rec.order,
+            type = post_data['type'] if 'type' in post_data else raw_rec.type,
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -84,6 +84,6 @@ class MPostCatalog(MSuperTable):
                 slug=post_data['slug'][0],
                 order=post_data['order'][0],
                 uid=id_post,
-                type = post_data['type'],
+                type = post_data['type'] if 'type' in post_data else 1,
             )
             return (entry.uid)
