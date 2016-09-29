@@ -8,9 +8,9 @@
     <h1 class="title">{{ view.name }}</h1>
 
 
-    {% if userinfo is not None and userinfo.privilege[2] == '1' %}
+    {% if userinfo  and userinfo.privilege[2] >= '1' %}
 
-    <a href="/post/modify/{{ view.uid }}">修改</a>
+    <a href="/link/modify/{{ view.uid }}">修改</a>
     {% end %}
 
 
