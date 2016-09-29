@@ -8,20 +8,20 @@ from config import cfg
 import peewee
 from torcms.core import tools
 from torcms.model.supertable_model import MSuperTable
-from torcms.model.core_tab import TabApp, TabApp2Catalog, TabApp2Label, TabUsage, TabAppRelation, TabApp2Reply, CabReply
+from torcms.model.core_tab import CabPost, CabPost2Catalog, CabPost2Label, TabUsage, CabPostRelation, CabPost2Reply, CabReply
 
 
 class MInforBase(MSuperTable):
     def __init__(self):
-        self.tab_app = TabApp
-        self.tab_app2catalog = TabApp2Catalog
-        self.tab_relation = TabAppRelation
-        self.tab_app2label = TabApp2Label
+        self.tab_app = CabPost
+        self.tab_app2catalog = CabPost2Catalog
+        self.tab_relation = CabPostRelation
+        self.tab_app2label = CabPost2Label
         self.tab_usage = TabUsage
-        self.tab_app2reply = TabApp2Reply
+        self.tab_app2reply = CabPost2Reply
         self.cab_reply = CabReply
         try:
-            TabApp.create_table()
+            CabPost.create_table()
         except:
             pass
 
@@ -165,16 +165,16 @@ class MInforBase(MSuperTable):
 
 class MInfor(MInforBase):
     def __init__(self):
-        self.tab = TabApp
-        self.tab_app = TabApp
-        self.tab_app2catalog = TabApp2Catalog
-        self.tab_relation = TabAppRelation
-        self.tab_app2label = TabApp2Label
+        self.tab = CabPost
+        self.tab_app = CabPost
+        self.tab_app2catalog = CabPost2Catalog
+        self.tab_relation = CabPostRelation
+        self.tab_app2label = CabPost2Label
         self.tab_usage = TabUsage
-        self.tab_app2reply = TabApp2Reply
+        self.tab_app2reply = CabPost2Reply
         self.cab_reply = CabReply
         try:
-            TabApp.create_table()
+            CabPost.create_table()
         except:
             pass
 
@@ -205,6 +205,7 @@ class MInfor(MInforBase):
                 cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
                 extinfo=cur_extinfo,
                 valid = data_dic['valid'],
+
             ).where(self.tab_app.uid == uid)
             entry.execute()
         else:
@@ -238,14 +239,18 @@ class MInfor(MInforBase):
             uid=uid,
             title=title,
             keywords=','.join([x.strip() for x in data_dic['keywords'][0].split(',')]),
+            time_create = tools.timestamp(),
+            time_update = tools.timestamp(),
             create_time=int(time.time()),
             date=datetime.now(),
             cnt_md=data_dic['cnt_md'][0],
             logo=data_dic['logo'][0],
             cnt_html=tools.markdown2html(data_dic['cnt_md'][0]),
+            view_count = 0,
             extinfo=extinfo,
             user_name=data_dic['user_name'],
             valid=data_dic['valid'],
+            type = 2,
         )
         return (entry.uid)
 

@@ -7,7 +7,7 @@ import peewee
 import tornado.escape
 import config
 from torcms.core import tools
-from torcms.model.core_tab import CabPost2Catalog, CabVoter2Reply, CabReply, TabApp2Reply, CabPost2Reply
+from torcms.model.core_tab import CabPost2Catalog, CabVoter2Reply, CabReply, CabPost2Reply, CabPost2Reply
 from torcms.model.supertable_model import MSuperTable
 
 
@@ -65,7 +65,7 @@ class MReply2User(MSuperTable):
             del_count3 = CabPost2Reply.delete().where(CabPost2Reply.reply_id == del_id)
             del_count3.execute()
 
-            del_count4 = TabApp2Reply.delete().where(TabApp2Reply.reply_id == del_id)
+            del_count4 = CabPost2Reply.delete().where(CabPost2Reply.reply_id == del_id)
             del_count4.execute()
 
             del_count = CabReply.delete().where(CabReply.uid == del_id)
