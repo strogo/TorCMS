@@ -8,6 +8,7 @@ from .script_init_database_shema import run_init_tables
 from .script_update_count import run_update_count
 from .script_sendemail_all import run_send_all, run_send_nologin
 from .script_edit_diff import run_edit_diff
+from .script_create_admin import run_create_admin
 
 def entry(argv):
     try:
@@ -28,6 +29,7 @@ def entry(argv):
             print ('  update_count: ')
             print ('      send_all: ')
             print ('  send_nologin: ')
+            print ('  create_admin: ')
             sys.exit()
         elif opt in ("-i"):
             helper_app = arg

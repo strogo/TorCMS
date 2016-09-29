@@ -18,7 +18,7 @@
 
         {% if userinfo and userinfo.privilege[2] == '1' %}
             <span class="cmts">
-            <a href="/page/modify/{{ view.slug }}">编辑</a></span>
+            <a href="/page/modify/{{ view.uid }}">编辑</a></span>
         {% end %}
 
     </div>
@@ -42,7 +42,7 @@
             <div class="wpyouvote"></div>
             <div class="clear"></div>
             <br/>
-            <strong>Article link:</strong> <a href="http://www.osgeo.cn/page/{{ view.slug }}.html" class="underline">
+            <strong>Article link:</strong> <a href="http://www.osgeo.cn/page/{{ view.uid }}.html" class="underline">
             {{ view.title }}</a><br/>
             <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
             source：

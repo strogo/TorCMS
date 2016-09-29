@@ -6,15 +6,15 @@ import time
 import tornado
 import tornado.escape
 from torcms.core import tools
-from torcms.model.core_tab import CabPage
+from torcms.model.core_tab import CabWiki
 from torcms.model.supertable_model import MSuperTable
 
 
 class MPage(MSuperTable):
     def __init__(self):
-        self.tab = CabPage
+        self.tab = CabWiki
         try:
-            CabPage.create_table()
+            CabWiki.create_table()
         except:
             pass
 
@@ -23,13 +23,13 @@ class MPage(MSuperTable):
         if len(title) < 2:
             return False
 
-        entry = CabPage.update(
+        entry = CabWiki.update(
             title=title,
             date=datetime.datetime.now(),
             cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=time.time(),
-        ).where(CabPage.slug == slug)
+        ).where(CabWiki.uid == slug)
         entry.execute()
 
     def insert_data(self, post_data):
@@ -38,23 +38,24 @@ class MPage(MSuperTable):
             return False
 
         slug = post_data['slug'][0]
-        uu = self.get_by_slug(slug)
+        uu = self.get_by_uid(slug)
         if uu is None:
             pass
         else:
             return (False)
 
         try:
-            CabPage.create(
+            CabWiki.create(
                 title=title,
                 date=datetime.datetime.now(),
-                slug=slug,
+                uid=slug,
                 cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
                 time_create=time.time(),
-                id_user=post_data['user_name'],
+                user_name=post_data['user_name'],
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
                 time_update=time.time(),
                 view_count=1,
+                type  = 2, # 2 for page
             )
             return slug
         except:
@@ -65,15 +66,9 @@ class MPage(MSuperTable):
         return self.tab.select()
 
     def view_count_plus(self, slug):
-        entry = CabPage.update(
-            view_count=CabPage.view_count + 1,
-        ).where(CabPage.slug == slug)
+        entry = CabWiki.update(
+            view_count=CabWiki.view_count + 1,
+        ).where(CabWiki.slug == slug)
         entry.execute()
 
-    def get_by_slug(self, slug):
 
-        tt = CabPage.select().where(CabPage.slug == slug).count()
-        if tt == 0:
-            return None
-        else:
-            return CabPage.get(CabPage.slug == slug)

@@ -1,17 +1,17 @@
 # -*- coding:utf-8 -*-
 
 import config
-from torcms.model.core_tab import TabApp, TabLabel, TabApp2Label
+from torcms.model.core_tab import CabPost, CabLabel, CabPost2Label
 from torcms.model.label_model import MLabel
 from torcms.model.label_model import MPost2Label
 
 
 class MInforLabel(MLabel):
     def __init__(self):
-        self.tab = TabLabel
-        self.tab2 = TabApp2Label
+        self.tab = CabLabel
+        self.tab2 = CabPost2Label
         try:
-            TabLabel.create_table()
+            CabLabel.create_table()
         except:
             pass
 
@@ -34,12 +34,12 @@ class MInforLabel(MLabel):
 
 class MInfor2Label(MPost2Label):
     def __init__(self):
-        self.tab = TabApp2Label
-        self.tab_label = TabLabel
-        self.tab_post = TabApp
+        self.tab = CabPost2Label
+        self.tab_label = CabLabel
+        self.tab_post = CabPost
         self.mtag = MInforLabel()
         try:
-            TabApp2Label.create_table()
+            CabPost2Label.create_table()
         except:
             pass
 

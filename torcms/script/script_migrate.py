@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from playhouse.migrate import *
+from playhouse.postgres_ext import BinaryJSONField
 import config
 
 
@@ -75,6 +76,9 @@ def run_migrate():
         migrate(migrator.drop_column('cabpost', 'id_cats', status_field))
     except:
         pass
+
+
+
     try:
         migrate(migrator.drop_column('tabapp', 'id_cats', status_field))
     except:
@@ -83,20 +87,54 @@ def run_migrate():
         migrate(migrator.add_column('cabpost', 'valid', status_field))
     except:
         pass
+
+
+    ext_field = BinaryJSONField(default = {})
+
+    try:
+        migrate(migrator.add_column('cabpost', 'extinfo', ext_field))
+    except:
+        pass
+
+    try:
+        migrate(migrator.add_column('cabpost', 'type', status_field))
+    except:
+        pass
+
     try:
         migrate(migrator.drop_column('cabmember', 'valid'))
     except:
         pass
 
 
+    try:
+        migrate(migrator.add_column('cabcatalog', 'type', status_field))
+    except:
+        pass
 
 
+    try:
+        migrate(migrator.add_column('cabcatalog', 'priv_mask', CharField(null=False, default='00100', help_text='Member Privilege') ))
+    except:
+        pass
 
+
+######################################################################################################
     try:
         migrate(migrator.drop_column('cabwiki', 'src_type'))
     except:
         pass
 
+    try:
+        migrate(migrator.add_column('cabwiki', 'type', status_field))
+    except:
+        pass
+
+    try:
+        migrate(migrator.rename_column('cabwiki', 'slug', 'uid'))
+    except:
+        pass
+######################################################################################
     try:
         migrate(migrator.drop_column('cabpage', 'src_type'))
     except:

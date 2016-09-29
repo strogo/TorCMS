@@ -71,6 +71,7 @@ class MPost(MSuperTable):
             view_count=1,
             logo=post_data['logo'][0],
             keywords=post_data['keywords'][0],
+            type = 1,
         )
         return (entry.uid)
 
@@ -129,7 +130,6 @@ class MPost(MSuperTable):
     def update_keywords(self, uid, inkeywords):
         entry = CabPost.update(keywords=inkeywords).where(CabPost.uid == uid)
         entry.execute()
-
 
     def get_next_record(self, in_uid):
         current_rec = self.get_by_id(in_uid)

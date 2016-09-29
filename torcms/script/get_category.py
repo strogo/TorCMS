@@ -54,6 +54,7 @@ def gen_infor_category():
                 'order': [order_index],
                 'uid': [u_uid],
                 'priv_mask': [priv_mask],
+                'type': 2,
             }
             print(post_data)
             mappcat.insert_data(u_uid, post_data)
@@ -84,6 +85,7 @@ def gen_doc_category():
                 'name': [cur_dic['name']],
                 'count': [0],
                 'order':[porder * 100],
+                'type': 1,
             }
 
             mcat.insert_data(uid, cat_dic)
@@ -111,6 +113,7 @@ def gen_doc_category():
                         'name': [cur_dic['name']],
                         'count': [0],
                         'order': [porder *100 +sorder],
+                        'type': 1
                     }
 
                     mcat.insert_data( pid + uid, cat_dic)

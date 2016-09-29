@@ -14,26 +14,26 @@ class MPostCatalog(MSuperTable):
         except:
             pass
 
-    def get_qian2(self, qian2):
+    def get_qian2(self, qian2, type = 1):
         '''
         用于首页。根据前两位，找到所有的大类与小类。
         并为方便使用，使用数组的形式返回。
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-        return self.tab.select().where(self.tab.uid.startswith(qian2)).order_by(self.tab.order)
+        return self.tab.select().where((self.tab.type == type) & (self.tab.uid.startswith(qian2)) ).order_by(self.tab.order)
     def query_pcat(self):
         return  self.tab.select().where(self.tab.uid.endswith('00')).order_by(self.tab.order)
     def query_uid_starts_with(self, qian2):
         return self.tab.select().where(self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
 
-    def query_all(self, by_count=False, by_order=True):
+    def query_all(self, by_count=False, by_order=True, type = 1):
         if by_count:
-            recs = self.tab.select().order_by(self.tab.count.desc())
+            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.count.desc())
         elif by_order:
-            recs = self.tab.select().order_by(self.tab.order)
+            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.order)
         else:
-            recs = self.tab.select().order_by(self.tab.uid)
+            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.uid)
         return (recs)
 
     def query_field_count(self, limit_num):
@@ -84,5 +84,6 @@ class MPostCatalog(MSuperTable):
                 slug=post_data['slug'][0],
                 order=post_data['order'][0],
                 uid=id_post,
+                type = post_data['type'],
             )
             return (entry.uid)

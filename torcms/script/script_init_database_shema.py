@@ -16,12 +16,12 @@ def run_init_tables():
         pass
 
     try:
-        TabCatalog.create_table()
+        CabCatalog.create_table()
     except:
         pass
 
     try:
-        TabApp2Reply.create_table()
+        CabPost2Reply.create_table()
     except:
         pass
 
@@ -37,7 +37,7 @@ def run_init_tables():
         pass
 
     try:
-        CabPage.create_table()
+        CabWiki.create_table()
     except:
         pass
 
@@ -70,7 +70,7 @@ def run_init_tables():
         pass
 
     try:
-        TabApp.create_table()
+        CabPost.create_table()
     except:
         pass
 
@@ -80,12 +80,12 @@ def run_init_tables():
         pass
 
     try:
-        TabApp2Catalog.create_table()
+        CabPost2Catalog.create_table()
     except:
         pass
 
     try:
-        TabAppRelation.create_table()
+        CabPostRelation.create_table()
     except:
         pass
 
@@ -112,7 +112,7 @@ def run_init_tables():
         pass
 
     try:
-        CabPage.create_table()
+        CabWiki.create_table()
     except:
         pass
 

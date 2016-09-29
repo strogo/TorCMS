@@ -41,10 +41,14 @@ class PageHandler(BaseHandler):
             self.add_page()
 
     def to_view(self, slug):
-        rec_page = self.mpage.get_by_slug(slug)
+
+        rec_page = self.mpage.get_by_uid(slug)
+
         if rec_page:
+
             self.viewit(rec_page)
         else:
+
             self.to_add(slug)
 
     @tornado.web.authenticated
@@ -63,7 +67,7 @@ class PageHandler(BaseHandler):
                     userinfo=self.userinfo, )
 
     def __could_edit(self, slug):
-        page_rec = self.mpage.get_by_slug(slug)
+        page_rec = self.mpage.get_by_uid(slug)
         if not page_rec:
             return False
         if self.check_doc_priv(self.userinfo)['EDIT'] or page_rec.id_user == self.userinfo.user_name:
@@ -87,7 +91,7 @@ class PageHandler(BaseHandler):
             self.set_status(400)
             return False
 
-        self.mpage_hist.insert_data(self.mpage.get_by_slug(slug))
+        self.mpage_hist.insert_data(self.mpage.get_by_uid(slug))
         self.mpage.update(slug, post_data)
 
         self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
@@ -104,7 +108,7 @@ class PageHandler(BaseHandler):
 
         }
         self.render('doc/page/page_edit.html',
-                    view=self.mpage.get_by_slug(slug),
+                    view=self.mpage.get_by_uid(slug),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg,
@@ -115,7 +119,7 @@ class PageHandler(BaseHandler):
         kwd = {
             'pager': '',
         }
-        rec.user_name = rec.id_user
+        # rec.user_name = rec.user_name
         self.render('doc/page/page_view.html',
                     view=rec,
                     unescape=tornado.escape.xhtml_unescape,
@@ -165,7 +169,7 @@ class PageHandler(BaseHandler):
             self.set_status(400)
             return False
 
-        if self.mpage.get_by_slug(post_data['slug'][0]):
+        if self.mpage.get_by_uid(post_data['slug'][0]):
             self.set_status(400)
             return False
         else:

@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 
-from torcms.model.core_tab import TabCatalog
+from torcms.model.core_tab import CabCatalog
 from torcms.model.postcatalog_model import MPostCatalog
 
 class MInforCatalog(MPostCatalog):
     def __init__(self):
-        self.tab = TabCatalog
+        self.tab = CabCatalog
         try:
-            TabCatalog.create_table()
+            CabCatalog.create_table()
         except:
             pass
 

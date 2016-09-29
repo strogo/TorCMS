@@ -3,13 +3,13 @@
 import time
 
 from torcms.core import tools
-from torcms.model.core_tab import TabApp, TabCollect
+from torcms.model.core_tab import CabPost, TabCollect
 
 
 class MCollect(object):
     def __init__(self):
         self.tab = TabCollect
-        self.tab_app = TabApp
+        self.tab_app = CabPost
         try:
             TabCollect.create_table()
         except:

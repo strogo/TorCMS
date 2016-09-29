@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from torcms.core import tools
-from torcms.model.core_tab import TabApp, TabEvaluation
+from torcms.model.core_tab import CabPost, TabEvaluation
 
 
 class MEvaluation(object):
@@ -13,7 +13,7 @@ class MEvaluation(object):
             pass
 
     def query_recent(self, num = 10):
-        return self.tab.select().join(TabApp).order_by(self.tab.timestamp.desc()).limit(num)
+        return self.tab.select().join(CabPost).order_by(self.tab.timestamp.desc()).limit(num)
 
     def query_most(self, num):
         return self.tab.select().order_by(self.tab.count.desc()).limit(num)
