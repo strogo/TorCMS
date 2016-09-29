@@ -2,7 +2,7 @@
 
 {% block content %}
 <ol class="breadcrumb">
-    <li>Current location: <a href="/">Home</a></li>
+    <li>Current location: <a href="{% module site_url() %}">Home</a></li>
     <li class="active">{{ view.title }}</li>
 </ol>
 <div id="list-group" class="panel panel-default">
@@ -16,7 +16,7 @@
 
         <span>Browse: {{ view.view_count }} 次</span>
 
-        {% if userinfo and userinfo.privilege[2] == '1' %}
+      {% if userinfo and userinfo.privilege[2] >= '1' %}
             <span class="cmts">
             <a href="/page/modify/{{ view.uid }}">编辑</a></span>
         {% end %}
@@ -42,7 +42,7 @@
             <div class="wpyouvote"></div>
             <div class="clear"></div>
             <br/>
-            <strong>Article link:</strong> <a href="http://www.osgeo.cn/page/{{ view.uid }}.html" class="underline">
+            <strong>Article link:</strong> <a href="{% module site_url() %}/page/{{ view.uid }}.html" class="underline">
             {{ view.title }}</a><br/>
             <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
             source：

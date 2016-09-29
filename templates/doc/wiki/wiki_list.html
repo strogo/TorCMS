@@ -12,14 +12,14 @@
 
 {% block content %}
 <ol class="breadcrumb">
-  <li>当前位置: <a href="http://www.osgeo.cn">首页</a>
+  <li>当前位置: <a href="{% module site_url() %}">首页</a>
     </li>
   <li><a href="/wiki/recent"> Wiki列表</a></li>
 </ol>
 
 <div class="panel panel-default">
 
-<div class="panel-heading">文档列表</div>
+<div class="panel-heading">Wiki列表</div>
     <ul class="list-group">
         {% for x in view %}
         <li class="list-group-item">

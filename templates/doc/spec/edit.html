@@ -61,8 +61,8 @@
     });
 </script>
 
-    <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
-        <a href="http://www.osgeo.cn/spec/">业务范围</a> > {{ spec_rec.name }} - 修改
+    <div class="breadcrumb"> 您的位置: <a href="{% module site_url() %}">首页</a> >
+        <a href="{% module site_url() %}/spec/">业务范围</a> > {{ spec_rec.name }} - 修改
     </div>
 
     <form action="" id='form_spec' method="post" class="pure-form pure-form-aligned">

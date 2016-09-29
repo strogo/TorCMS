@@ -10,7 +10,7 @@
 
 {% block content %}
 <ol class="breadcrumb">
-    <li>Current location: <a href="/">Home</a></li>
+    <li>Current location: <a href="{% module site_url() %}">Home</a></li>
     <li>{% module the_category(view.uid) %}</li>
     <li class="active">{{ view.title }}</li>
 </ol>
@@ -48,7 +48,7 @@
             <div class="clear"></div>
             <br>
             <strong>Article link:</strong>
-            <a href="http://osgeo.cn/post/{{view.uid}}.html" class="underline"> {{ view.title }}</a>
+            <a href="{% module site_url() %}/post/{{view.uid}}.html" class="underline"> {{ view.title }}</a>
             <br/>
             <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
             source：

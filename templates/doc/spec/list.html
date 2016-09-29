@@ -1,8 +1,8 @@
 {% extends "meta_theme.html" %}
 {% block content %}
 
-    <div class="breadcrumb"> 您的位置: <a href="http://www.osgeo.cn">首页</a> >
-        <a href="http://www.osgeo.cn/spec/">业务范围</a> > 正文
+    <div class="breadcrumb"> 您的位置: <a href="{% module site_url() %}">首页</a> >
+        <a href="{% module site_url() %}/spec/">业务范围</a> > 正文
     </div>
     <div class="single">
         <h1 class="title">{{ spec.name }}</h1>
