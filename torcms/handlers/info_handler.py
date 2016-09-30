@@ -35,7 +35,7 @@ class InfoHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        if len(url_arr) == 1 and len(url_str) == 4:
+        if len(url_arr) == 1 and len(url_str) == 5:
             self.view_info(url_str)
         else:
             kwd = {
@@ -120,7 +120,7 @@ class InfoHandler(BaseHandler):
         else:
             ext_catid = ''
         
-        print('-' * 10)
+
         if len(ext_catid) == 4:
             pass
         else:

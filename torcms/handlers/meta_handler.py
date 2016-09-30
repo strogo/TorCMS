@@ -101,9 +101,10 @@ class MetaHandler(PostHandler):
     @tornado.web.authenticated
     def user_to_add(self, catid):
 
-        uid = tools.get_uu4d()
+        uid = 'g' + tools.get_uu4d()
         while self.mpost.get_by_uid(uid):
-            uid = tools.get_uu4d()
+            uid ='g' + tools.get_uu4d()
+
         kwd = {
             'uid': uid,
             'userid': self.userinfo.user_name,
@@ -111,6 +112,7 @@ class MetaHandler(PostHandler):
             'parentname': self.mcat.get_by_id(catid[:2] + '00').name,
             'catname': self.mcat.get_by_id(catid).name,
         }
+
         self.render('autogen/add/add_{0}.html'.format(catid),
                     userinfo=self.userinfo,
                     kwd=kwd)
@@ -279,9 +281,9 @@ class MetaHandler(PostHandler):
             return False
 
         if uid == '':
-            uid = tools.get_uu4d()
+            uid = 'g' + tools.get_uu4d()
             while self.mpost.get_by_uid(uid):
-                uid = tools.get_uu4d()
+                uid = 'g' + tools.get_uu4d()
             post_data['uid'][0] = uid
 
         post_data['user_name'] = self.userinfo.user_name
