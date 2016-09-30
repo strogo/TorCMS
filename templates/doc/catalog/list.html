@@ -1,12 +1,12 @@
-{% extends "../../theme/bage.html" %}
+{% extends "../../tmpldoc/tmpldoc.html" %}
 
-{% block headbase %}
+{% block head %}
 <title>OSGeo中国中心 | 开放地理空间实验室</title>
 <meta name="keywords" content="GIS,地理信息系统,开源GIS,OSGeo,OpenLayers,MapServer,GDAL,GIS教程,WebGIS">
 <meta name="description" content="OSGeo中国中心实验室，关注开源GIS，开放数据">
 {% end %}
 
-{% block typebody %}
+{% block content %}
 
 <ol class="breadcrumb">
   <li>当前位置: <a href="{% module site_url() %}">首页</a></li>
@@ -14,7 +14,7 @@
 </ol>
 <div class="panel panel-default">
 
-
+<div class="panel-heading">{{ kwd['cat_name'] }}</div>
 
     <ul class="list-group">
 
