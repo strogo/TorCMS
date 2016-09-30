@@ -126,8 +126,7 @@ class MInforBase(MSuperTable):
     def query_random(self, num=8, type=2):
         fn = peewee.fn
         return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(
-                fn.Random()).limit(num)
-
+            fn.Random()).limit(num)
 
     def query_cat_random(self, catid, num=8, type=2):
         fn = peewee.fn
@@ -222,13 +221,13 @@ class MInfor(MInforBase):
     def query_extinfo_by_cat(self, cat_id, type=2):
         return self.tab_app.select().where((self.tab_app.type == type) &
                                            (self.tab_app.valid == 1) & (
-                                           self.tab_app.extinfo['def_cat_uid'] == cat_id)).order_by(
+                                               self.tab_app.extinfo['def_cat_uid'] == cat_id)).order_by(
             self.tab_app.time_update.desc())
 
     def query_by_tagname(self, tag_name, type=2):
         return self.tab_app.select().where((self.tab_app.type == type) &
                                            (self.tab_app.valid == 1) & (
-                                           self.tab_app.extinfo['def_tag_arr'].contains(tag_name))).order_by(
+                                               self.tab_app.extinfo['def_tag_arr'].contains(tag_name))).order_by(
             self.tab_app.time_update.desc())
 
     def get_label_fenye(self, tag_slug, page_num):
@@ -264,7 +263,7 @@ class MInfor(MInforBase):
     def get_list(self, condition, type=2):
         db_data = self.tab_app.select().where((self.tab_app.type == type) &
                                               (self.tab_app.valid == 1) & (
-                                              self.tab_app.extinfo.contains(condition))).order_by(
+                                                  self.tab_app.extinfo.contains(condition))).order_by(
             self.tab_app.time_update.desc())
         return (db_data)
 

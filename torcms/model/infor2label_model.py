@@ -12,27 +12,8 @@ class MInforLabel(MLabel):
     def __init__(self):
         self.tab = CabLabel
         self.tab2 = CabPost2Label
-        try:
-            CabLabel.create_table()
-        except:
-            pass
 
-    def get_by_slug(self, slug):
-        return self.tab.get(name=slug)
 
-    def catalog_record_number(self):
-        return self.tab.select().count()
-
-    def get_all(self):
-         return self.tab.select()
-    def update_count(self, sid , count):
-         entry = self.tab.update(
-                count=count
-            ).where(self.tab.uid == sid)
-         entry.execute()
-
-    def get_all_by_count(self,  current_page_num=1):
-         return self.tab.select().order_by(self.tab.count.asc()).paginate(current_page_num,config.page_num)
 
 class MInfor2Label(MPost2Label):
     def __init__(self):

@@ -11,15 +11,10 @@ class CabCatalog(BaseModel):
     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
-    # post_count = peewee.IntegerField(default=0)
     count = peewee.IntegerField(default=0)
     type = peewee.IntegerField(default=1)
     priv_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
-# class CabLabel(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='', max_length=8)
-#     name = peewee.CharField(null=False, max_length=255, help_text='', )
-#     count = peewee.IntegerField()
 
 class CabLink(BaseModel):
     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='0000',
@@ -30,34 +25,14 @@ class CabLink(BaseModel):
     order = peewee.IntegerField()
 
 
-# class CabClass(BaseModel):
-#     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='00000',
-#                            max_length=5, help_text='', )
-#     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
-#     name = peewee.CharField(null=False, max_length=255, help_text='', )
-#     order = peewee.IntegerField()
-
-
-# class CabWiki(BaseModel):
-#     title = peewee.CharField(null=False, max_length=255, )
-#     slug = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-#     date = peewee.DateTimeField()
-#     cnt_html = peewee.TextField()
-#     time_create = peewee.IntegerField()
-#     id_user = peewee.CharField()
-#     cnt_md = peewee.TextField()
-#     time_update = peewee.IntegerField()
-#     view_count = peewee.IntegerField()
-
-
 class CabPost(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, default='00000',
                            max_length=5, help_text='', )
     title = peewee.CharField(null=False, help_text='Title')
-    keywords = peewee.CharField(null=False,  default='', help_text='Keywords')
+    keywords = peewee.CharField(null=False, default='', help_text='Keywords')
     date = peewee.DateTimeField(null=False, help_text='')
     time_create = peewee.IntegerField()
-    user_name = peewee.CharField(null=False, default='',max_length=36, help_text='UserName', )
+    user_name = peewee.CharField(null=False, default='', max_length=36, help_text='UserName', )
     time_update = peewee.IntegerField()
     view_count = peewee.IntegerField()
     logo = peewee.CharField(default='')
@@ -65,14 +40,10 @@ class CabPost(BaseModel):
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
     type = peewee.IntegerField(null=False, default=1)
-    extinfo = BinaryJSONField(default = {})
+    extinfo = BinaryJSONField(default={})
+
 
 class CabWiki(BaseModel):
-    # uid = peewee.CharField(null=False, index=False,
-    #                        unique=True,
-    #                        primary_key=True,
-    #                        default='00000',
-    #                        max_length=8, help_text='', )
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
     title = peewee.CharField(null=False, unique=True, index=True, help_text='Title')
     date = peewee.DateTimeField()
@@ -82,15 +53,13 @@ class CabWiki(BaseModel):
     view_count = peewee.IntegerField()
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
-    type = peewee.IntegerField(null = False, default= 1) # 1 for wiki, 2 for page.
+    type = peewee.IntegerField(null=False, default=1)  # 1 for wiki, 2 for page.
 
 
 class CabPostHist(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
     title = peewee.CharField(null=False, max_length=255, help_text='', )
-    # date = peewee.DateTimeField()
     post_id = peewee.CharField(null=False, max_length=5, help_text='', )
-    # time_create = peewee.IntegerField()
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
@@ -100,13 +69,10 @@ class CabPostHist(BaseModel):
 class CabWikiHist(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
     title = peewee.CharField(null=False, max_length=255, help_text='', )
-    # date = peewee.DateTimeField()
     wiki_id = peewee.CharField(null=False, max_length=8, help_text='', )
-    # time_create = peewee.IntegerField()
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
-
 
 
 class CabMember(BaseModel):
@@ -128,9 +94,9 @@ class CabMember(BaseModel):
     privilege = peewee.CharField(null=False, default='10000', help_text='Member Privilege', )
     time_reset_passwd = peewee.IntegerField(null=False, default=0)
     time_login = peewee.IntegerField(null=False, default=0)
-    time_create = peewee.IntegerField(null=False,default=0)
-    time_update = peewee.IntegerField(null=False,default=0)
-    time_email = peewee.IntegerField(null=False,default=0, help_text='Time auto send email.')
+    time_create = peewee.IntegerField(null=False, default=0)
+    time_update = peewee.IntegerField(null=False, default=0)
+    time_email = peewee.IntegerField(null=False, default=0, help_text='Time auto send email.')
 
 
 class CabPic(BaseModel):
@@ -171,16 +137,6 @@ class CabVoter2Reply(BaseModel):
     timestamp = peewee.IntegerField()
 
 
-
-
-
-# class CabPost2Label(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-#     tag = peewee.ForeignKeyField(CabLabel, related_name='tag_post_rel')
-#     app = peewee.ForeignKeyField(CabPost, related_name='post_tag_rel')
-#     order = peewee.IntegerField()
-
-
 class CabRelation(BaseModel):
     '''
     相关应用
@@ -190,74 +146,6 @@ class CabRelation(BaseModel):
     app_f = peewee.ForeignKeyField(CabPost, related_name='post_from')
     app_t = peewee.ForeignKeyField(CabPost, related_name='post_to')
     count = peewee.IntegerField()
-
-
-# class CabPost(BaseModel):
-#     uid = peewee.CharField(max_length=4, null=False, unique=True, help_text='', primary_key=True)
-#     title = peewee.CharField(null=False, help_text='Title', )
-#     keywords = peewee.CharField(null=True, default='')
-#     user_name = peewee.CharField(null=False, default='', max_length=36, help_text='UserName', )
-#     logo = peewee.CharField(default='')
-#     date = peewee.DateTimeField(null=False, help_text='')
-#     run_count = peewee.IntegerField(null=False, default=0, help_text='')
-#     view_count = peewee.IntegerField(null=False, default=0, help_text='')
-#     run_time = peewee.IntegerField(null=False, default=0, help_text='')
-#     create_time = peewee.IntegerField(default=0, help_text='')
-#     time_update = peewee.IntegerField( default=0, help_text='')
-#     type = peewee.IntegerField(null=False, default=1)
-#     html_path = peewee.CharField(default='')
-#     cnt_md = peewee.TextField(null=True)
-#     cnt_html = peewee.TextField(null=True)
-#     valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
-#     extinfo = BinaryJSONField()
-#
-# class CabPostHist(BaseModel):
-#     uid = peewee.CharField(  null=False, unique=True, help_text='', primary_key=True)
-#     title = peewee.CharField(null=False, help_text='Title', )
-#     keywords = peewee.CharField(null=True, default='')
-#     user_name = peewee.CharField(null=False, default='', max_length=36, help_text='UserName', )
-#     logo = peewee.CharField(default='')
-#     date = peewee.DateTimeField(null=False, help_text='')
-#     run_count = peewee.IntegerField(null=False, default=0, help_text='')
-#     view_count = peewee.IntegerField(null=False, default=0, help_text='')
-#     run_time = peewee.IntegerField(null=False, default=0, help_text='')
-#     create_time = peewee.IntegerField(null=False, default=0, help_text='')
-#     time_update = peewee.IntegerField(null=False, default=0, help_text='')
-#     type = peewee.IntegerField(null=False, default=1)
-#     html_path = peewee.CharField(default='')
-#     cnt_md = peewee.TextField(null=True)
-#     app_id = peewee.CharField(null=False, unique=False, help_text='')
-#     valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
-#     extinfo = BinaryJSONField()
-
-
-# class CabCatalog(BaseModel):
-#     uid = peewee.CharField(null=False, max_length=4, index=True, unique=True, primary_key=True, help_text='', )
-#     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
-#     name = peewee.CharField(null=False, max_length=255, help_text='', )
-#     order = peewee.IntegerField()
-#     priv_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
-#     count = peewee.IntegerField(default=0)
-
-
-# class CabPost2Catalog(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-#     catalog = peewee.ForeignKeyField(CabCatalog, related_name='catalog_id')
-#     post = peewee.ForeignKeyField(CabPost, related_name='app_id')
-#     order = peewee.IntegerField()
-
-
-# class CabLabel(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='', max_length=8)
-#     name = peewee.CharField(null=False, max_length=255, help_text='', )
-#     count = peewee.IntegerField()
-
-
-# class CabPost2Label(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-#     tag = peewee.ForeignKeyField(CabLabel, related_name='tag_app_id')
-#     app = peewee.ForeignKeyField(CabPost, related_name='app_tag_id')
-#     order = peewee.IntegerField()
 
 
 class TabCollect(BaseModel):
@@ -318,13 +206,6 @@ class TabToolbox(BaseModel):
     cnt = peewee.CharField()
     user = peewee.ForeignKeyField(CabMember, related_name='user_tbx_id')
     order = peewee.IntegerField()
-
-#
-# class CabPost2Reply(BaseModel):
-#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-#     post_id = peewee.ForeignKeyField(CabPost, related_name='app_post_reply_id')
-#     reply_id = peewee.ForeignKeyField(CabReply, related_name='app_reply_post_id')
-#     timestamp = peewee.IntegerField()
 
 
 class RabPost2App(BaseModel):
