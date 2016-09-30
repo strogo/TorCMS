@@ -1,10 +1,14 @@
-{% extends "../../theme/main.html" %}
+{% extends "../../tmpldoc/tmpldoc.html" %}
 
-{% block tpmain %}
-
+{% block content %}
+<ol class="breadcrumb">
+  <li>当前位置: <a href="{% module site_url() %}">首页</a></li>
+    <li>信息</li>
+  <li class="active">{{ kwd['tag_slug'] }}</li>
+</ol>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="panel-title"> 查找结果</div>
+        <div class="panel-title"> {{ kwd['tag_slug']}}</div>
     </div>
 
 
