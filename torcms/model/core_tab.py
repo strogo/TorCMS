@@ -16,6 +16,10 @@ class CabCatalog(BaseModel):
     type = peewee.IntegerField(default=1)
     priv_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
+# class CabLabel(BaseModel):
+#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='', max_length=8)
+#     name = peewee.CharField(null=False, max_length=255, help_text='', )
+#     count = peewee.IntegerField()
 
 class CabLink(BaseModel):
     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='0000',
@@ -167,17 +171,14 @@ class CabVoter2Reply(BaseModel):
     timestamp = peewee.IntegerField()
 
 
-class CabLabel(BaseModel):
-    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, help_text='', max_length=8)
-    name = peewee.CharField(null=False, max_length=255, help_text='', )
-    count = peewee.IntegerField()
 
 
-class CabPost2Label(BaseModel):
-    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-    tag = peewee.ForeignKeyField(CabLabel, related_name='tag_post_rel')
-    app = peewee.ForeignKeyField(CabPost, related_name='post_tag_rel')
-    order = peewee.IntegerField()
+
+# class CabPost2Label(BaseModel):
+#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
+#     tag = peewee.ForeignKeyField(CabLabel, related_name='tag_post_rel')
+#     app = peewee.ForeignKeyField(CabPost, related_name='post_tag_rel')
+#     order = peewee.IntegerField()
 
 
 class CabRelation(BaseModel):

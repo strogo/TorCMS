@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import config
-from torcms.model.core_tab import CabPost, CabLabel, CabPost2Label
+from torcms.model.core_tab import CabPost
+from torcms.model.core_tab import CabCatalog as CabLabel
+from torcms.model.core_tab import CabPost2Catalog as CabPost2Label
 from torcms.model.label_model import MLabel
 from torcms.model.label_model import MPost2Label
 

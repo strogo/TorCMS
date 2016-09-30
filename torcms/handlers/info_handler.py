@@ -233,8 +233,8 @@ class InfoHandler(BaseHandler):
             return False
 
         # 针对分类进行处理。只有落入相同分类的，才加1
-        f_cats = self.mapp2catalog.query_entity_category_relation(f_uid)
-        t_cats = self.mapp2catalog.query_entity_category_relation(t_uid)
+        f_cats = self.mapp2catalog.query_by_entity_uid(f_uid)
+        t_cats = self.mapp2catalog.query_by_entity_uid(t_uid)
         flag = False
 
         for f_cat in f_cats:

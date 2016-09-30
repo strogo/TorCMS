@@ -37,8 +37,7 @@ class InforTagHandler(BaseHandler):
                 self.list(url_arr[0], url_arr[1])
 
     def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2)
-
+        cur_cat = self.mcat.query_uid_starts_with(qian2, type = 2)
 
         out_arr = {}
         for x in cur_cat:
@@ -62,6 +61,11 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mcat.get_by_slug(tag_slug)
+        if taginfo.type == 2:
+            pass
+        else:
+            return False
+
         num_of_tag = self.mapp2tag.count_of_certain_category(taginfo.uid)
         page_num = math_ceil(num_of_tag / config.page_num) 
         tag_name = taginfo.name

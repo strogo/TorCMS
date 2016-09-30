@@ -1,8 +1,6 @@
 # -*- coding:utf-8 -*-
 
 
-
-
 from torcms.core import tools
 from torcms.model.core_tab import CabMember
 from torcms.model.supertable_model import MSuperTable
@@ -27,9 +25,10 @@ class MUser(MSuperTable):
             return CabMember.get(user_name=uname)
         except:
             return False
+
     def set_sendemail_time(self, uid):
         entry = CabMember.update(
-            time_email = tools.timestamp(),
+            time_email=tools.timestamp(),
         ).where(CabMember.uid == uid)
         entry.execute()
 
@@ -52,7 +51,6 @@ class MUser(MSuperTable):
 
         out_dic = {'success': False, 'code': '00'}
 
-
         entry = CabMember.update(user_pass=tools.md5(newpass)).where(CabMember.user_name == u_name)
         entry.execute()
 
@@ -61,22 +59,20 @@ class MUser(MSuperTable):
         return out_dic
 
 
-        #entry = CabMember.update(
+        # entry = CabMember.update(
         #    user_pass=tools.md5(newpass),
-        #).where(CabMember.user_name == u_name)
-        #try:
+        # ).where(CabMember.user_name == u_name)
+        # try:
         #    entry.execute()
         #    return True
-        #except:
+        # except:
         #    return False
-
-
-
 
     def query_nologin(self):
         time_now = tools.timestamp()
         # num * month * hours * minite * second
-        return self.tab.select().where( ((time_now - self.tab.time_login) > 3 * 30 * 24 * 60 * 60) & ((time_now - CabMember.time_email) > 4 * 30 * 24 * 60 * 60 ))
+        return self.tab.select().where(((time_now - self.tab.time_login) > 3 * 30 * 24 * 60 * 60) & (
+            (time_now - CabMember.time_email) > 4 * 30 * 24 * 60 * 60))
 
     def update_info(self, u_name, newemail):
 
@@ -86,7 +82,6 @@ class MUser(MSuperTable):
         else:
             out_dic['code'] = '21'
             return out_dic
-
 
         entry = CabMember.update(user_email=newemail).where(CabMember.user_name == u_name)
         entry.execute()
@@ -98,14 +93,14 @@ class MUser(MSuperTable):
 
 
 
-            # entry = CabMember.update(
-            #    user_email=newemail,
-            # ).where(CabMember.user_name == u_name)
-            # try:
-            #    entry.execute()
-            #    return True
-            # except:
-            #    return False
+        # entry = CabMember.update(
+        #    user_email=newemail,
+        # ).where(CabMember.user_name == u_name)
+        # try:
+        #    entry.execute()
+        #    return True
+        # except:
+        #    return False
 
     def update_time_reset_passwd(self, uname, timeit):
         entry = CabMember.update(
@@ -154,8 +149,6 @@ class MUser(MSuperTable):
         else:
             role = '10000'
 
-
-
         CabMember.create(uid=tools.get_uuid(),
                          user_name=post_data['user_name'][0],
                          user_pass=tools.md5(post_data['user_pass'][0]),
@@ -170,7 +163,6 @@ class MUser(MSuperTable):
 
         out_dic['success'] = True
         return out_dic
-
 
     def get_by_keyword(self, par2):
         return CabMember.select().where(CabMember.user_name.contains(par2))

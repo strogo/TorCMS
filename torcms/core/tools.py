@@ -67,6 +67,10 @@ def get_uuid():
 def get_uu8d():
     return (str(uuid.uuid1()).split('-')[0])
 
+def get_uu4d_v2():
+    sel_arr = [x for x in 'ghijklmnopqrstuvwxyz']
+    slice = random.sample(sel_arr, 4)
+    return (''.join(slice))
 
 def get_uu4d():
     sel_arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
@@ -191,3 +195,13 @@ def gen_pager_purecss(cat_slug, page_num, current):
                 '''.format('hidden' if current >= page_num else '', cat_slug, page_num)
     pager = pager_shouye + pager_pre + pager_mid + pager_next + pager_last
     return (pager)
+
+
+constant = {
+    'doc_post': 1,
+    'doc_info': 2,
+    'cate_post': 1,
+    'cate_info': 2,
+    'tag_post': 11,
+    'tag_info': 21,
+}

@@ -18,6 +18,7 @@ from torcms.core.base_handler import BaseHandler
 from torcms.handlers.post_handler import PostHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.app_hist_model import MAppHist
+from torcms.core.tools import constant
 
 
 class MetaHandler(PostHandler):
@@ -185,10 +186,10 @@ class MetaHandler(PostHandler):
             'userip': self.request.remote_ip
         }
 
-        #if cfg['site_type'] == 2:
-        tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
-        #else:
-           # tmpl = 'infor/app/edit.html'
+        if cfg['site_type'] == 2:
+            tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
+        else:
+            tmpl = 'infor/app/edit.html'
 
         self.render(tmpl,
                     kwd=kwd,
@@ -198,7 +199,7 @@ class MetaHandler(PostHandler):
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mcat.get_qian2(catid[:2]),
-                    tag_infos=self.mcat.query_all(by_order=True),
+                    tag_infos=self.mcat.query_all(by_order=True, type = constant['cate_info']),
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid),
                     app2label_info=self.mpost2label.get_by_id(infoid), )
 

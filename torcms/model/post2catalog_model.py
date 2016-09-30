@@ -68,25 +68,23 @@ class MPost2Catalog(MSuperTable):
     def count_of_certain_category(self, cat_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.catalog == cat_id).count()
 
-
     def query_pager_by_slug(self, slug, current_page_num=1):
-        recs =  self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
+        recs = self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
             self.tab_catalog.slug == slug).order_by(
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
-        return  recs
+        return recs
 
-    def query_by_entity_uid(self, idd):
-        return self.tab_post2catalog.select().join(self.tab_catalog).where(self.tab_post2catalog.post == idd).order_by(
+    def query_by_entity_uid(self, idd, type=1):
+        return self.tab_post2catalog.select().join(self.tab_catalog).where(
+            (self.tab_catalog.type == type) & (self.tab_post2catalog.post == idd)).order_by(
             self.tab_post2catalog.order)
 
     def query_by_id(self, idd):
         return self.query_by_entity_uid(idd)
 
-    def query_entity_category_relation(self, post_id):
-        return self.tab_post2catalog.select().where(self.tab_post2catalog.post == post_id).order_by(self.tab_post2catalog.order)
 
     def get_entry_catalog(self, app_uid):
-        uu = self.query_entity_category_relation(app_uid)
+        uu = self.query_by_entity_uid(app_uid)
         if uu.count() > 0:
             return uu.get()
         else:
