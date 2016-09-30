@@ -177,7 +177,7 @@ class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
         format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in
-                      MPost2Catalog().query_entity_category_relation(post_id)]
+                      MPost2Catalog().query_by_entity_uid(post_id, type = 1)]
         return ', '.join(format_arr)
 
 

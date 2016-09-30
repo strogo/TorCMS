@@ -294,7 +294,7 @@ class PostHandler(BaseHandler):
     def viewit(self, post_id):
         self.__gen_last_current_relation(post_id)
 
-        cats = self.mpost2catalog.query_entity_category_relation(post_id)
+        cats = self.mpost2catalog.query_by_entity_uid(post_id)
         replys = self.mpost2reply.get_by_id(post_id)
         tag_info = self.mpost2label.get_by_id(post_id)
 
