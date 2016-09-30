@@ -7,13 +7,13 @@ import tornado.web
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.category_model import MCategory
 
 
 class MaintainCategoryHandler(BaseHandler):
     def initialize(self):
         self.init()
-        self.mclass = MPostCatalog()
+        self.mclass = MCategory()
         self.tmpl_router = 'maintain_category'
 
     def get(self, url_str=''):
@@ -230,5 +230,5 @@ class MaintainCategoryHandler(BaseHandler):
 class MaintainCategoryAjaxHandler(MaintainCategoryHandler):
     def initialize(self):
         self.init()
-        self.mclass = MPostCatalog()
+        self.mclass = MCategory()
         self.tmpl_router = 'category_ajax'

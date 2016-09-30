@@ -7,7 +7,7 @@ import tornado.web
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.category_model import MCategory
 from torcms.model.page_model import MPage
 from torcms.model.page_hist_model import MPageHist
 
@@ -16,7 +16,7 @@ class PageHandler(BaseHandler):
         self.init()
         self.mpage = MPage()
         self.mpage_hist = MPageHist()
-        self.mcat = MPostCatalog()
+        self.mcat = MCategory()
         self.cats = self.mcat.query_all()
 
     def get(self, url_str=''):
@@ -181,5 +181,5 @@ class PageAjaxHandler(PageHandler):
     def initialize(self):
         self.init()
         self.mpage = MPage()
-        self.mcat = MPostCatalog()
+        self.mcat = MCategory()
         self.cats = self.mcat.query_all()

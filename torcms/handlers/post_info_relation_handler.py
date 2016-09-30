@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from torcms.model.infor_model import MInfor
+from torcms.model.info_model import MInfor
 from torcms.core.base_handler import BaseHandler
 from torcms.model.info_relation_model import MRelInfor2Post
 from torcms.model.info_relation_model import MRelPost2Infor

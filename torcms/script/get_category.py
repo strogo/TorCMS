@@ -4,9 +4,10 @@
 import yaml
 import json
 
-from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.category_model import MCategory
 from openpyxl.reader.excel import load_workbook
-from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.category_model import MCategory
+
 
 
 
@@ -16,7 +17,7 @@ def gen_infor_category():
     sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
     class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
     sig_name_arr = []
-    mappcat = MInforCatalog()
+    mappcat = MCategory()
     # 在分类中排序
     order_index = 1
     # 父类索引
@@ -62,7 +63,7 @@ def gen_infor_category():
 
 
 def gen_doc_category():
-    mcat  = MPostCatalog()
+    mcat  = MCategory()
 
 
     f = open('./database/meta/doc_catalog.yaml')

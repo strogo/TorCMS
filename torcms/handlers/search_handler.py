@@ -5,7 +5,8 @@ from torcms.core.base_handler import BaseHandler
 from torcms.core.tool.whoosh_tool import yunsearch
 
 from torcms.core import tools
-from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.category_model import MCategory
+
 from torcms.model.post_model import MPost
 
 
@@ -13,9 +14,7 @@ class SearchHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
-        self.mcat = MInforCatalog()
-        # self.cats = self.mcat.query_all()
-        # self.mpost2catalog = MPost2Catalog()
+        self.mcat = MCategory()
         self.ysearch = yunsearch()
 
     def get(self, url_str=''):

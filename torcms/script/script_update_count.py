@@ -2,12 +2,13 @@
 
 import sys
 
-from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.category_model import MCategory
+
 from torcms.model.infor2catalog_model import MInfor2Catalog
 
 def run_update_count():
     mapp2cat = MInfor2Catalog()
-    mappcat = MInforCatalog()
+    mappcat = MCategory()
     for rec in mappcat.query_all():
         uid= rec.uid
         print(rec.name)

@@ -4,9 +4,9 @@ import math
 import config
 import tornado.escape
 
-from torcms.model.infor_model import MInfor as  MInfor
+from torcms.model.info_model import MInfor as  MInfor
 from torcms.core.base_handler import BaseHandler
-from torcms.model.inforcatalog_model import MInforCatalog
+from torcms.model.category_model import MCategory
 
 from torcms.core.torcms_redis import redisvr
 
@@ -23,7 +23,7 @@ class InfoListHandler(BaseHandler):
         self.init()
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
-        self.mappcat = MInforCatalog()
+        self.mappcat = MCategory()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
