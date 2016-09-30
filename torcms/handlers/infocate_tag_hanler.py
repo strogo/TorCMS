@@ -7,8 +7,9 @@ import json
 
 import tornado.web
 import config
-from torcms.model.inforcatalog_model import MInforCatalog
-from torcms.model.infor_model import MInfor as  MInfor
+from torcms.model.category_model import MCategory
+
+from torcms.model.info_model import MInfor as  MInfor
 from torcms.core.base_handler import BaseHandler
 
 from torcms.core.torcms_redis import redisvr
@@ -19,7 +20,7 @@ class InfoTagHandler(BaseHandler):
         self.init()
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
-        self.mcat = MInforCatalog
+        self.mcat = MCategory()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)

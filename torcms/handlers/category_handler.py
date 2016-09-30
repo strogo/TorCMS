@@ -8,7 +8,7 @@ import json
 
 from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
-from torcms.model.postcatalog_model import MPostCatalog
+from torcms.model.category_model import MCategory
 from torcms.model.post_model import MPost
 from torcms.model.post2catalog_model import MPost2Catalog
 
@@ -17,7 +17,7 @@ class CategoryHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
-        self.mcat = MPostCatalog()
+        self.mcat = MCategory()
         self.cats = self.mcat.query_all()
         self.mpost2catalog = MPost2Catalog()
 

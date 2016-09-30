@@ -3,7 +3,7 @@ import tornado.escape
 from torcms.model.infor2label_model import MInforLabel, MInfor2Label
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.infor_model import MInfor
+from torcms.model.info_model import MInfor
 
 
 class InfoLabelHandler(BaseHandler):

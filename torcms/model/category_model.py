@@ -6,7 +6,7 @@ from torcms.model.core_tab import CabCatalog
 from torcms.model.supertable_model import MSuperTable
 
 
-class MPostCatalog(MSuperTable):
+class MCategory(MSuperTable):
     def __init__(self):
         self.tab = CabCatalog
         try:

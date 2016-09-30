@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import tornado.web
-from torcms.model.infor_model import MInfor
+from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
 from torcms.model.usage_model import MUsage
 from torcms.core.base_handler import BaseHandler

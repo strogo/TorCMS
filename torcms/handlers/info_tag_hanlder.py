@@ -2,9 +2,8 @@
 from  math import ceil as math_ceil
 import json
 import tornado.escape
-from torcms.model.infor_model import MInfor
-from torcms.model.inforcatalog_model import MInforCatalog
-
+from torcms.model.info_model import MInfor
+from torcms.model.category_model import MCategory
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
@@ -19,7 +18,7 @@ class InforTagHandler(BaseHandler):
         self.init()
 
         self.mequa = MInfor()
-        self.mcat = MInforCatalog()
+        self.mcat = MCategory()
         self.mapp2tag = MInfor2Catalog()
 
     def get(self, url_str=''):

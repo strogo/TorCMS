@@ -6,7 +6,7 @@ from torcms.model.core_tab import CabPostHist
 from torcms.model.supertable_model import MSuperTable
 
 
-class MAppHist(MSuperTable):
+class MInfoHist(MSuperTable):
     def __init__(self):
         self.tab = CabPostHist
         try:

@@ -4,13 +4,12 @@ import tornado
 import tornado.web
 
 from torcms.core.base_handler import BaseHandler
-from torcms.model.inforcatalog_model import MInforCatalog
-
+from torcms.model.category_model import MCategory
 
 class InfoPublishHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
-        self.minforcatalog = MInforCatalog()
+        self.minforcatalog = MCategory()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
