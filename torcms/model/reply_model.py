@@ -17,7 +17,6 @@ class MReply(MSuperTable):
         except:
             pass
 
-
     def update_vote(self, reply_id, count):
         entry = CabReply.update(
             vote=count

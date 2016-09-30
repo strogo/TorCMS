@@ -14,6 +14,7 @@ class MSuperTable():
             self.tab.create_table()
         except:
             pass
+
     def get_counts(self):
         return self.tab.select().count()
 
@@ -27,15 +28,13 @@ class MSuperTable():
         return self.tab.select().order_by('time_update').limit(10)
 
     def query_random(self, num=6):
-        if config.dbtype == 1 or config.dbtype == 3:
-            return self.tab.select().order_by(peewee.fn.Random()).limit(num)
-        elif config.dbtype == 2:
-            return self.tab.select().order_by(peewee.fn.Rand()).limit(num)
+        return self.tab.select().order_by(peewee.fn.Random()).limit(num)
 
-    def get_parent_list(self, type = 1):
-        db_data = self.tab.select().where( ( self.tab.type == type) & (self.tab.uid.endswith('00')) ).order_by(
+    def get_parent_list(self, type=1):
+        db_data = self.tab.select().where((self.tab.type == type) & (self.tab.uid.endswith('00'))).order_by(
             self.tab.uid)
         return (db_data)
+
     def get_by_id(self, in_uid):
         return self.get_by_uid(in_uid)
 
@@ -46,10 +45,10 @@ class MSuperTable():
         else:
             return recs.get()
 
-    def query_all(self, limit_num = 50, by_uid = 'False', type  = None):
+    def query_all(self, limit_num=50, by_uid='False', type=None):
         if type:
             if by_uid:
-                return self.tab.select().where(self.tab.type == type ).order_by(self.tab.uid).limit(limit_num)
+                return self.tab.select().where(self.tab.type == type).order_by(self.tab.uid).limit(limit_num)
             else:
                 return self.tab.select().where(self.tab.type == type).limit(limit_num)
         else:
@@ -58,6 +57,7 @@ class MSuperTable():
                 return self.tab.select().order_by(self.tab.uid).limit(limit_num)
             else:
                 return self.tab.select().limit(limit_num)
+
     def query_recent(self, num=8):
         return self.tab.select().limit(num)
 
@@ -80,7 +80,6 @@ class MSuperTable():
 
     def query_by_spec(self, spec_id):
         return self.tab.select().where(self.tab.id_spec == spec_id).order_by(self.tab.time_update.desc())
-
 
     def get_by_keyword(self, par2):
         return self.tab.select().where(self.tab.title.contains(par2)).order_by(self.tab.time_update.desc()).limit(20)
