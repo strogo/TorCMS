@@ -14,7 +14,7 @@ class MPostCatalog(MSuperTable):
         except:
             pass
 
-    def get_qian2(self, qian2, type = 1):
+    def get_qian2(self, qian2, type = 2):
         '''
         用于首页。根据前两位，找到所有的大类与小类。
         并为方便使用，使用数组的形式返回。
@@ -22,10 +22,10 @@ class MPostCatalog(MSuperTable):
         :return: 数组，包含了找到的分类
         '''
         return self.tab.select().where((self.tab.type == type) & (self.tab.uid.startswith(qian2)) ).order_by(self.tab.order)
-    def query_pcat(self):
-        return  self.tab.select().where(self.tab.uid.endswith('00')).order_by(self.tab.order)
-    def query_uid_starts_with(self, qian2):
-        return self.tab.select().where(self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
+    def query_pcat(self, type = 2):
+        return  self.tab.select().where((self.tab.type == type) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
+    def query_uid_starts_with(self, qian2, type = 2):
+        return self.tab.select().where((self.tab.type == type) & (self.tab.uid.startswith(qian2))).group_by(self.tab.uid).order_by(self.tab.order)
 
     def query_all(self, by_count=False, by_order=True, type = 1):
         if by_count:
