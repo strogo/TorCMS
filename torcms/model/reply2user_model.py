@@ -76,15 +76,6 @@ class MReply2User(MSuperTable):
 
             return False
 
-    def query_cat_random(self, cat_id, num=6):
-        if cat_id == '':
-            return self.query_random(num)
-        if config.dbtype == 1 or config.dbtype == 3:
-            return CabVoter2Reply.select().join(CabPost2Catalog).where(CabPost2Catalog.catalog == cat_id).order_by(
-                peewee.fn.Random()).limit(num)
-        elif config.dbtype == 2:
-            return CabVoter2Reply.select().join(CabPost2Catalog).where(CabPost2Catalog.catalog == cat_id).order_by(
-                peewee.fn.Rand()).limit(num)
 
     def get_num_by_cat(self, cat_str):
         return CabVoter2Reply.select().where(CabVoter2Reply.id_cats.contains(',{0},'.format(cat_str))).count()

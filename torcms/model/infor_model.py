@@ -125,12 +125,9 @@ class MInforBase(MSuperTable):
 
     def query_random(self, num=8, type=2):
         fn = peewee.fn
-        if config.dbtype == 1 or config.dbtype == 3:
-            return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(
+        return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(
                 fn.Random()).limit(num)
-        elif config.dbtype == 2:
-            return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)).order_by(
-                fn.Rand()).limit(num)
+
 
     def query_cat_random(self, catid, num=8, type=2):
         fn = peewee.fn
