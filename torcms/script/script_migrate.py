@@ -135,11 +135,7 @@ def run_migrate():
     except:
         pass
 
-    migrate(migrator.rename_column('cabpost2catalog', 'tag_id', 'catalog_id'))
-    try:
-        migrate(migrator.rename_column('cabpost2catalog', 'catalog', 'tag'))
-    except:
-        pass
+
 ######################################################################################
     try:
         migrate(migrator.drop_column('cabpage', 'src_type'))
