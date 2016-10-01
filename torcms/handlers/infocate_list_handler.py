@@ -224,7 +224,7 @@ class InfoListHandler(BaseHandler):
         }
 
         cat_rec = self.mappcat.get_by_uid(input)
-        priv_mask_idx = cat_rec.priv_mask.index('1')
+        priv_mask_idx = cat_rec.role_mask.index('1')
 
         if self.get_current_user():
             redis_kw = redisvr.smembers(config.redis_kw + self.userinfo.user_name)
@@ -239,6 +239,6 @@ class InfoListHandler(BaseHandler):
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
                     cat_enum=self.mappcat.get_qian2(parent_id[:2]),
-                    priv_mask_idx=priv_mask_idx,
+                    role_mask_idx=priv_mask_idx,
 
                     )

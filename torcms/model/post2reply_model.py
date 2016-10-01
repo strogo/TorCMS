@@ -4,14 +4,14 @@
 import time
 
 from torcms.core import tools
-from torcms.model.core_tab import CabReply, CabPost2Reply
+from torcms.model.core_tab import g_Reply, g_Post2Reply
 
 
 class MPost2Reply():
     def __init__(self):
-        self.tab = CabPost2Reply
+        self.tab = g_Post2Reply
         try:
-            CabPost2Reply.create_table()
+            g_Post2Reply.create_table()
         except:
             pass
 
@@ -29,5 +29,5 @@ class MPost2Reply():
             return False
 
     def get_by_id(self, in_uid):
-        recs = self.tab.select().join(CabReply).where(self.tab.post_id == in_uid).order_by(self.tab.timestamp.desc())
+        recs = self.tab.select().join(g_Reply).where(self.tab.post_id == in_uid).order_by(self.tab.timestamp.desc())
         return recs

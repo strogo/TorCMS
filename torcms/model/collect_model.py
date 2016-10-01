@@ -3,13 +3,14 @@
 import time
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPost, TabCollect
+from torcms.model.core_tab import g_Post
+from torcms.model.core_tab import g_Collect as  TabCollect
 
 
 class MCollect(object):
     def __init__(self):
         self.tab = TabCollect
-        self.tab_app = CabPost
+        self.tab_app = g_Post
         try:
             TabCollect.create_table()
         except:
@@ -24,7 +25,7 @@ class MCollect(object):
 
     def get_by_signature(self, user_id, app_id):
         try:
-            return self.tab.get((self.tab.user == user_id) & (self.tab.app == app_id))
+            return self.tab.get((self.tab.user == user_id) & (self.tab.info == app_id))
         except:
             return False
 

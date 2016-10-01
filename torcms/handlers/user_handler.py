@@ -181,10 +181,10 @@ class UserHandler(BaseHandler):
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
         if self.tmpl_router == "user":
-            self.muser.update_privilege(xg_username, post_data['privilege'][0])
+            self.muser.update_role(xg_username, post_data['privilege'][0])
             self.redirect(('/user/info'))
         else:
-            if self.muser.update_privilege(xg_username, post_data['privilege'][0]):
+            if self.muser.update_role(xg_username, post_data['privilege'][0]):
                 output = {
                     'del_category ': 1,
                 }

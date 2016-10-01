@@ -1,29 +1,29 @@
 # -*- coding:utf-8 -*-
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPost, TabEvaluation
+from torcms.model.core_tab import g_Post, g_Evaluation
 
 
 class MEvaluation(object):
     def __init__(self):
-        self.tab = TabEvaluation
+        self.tab = g_Evaluation
         try:
-            TabEvaluation.create_table()
+            g_Evaluation.create_table()
         except:
             pass
 
     def query_recent(self, num = 10):
-        return self.tab.select().join(CabPost).order_by(self.tab.timestamp.desc()).limit(num)
+        return self.tab.select().join(g_Post).order_by(self.tab.timestamp.desc()).limit(num)
 
     def query_most(self, num):
         return self.tab.select().order_by(self.tab.count.desc()).limit(num)
 
     def app_evaluation_count(self, app_id, value = 1):
-        return self.tab.select().where((self.tab.app == app_id) & (self.tab.value == value)).count()
+        return self.tab.select().where((self.tab.info == app_id) & (self.tab.value == value)).count()
 
     def get_by_signature(self, user_id, app_id):
         try:
-            return self.tab.get((self.tab.user==user_id) & (self.tab.app== app_id))
+            return self.tab.get((self.tab.user==user_id) & (self.tab.info == app_id))
         except:
             return False
 
@@ -43,5 +43,5 @@ class MEvaluation(object):
             )
 
     def delete_by_app_uid(self, uid):
-        entry = self.tab.delete().where(self.tab.app == uid)
+        entry = self.tab.delete().where(self.tab.info == uid)
         uu = entry.execute()

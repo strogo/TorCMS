@@ -2,9 +2,9 @@
 
 import config
 from torcms.core import tools
-from torcms.model.core_tab import CabCatalog as CabLabel
-from torcms.model.core_tab import CabPost
-from torcms.model.core_tab import CabPost2Catalog as CabPost2Label
+from torcms.model.core_tab import g_Tag as CabLabel
+from torcms.model.core_tab import g_Post
+from torcms.model.core_tab import g_Post2Tag as CabPost2Label
 from torcms.model.supertable_model import MSuperTable
 
 
@@ -51,14 +51,14 @@ class MPost2Label(MSuperTable):
     def __init__(self):
         self.tab = CabPost2Label
         self.tab_label = CabLabel
-        self.tab_post = CabPost
+        self.tab_post = g_Post
         self.mtag = MLabel()
         try:
             CabPost2Label.create_table()
         except:
             pass
     def remove_relation(self, post_id, tag_id):
-        entry = self.tab.delete().where((self.tab.app == post_id) & (self.tab.catalog == tag_id))
+        entry = self.tab.delete().where((self.tab.app == post_id) & (self.tab.tag == tag_id))
         entry.execute()
 
     def generate_catalog_list(self, signature):
@@ -75,7 +75,7 @@ class MPost2Label(MSuperTable):
         return self.tab.select().join(self.tab_label).where((self.tab.post == idd) & (self.tab_label.type == type) )
 
     def get_by_info(self, post_id, catalog_id):
-        tmp_recs = self.tab.select().where((self.tab.post == post_id) & (self.tab.catalog == catalog_id))
+        tmp_recs = self.tab.select().where((self.tab.post == post_id) & (self.tab.tag == catalog_id))
 
         if tmp_recs.count() > 1:
             ''' 如果多于1个，则全部删除
@@ -100,7 +100,7 @@ class MPost2Label(MSuperTable):
         else:
             entry = self.tab.create(
                 uid=tools.get_uuid(),
-                app=post_id,
+                post=post_id,
                 tag=tag_id,
                 order=order,
             )
@@ -108,8 +108,8 @@ class MPost2Label(MSuperTable):
 
 
     def total_number(self, slug):
-        return self.tab_post.select().join(self.tab).where(self.tab.catalog == slug).count()
+        return self.tab_post.select().join(self.tab).where(self.tab.tag == slug).count()
 
     def query_pager_by_slug(self, slug, current_page_num=1):
-        return self.tab_post.select().join(self.tab).where(self.tab.catalog == slug).paginate(current_page_num,
+        return self.tab_post.select().join(self.tab).where(self.tab.tag == slug).paginate(current_page_num,
                                                                                           config.page_num)

@@ -112,8 +112,8 @@ class app_tags(tornado.web.UIModule):
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
-            tmp_str = '<a data-inline="true" href="/tag/{0}" class="tag{1}">{2}</a>'.format(tag_info.catalog.slug, ii,
-                                                                                            tag_info.catalog.name)
+            tmp_str = '<a data-inline="true" href="/tag/{0}" class="tag{1}">{2}</a>'.format(tag_info.tag.slug, ii,
+                                                                                            tag_info.tag.name)
             out_str += tmp_str
             ii += 1
         print(out_str)

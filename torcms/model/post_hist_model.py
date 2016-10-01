@@ -2,15 +2,15 @@
 
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPostHist
+from torcms.model.core_tab import g_PostHist
 from torcms.model.supertable_model import MSuperTable
 
 
 class MPostHist(MSuperTable):
     def __init__(self):
-        self.tab = CabPostHist
+        self.tab = g_PostHist
         try:
-            CabPostHist.create_table()
+            g_PostHist.create_table()
         except:
             pass
 
@@ -21,7 +21,7 @@ class MPostHist(MSuperTable):
 
         uid = tools.get_uuid()
 
-        CabPostHist.create(
+        g_PostHist.create(
             uid=uid,
             title=raw_data.title,
             # date=raw_data.date,

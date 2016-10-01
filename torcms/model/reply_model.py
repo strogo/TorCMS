@@ -6,27 +6,28 @@ import datetime
 import tornado.escape
 
 from torcms.core import tools
-from torcms.model.core_tab import CabReply, CabVoter2Reply
+from torcms.model.core_tab import g_Reply
+from torcms.model.core_tab import g_Voter2Reply as     RabVoter2Reply
 from torcms.model.supertable_model import MSuperTable
 
 
 class MReply(MSuperTable):
     def __init__(self):
         try:
-            CabReply.create_table()
+            g_Reply.create_table()
         except:
             pass
 
     def update_vote(self, reply_id, count):
-        entry = CabReply.update(
+        entry = g_Reply.update(
             vote=count
-        ).where(CabReply.uid == reply_id)
+        ).where(g_Reply.uid == reply_id)
         entry.execute()
 
     def update(self, uid, post_data, update_time=False):
 
         cnt_html = tools.markdown2html(post_data['cnt_md'][0])
-        entry = CabReply.update(
+        entry = g_Reply.update(
             title=post_data['title'][0],
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
@@ -35,13 +36,13 @@ class MReply(MSuperTable):
             time_update=tools.timestamp(),
             logo=post_data['logo'][0],
             keywords=post_data['keywords'][0],
-        ).where(CabReply.uid == uid)
+        ).where(g_Reply.uid == uid)
         entry.execute()
 
     def insert_data(self, post_data):
         uid = tools.get_uuid()
         try:
-            CabReply.create(
+            g_Reply.create(
                 uid=uid,
                 user_name=post_data['user_name'],
                 create_user_id=post_data['user_id'],
@@ -56,8 +57,8 @@ class MReply(MSuperTable):
             return False
 
     def get_reply_by_uid(self, reply_id):
-        rec = CabReply.get(CabReply.uid == reply_id)
+        rec = g_Reply.get(g_Reply.uid == reply_id)
         return rec
 
     def get_by_zan(self, reply_id):
-        return CabVoter2Reply.select().where(CabVoter2Reply.reply_id == reply_id).count()
+        return RabVoter2Reply.select().where(RabVoter2Reply.reply_id == reply_id).count()

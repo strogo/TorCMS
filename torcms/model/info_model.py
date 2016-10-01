@@ -8,26 +8,26 @@ from config import cfg
 import peewee
 from torcms.core import tools
 from torcms.model.supertable_model import MSuperTable
-from torcms.model.core_tab import CabPost
-from torcms.model.core_tab import CabPost2Catalog
-from torcms.model.core_tab import CabPost2Catalog as CabPost2Label
-from torcms.model.core_tab import TabUsage
-from torcms.model.core_tab import CabPostRelation
-from torcms.model.core_tab import CabPost2Reply
-from torcms.model.core_tab import CabReply
+from torcms.model.core_tab import g_Post
+from torcms.model.core_tab import g_Post2Tag
+from torcms.model.core_tab import g_Post2Tag as CabPost2Label
+from torcms.model.core_tab import g_Usage
+from torcms.model.core_tab import g_Rel
+from torcms.model.core_tab import g_Post2Reply
+from torcms.model.core_tab import g_Reply
 
 
 class MInforBase(MSuperTable):
     def __init__(self):
-        self.tab_app = CabPost
-        self.tab_app2catalog = CabPost2Catalog
-        self.tab_relation = CabPostRelation
+        self.tab_app = g_Post
+        self.tab_app2catalog = g_Post2Tag
+        self.tab_relation = g_Rel
         self.tab_app2label = CabPost2Label
-        self.tab_usage = TabUsage
-        self.tab_app2reply = CabPost2Reply
-        self.cab_reply = CabReply
+        self.tab_usage = g_Usage
+        self.tab_app2reply = g_Post2Reply
+        self.cab_reply = g_Reply
         try:
-            CabPost.create_table()
+            g_Post.create_table()
         except:
             pass
 
@@ -48,13 +48,13 @@ class MInforBase(MSuperTable):
     def delete(self, del_id):
         u1 = self.tab_app2catalog.delete().where(self.tab_app2catalog.post == del_id)
         u1.execute()
-        u2 = self.tab_relation.delete().where(self.tab_relation.app_f == del_id)
+        u2 = self.tab_relation.delete().where(self.tab_relation.post_f == del_id)
         u2.execute()
-        u3 = self.tab_relation.delete().where(self.tab_relation.app_t == del_id)
+        u3 = self.tab_relation.delete().where(self.tab_relation.post_t == del_id)
         u3.execute()
         u4 = self.tab_app2label.delete().where(self.tab_app2label.app == del_id)
         u4.execute()
-        u5 = self.tab_usage.delete().where(self.tab_usage.signature == del_id)
+        u5 = self.tab_usage.delete().where(self.tab_usage.info == del_id)
         u5.execute()
 
         reply_arr = []
@@ -131,7 +131,7 @@ class MInforBase(MSuperTable):
     def query_cat_random(self, catid, num=8, type=2):
         fn = peewee.fn
         return self.tab_app.select().join(self.tab_app2catalog).where(
-            (self.tab_app.type == type) & (self.tab_app.valid == 1) & (self.tab_app2catalog.catalog == catid)).order_by(
+            (self.tab_app.type == type) & (self.tab_app.valid == 1) & (self.tab_app2catalog.tag == catid)).order_by(
             fn.Random()).limit(num)
 
     def query_most(self, num=8, type=2):
@@ -142,14 +142,14 @@ class MInforBase(MSuperTable):
         if catid:
             return self.tab_app.select().join(self.tab_app2catalog).where(
                 (self.tab_app.type == type) & (self.tab_app.valid == 1) &
-                (self.tab_app2catalog.catalog == catid)).order_by(self.tab_app.view_count.desc()).limit(num)
+                (self.tab_app2catalog.tag == catid)).order_by(self.tab_app.view_count.desc()).limit(num)
         else:
             return False
 
     def query_least_by_cat(self, num=8, cat_str=1, type=2):
         return self.tab_app.select().join(self.tab_app2catalog).where(
             (self.tab_app.type == type) & (self.tab_app.valid == 1) &
-            (self.tab_app2catalog.catalog == cat_str)).order_by(self.tab_app.view_count).limit(num)
+            (self.tab_app2catalog.tag == cat_str)).order_by(self.tab_app.view_count).limit(num)
 
     def get_by_keyword(self, par2, type=2):
         return self.tab_app.select().where((self.tab_app.type == type) & (self.tab_app.valid == 1)
@@ -169,16 +169,16 @@ class MInforBase(MSuperTable):
 
 class MInfor(MInforBase):
     def __init__(self):
-        self.tab = CabPost
-        self.tab_app = CabPost
-        self.tab_app2catalog = CabPost2Catalog
-        self.tab_relation = CabPostRelation
+        self.tab = g_Post
+        self.tab_app = g_Post
+        self.tab_app2catalog = g_Post2Tag
+        self.tab_relation = g_Rel
         self.tab_app2label = CabPost2Label
-        self.tab_usage = TabUsage
-        self.tab_app2reply = CabPost2Reply
-        self.cab_reply = CabReply
+        self.tab_usage = g_Usage
+        self.tab_app2reply = g_Post2Reply
+        self.cab_reply = g_Reply
         try:
-            CabPost.create_table()
+            g_Post.create_table()
         except:
             pass
 

@@ -6,15 +6,15 @@ import time
 import tornado
 import tornado.escape
 from torcms.core import tools
-from torcms.model.core_tab import CabWiki
+from torcms.model.core_tab import g_Wiki
 from torcms.model.supertable_model import MSuperTable
 
 
 class MPage(MSuperTable):
     def __init__(self):
-        self.tab = CabWiki
+        self.tab = g_Wiki
         try:
-            CabWiki.create_table()
+            g_Wiki.create_table()
         except:
             pass
 
@@ -23,13 +23,13 @@ class MPage(MSuperTable):
         if len(title) < 2:
             return False
 
-        entry = CabWiki.update(
+        entry = g_Wiki.update(
             title=title,
             date=datetime.datetime.now(),
             cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=time.time(),
-        ).where(CabWiki.uid == slug)
+        ).where(g_Wiki.uid == slug)
         entry.execute()
 
     def insert_data(self, post_data):
@@ -45,7 +45,7 @@ class MPage(MSuperTable):
             return (False)
 
         try:
-            CabWiki.create(
+            g_Wiki.create(
                 title=title,
                 date=datetime.datetime.now(),
                 uid=slug,
@@ -66,9 +66,9 @@ class MPage(MSuperTable):
         return self.tab.select().where(self.tab.type == type)
 
     def view_count_plus(self, slug):
-        entry = CabWiki.update(
-            view_count=CabWiki.view_count + 1,
-        ).where(CabWiki.slug == slug)
+        entry = g_Wiki.update(
+            view_count=g_Wiki.view_count + 1,
+        ).where(g_Wiki.uid == slug)
         entry.execute()
 
 

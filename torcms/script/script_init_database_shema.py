@@ -6,71 +6,71 @@ from torcms.model.core_tab import *
 
 def run_init_tables():
     try:
-        CabReply.create_table()
+        g_Reply.create_table()
     except:
         pass
 
     try:
-        CabPost2Reply.create_table()
+        g_Post2Reply.create_table()
     except:
         pass
 
     try:
-        CabCatalog.create_table()
+        g_Tag.create_table()
     except:
         pass
 
     try:
-        CabPost2Reply.create_table()
+        g_Post2Reply.create_table()
     except:
         pass
 
 
     try:
-        CabCatalog.create_table()
+        g_Tag.create_table()
     except:
         pass
 
     try:
-        CabMember.create_table()
+        g_Member.create_table()
     except:
         pass
 
     try:
-        CabWiki.create_table()
+        g_Wiki.create_table()
     except:
         pass
 
     try:
-        CabPic.create_table()
+        g_Image.create_table()
     except:
         pass
 
     try:
-        CabPost.create_table()
+        g_Post.create_table()
     except:
         pass
 
     try:
-        CabPost2Catalog.create_table()
+        g_Post2Tag.create_table()
     except:
         pass
     try:
-        CabWiki.create_table()
-    except:
-        pass
-
-    try:
-        CabPostHist.create_table()
-    except:
-        pass
-    try:
-        CabWikiHist.create_table()
+        g_Wiki.create_table()
     except:
         pass
 
     try:
-        CabPost.create_table()
+        g_PostHist.create_table()
+    except:
+        pass
+    try:
+        g_WikiHist.create_table()
+    except:
+        pass
+
+    try:
+        g_Post.create_table()
     except:
         pass
 
@@ -80,44 +80,44 @@ def run_init_tables():
         pass
 
     try:
-        CabPost2Catalog.create_table()
+        g_Post2Tag.create_table()
     except:
         pass
 
     try:
-        CabPostRelation.create_table()
+        g_Rel.create_table()
     except:
         pass
 
     try:
-        TabEvaluation.create_table()
+        g_Evaluation.create_table()
     except:
         pass
 
     try:
-        TabUsage.create_table()
+        g_Usage.create_table()
     except:
         pass
 
 
 
     try:
-        CabReply.create_table()
+        g_Reply.create_table()
     except:
         pass
 
     try:
-        CabPost2Reply.create_table()
+        g_Post2Reply.create_table()
     except:
         pass
 
     try:
-        CabWiki.create_table()
+        g_Wiki.create_table()
     except:
         pass
 
     try:
-        CabLink.create_table()
+        g_Link.create_table()
     except:
         pass
 

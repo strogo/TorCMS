@@ -2,22 +2,22 @@
 
 
 from torcms.core import tools
-from torcms.model.core_tab import CabWikiHist
+from torcms.model.core_tab import g_WikiHist
 from torcms.model.supertable_model import MSuperTable
 
 
 class MPageHist(MSuperTable):
     def __init__(self):
-        self.tab = CabWikiHist
+        self.tab = g_WikiHist
         try:
-            CabWikiHist.create_table()
+            g_WikiHist.create_table()
         except:
             pass
 
     def insert_data(self, raw_data):
         uid = tools.get_uuid()
 
-        CabWikiHist.create(
+        g_WikiHist.create(
                 uid=uid,
                 title=raw_data.title,
                 # date=raw_data.date,
