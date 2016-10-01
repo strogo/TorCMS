@@ -235,8 +235,8 @@ class PostHandler(BaseHandler):
 
         # 对原来的进行处理，如果不在现有中，则删除
         for cur_info in current_infos:
-            if str(cur_info.catalog.uid).strip() not in new_tag_arr:
-                self.mpost2catalog.remove_relation(uid, cur_info.catalog)
+            if str(cur_info.tag.uid).strip() not in new_tag_arr:
+                self.mpost2catalog.remove_relation(uid, cur_info.tag)
 
     @tornado.web.authenticated
     def to_modify(self, id_rec):
@@ -312,7 +312,7 @@ class PostHandler(BaseHandler):
         if cats.count() == 0:
             cat_id = ''
         else:
-            cat_id = cats.get().catalog
+            cat_id = cats.get().tag
         kwd = {
             'pager': '',
             'editable': self.editable(),

@@ -121,15 +121,15 @@ class MetaHandler(PostHandler):
 
     def check_priv(self, userinfo, cat_id):
         cat_rec = self.mcat.get_by_uid(cat_id)
-        priv_mask_idx = cat_rec.priv_mask.index('1')
+        role_mask_idx = cat_rec.priv_mask.index('1')
         priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
-        if userinfo.privilege[priv_mask_idx] >= '1':
+        if userinfo.role[role_mask_idx] >= '1':
             priv_dic['ADD'] = True
-        if userinfo.privilege[priv_mask_idx] >= '2':
+        if userinfo.role[role_mask_idx] >= '2':
             priv_dic['EDIT'] = True
-        if userinfo.privilege[priv_mask_idx] >= '4':
+        if userinfo.role[role_mask_idx] >= '4':
             priv_dic['DELETE'] = True
-        if userinfo.privilege[priv_mask_idx] >= '8':
+        if userinfo.role[role_mask_idx] >= '8':
             priv_dic['ADMIN'] = True
         return priv_dic
 
@@ -208,7 +208,7 @@ class MetaHandler(PostHandler):
         #  to check if current user could update the meta
         if current_info.user_name == self.userinfo.user_name:
             return True
-        elif self.userinfo.privilege[2] >= '1':
+        elif self.userinfo.role[2] >= '1':
             return True
         elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']:
             return True

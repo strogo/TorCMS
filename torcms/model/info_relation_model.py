@@ -1,15 +1,15 @@
 # -*- coding:utf-8 -*-
 
-from torcms.model.core_tab import CabPost, CabPostRelation, RabPost2App, RabApp2Post, CabPost
+from torcms.model.core_tab import  g_Rel, g_Post
 from torcms.model.relation_model import MRelation
 
 
 class MInforRel(MRelation):
     def __init__(self):
-        self.tab_relation = CabPostRelation
-        self.tab_post = CabPost
+        self.tab_relation = g_Rel
+        self.tab_post = g_Post
         try:
-            CabPostRelation.create_table()
+            g_Rel.create_table()
         except:
             pass
 
@@ -17,8 +17,8 @@ class MInforRel(MRelation):
 class MRelPost2Infor(MRelation):
     def __init__(self):
         MRelation.__init__(self)
-        self.tab_relation = RabPost2App
-        self.tab_post = CabPost
+        self.tab_relation = g_Rel
+        self.tab_post = g_Post
         try:
             self.tab_relation.create_table()
         except:
@@ -28,8 +28,8 @@ class MRelPost2Infor(MRelation):
 class MRelInfor2Post(MRelation):
     def __init__(self):
         MRelation.__init__(self)
-        self.tab_relation = RabApp2Post
-        self.tab_post = CabPost
+        self.tab_relation = g_Rel
+        self.tab_post = g_Post
         try:
             self.tab_relation.create_table()
         except:

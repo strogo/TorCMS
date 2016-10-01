@@ -2,15 +2,15 @@
 
 
 import config
-from torcms.model.core_tab import CabCatalog
+from torcms.model.core_tab import g_Tag
 from torcms.model.supertable_model import MSuperTable
 
 
 class MCategory(MSuperTable):
     def __init__(self):
-        self.tab = CabCatalog
+        self.tab = g_Tag
         try:
-            CabCatalog.create_table()
+            g_Tag.create_table()
         except:
             pass
 
@@ -66,9 +66,9 @@ class MCategory(MSuperTable):
     def update(self, uid, post_data):
         raw_rec = self.get_by_id(uid)
         entry = self.tab.update(
-            name=post_data['name'][0] if 'name' in post_data else raw_rec.name,
-            slug=post_data['slug'][0] if 'slug' in post_data else raw_rec.slug,
-            order=post_data['order'][0] if 'order' in post_data else raw_rec.order,
+            name=post_data['name'] if 'name' in post_data else raw_rec.name,
+            slug=post_data['slug'] if 'slug' in post_data else raw_rec.slug,
+            order=post_data['order'] if 'order' in post_data else raw_rec.order,
             type = post_data['type'] if 'type' in post_data else raw_rec.type,
         ).where(self.tab.uid == uid)
         entry.execute()
@@ -80,9 +80,9 @@ class MCategory(MSuperTable):
             self.update(id_post, post_data)
         else:
             entry = self.tab.create(
-                name=post_data['name'][0],
-                slug=post_data['slug'][0],
-                order=post_data['order'][0],
+                name=post_data['name'],
+                slug=post_data['slug'],
+                order=post_data['order'],
                 uid=id_post,
                 type = post_data['type'] if 'type' in post_data else 1,
             )

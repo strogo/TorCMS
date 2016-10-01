@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import config
-from torcms.model.core_tab import CabPost
-from torcms.model.core_tab import CabCatalog as CabLabel
-from torcms.model.core_tab import CabPost2Catalog as CabPost2Label
+from torcms.model.core_tab import g_Post
+from torcms.model.core_tab import g_Tag as CabLabel
+from torcms.model.core_tab import g_Post2Tag as CabPost2Label
 from torcms.model.label_model import MLabel
 from torcms.model.label_model import MPost2Label
 
@@ -19,7 +19,7 @@ class MInfor2Label(MPost2Label):
     def __init__(self):
         self.tab = CabPost2Label
         self.tab_label = CabLabel
-        self.tab_post = CabPost
+        self.tab_post = g_Post
         self.mtag = MInforLabel()
         try:
             CabPost2Label.create_table()

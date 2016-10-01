@@ -1,20 +1,20 @@
 # -*- coding:utf-8 -*-
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPost, CabRelation
+from torcms.model.core_tab import g_Post
+from torcms.model.core_tab import g_Rel
 
 
 class MRelation():
     def __init__(self):
-        self.tab_relation = CabRelation
-        self.tab_post = CabPost
-        try:
-            CabRelation.create_table()
-        except:
-            pass
+        self.tab_relation = g_Rel
+        self.tab_post = g_Post
 
     def add_relation(self, app_f, app_t, weight = 1):
-        cur = self.tab_relation.select().where((self.tab_relation.app_f == app_f) & (self.tab_relation.app_t == app_t))
+        print('=' * 20)
+        print(app_f)
+        print(app_t)
+        cur = self.tab_relation.select().where((self.tab_relation.post_f == app_f) & (self.tab_relation.post_t == app_t))
         if cur.count() > 1:
             for x in cur:
                 self.delete(x.uid)
@@ -23,8 +23,8 @@ class MRelation():
             uid = tools.get_uuid()
             entry = self.tab_relation.create(
                 uid=uid,
-                app_f=app_f,
-                app_t=app_t,
+                post_f=app_f,
+                post_t=app_t,
                 count=1,
             )
             return entry.uid
@@ -53,6 +53,6 @@ class MRelation():
         '''
         The the related infors.
         '''
-        x = self.tab_relation.select().join(self.tab_post).where(self.tab_relation.app_f == app_id).order_by(
+        x = self.tab_relation.select().join(self.tab_post).where(self.tab_relation.post_f == app_id).order_by(
             self.tab_relation.count.desc()).limit(num)
         return x

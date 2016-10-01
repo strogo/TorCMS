@@ -1,23 +1,23 @@
 # -*- coding:utf-8 -*-
-from torcms.model.core_tab import CabLink
+from torcms.model.core_tab import g_Link
 from torcms.model.supertable_model import MSuperTable
 
 
 class MLink(MSuperTable):
     def __init__(self):
-        self.tab = CabLink
+        self.tab = g_Link
         try:
             self.tab.create_table()
         except:
             pass
 
     def update(self, uid, post_data):
-        entry = CabLink.update(
+        entry = g_Link.update(
             name=post_data['name'][0],
             link=post_data['link'][0],
             order=post_data['order'][0],
             logo=post_data['logo'][0] if 'logo' in post_data else '',
-        ).where(CabLink.uid == uid)
+        ).where(g_Link.uid == uid)
         entry.execute()
 
     def insert_data(self, id_link, post_data):

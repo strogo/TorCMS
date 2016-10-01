@@ -4,12 +4,12 @@ import time
 import config
 import peewee
 
-from torcms.model.core_tab import CabCatalog
+from torcms.model.core_tab import g_Tag
 
 
 class MSuperTable():
     def __init__(self):
-        self.tab = CabCatalog
+        self.tab = g_Tag
         try:
             self.tab.create_table()
         except:

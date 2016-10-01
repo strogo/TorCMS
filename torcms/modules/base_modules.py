@@ -9,6 +9,7 @@ from torcms.model.post2catalog_model import MPost2Catalog
 import config
 import tornado.web
 from torcms.model.category_model import MCategory
+from torcms.core.tools import constant
 
 
 class reply_panel(tornado.web.UIModule):
@@ -176,8 +177,8 @@ class next_post_link(tornado.web.UIModule):
 class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
-        format_arr = [tmpl_str.format(uu.catalog.slug, uu.catalog.name) for uu in
-                      MPost2Catalog().query_by_entity_uid(post_id, type = 1)]
+        format_arr = [tmpl_str.format(uu.tag.slug, uu.tag.name) for uu in
+                      MPost2Catalog().query_by_entity_uid(post_id, type = constant['cate_post'])]
         return ', '.join(format_arr)
 
 
@@ -227,8 +228,8 @@ class post_tags(tornado.web.UIModule):
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
-            tmp_str = '<a href="/category/{0}" class="tag{1}">{2}</a>'.format(tag_info.catalog.slug, ii,
-                                                                              tag_info.catalog.name)
+            tmp_str = '<a href="/category/{0}" class="tag{1}">{2}</a>'.format(tag_info.tag.slug, ii,
+                                                                              tag_info.tag.name)
             out_str += tmp_str
             ii += 1
         return out_str

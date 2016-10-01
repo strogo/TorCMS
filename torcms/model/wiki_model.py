@@ -5,13 +5,13 @@ import datetime
 import tornado.escape
 
 from torcms.core import tools
-from torcms.model.core_tab import CabWiki
+from torcms.model.core_tab import g_Wiki
 from torcms.model.supertable_model import MSuperTable
 
 
 class MWiki(MSuperTable):
     def __init__(self):
-        self.tab = CabWiki
+        self.tab = g_Wiki
         try:
             self.tab.create_table()
         except:
@@ -31,38 +31,41 @@ class MWiki(MSuperTable):
             user_name=post_data['user_name'],
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=tools.timestamp(),
+            type=post_data['type'],
         ).where(self.tab.uid == uid)
         entry.execute()
 
     def insert_data(self, post_data):
-        title = post_data['title'][0].strip()
+        title = post_data['title'].strip()
         if len(title) < 2:
             return False
 
         uu = self.get_by_wiki(title)
-        if uu :
-            return (False)
+        if uu:
+            self.update(uu.uid, post_data)
+            return
 
-        cnt_html = tools.markdown2html(post_data['cnt_md'][0])
+        cnt_html = tools.markdown2html(post_data['cnt_md'])
 
         entry = self.tab.create(
+            # No page slug should startswith '_'
+            uid=post_data['uid'] if 'uid' in post_data else '_' + tools.get_uu8d(),
             title=title,
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
-            uid=tools.get_uu8d(),
-            time_create=tools.timestamp(),
+            time_create=post_data['time_create'] if 'time_craete' in post_data else tools.timestamp(),
             user_name=post_data['user_name'],
-            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
             view_count=1,
-            type = 1
+            type=post_data['type'],
         )
         return (entry.uid)
 
-    def query_dated(self, num=10, type = 1):
+    def query_dated(self, num=10, type=1):
         return self.tab.select().where(self.tab.type == type).order_by(self.tab.time_update.desc()).limit(num)
 
-    def query_most(self, num=8, type = 1):
+    def query_most(self, num=8, type=1):
         return self.tab.select().where(self.tab.type == type).order_by(self.tab.view_count.desc()).limit(num)
 
     def update_view_count(self, citiao):
@@ -73,8 +76,8 @@ class MWiki(MSuperTable):
         entry = self.tab.update(view_count=self.tab.view_count + 1).where(self.tab.uid == uid)
         entry.execute()
 
-    def get_by_wiki(self, citiao, type = 1):
-        q_res = self.tab.select().where((self.tab.type == type) & (self.tab.title == citiao))
+    def get_by_wiki(self, citiao):
+        q_res = self.tab.select().where(self.tab.title == citiao)
         tt = q_res.count()
         if tt == 0 or tt > 1:
             return None

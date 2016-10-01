@@ -102,7 +102,7 @@ class InfoHandler(BaseHandler):
         cats = self.mapp2catalog.query_by_entity_uid(info_id)
         cat_uid_arr = []
         for cat_rec in cats:
-            cat_uid = cat_rec.catalog.uid
+            cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
 
         replys = self.mreply.get_by_id(info_id)
@@ -128,10 +128,10 @@ class InfoHandler(BaseHandler):
         parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name if ext_catid != '' else ''
         if ext_catid != '':
             cat_rec = self.mcat.get_by_uid(ext_catid)
-            priv_mask_idx = cat_rec.priv_mask.index('1')
+            role_mask_idx = cat_rec.role_mask.index('1')
             cat_name = cat_rec.name
         else:
-            priv_mask_idx = 0
+            role_mask_idx = 0
             cat_name = ''
 
         parentname = '<a href="/list/{0}">{1}</a>'.format(ext_catid[:2] + '00', parent_name)
@@ -174,7 +174,7 @@ class InfoHandler(BaseHandler):
                     post_info=app_rec,
                     replys=replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
-                    priv_mask_idx=priv_mask_idx,
+                    role_mask_idx=role_mask_idx,
                     )
 
     def extra_kwd(self, info_rec):
@@ -238,10 +238,10 @@ class InfoHandler(BaseHandler):
         flag = False
 
         for f_cat in f_cats:
-            print(f_cat.catalog)
+            print(f_cat.tag)
             for t_cat in t_cats:
-                print(t_cat.catalog)
-                if f_cat.catalog == t_cat.catalog:
+                print(t_cat.tag)
+                if f_cat.tag == t_cat.tag:
                     flag = True
         if flag:
             pass

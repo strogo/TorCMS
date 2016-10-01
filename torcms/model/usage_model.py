@@ -4,7 +4,7 @@ import time
 
 import peewee
 from torcms.model.infor2catalog_model import MInfor2Catalog
-from torcms.model.core_tab import CabMember, TabUsage, TabUsage
+from torcms.model.core_tab import g_Member, g_Usage, g_Usage
 from torcms.core import tools
 from torcms.model.user_model import MUser
 
@@ -12,9 +12,9 @@ from torcms.model.user_model import MUser
 class MUsage(object):
     def __init__(self):
 
-        self.tab = TabUsage
+        self.tab = g_Usage
         try:
-            TabUsage.create_table()
+            g_Usage.create_table()
         except:
             pass
         self.mapp2catalog = MInfor2Catalog()
@@ -28,26 +28,26 @@ class MUsage(object):
         return self.tab.select().order_by(fn.Random()).limit(6)
 
     def query_recent(self, uname, num):
-        return self.tab.select().join(CabMember).where(CabMember.user_name == uname).order_by(
+        return self.tab.select().join(g_Member).where(g_Member.user_name == uname).order_by(
             self.tab.timestamp.desc()).limit(num)
 
     def query_recent_by_cat(self, uname, cat_id, num):
-        return self.tab.select().join(CabMember).where(
-            (self.tab.catalog_id == cat_id) & (CabMember.user_name == uname)).order_by(self.tab.timestamp.desc()).limit(
+        return self.tab.select().join(g_Member).where(
+            (self.tab.tag == cat_id) & (g_Member.user_name == uname)).order_by(self.tab.timestamp.desc()).limit(
             num)
 
     def query_most(self, uname, num):
-        return self.tab.select().join(CabMember).where(CabMember.user_name == uname).order_by(
+        return self.tab.select().join(g_Member).where(g_Member.user_name == uname).order_by(
             self.tab.count.desc()).limit(num)
 
     def get_by_signature(self, u_name, sig):
-        return self.tab.select().join(CabMember).where((self.tab.signature == sig) & (CabMember.uid == u_name))
+        return self.tab.select().join(g_Member).where((self.tab.info == sig) & (g_Member.uid == u_name))
 
     def count_increate(self, rec, cat_id, num):
         entry = self.tab.update(
             timestamp=int(time.time()),
             count=num + 1,
-            catalog_id=cat_id,
+            tag=cat_id,
         ).where(self.tab.uid == rec)
         entry.execute()
 
@@ -56,16 +56,19 @@ class MUsage(object):
         uu = self.mapp2catalog.get_entry_catalog(sig)
         if uu == False:
             return False
-        cat_id = uu.catalog.uid
+        cat_id = uu.tag.uid
         if tt.count() > 0:
             rec = tt.get()
             self.count_increate(rec.uid, cat_id, rec.count)
         else:
+
             entry = self.tab.create(
                 uid=tools.get_uuid(),
-                signature=sig,
+                info=sig,
                 user=user_id,
                 count=1,
-                catalog_id=cat_id,
+                tag=cat_id,
                 timestamp=int(time.time()),
             )
+
+

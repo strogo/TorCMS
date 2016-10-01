@@ -2,21 +2,21 @@
 
 
 from torcms.core import tools
-from torcms.model.core_tab import CabPostHist
+from torcms.model.core_tab import g_PostHist
 from torcms.model.supertable_model import MSuperTable
 
 
 class MInfoHist(MSuperTable):
     def __init__(self):
-        self.tab = CabPostHist
+        self.tab = g_PostHist
         try:
-            CabPostHist.create_table()
+            g_PostHist.create_table()
         except:
             pass
 
     def insert_data(self, raw_data):
         uid = tools.get_uuid()
-        CabPostHist.create(
+        g_PostHist.create(
                 uid=uid,
             post_id = raw_data.uid,
                 title=raw_data.title,
