@@ -11,11 +11,14 @@ import torcms.model.infor2catalog_model
 from torcms.model.post_model import MPost
 from html2text import html2text
 
+from torcms.core.tools import constant
+
+cate_info = constant['cate_info']
 
 class app_catalog_of(tornado.web.UIModule):
     def render(self, uid_with_str):
         self.mcat = MCategory()
-        recs = self.mcat.query_uid_starts_with(uid_with_str, type = 2)
+        recs = self.mcat.query_uid_starts_with(uid_with_str, type = cate_info)
         # return ''
         return self.render_string('infor/modules/catalog_of.html', recs=recs)
 
@@ -105,7 +108,7 @@ class app_tags(tornado.web.UIModule):
     def render(self, signature):
         print('x' * 100)
         self.mapp2tag = torcms.model.infor2catalog_model.MInfor2Catalog()
-        tag_infos = self.mapp2tag.query_by_entity_uid(signature, type = 2)
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature, type = cate_info)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -129,7 +132,7 @@ class label_count(tornado.web.UIModule):
 class app_menu(tornado.web.UIModule):
     def render(self, limit):
         self.mcat = MCategory()
-        all_cats = self.mcat.query_field_count(limit, type = 2)
+        all_cats = self.mcat.query_field_count(limit, type = cate_info)
         kwd = {
             'cats': all_cats,
         }
