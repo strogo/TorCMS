@@ -55,15 +55,15 @@ class MPage(MSuperTable):
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
                 time_update=time.time(),
                 view_count=1,
-                type  = 2, # 2 for page
+                kind  = '2', # 2 for page
             )
             return slug
         except:
             return ''
 
 
-    def query_all(self, type = 2):
-        return self.tab.select().where(self.tab.type == type)
+    def query_all(self, kind = '2'):
+        return self.tab.select().where(self.tab.kind == kind)
 
     def view_count_plus(self, slug):
         entry = g_Wiki.update(

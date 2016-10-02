@@ -178,7 +178,7 @@ class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
         format_arr = [tmpl_str.format(uu.tag.slug, uu.tag.name) for uu in
-                      MPost2Catalog().query_by_entity_uid(post_id, type = constant['cate_post'])]
+                      MPost2Catalog().query_by_entity_uid(post_id, kind = constant['cate_post'])]
         return ', '.join(format_arr)
 
 
@@ -224,7 +224,7 @@ class copyright(tornado.web.UIModule):
 class post_tags(tornado.web.UIModule):
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
-        tag_infos = self.mapp2tag.query_by_entity_uid(signature)
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind='10')
         out_str = ''
         ii = 1
         for tag_info in tag_infos:

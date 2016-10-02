@@ -47,6 +47,10 @@ class MPost2Catalog(MSuperTable):
         return (recs)
 
     def add_record(self, post_id, catalog_id, order=0):
+        print('==x' *  10)
+        print(post_id, )
+        print(catalog_id)
+        print(order)
         tt = self.__get_by_info(post_id, catalog_id)
         if tt:
             entry = self.tab_post2catalog.update(
@@ -71,9 +75,11 @@ class MPost2Catalog(MSuperTable):
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return recs
 
-    def query_by_entity_uid(self, idd, type=1):
+    def query_by_entity_uid(self, idd, kind='1'):
+        print('kind: {0}'.format(kind) )
+        print('id: {0}'.format(idd))
         return self.tab_post2catalog.select().join(self.tab_catalog).where(
-            (self.tab_catalog.type == type) & (self.tab_post2catalog.post == idd)).order_by(
+            (self.tab_catalog.kind == kind) & (self.tab_post2catalog.post == idd)).order_by(
             self.tab_post2catalog.order)
 
     def query_by_id(self, idd):
@@ -81,7 +87,7 @@ class MPost2Catalog(MSuperTable):
 
 
     def get_entry_catalog(self, app_uid, ):
-        uu = self.query_by_entity_uid(app_uid, type = constant['cate_info'])
+        uu = self.query_by_entity_uid(app_uid, kind = constant['cate_info'])
         if uu.count() > 0:
             return uu.get()
         else:

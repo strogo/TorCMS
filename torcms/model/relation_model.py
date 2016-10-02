@@ -53,6 +53,6 @@ class MRelation():
         '''
         The the related infors.
         '''
-        x = self.tab_relation.select().join(self.tab_post).where(self.tab_relation.post_f == app_id).order_by(
+        x = self.tab_relation.select().join(self.tab_post).where((self.tab_relation.post_f == app_id)&(self.tab_post.kind == '2')).order_by(
             self.tab_relation.count.desc()).limit(num)
         return x

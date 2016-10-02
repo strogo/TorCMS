@@ -4,7 +4,7 @@ import time
 
 import peewee
 from torcms.model.infor2catalog_model import MInfor2Catalog
-from torcms.model.core_tab import g_Member, g_Usage, g_Usage
+from torcms.model.core_tab import g_Member,  g_Usage, g_Post
 from torcms.core import tools
 from torcms.model.user_model import MUser
 

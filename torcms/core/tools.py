@@ -198,10 +198,10 @@ def gen_pager_purecss(cat_slug, page_num, current):
 
 
 constant = {
-    'doc_post': 1,
-    'doc_info': 2,
-    'cate_post': 10,
-    'cate_info': 20,
-    'tag_post': 11,
-    'tag_info': 21,
+    'doc_post': '1',
+    'doc_info': '2',
+    'cate_post': '10',
+    'cate_info': '20',
+    'tag_post': '11',
+    'tag_info': '21',
 }

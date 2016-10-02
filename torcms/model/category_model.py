@@ -14,30 +14,30 @@ class MCategory(MSuperTable):
         except:
             pass
 
-    def get_qian2(self, qian2, type = 2):
+    def get_qian2(self, qian2, kind = '10'):
         '''
         用于首页。根据前两位，找到所有的大类与小类。
         并为方便使用，使用数组的形式返回。
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-        return self.tab.select().where((self.tab.type == type) & (self.tab.uid.startswith(qian2)) ).order_by(self.tab.order)
-    def query_pcat(self, type = 2):
-        return  self.tab.select().where((self.tab.type == type) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
-    def query_uid_starts_with(self, qian2, type =1 ):
-        return self.tab.select().where( (self.tab.type == type) & self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
+        return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.startswith(qian2)) ).order_by(self.tab.order)
+    def query_pcat(self, kind = '10'):
+        return  self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
+    def query_uid_starts_with(self, qian2, kind ='1' ):
+        return self.tab.select().where( (self.tab.kind == kind) & self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
 
-    def query_all(self, by_count=False, by_order=True, type = 1):
+    def query_all(self, by_count=False, by_order=True, kind = '1'):
         if by_count:
-            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.count.desc())
+            recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc())
         elif by_order:
-            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.order)
+            recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.order)
         else:
-            recs = self.tab.select().where(self.tab.type == type).order_by(self.tab.uid)
+            recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.uid)
         return (recs)
 
-    def query_field_count(self, limit_num, type = 1):
-        return self.tab.select().where(self.tab.type == type).order_by(self.tab.count.desc()).limit(limit_num)
+    def query_field_count(self, limit_num, kind = '1'):
+        return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
         uu = self.tab.select().where(self.tab.slug == slug)
@@ -69,7 +69,7 @@ class MCategory(MSuperTable):
             name=post_data['name'] if 'name' in post_data else raw_rec.name,
             slug=post_data['slug'] if 'slug' in post_data else raw_rec.slug,
             order=post_data['order'] if 'order' in post_data else raw_rec.order,
-            type = post_data['type'] if 'type' in post_data else raw_rec.type,
+            kind = post_data['kind'] if 'kind' in post_data else raw_rec.kind,
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -84,6 +84,6 @@ class MCategory(MSuperTable):
                 slug=post_data['slug'],
                 order=post_data['order'],
                 uid=id_post,
-                type = post_data['type'] if 'type' in post_data else 1,
+                kind = post_data['kind'] if 'kind' in post_data else '1',
             )
             return (entry.uid)

@@ -14,7 +14,7 @@ from torcms.model.post2catalog_model import MPost2Catalog
 from torcms.model.post2reply_model import MPost2Reply
 from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
-
+from torcms.core.tools import constant
 
 class PostHandler(BaseHandler):
     def initialize(self):
@@ -27,6 +27,7 @@ class PostHandler(BaseHandler):
         self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
+        self.kind = '1'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -170,8 +171,6 @@ class PostHandler(BaseHandler):
         else:
             return False
 
-
-
         post_data = self.get_post_data()
         post_data['user_name'] = self.get_current_user()
         is_update_time = True if post_data['is_update_time'][0] == '1' else False
@@ -184,52 +183,61 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        current_tag_infos = self.mpost2label.get_by_id(signature)
+        current_tag_infos = self.mpost2label.get_by_id(signature, kind= self.kind + '1')
         post_data = self.get_post_data()
         if 'tags' in post_data:
             pass
         else:
             return False
 
-        tags_arr = [x.strip() for x in post_data['tags'][0].split(',')]
-
+        print('tags: {0}'.format(post_data['tags']))
+        tags_arr = [x.strip() for x in post_data['tags'].split(',')]
         for tag_name in tags_arr:
             if tag_name == '':
                 pass
             else:
-                self.mpost2label.add_record(signature, tag_name, 1)
+                self.mpost2label.add_record(signature, tag_name, 1, kind = self.kind + '1')
 
         for cur_info in current_tag_infos:
+            print(cur_info.tag.name)
             if cur_info.tag.name in tags_arr:
                 pass
             else:
                 self.mpost2label.remove_relation(signature, cur_info.tag)
 
+
     @tornado.web.authenticated
     def update_catalog(self, uid):
         post_data = self.get_post_data()
-        current_infos = self.mpost2catalog.query_by_id(uid)
+        print(post_data)
+        current_infos = self.mpost2catalog.query_by_entity_uid(uid, kind= self.kind + '0')
         new_tag_arr = []
         # HTML中预定义的
         def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
         # todo: next line should be deleted. keep here for historical reason.
         def_cate_arr.append('def_cat_uid')
+        print('=-' * 40)
+        print(post_data)
+        print(def_cate_arr)
         for key in def_cate_arr:
             if key in post_data:
                 pass
             else:
                 continue
-            if post_data[key][0] == '':
+            print('a' * 4 )
+            print(post_data[key])
+            if post_data[key] == '' or post_data[key] == '0':
                 continue
-            if len(post_data[key][0]) != 4:
-                continue
-            print(post_data[key][0])
+            # if len(post_data[key]) != 4:
+            #     continue
+            print(post_data[key])
             print(new_tag_arr)
             # 有可能选重复了。保留前面的
-            if post_data[key][0] in new_tag_arr:
+            if post_data[key] in new_tag_arr:
                 continue
 
-            new_tag_arr.append(post_data[key][0])
+            new_tag_arr.append(post_data[key] + ' ' * (4 - len(post_data[key])))
+
         for idx, val in enumerate(new_tag_arr):
             self.mpost2catalog.add_record(uid, val, idx)
 
@@ -253,9 +261,9 @@ class PostHandler(BaseHandler):
         self.render('doc/post/post_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    tag_infos=self.mcat.query_all(),
-                    app2label_info=self.mpost2label.get_by_id(id_rec),
-                    app2tag_info=self.mpost2catalog.query_by_id(id_rec),
+                    tag_infos=self.mcat.query_all(kind = constant['cate_post']),
+                    app2label_info=self.mpost2label.get_by_id(id_rec, kind=constant['tag_post'] ),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, kind  = constant['cate_post']),
                     dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,

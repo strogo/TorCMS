@@ -43,7 +43,7 @@ class MPost(MSuperTable):
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
                 logo=post_data['logo'],
                 keywords=post_data['keywords'],
-                type = post_data['type'] if 'type' in post_data else 1,
+                kind = post_data['kind'] if 'kind' in post_data else 1,
                 extinfo = post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
             ).where(g_Post.uid == uid)
             entry.execute()
@@ -80,7 +80,7 @@ class MPost(MSuperTable):
             logo=post_data['logo'],
             keywords=post_data['keywords'],
             extinfo = post_data['extinfo'] if 'extinfo'  in post_data else {},
-            type = post_data['type'] if 'type' in post_data else 1,
+            kind = post_data['kind'] if 'kind' in post_data else 1,
         )
         return (entry.uid)
 
@@ -91,36 +91,36 @@ class MPost(MSuperTable):
         return g_Post.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
                 peewee.fn.Random()).limit(num)
 
-    def query_recent_edited(self, timstamp, type = 1):
-        return self.tab.select().where(( self.tab.type == type) & (g_Post.time_update > timstamp)).order_by(g_Post.time_update.desc())
+    def query_recent_edited(self, timstamp, kind = 1):
+        return self.tab.select().where(( self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(g_Post.time_update.desc())
 
-    def query_recent(self, num=8, type = 1):
-        return self.tab.select().where( self.tab.type == type).order_by(g_Post.time_update.desc()).limit(num)
+    def query_recent(self, num=8, kind = 1):
+        return self.tab.select().where( self.tab.kind == kind).order_by(g_Post.time_update.desc()).limit(num)
 
-    def query_all(self, type = 1):
-        return self.tab.select().where( self.tab.type == type).order_by(g_Post.time_update.desc())
+    def query_all(self, kind = 1):
+        return self.tab.select().where( self.tab.kind == kind).order_by(g_Post.time_update.desc())
 
-    def get_num_by_cat(self, cat_str, type = 1):
-        return g_Post.select().where((self.tab.type == type) & (g_Post.id_cats.contains(',{0},'.format(cat_str)))).count()
+    def get_num_by_cat(self, cat_str, kind = 1):
+        return g_Post.select().where((self.tab.kind == kind) & (g_Post.id_cats.contains(',{0},'.format(cat_str)))).count()
 
-    def query_keywords_empty(self, type = 1):
-        return g_Post.select().where((self.tab.type == type) & (g_Post.keywords == ''))
+    def query_keywords_empty(self, kind = 1):
+        return g_Post.select().where((self.tab.kind == kind) & (g_Post.keywords == ''))
 
-    def query_dated(self, num=8, type = 1):
-        return g_Post.select().where(self.tab.type == type).order_by(g_Post.time_update.asc()).limit(num)
+    def query_dated(self, num=8, kind = 1):
+        return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.time_update.asc()).limit(num)
 
-    def query_most_pic(self, num, type = 1):
-        return g_Post.select().where((self.tab.type == type) & (g_Post.logo != "")).order_by(g_Post.view_count.desc()).limit(num)
+    def query_most_pic(self, num, kind = 1):
+        return g_Post.select().where((self.tab.kind == kind) & (g_Post.logo != "")).order_by(g_Post.view_count.desc()).limit(num)
 
-    def query_cat_recent(self, cat_id, num=8, type = 1):
-        return g_Post.select().join(g_Post2Tag).where((self.tab.type == type) & (g_Post2Tag.tag == cat_id)).order_by(
+    def query_cat_recent(self, cat_id, num=8, kind = 1):
+        return g_Post.select().join(g_Post2Tag).where((self.tab.kind == kind) & (g_Post2Tag.tag == cat_id)).order_by(
             g_Post.time_update.desc()).limit(num)
 
-    def query_most(self, num=8, type = 1):
-        return g_Post.select().where(self.tab.type == type).order_by(g_Post.view_count.desc()).limit(num)
+    def query_most(self, num=8, kind = 1):
+        return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.view_count.desc()).limit(num)
 
-    def query_cat_by_pager(self, cat_str, cureent , type = 1):
-        tt = g_Post.select().where((self.tab.type == type) & (g_Post.id_cats.contains(str(cat_str)))).order_by(
+    def query_cat_by_pager(self, cat_str, cureent , kind = 1):
+        tt = g_Post.select().where((self.tab.kind == kind) & (g_Post.id_cats.contains(str(cat_str)))).order_by(
             g_Post.time_update.desc()).paginate(cureent, config.page_num)
         return tt
 
@@ -137,18 +137,18 @@ class MPost(MSuperTable):
         entry = g_Post.update(keywords=inkeywords).where(g_Post.uid == uid)
         entry.execute()
 
-    def get_next_record(self, in_uid, type = 1):
+    def get_next_record(self, in_uid, kind = 1):
         current_rec = self.get_by_id(in_uid)
-        query = g_Post.select().where((self.tab.type == type) & (g_Post.time_update < current_rec.time_update)).order_by(
+        query = g_Post.select().where((self.tab.kind == kind) & (g_Post.time_update < current_rec.time_update)).order_by(
             g_Post.time_update.desc())
         if query.count() == 0:
             return None
         else:
             return query.get()
 
-    def get_previous_record(self, in_uid, type = 1):
+    def get_previous_record(self, in_uid, kind = 1):
         current_rec = self.get_by_id(in_uid)
-        query = g_Post.select().where((self.tab.type == type) & (g_Post.time_update > current_rec.time_update)).order_by(g_Post.time_update)
+        query = g_Post.select().where((self.tab.kind == kind) & (g_Post.time_update > current_rec.time_update)).order_by(g_Post.time_update)
         if query.count() == 0:
             return None
         else:

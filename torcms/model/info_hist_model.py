@@ -25,7 +25,6 @@ class MInfoHist(MSuperTable):
                 logo = raw_data.logo,
                 date = raw_data.date,
                 time_update = raw_data.time_update,
-                type = raw_data.type,
                 cnt_md = raw_data.cnt_md,
                 app_id = raw_data.uid,
                 valid = raw_data.valid,
