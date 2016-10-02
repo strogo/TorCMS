@@ -30,8 +30,8 @@ class MSuperTable():
     def query_random(self, num=6):
         return self.tab.select().order_by(peewee.fn.Random()).limit(num)
 
-    def get_parent_list(self, type=1):
-        db_data = self.tab.select().where((self.tab.type == type) & (self.tab.uid.endswith('00'))).order_by(
+    def get_parent_list(self, kind='10'):
+        db_data = self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(
             self.tab.uid)
         return (db_data)
 
@@ -45,12 +45,12 @@ class MSuperTable():
         else:
             return recs.get()
 
-    def query_all(self, limit_num=50, by_uid='False', type=None):
-        if type:
+    def query_all(self, limit_num=50, by_uid='False', kind=None):
+        if kind:
             if by_uid:
-                return self.tab.select().where(self.tab.type == type).order_by(self.tab.uid).limit(limit_num)
+                return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.uid).limit(limit_num)
             else:
-                return self.tab.select().where(self.tab.type == type).limit(limit_num)
+                return self.tab.select().where(self.tab.kind == kind).limit(limit_num)
         else:
 
             if by_uid:

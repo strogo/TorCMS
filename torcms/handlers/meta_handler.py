@@ -24,6 +24,7 @@ from torcms.core.tools import constant
 
 class MetaHandler(PostHandler):
     def initialize(self):
+
         self.init()
         self.mpost = MInfor()
         self.mcat = MCategory()
@@ -36,6 +37,7 @@ class MetaHandler(PostHandler):
 
         self.musage = MUsage()
         self.mevaluation = MEvaluation()
+        self.kind = '2'
         # if 'app_url_name' in cfg:
         #     self.app_url_name = cfg['app_url_name']
         # else:
@@ -200,9 +202,10 @@ class MetaHandler(PostHandler):
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mcat.get_qian2(catid[:2]),
-                    tag_infos=self.mcat.query_all(by_order=True, type = constant['cate_info']),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid),
-                    app2label_info=self.mpost2label.get_by_id(infoid), )
+                    tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
+                    tag_infos2 = self.mcat.query_all(by_order=True, kind = constant['cate_info']),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind = constant['cate_info']),
+                    app2label_info=self.mpost2label.get_by_id(infoid,kind = constant['tag_info'] ))
 
     def check_update_role(self, current_info, post_data):
         #  to check if current user could update the meta
@@ -210,7 +213,7 @@ class MetaHandler(PostHandler):
             return True
         elif self.userinfo.role[2] >= '1':
             return True
-        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['EDIT']:
+        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'])['EDIT']:
             return True
         else:
             return False
@@ -219,11 +222,11 @@ class MetaHandler(PostHandler):
         # 下面两种处理方式，上面是原有的，暂时保留以保持兼容
         ext_cat_uid = {}
         if 'def_cat_uid' in post_data:
-            ext_cat_uid['def_cat_uid'] = post_data['def_cat_uid'][0]
-            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][0][:2])
+            ext_cat_uid['def_cat_uid'] = post_data['def_cat_uid']
+            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][:2])
         if 'gcat0' in post_data:
-            ext_cat_uid['def_cat_uid'] = post_data['gcat0'][0]
-            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['gcat0'][0][:2])
+            ext_cat_uid['def_cat_uid'] = post_data['gcat0']
+            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['gcat0'][:2])
         print(ext_cat_uid)
         return ext_cat_uid
 
@@ -235,7 +238,7 @@ class MetaHandler(PostHandler):
             if key.startswith('ext_') or key.startswith('tag_'):
                 ext_dic[key] = self.get_argument(key)
             else:
-                post_data[key] = self.get_arguments(key)
+                post_data[key] = self.get_arguments(key)[0]
 
         post_data['user_name'] = self.userinfo.user_name
 
@@ -244,10 +247,11 @@ class MetaHandler(PostHandler):
         if self.check_update_role(current_info, post_data):
             pass
         else:
+            print('No privilege.')
             return False
 
         if 'valid' in post_data:
-            post_data['valid'] = int(post_data['valid'][0])
+            post_data['valid'] = int(post_data['valid'])
         else:
             post_data['valid'] = current_info.valid
 
@@ -256,9 +260,10 @@ class MetaHandler(PostHandler):
 
         ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
-        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
+        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
         self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
+
         self.mpost.modify_meta(uid,
                                post_data,
                                extinfo=ext_dic)
@@ -275,9 +280,9 @@ class MetaHandler(PostHandler):
             if key.startswith('ext_') or key.startswith('tag_'):
                 ext_dic[key] = self.get_argument(key)
             else:
-                post_data[key] = self.get_arguments(key)
+                post_data[key] = self.get_arguments(key)[0]
 
-        if self.check_priv(self.userinfo, post_data['def_cat_uid'][0])['ADD']:
+        if self.check_priv(self.userinfo, post_data['def_cat_uid'])['ADD']:
             pass
         else:
             return False
@@ -286,11 +291,11 @@ class MetaHandler(PostHandler):
             uid = 'g' + tools.get_uu4d()
             while self.mpost.get_by_uid(uid):
                 uid = 'g' + tools.get_uu4d()
-            post_data['uid'][0] = uid
+            post_data['uid'] = uid
 
         post_data['user_name'] = self.userinfo.user_name
         if 'valid' in post_data:
-            post_data['valid'] = int(post_data['valid'][0])
+            post_data['valid'] = int(post_data['valid'])
         else:
             post_data['valid'] = 1
 
@@ -298,7 +303,7 @@ class MetaHandler(PostHandler):
 
         ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
-        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'][0].strip().strip(',').split(',')]
+        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
 
         self.mpost.modify_meta(ext_dic['def_uid'],

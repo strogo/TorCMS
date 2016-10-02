@@ -32,6 +32,7 @@ class InfoHandler(BaseHandler):
         self.mcat = MCategory()
         self.mrel = MInforRel()
         self.mreply = MInfor2Reply()
+        self.kind = '2'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -85,7 +86,6 @@ class InfoHandler(BaseHandler):
         :param info_id:
         :return: Nonthing.
         '''
-
         app_rec = self.minfo.get_by_uid(info_id)
 
         if app_rec:
@@ -161,6 +161,7 @@ class InfoHandler(BaseHandler):
         tmpl = self.ext_tmpl_name(app_rec) if self.ext_tmpl_name(app_rec) else self.get_tmpl_name(app_rec)
         ext_catid2 = app_rec.extinfo['def_cat_uid'] if 'def_cat_uid' in app_rec.extinfo else None
 
+
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(app_rec)),
                     calc_info=app_rec,
@@ -169,7 +170,7 @@ class InfoHandler(BaseHandler):
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
-                    tag_info=self.mapp2tag.get_by_id(info_id),
+                    tag_info=self.mapp2tag.get_by_id(info_id, kind = tools.constant['tag_info']),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     post_info=app_rec,
                     replys=replys,

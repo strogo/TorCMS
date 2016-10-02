@@ -31,7 +31,7 @@ class MWiki(MSuperTable):
             user_name=post_data['user_name'],
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
             time_update=tools.timestamp(),
-            type=post_data['type'],
+            kind=post_data['kink'],
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -58,15 +58,15 @@ class MWiki(MSuperTable):
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
             view_count=1,
-            type=post_data['type'],
+            kind=post_data['kind'] if 'kind' in post_data else 1,
         )
         return (entry.uid)
 
-    def query_dated(self, num=10, type=1):
-        return self.tab.select().where(self.tab.type == type).order_by(self.tab.time_update.desc()).limit(num)
+    def query_dated(self, num=10, kind=1):
+        return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.time_update.desc()).limit(num)
 
-    def query_most(self, num=8, type=1):
-        return self.tab.select().where(self.tab.type == type).order_by(self.tab.view_count.desc()).limit(num)
+    def query_most(self, num=8, kind=1):
+        return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.view_count.desc()).limit(num)
 
     def update_view_count(self, citiao):
         entry = self.tab.update(view_count=self.tab.view_count + 1).where(self.tab.title == citiao)

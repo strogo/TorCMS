@@ -10,7 +10,7 @@ class g_Tag(BaseModel):
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
     count = peewee.IntegerField(default=0)
-    type = peewee.IntegerField(default=1)
+    kind = peewee.CharField(null=False, max_length=2, default='11', help_text='tag type: 0 for category, 1 for label', )  # peewee.IntegerField(default=1)
     role_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
 
@@ -37,7 +37,7 @@ class g_Post(BaseModel):
     valid = peewee.IntegerField(null=False, default=1, help_text='Whether the infor would show.')
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
-    type = peewee.IntegerField(null=False, default=1)
+    kind = peewee.CharField(null=False, max_length=1, default='1', help_text='Post type: 1 for doc, 2 for inor', )
     extinfo = BinaryJSONField(default={})
 
 
@@ -51,7 +51,7 @@ class g_Wiki(BaseModel):
     view_count = peewee.IntegerField()
     cnt_md = peewee.TextField()
     cnt_html = peewee.TextField()
-    type = peewee.IntegerField(null=False, default=1)  # 1 for wiki, 2 for page.
+    kind = peewee.CharField(null=False, max_length=1, default='1', help_text='1 for wiki, 2 for page.', )
 
 
 class g_PostHist(BaseModel):

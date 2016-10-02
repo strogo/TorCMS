@@ -17,7 +17,7 @@ class InforTagHandler(BaseHandler):
 
     def initialize(self):
         self.init()
-        self.type = constant['cate_info']
+        self.kind = constant['cate_info']
         self.mequa = MInfor()
         self.mcat = MCategory()
         self.mapp2tag = MInfor2Catalog()
@@ -37,7 +37,7 @@ class InforTagHandler(BaseHandler):
                 self.list(url_arr[0], url_arr[1])
 
     def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2, type = self.type )
+        cur_cat = self.mcat.query_uid_starts_with(qian2, kind = self.kind )
 
         out_arr = {}
         for x in cur_cat:
@@ -61,7 +61,7 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mcat.get_by_slug(tag_slug)
-        if taginfo.type == self.type:
+        if taginfo.kind == self.kind:
             pass
         else:
             return False
