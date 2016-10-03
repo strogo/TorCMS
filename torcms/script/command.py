@@ -2,7 +2,7 @@
 
 import sys, getopt
 
-# from .script_migrate import run_migrate
+from .script_migrate import run_migrate
 from .get_category import run_gen_category
 from .script_init_database_shema import run_init_tables
 from .script_update_count import run_update_count
@@ -23,7 +23,7 @@ def entry(argv):
         if opt == "-h":
             print ('helper.py -i cmd')
             print ('cmd list----------------------')
-            # print ('       migrate: ')
+            print ('       migrate: ')
             print ('    migrate_db: ')
             print ('     edit_diff: ')
             print ('  gen_category: ')

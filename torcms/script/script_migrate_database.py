@@ -2,6 +2,8 @@ from  tornado.escape import xhtml_unescape as unescape
 
 
 def do_cabpost():
+    print('==============================')
+    print('For Post ... ')
     from model_ent.post_model import MPost as MPostOld
     mpost_old = MPostOld()
 
@@ -27,6 +29,8 @@ def do_cabpost():
 
 
 def do_tabapp():
+    print('==============================')
+    print('For Infor ... ')
     from torcms.model.post_model import MPost
 
     mpost = MPost()
@@ -38,7 +42,7 @@ def do_tabapp():
         # print(info_rec.uid)
         post_data = {
             'title': info_rec.title,
-            'user_name': info_rec.user_name,
+            'user_name': '', # info_rec.user_name,
             'logo': info_rec.logo,
             'cnt_md': unescape(info_rec.cnt_md),
             'keywords': info_rec.keywords,
@@ -47,6 +51,7 @@ def do_tabapp():
             # 'time_create': info_rec.time_create,
             'time_update': info_rec.time_update,
         }
+        print(post_data)
         # mpost.insert_data('m' + info_rec.uid, post_data)
         mpost.add_or_update('g' + info_rec.uid, post_data)
 
@@ -54,6 +59,8 @@ def do_tabapp():
 
 
 def do_cabcatalog():
+    print('==============================')
+    print('For Catalog ... ')
     from torcms.model.category_model import MCategory
     mcat = MCategory()
 
@@ -88,6 +95,8 @@ def do_cabcatalog():
 
 
 def do_app2catalog():
+    print('==============================')
+    print('For App tags ... ')
     from torcms.model.post2catalog_model import MPost2Catalog as MPost2Tag
     mpost2tag = MPost2Tag()
 
@@ -117,6 +126,8 @@ def do_app2catalog():
 
 
 def do_post_label():
+    print('==============================')
+    print('For Post Label ... ')
     from model_ent.label_model import MLabel
     mlabel = MLabel()
 
@@ -137,6 +148,8 @@ def do_post_label():
 
 
 def do_app_label():
+    print('==============================')
+    print('For App Label ... ')
     from model_ent.infor2label_model import MInforLabel
     mlabel = MInforLabel()
 
@@ -156,6 +169,9 @@ def do_app_label():
 
 
 def do_post2label():
+    print('==============================')
+    print('For Post2Label ... ')
+
     from model_ent.label_model import MPost2Label
     mlabel = MPost2Label()
 
@@ -167,6 +183,8 @@ def do_post2label():
 
 
 def do_app2label():
+    print('==============================')
+    print('For App2Label  ... ')
     from model_ent.infor2label_model import MInfor2Label
     mlabel = MInfor2Label()
 
@@ -221,6 +239,8 @@ def convert_20d(instr):
 
 
 def do_member():
+    print('==============================')
+    print('For Member ... ')
     from model_ent.user_model import MUser as OldUser
 
     mraw_user = OldUser()
@@ -243,6 +263,8 @@ def do_member():
 
 
 def do_wiki():
+    print('==============================')
+    print('For Wiki ... ')
     from torcms.model.wiki_model import MWiki
     mwiki = MWiki()
     #
@@ -299,6 +321,7 @@ def do_wiki():
 
 
 def run_migrate_db():
+
     do_cabpost()
     do_tabapp()
     do_cabcatalog()
