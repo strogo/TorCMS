@@ -14,20 +14,22 @@ class MCategory(MSuperTable):
         except:
             pass
 
-    def get_qian2(self, qian2, kind = '10'):
+    def get_qian2(self, qian2, kind='10'):
         '''
         用于首页。根据前两位，找到所有的大类与小类。
-        并为方便使用，使用数组的形式返回。
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-        return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.startswith(qian2)) ).order_by(self.tab.order)
-    def query_pcat(self, kind = '10'):
-        return  self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
-    def query_uid_starts_with(self, qian2, kind ='1' ):
-        return self.tab.select().where( (self.tab.kind == kind) & self.tab.uid.startswith(qian2)).group_by(self.tab.uid).order_by(self.tab.order)
+        return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.startswith(qian2))).order_by(
+            self.tab.order)
 
-    def query_all(self, by_count=False, by_order=True, kind = '1'):
+    def query_pcat(self, kind='10'):
+        return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
+
+    def query_uid_starts_with(self, qian2, kind='10'):
+        return self.get_qian2(qian2, kind = kind)
+
+    def query_all(self, by_count=False, by_order=True, kind='1'):
         if by_count:
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc())
         elif by_order:
@@ -36,15 +38,13 @@ class MCategory(MSuperTable):
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.uid)
         return (recs)
 
-    def query_field_count(self, limit_num, kind = '1'):
+    def query_field_count(self, limit_num, kind='1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
         uu = self.tab.select().where(self.tab.slug == slug)
-        if uu.count() == 1:
+        if uu.count() > 0:
             return uu.get()
-        elif uu.count() > 1:
-            return False
         else:
             return False
 
@@ -54,36 +54,28 @@ class MCategory(MSuperTable):
         ).where(self.tab.uid == cat_id)
         entry.execute()
 
-    def initial_db(self, post_data):
-        entry = self.tab.create(
-            name=post_data['name'],
-            id_cat=post_data['id_cat'],
-            slug=post_data['slug'],
-            order=post_data['order'],
-        )
-        return (entry)
-
     def update(self, uid, post_data):
         raw_rec = self.get_by_id(uid)
         entry = self.tab.update(
             name=post_data['name'] if 'name' in post_data else raw_rec.name,
             slug=post_data['slug'] if 'slug' in post_data else raw_rec.slug,
             order=post_data['order'] if 'order' in post_data else raw_rec.order,
-            kind = post_data['kind'] if 'kind' in post_data else raw_rec.kind,
+            kind=post_data['kind'] if 'kind' in post_data else raw_rec.kind,
+            role_mask = post_data['role_mask'] if 'role_mask' in post_data else '00100',
         ).where(self.tab.uid == uid)
         entry.execute()
 
-    def insert_data(self, id_post, post_data):
-
-        uu = self.get_by_id(id_post)
+    def insert_data(self, uid, post_data):
+        uu = self.get_by_id(uid)
         if uu:
-            self.update(id_post, post_data)
+            self.update(uid, post_data)
         else:
             entry = self.tab.create(
+                uid=uid,
                 name=post_data['name'],
                 slug=post_data['slug'],
                 order=post_data['order'],
-                uid=id_post,
-                kind = post_data['kind'] if 'kind' in post_data else '1',
+                kind=post_data['kind'] if 'kind' in post_data else '10',
+                role_mask=post_data['role_mask'] if 'role_mask' in post_data else '00100',
             )
             return (entry.uid)

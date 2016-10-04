@@ -4,27 +4,8 @@ __author__ = 'bukun'
 
 from torcms.model.core_tab import *
 
+
 def run_init_tables():
-    try:
-        g_Reply.create_table()
-    except:
-        pass
-
-    try:
-        g_Post2Reply.create_table()
-    except:
-        pass
-
-    try:
-        g_Tag.create_table()
-    except:
-        pass
-
-    try:
-        g_Post2Reply.create_table()
-    except:
-        pass
-
 
     try:
         g_Tag.create_table()
@@ -42,7 +23,7 @@ def run_init_tables():
         pass
 
     try:
-        g_Image.create_table()
+        g_Entity.create_table()
     except:
         pass
 
@@ -51,14 +32,6 @@ def run_init_tables():
     except:
         pass
 
-    try:
-        g_Post2Tag.create_table()
-    except:
-        pass
-    try:
-        g_Wiki.create_table()
-    except:
-        pass
 
     try:
         g_PostHist.create_table()
@@ -69,13 +42,9 @@ def run_init_tables():
     except:
         pass
 
-    try:
-        g_Post.create_table()
-    except:
-        pass
 
     try:
-        TabCollect.create_table()
+        g_Collect.create_table()
     except:
         pass
 
@@ -99,15 +68,8 @@ def run_init_tables():
     except:
         pass
 
-
-
     try:
         g_Reply.create_table()
-    except:
-        pass
-
-    try:
-        g_Post2Reply.create_table()
     except:
         pass
 
@@ -121,3 +83,7 @@ def run_init_tables():
     except:
         pass
 
+    try:
+        g_Post2Reply.create_table()
+    except:
+        pass

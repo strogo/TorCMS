@@ -14,6 +14,17 @@ def run_migrate():
     except:
         pass
 
+
+    try:
+        migrate(migrator.add_column('tabapp', 'user_name', CharField(null=False, default='', max_length=36, help_text='UserName', )))
+    except:
+        pass
+
+    try:
+        migrate(migrator.add_column('tabapp', 'logo',                                    CharField(default='' )))
+    except:
+        pass
+
     ################################################################################################
 
     try:

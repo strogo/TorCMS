@@ -3,17 +3,17 @@
         <div class="panel panel-default">
             <div class="panel-heading"><span class="glyphicon glyphicon-envelope"></span> 修改用户权限</div>
             <div class="panel-body">
-                <form class="form-horizontal" action="/user/changeprivilege/{{ userinfo.user_name}}" method="post"
+                <form class="form-horizontal" action="/user/changerole/{{ userinfo.user_name}}" method="post"
                       id="form_changeinfo">
 
                     <fieldset>
 
                         <div class="form-group">
 
-                            <label class="col-md-3 control-label" for="privilege">用户权限</label>
+                            <label class="col-md-3 control-label" for="role">用户权限</label>
 
                             <div class="col-md-9">
-                                <input type="text" name="privilege" id="privilege" class="form-control"
+                                <input type="text" name="role" id="role" class="form-control"
                                        placeholder="请输入管理权限，例10000"/>
 
                             </div>

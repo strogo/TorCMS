@@ -32,7 +32,7 @@
             <li><a onclick="js_show_page('/user/p/changeinfo')"><span
                     class="glyphicon glyphicon-pencil"></span>修改个人信息</a>
             </li>
-            {% if userinfo is not None and userinfo.privilege[4] == '1' %}
+            {% if userinfo is not None and userinfo.role[4] == '1' %}
             <li><a onclick="js_show_page('/user/p/find')"><span class="glyphicon glyphicon-info-sign"></span>查看所有用户</a>
             </li>
             {% end %}

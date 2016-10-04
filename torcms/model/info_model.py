@@ -54,9 +54,9 @@ class MInforBase(MSuperTable):
         u2.execute()
         u3 = self.tab_relation.delete().where(self.tab_relation.post_t == del_id)
         u3.execute()
-        u4 = self.tab_app2label.delete().where(self.tab_app2label.app == del_id)
+        u4 = self.tab_app2label.delete().where(self.tab_app2label.post == del_id)
         u4.execute()
-        u5 = self.tab_usage.delete().where(self.tab_usage.info == del_id)
+        u5 = self.tab_usage.delete().where(self.tab_usage.post == del_id)
         u5.execute()
 
         reply_arr = []
@@ -162,10 +162,16 @@ class MInforBase(MSuperTable):
             self.tab_app.time_update.desc()).limit(num)
 
     def get_by_uid(self, sig):
-        try:
-            return self.tab_app.get(uid=sig)
-        except:
+        cur_recs = self.tab_app.select().where(self.tab_app.uid ==  sig )
+        if cur_recs.count() > 0:
+            return cur_recs.get()
+        else:
             return False
+        # return self.tab_app.get(uid=sig)
+        # try:
+        #     return self.tab_app.get(uid=sig)
+        # except:
+        #     return False
 
 
 class MInfor(MInforBase):
@@ -240,26 +246,26 @@ class MInfor(MInforBase):
 
     def add_meta(self, uid, data_dic, extinfo={}):
         title = data_dic['title'].strip()
-        if len(title) < 2 or len(title) == 0:
+        if len(title) < 2:
             return False
-        entry = self.tab_app.create(
+        self.tab_app.create(
             uid=uid,
             title=title,
             keywords=','.join([x.strip() for x in data_dic['keywords'].split(',')]),
             time_create=tools.timestamp(),
             time_update=tools.timestamp(),
-            create_time=int(time.time()),
+            create_time=tools.timestamp(),
             date=datetime.now(),
-            cnt_md=data_dic['cnt_md'],
-            logo=data_dic['logo'],
+            cnt_md=data_dic['cnt_md'].strip(),
+            logo=data_dic['logo'].strip(),
             cnt_html=tools.markdown2html(data_dic['cnt_md']),
             view_count=0,
             extinfo=extinfo,
             user_name=data_dic['user_name'],
-            valid=data_dic['valid'],
-            kind='2',
+            valid=data_dic['valid'] if 'valid' in data_dic else 1 ,
+            kind= data_dic['kind'] if 'kind' in data_dic else '2',
         )
-        return (entry.uid)
+        return uid
 
     def get_list(self, condition, kind='2'):
         db_data = self.tab_app.select().where((self.tab_app.kind == kind) &

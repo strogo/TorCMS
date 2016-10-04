@@ -36,7 +36,7 @@ class MUsage(object):
         return self.tab.select().join(g_Member).where(g_Member.user_name == uname).order_by(self.tab.count.desc()).limit(num)
 
     def get_by_signature(self, u_name, sig):
-        return self.tab.select().join(g_Member).where((self.tab.info == sig) & (g_Member.uid == u_name))
+        return self.tab.select().join(g_Member).where((self.tab.post == sig) & (g_Member.uid == u_name))
 
     def count_increate(self, rec, cat_id, num):
         entry = self.tab.update(

@@ -79,7 +79,7 @@
 
         <ol class="breadcrumb">
             {% module BreadCrumb(kwd['daohangstr']) %}
-            {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2') %}
+            {% if userinfo and( userinfo.role[role_mask_idx] >= '2') %}
             <li><a href="/publish/{{ widget_info['parentid'] }}" class="btn btn-primary btn-sm">Published
                 {{ widget_info['catname'] }} Data</a></li>
             {% end %}

@@ -50,7 +50,7 @@
             {% end %}
 
 
-            {% if userinfo is not None and ( userinfo.uid == reply.reply_id.uid or userinfo.privilege[4] == '1') %}
+            {% if userinfo is not None and ( userinfo.uid == reply.reply_id.uid or userinfo.role[4] == '1') %}
 
 
             <a class="btn btn-primary" style="padding:3px 8px;"

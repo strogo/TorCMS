@@ -36,7 +36,7 @@ def gen_infor_category():
             if p_cell_val and p_cell_val != '':
                 cell_arr = p_cell_val.split(',')
                 p_uid = cell_arr[0].strip().strip('t')
-                priv_mask = cell_arr[1].strip().strip('t')
+                role_mask = cell_arr[1].strip().strip('t')
                 t_name_arr = sheet_ranges['B{0}'.format(row_num)].value.strip().split(',')
                 u_uid = '{0}00'.format(p_uid)
 
@@ -46,16 +46,16 @@ def gen_infor_category():
             if c_cell_val and c_cell_val != '':
                 cell_arr = b_cell_val.split(',')
                 c_iud = cell_arr[0].strip().strip('t')
-                priv_mask = cell_arr[1].strip().strip('t')
+                role_mask = cell_arr[1].strip().strip('t')
                 t_name_arr = c_cell_val.strip().split(',')
                 u_uid = '{0}{1}'.format(p_uid, c_iud)
             post_data = {
-                'name': [t_name_arr[0]],
-                'slug': [t_name_arr[1]],
-                'order': [order_index],
-                'uid': [u_uid],
-                'priv_mask': [priv_mask],
-                'kind': '2',
+                'name': t_name_arr[0],
+                'slug': t_name_arr[1],
+                'order': order_index,
+                'uid': u_uid,
+                'role_mask': role_mask,
+                'kind': '20',
             }
             print(post_data)
             mappcat.insert_data(u_uid, post_data)
@@ -82,11 +82,11 @@ def gen_doc_category():
             porder = cur_dic['order']
             cat_dic = {
                 'uid': uid,
-                'slug': [cur_dic['slug']],
-                'name': [cur_dic['name']],
-                'count': [0],
-                'order':[porder * 100],
-                'kind': '1',
+                'slug': cur_dic['slug'],
+                'name': cur_dic['name'],
+                'count': 0,
+                'order':porder * 100,
+                'kind': '10',
             }
 
             mcat.insert_data(uid, cat_dic)
@@ -110,11 +110,11 @@ def gen_doc_category():
                     sorder = cur_dic['order']
                     cat_dic = {
                         'uid': uid,
-                        'slug': [cur_dic['slug']],
-                        'name': [cur_dic['name']],
-                        'count': [0],
-                        'order': [porder *100 +sorder],
-                        'kind': '1',
+                        'slug': cur_dic['slug'],
+                        'name': cur_dic['name'],
+                        'count': 0,
+                        'order': porder *100 +sorder,
+                        'kind': '10',
                     }
 
                     mcat.insert_data( pid + uid, cat_dic)

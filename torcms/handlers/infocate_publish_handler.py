@@ -37,8 +37,8 @@ class InfoPublishHandler(BaseHandler):
         for rec in dbdata:
             if rec.uid.endswith('00'):
                 continue
-            role_mask_idx = rec.priv_mask.index('1')
-            if self.userinfo.privilege[role_mask_idx] >= '1':
+            role_mask_idx = rec.role_mask.index('1')
+            if self.userinfo.role[role_mask_idx] >= '1':
                 outstr += '''
             <a href="/meta/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
@@ -50,8 +50,8 @@ class InfoPublishHandler(BaseHandler):
         dbdata = self.minforcatalog.get_parent_list( kind = '20')
         class1str = ''
         for rec in dbdata:
-            role_mask_idx = rec.priv_mask.index('1')
-            if self.userinfo.privilege[role_mask_idx] >= '1':
+            role_mask_idx = rec.role_mask.index('1')
+            if self.userinfo.role[role_mask_idx] >= '1':
                 class1str += '''
              <a onclick="select('/publish/2{0}');" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)

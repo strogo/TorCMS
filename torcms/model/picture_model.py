@@ -1,22 +1,22 @@
 # -*- coding:utf-8 -*-
 
 import time
-from torcms.model.core_tab import g_Image
+from torcms.model.core_tab import g_Entity
 from torcms.model.supertable_model import MSuperTable
 
 class MEntity(MSuperTable):
     def __init__(self):
-        self.tab = g_Image
+        self.tab = g_Entity
         try:
-            g_Image.create_table()
+            g_Entity.create_table()
         except:
             pass
 
     def getall(self):
-        return g_Image.select()
+        return g_Entity.select()
 
-    def get_id_by_impath(self, imgpath):
-        uu = g_Image.select().where(g_Image.imgpath == imgpath)
+    def get_id_by_impath(self, path):
+        uu = g_Entity.select().where(g_Entity.path == path)
         if uu.count() == 1:
             return uu.get().uid
         elif uu.count() > 1:
@@ -25,9 +25,9 @@ class MEntity(MSuperTable):
             return False
 
     def insert_data(self, signature, impath):
-        entry = g_Image.create(
+        entry = g_Entity.create(
             uid=signature,
-            imgpath=impath,
-            create_timestamp=time.time()
+            path=impath,
+            time_create=time.time()
         )
         return entry

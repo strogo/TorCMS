@@ -24,10 +24,10 @@
         <ul class="articleList">
             <li> 用户名：{{ user_info.user_name }}</li>
             <li> 电子邮箱：{{ user_info.user_email }}</li>
-            <li> 权限：{{ user_info.privilege}}</li>
+            <li> 权限：{{ user_info.role}}</li>
 
 
-            {% if userinfo and userinfo.privilege[2] == '1' %}
+            {% if userinfo and userinfo.role[2] == '1' %}
             <li><a href="/user/info">用户信息</a></li>
             <li><a href="/post/add_document">添加文档</a></li>
 

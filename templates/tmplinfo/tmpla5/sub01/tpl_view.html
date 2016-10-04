@@ -36,7 +36,7 @@ var login = {{ kwd['login'] }};
                 <div class="col-sm-9">
 
                 <h3 class="title colorme">{{ post_info.title }}</h3>
-                    {% if userinfo and( userinfo.privilege[priv_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
+                    {% if userinfo and( userinfo.role[role_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
                     <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">修改</a>
                     <a href="/meta/delete/{{ post_info.uid }}" class="btn btn-sm btn-primary">删除</a>
                     {% end %}

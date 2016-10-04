@@ -25,7 +25,7 @@ class MCollect(object):
 
     def get_by_signature(self, user_id, app_id):
         try:
-            return self.tab.get((self.tab.user == user_id) & (self.tab.info == app_id))
+            return self.tab.get((self.tab.user == user_id) & (self.tab.post == app_id))
         except:
             return False
 

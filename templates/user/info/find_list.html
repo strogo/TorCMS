@@ -33,10 +33,10 @@
 
         {% for x in view %}
 
-        <p>用户名：{{x.user_name}}&nbsp;&nbsp;&nbsp;&nbsp;当前权限：{{ x.privilege }}
+        <p>用户名：{{x.user_name}}&nbsp;&nbsp;&nbsp;&nbsp;当前权限：{{ x.role }}
 
 
-            <a class="pure-button pure-button-primary" href="/user/changeprivilege/{{x.user_name}}"
+            <a class="pure-button pure-button-primary" href="/user/changerole/{{x.user_name}}"
                style="margin-left: 100px">修改权限</a>
             <a class="pure-button pure-button-primary" href="/user/delete_user/{{x.uid}}">删除用户</a>
 

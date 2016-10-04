@@ -13,7 +13,7 @@ class MLabel(MSuperTable):
         self.tab = CabLabel
 
 
-    def get_id_by_name(self, tag_name, kind = '21'):
+    def get_id_by_name(self, tag_name, kind = '11'):
         uu = self.tab.select().where((self.tab.name == tag_name) & (self.tab.kind ==  kind))
         if uu.count() == 1:
             return uu.get().uid
@@ -33,7 +33,7 @@ class MLabel(MSuperTable):
         while self.tab.select().where(self.tab.uid == uid).count() > 0:
             uid = tools.get_uu4d_v2()
 
-        entry = self.tab.create(
+        self.tab.create(
             uid=uid,
             slug = uid,
             name=tag_name,
@@ -41,7 +41,7 @@ class MLabel(MSuperTable):
             count=0,
             kind = kind,
         )
-        return entry.uid
+        return uid
 
 
 class MPost2Label(MSuperTable):
@@ -87,7 +87,7 @@ class MPost2Label(MSuperTable):
         else:
             return False
 
-    def add_record(self, post_id, tag_name, order=1, kind = '10'):
+    def add_record(self, post_id, tag_name, order=1, kind = '11'):
         print('Add label kind: {0}'.format(kind))
         tag_id = self.mtag.get_id_by_name(tag_name, kind)
         tt = self.get_by_info(post_id, tag_id, kind=kind)

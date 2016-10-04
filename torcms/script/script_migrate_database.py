@@ -42,7 +42,7 @@ def do_tabapp():
         # print(info_rec.uid)
         post_data = {
             'title': info_rec.title,
-            'user_name': '', # info_rec.user_name,
+            'user_name':  info_rec.user_name,
             'logo': info_rec.logo,
             'cnt_md': unescape(info_rec.cnt_md),
             'keywords': info_rec.keywords,
@@ -105,11 +105,6 @@ def do_app2catalog():
 
     raw_recs = mpost2cat.query_all(limit_num=200000)
     for raw_rec in raw_recs:
-        # print(raw_rec.uid)
-        # if raw_rec.catalog.uid.startswith('0'):
-        #     uid = 'a' + raw_rec.catalog.uid[1:]
-        # else:
-        #     uid = 'b' + raw_rec.catalog.uid[1:]
         mpost2tag.add_record(raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
 
     from model_ent.infor2catalog_model import MInfor2Catalog
@@ -117,11 +112,6 @@ def do_app2catalog():
 
     raw_recs = minfo2cat.query_all(2000000)
     for raw_rec in raw_recs:
-        # print(raw_rec.uid)
-        # if raw_rec.catalog.uid.startswith('0'):
-        #     uid = 'a' + raw_rec.catalog.uid[1:]
-        # else:
-        #     uid = 'b' + raw_rec.catalog.uid[1:]
         mpost2tag.add_record('g' + raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
 
 
@@ -330,5 +320,5 @@ def run_migrate_db():
     do_app_label()
     do_post2label()
     do_app2label()
-    do_wiki()
+    # do_wiki()
     do_member()
