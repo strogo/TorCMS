@@ -4,13 +4,15 @@ import peewee
 from playhouse.postgres_ext import BinaryJSONField
 from torcms.core.base_model import BaseModel
 
+
 class g_Tag(BaseModel):
     uid = peewee.CharField(null=False, max_length=4, index=True, unique=True, primary_key=True, help_text='', )
     slug = peewee.CharField(null=False, index=True, unique=True, max_length=36, help_text='', )
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
     count = peewee.IntegerField(default=0)
-    kind = peewee.CharField(null=False, max_length=2, default='11', help_text='tag type: 0 for category, 1 for label', )  # peewee.IntegerField(default=1)
+    kind = peewee.CharField(null=False, max_length=2, default='11',
+                            help_text='tag type: 0 for category, 1 for label', )
     role_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
 
@@ -65,9 +67,18 @@ class g_PostHist(BaseModel):
 
 
 class g_WikiHist(BaseModel):
-    uid = peewee.CharField(null=False, index=True, unique=True, help_text='', primary_key=True, max_length=36)
-    title = peewee.CharField(null=False, max_length=255, help_text='', )
-    wiki_id = peewee.CharField(null=False, max_length=8, help_text='', )
+    uid = peewee.CharField(null=False,
+                           index=True,
+                           unique=True,
+                           help_text='',
+                           primary_key=True,
+                           max_length=36)
+    title = peewee.CharField(null=False,
+                             max_length=255,
+                             help_text='', )
+    wiki_id = peewee.CharField(null=False,
+                               max_length=8,
+                               help_text='', )
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
@@ -97,10 +108,14 @@ class g_Member(BaseModel):
     time_email = peewee.IntegerField(null=False, default=0, help_text='Time auto send email.')
 
 
-class g_Image(BaseModel):
+class g_Entity(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, )
-    imgpath = peewee.CharField(null=False, unique=True, max_length=255, help_text='', )
-    create_timestamp = peewee.IntegerField()
+    path = peewee.CharField(null=False, unique=True, max_length=255, help_text='', )
+    time_create = peewee.IntegerField()
+    kind = peewee.CharField(null=False,
+                            max_length=1,
+                            default='1',
+                            help_text='1 for image', )
 
 
 class g_Post2Tag(BaseModel):
@@ -140,7 +155,7 @@ class g_Collect(BaseModel):
     用户收藏
     '''
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
-    info = peewee.ForeignKeyField(g_Post, related_name='collect_info_rel')
+    post = peewee.ForeignKeyField(g_Post, related_name='collect_info_rel')
     user = peewee.ForeignKeyField(g_Member, related_name='collect_user_rel')
     timestamp = peewee.IntegerField()
 
@@ -150,7 +165,7 @@ class g_Evaluation(BaseModel):
     用户评价
     '''
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
-    info = peewee.ForeignKeyField(g_Post, related_name='evaluation_info_rel')
+    post = peewee.ForeignKeyField(g_Post, related_name='evaluation_info_rel')
     user = peewee.ForeignKeyField(g_Member, related_name='evaluation_user_rel')
     value = peewee.IntegerField()  # 用户评价， 1 或 0, 作为计数
 
@@ -161,14 +176,14 @@ class g_Rating(BaseModel):
     '''
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
     user = peewee.ForeignKeyField(g_Member, related_name='rating_user_rel')
-    info = peewee.ForeignKeyField(g_Post, related_name='rating_info_rel')
+    post = peewee.ForeignKeyField(g_Post, related_name='rating_info_rel')
     value = peewee.IntegerField(null=False)  # 用户评价， 1 或 0, 作为计数
     timestamp = peewee.IntegerField(null=False)
 
 
 class g_Usage(BaseModel):
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
-    info = peewee.ForeignKeyField(g_Post, related_name='info_id')
+    post = peewee.ForeignKeyField(g_Post, related_name='info_id')
     user = peewee.ForeignKeyField(g_Member, related_name='user_id')
     count = peewee.IntegerField()
     tag = peewee.CharField(null=True)
@@ -184,5 +199,3 @@ class g_Rel(BaseModel):
     post_f = peewee.ForeignKeyField(g_Post, related_name='rel_post_f')
     post_t = peewee.ForeignKeyField(g_Post, related_name='rel_post_t')
     count = peewee.IntegerField()
-
-

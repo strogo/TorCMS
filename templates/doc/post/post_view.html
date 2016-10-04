@@ -24,7 +24,7 @@
         <span>{{ str(view.date)[:10] }}</span>
         <span>Author: <a href="http://www.osgeo.cn/">OSGeo中国中心</a></span>
         <span>Browse: {{ view.view_count }} 次</span>
-        {% if userinfo and userinfo.privilege[2] >= '1' %}
+        {% if userinfo and userinfo.role[2] >= '1' %}
         <span class="cmts"><a href="/post/modify/{{ view.uid }}">编辑</a></span>
 
         {% end %}

@@ -21,10 +21,10 @@
         <ul class="list-group">
             <li class="list-group-item"> 用户名：{{ userinfo.user_name }}</li>
            <li class="list-group-item">电子邮箱：{{ userinfo.user_email }}</li>
-            <li class="list-group-item"> 权限：{{ userinfo.privilege}}</li>
+            <li class="list-group-item"> 权限：{{ userinfo.role}}</li>
 
 
-            {% if userinfo and userinfo.privilege[1] >= '1' %}
+            {% if userinfo and userinfo.role[1] >= '1' %}
             <li class="list-group-item">
                 <a href="/post/add_document" class="btn btn-primary">添加文档</a>
                 </li>

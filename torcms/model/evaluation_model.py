@@ -19,11 +19,11 @@ class MEvaluation(object):
         return self.tab.select().order_by(self.tab.count.desc()).limit(num)
 
     def app_evaluation_count(self, app_id, value = 1):
-        return self.tab.select().where((self.tab.info == app_id) & (self.tab.value == value)).count()
+        return self.tab.select().where((self.tab.post == app_id) & (self.tab.value == value)).count()
 
     def get_by_signature(self, user_id, app_id):
         try:
-            return self.tab.get((self.tab.user==user_id) & (self.tab.info == app_id))
+            return self.tab.get((self.tab.user==user_id) & (self.tab.post == app_id))
         except:
             return False
 
@@ -43,5 +43,5 @@ class MEvaluation(object):
             )
 
     def delete_by_app_uid(self, uid):
-        entry = self.tab.delete().where(self.tab.info == uid)
+        entry = self.tab.delete().where(self.tab.post == uid)
         uu = entry.execute()

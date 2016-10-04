@@ -41,7 +41,7 @@ class MUsage(object):
             self.tab.count.desc()).limit(num)
 
     def get_by_signature(self, u_name, sig):
-        return self.tab.select().join(g_Member).where((self.tab.info == sig) & (g_Member.uid == u_name))
+        return self.tab.select().join(g_Member).where((self.tab.post == sig) & (g_Member.uid == u_name))
 
     def count_increate(self, rec, cat_id, num):
         entry = self.tab.update(
@@ -62,9 +62,9 @@ class MUsage(object):
             self.count_increate(rec.uid, cat_id, rec.count)
         else:
 
-            entry = self.tab.create(
+            self.tab.create(
                 uid=tools.get_uuid(),
-                info=sig,
+                post=sig,
                 user=user_id,
                 count=1,
                 tag=cat_id,

@@ -209,16 +209,14 @@ class PostHandler(BaseHandler):
     @tornado.web.authenticated
     def update_catalog(self, uid):
         post_data = self.get_post_data()
-        print(post_data)
+
         current_infos = self.mpost2catalog.query_by_entity_uid(uid, kind= self.kind + '0')
         new_tag_arr = []
         # HTML中预定义的
         def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
         # todo: next line should be deleted. keep here for historical reason.
         def_cate_arr.append('def_cat_uid')
-        print('=-' * 40)
-        print(post_data)
-        print(def_cate_arr)
+
         for key in def_cate_arr:
             if key in post_data:
                 pass

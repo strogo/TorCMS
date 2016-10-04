@@ -47,10 +47,6 @@ class MPost2Catalog(MSuperTable):
         return (recs)
 
     def add_record(self, post_id, catalog_id, order=0):
-        print('==x' *  10)
-        print(post_id, )
-        print(catalog_id)
-        print(order)
         tt = self.__get_by_info(post_id, catalog_id)
         if tt:
             entry = self.tab_post2catalog.update(
@@ -64,7 +60,6 @@ class MPost2Catalog(MSuperTable):
                 tag =catalog_id,
                 order=order,
             )
-
 
     def count_of_certain_category(self, cat_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.tag == cat_id).count()

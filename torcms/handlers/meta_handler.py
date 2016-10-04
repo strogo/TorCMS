@@ -123,7 +123,7 @@ class MetaHandler(PostHandler):
 
     def check_priv(self, userinfo, cat_id):
         cat_rec = self.mcat.get_by_uid(cat_id)
-        role_mask_idx = cat_rec.priv_mask.index('1')
+        role_mask_idx = cat_rec.role_mask.index('1')
         priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
         if userinfo.role[role_mask_idx] >= '1':
             priv_dic['ADD'] = True
@@ -201,7 +201,7 @@ class MetaHandler(PostHandler):
                     userinfo=self.userinfo,
                     app_info=rec_info,
                     unescape=tornado.escape.xhtml_unescape,
-                    cat_enum=self.mcat.get_qian2(catid[:2]),
+                    cat_enum=self.mcat.get_qian2(catid[:2], kind= self.kind + '0'),
                     tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
                     tag_infos2 = self.mcat.query_all(by_order=True, kind = constant['cate_info']),
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind = constant['cate_info']),
