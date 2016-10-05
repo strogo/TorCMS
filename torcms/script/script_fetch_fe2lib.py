@@ -1,9 +1,10 @@
-
+# -*- coding: utf-8 -*-
 
 import os
 import sys
 import zipfile
-import urllib
+import urllib.request
+
 
 den_dir = './static/f2elib'
 
