@@ -41,7 +41,7 @@ def do_tabapp():
     info_recs = minfor.query_all(20000)
     for info_rec in info_recs:
         # print(info_rec.uid)
-        info_tag = mpost2tag.get_entry_catalog(info_rec.uid)
+        info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
         extinfo = info_rec.extinfo
         extinfo['def_cat_uid'] = info_tag
         post_data = {
