@@ -47,6 +47,10 @@ def get_js_valid():
     leaflet_url = 'https://github.com/jzaefferer/jquery-validation/releases/download/1.15.1/jquery-validation-1.15.1.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = 'validate')
+def get_codemirror():
+    leaflet_url = 'http://codemirror.net/codemirror.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou, outdir = './')
 
 def get_ol3():
 
@@ -69,6 +73,7 @@ def get_ol3():
     fetch_file(ol3_js, 'ol3/ol.js')
 
 def run_fetch_f2elib():
+    get_codemirror()
     get_js_valid()
     get_leaflet()
     get_jquery()
