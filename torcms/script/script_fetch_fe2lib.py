@@ -23,7 +23,10 @@ def fetch_file(url, filename , outdir = False):
         zip_file = os.path.join(den_dir, filename)
         f = zipfile.ZipFile(zip_file, 'r')
         for zfile in f.namelist():
-            f.extract(zfile, os.path.join(den_dir, outdir))
+            if outdir == '':
+                f.extract(zfile, den_dir)
+            else:
+                f.extract(zfile, os.path.join(den_dir, outdir))
 
 
 def get_jquery():
@@ -41,7 +44,7 @@ def get_leaflet():
 def get_bootstrap():
     leaflet_url = 'https://github.com/twbs/bootstrap/releases/download/v3.3.7/bootstrap-3.3.7-dist.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = './')
+    fetch_file(leaflet_url, hou, outdir = '')
 
 def get_js_valid():
     leaflet_url = 'https://github.com/jzaefferer/jquery-validation/releases/download/1.15.1/jquery-validation-1.15.1.zip'
@@ -50,11 +53,11 @@ def get_js_valid():
 def get_codemirror():
     leaflet_url = 'http://codemirror.net/codemirror.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = './')
+    fetch_file(leaflet_url, hou, outdir = '')
 def get_jqueryui():
     leaflet_url = 'http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = './')
+    fetch_file(leaflet_url, hou, outdir = '')
 
 def get_ol3():
 

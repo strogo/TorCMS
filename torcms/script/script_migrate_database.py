@@ -32,14 +32,18 @@ def do_tabapp():
     print('==============================')
     print('For Infor ... ')
     from torcms.model.post_model import MPost
-
+    from torcms.model.infor2catalog_model import MInfor2Catalog
     mpost = MPost()
+    mpost2tag = MInfor2Catalog()
 
     from model_ent.infor_model import MInfor
     minfor = MInfor()
     info_recs = minfor.query_all(20000)
     for info_rec in info_recs:
         # print(info_rec.uid)
+        info_tag = mpost2tag.get_entry_catalog(info_rec.uid)
+        extinfo = info_rec.extinfo
+        extinfo['def_cat_uid'] = info_tag
         post_data = {
             'title': info_rec.title,
             'user_name':  info_rec.user_name,
@@ -47,7 +51,7 @@ def do_tabapp():
             'cnt_md': unescape(info_rec.cnt_md),
             'keywords': info_rec.keywords,
             'kind': '2',
-            'extinfo': info_rec.extinfo,
+            'extinfo': extinfo,
             # 'time_create': info_rec.time_create,
             'time_update': info_rec.time_update,
         }
@@ -320,5 +324,5 @@ def run_migrate_db():
     do_app_label()
     do_post2label()
     do_app2label()
-    # do_wiki()
+    do_wiki()
     do_member()
