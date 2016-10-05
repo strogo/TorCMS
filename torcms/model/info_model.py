@@ -176,6 +176,7 @@ class MInforBase(MSuperTable):
 
 class MInfor(MInforBase):
     def __init__(self):
+        self.kind = '2'
         self.tab = g_Post
         self.tab_app = g_Post
         self.tab_app2catalog = g_Post2Tag
