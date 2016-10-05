@@ -1,5 +1,17 @@
 from  tornado.escape import xhtml_unescape as unescape
 
+foo_dic = {
+    '03': 'a1',
+    '05': 'a2',
+    '06': 'a3',
+    '09': 'a4',
+    '25': 'a5',
+    '32': 'a6',
+    '40': 'a7',
+    '88': 'a8',
+    'a0': 'a0',
+}
+
 
 def do_cabpost():
     print('==============================')
@@ -43,10 +55,11 @@ def do_tabapp():
         # print(info_rec.uid)
         info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
         extinfo = info_rec.extinfo
-        extinfo['def_cat_uid'] = info_tag
+        old_cat_id = extinfo['def_cat_uid']
+        extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
         post_data = {
             'title': info_rec.title,
-            'user_name':  info_rec.user_name,
+            'user_name': info_rec.user_name,
             'logo': info_rec.logo,
             'cnt_md': unescape(info_rec.cnt_md),
             'keywords': info_rec.keywords,
@@ -315,7 +328,6 @@ def do_wiki():
 
 
 def run_migrate_db():
-
     do_cabpost()
     do_tabapp()
     do_cabcatalog()
