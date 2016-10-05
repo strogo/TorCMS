@@ -51,6 +51,10 @@ def get_codemirror():
     leaflet_url = 'http://codemirror.net/codemirror.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = './')
+def get_jqueryui():
+    leaflet_url = 'http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou, outdir = './')
 
 def get_ol3():
 
@@ -73,6 +77,7 @@ def get_ol3():
     fetch_file(ol3_js, 'ol3/ol.js')
 
 def run_fetch_f2elib():
+    get_jqueryui()
     get_codemirror()
     get_js_valid()
     get_leaflet()
