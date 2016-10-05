@@ -34,13 +34,19 @@ def get_jquery():
 
 def get_leaflet():
     leaflet_url = 'http://cdn.leafletjs.com/leaflet/v1.0.1/leaflet.zip'
-
-
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = 'leaflet')
 
 
+def get_bootstrap():
+    leaflet_url = 'https://github.com/twbs/bootstrap/releases/download/v3.3.7/bootstrap-3.3.7-dist.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou, outdir = './')
 
+def get_js_valid():
+    leaflet_url = 'https://github.com/jzaefferer/jquery-validation/releases/download/1.15.1/jquery-validation-1.15.1.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou, outdir = 'validate')
 
 def get_ol3():
 
@@ -63,9 +69,12 @@ def get_ol3():
     fetch_file(ol3_js, 'ol3/ol.js')
 
 def run_fetch_f2elib():
+    get_js_valid()
     get_leaflet()
     get_jquery()
     get_ol3()
+    get_bootstrap()
+
 
 
 
