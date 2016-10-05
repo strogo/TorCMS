@@ -27,6 +27,9 @@ from torcms.model.user_model import MUser
 
 # class BaseHandler(tornado.web.RequestHandler, TemplateRendring):
 class BaseHandler(tornado.web.RequestHandler):
+    '''
+    The base class for handlers.
+    '''
     def init(self):
         self.muser = MUser()
         if self.get_current_user():
@@ -35,17 +38,31 @@ class BaseHandler(tornado.web.RequestHandler):
             self.userinfo = None
 
     def get_post_data(self):
+        '''
+        Get all the arguments from post request.
+        :return: direction.
+        '''
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)[0]
         return post_data
 
     def parse_url(self, url_str):
+        '''
+
+        :param url_str: the request url.
+        :return: the array of request url.
+        '''
         url_str = url_str.strip()
         url_arr = [] if len(url_str) == 0 else url_str.split('/')
         return url_arr
 
     def check_doc_priv(self, userinfo):
+        '''
+        check the user role for docs.
+        :param userinfo:
+        :return:
+        '''
         priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
         if userinfo:
             pass
