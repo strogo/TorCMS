@@ -1,16 +1,7 @@
 from  tornado.escape import xhtml_unescape as unescape
 
-foo_dic = {
-    '03': '21',
-    '05': '22',
-    '06': '23',
-    '09': '24',
-    '25': '25',
-    '32': '26',
-    '40': '27',
-    '88': '28',
-    'a0': 'a0',
-}
+from config import foo_dic
+
 
 def retag(catid):
     '''
