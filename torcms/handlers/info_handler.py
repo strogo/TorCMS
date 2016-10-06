@@ -99,14 +99,14 @@ class InfoHandler(BaseHandler):
                         userinfo=self.userinfo, )
             return False
         #
-        cats = self.mapp2catalog.query_by_entity_uid(info_id)
+        cats = self.mapp2catalog.query_by_entity_uid(info_id, kind='20')
         cat_uid_arr = []
         for cat_rec in cats:
             cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
-
+        print('info category:',  cat_uid_arr)
         replys = self.mreply.get_by_id(info_id)
-        rel_recs = self.mrel.get_app_relations(app_rec.uid, 4, kind = '2')
+        rel_recs = self.mrel.get_app_relations(app_rec.uid, 0, kind = '2')
         if len(cat_uid_arr) > 0:
             rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:

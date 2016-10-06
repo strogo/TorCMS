@@ -71,7 +71,7 @@ class MPost2Catalog(MSuperTable):
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return recs
 
-    def query_by_entity_uid(self, idd, kind='1'):
+    def query_by_entity_uid(self, idd, kind='10'):
         print('kind: {0}'.format(kind) )
         print('id: {0}'.format(idd))
         return self.tab_post2catalog.select().join(self.tab_catalog).where(
