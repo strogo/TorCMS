@@ -82,8 +82,8 @@ def do_tabapp():
         extinfo = info_rec.extinfo
         if 'def_cat_uid' in extinfo:
             old_cat_id = extinfo['def_cat_uid']
-            extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
-            extinfo['def_cat_pid'] = retag(old_cat_id[:2]) + '00'
+            extinfo['def_cat_uid'] = retag(old_cat_id[:2])
+            extinfo['def_cat_pid'] = retag(old_cat_id[:2])[2:] + '00'
 
 
         post_data = {
