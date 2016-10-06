@@ -49,7 +49,8 @@ def do_cabpost():
         # print(post_rec.uid)
 
         if post_rec.uid.startswith('m') or post_rec.uid.startswith('g'):
-            continue
+            pass
+            # continue
         post_data = {
             'title': post_rec.title,
             'user_name': post_rec.user_name,
