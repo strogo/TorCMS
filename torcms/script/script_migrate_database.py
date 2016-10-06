@@ -86,8 +86,11 @@ def do_tabapp():
         # print(info_rec.uid)
         # info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
         extinfo = info_rec.extinfo
-        # old_cat_id = extinfo['def_cat_uid']
-        # extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
+        old_cat_id = extinfo['def_cat_uid']
+        extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
+        extinfo['def_cat_pid'] = retag(old_cat_id[:2]) + '00'
+
+
         post_data = {
             'title': info_rec.title,
             'user_name': info_rec.user_name,
@@ -100,6 +103,7 @@ def do_tabapp():
             'time_update': info_rec.time_update,
         }
         # mpost.insert_data('m' + info_rec.uid, post_data)
+        print(info_rec.uid)
         mpost.add_or_update(info_rec.uid, post_data)
 
         # mpost.update(post_rec.uid, post_data)
@@ -117,11 +121,12 @@ def do_cabcatalog():
     for cat in mpostcat.query_all():
         post_data = {
             'name': cat.name,
-            'slug': 'g' + cat.slug,
+            'slug':  cat.slug,
             'order': cat.order,
             'uid': cat.uid,
             'kind': '10',
         }
+        print(cat.uid)
 
         mcat.insert_data(cat.uid, post_data)
         # mpostcat.update(cat.uid, post_data)
@@ -364,10 +369,10 @@ def run_migrate_db():
     do_cabpost()
     do_tabapp()
     do_cabcatalog()
-    do_app2catalog()
     do_post_label()
     do_app_label()
     do_post2label()
     do_app2label()
     do_wiki()
     do_member()
+    do_app2catalog()

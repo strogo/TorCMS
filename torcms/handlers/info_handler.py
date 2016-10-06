@@ -36,7 +36,7 @@ class InfoHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        if len(url_arr) == 1 and len(url_str) == 5:
+        if len(url_arr) == 1 and len(url_str) == 4:
             self.view_info(url_str)
         else:
             kwd = {
@@ -119,7 +119,7 @@ class InfoHandler(BaseHandler):
             ext_catid = app_rec.extinfo['def_cat_uid']
         else:
             ext_catid = ''
-        
+
 
         if len(ext_catid) == 4:
             pass
@@ -159,6 +159,7 @@ class InfoHandler(BaseHandler):
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
         tmpl = self.ext_tmpl_name(app_rec) if self.ext_tmpl_name(app_rec) else self.get_tmpl_name(app_rec)
+        print('info tmpl: ' + tmpl )
         ext_catid2 = app_rec.extinfo['def_cat_uid'] if 'def_cat_uid' in app_rec.extinfo else None
 
 
