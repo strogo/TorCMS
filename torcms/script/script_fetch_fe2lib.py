@@ -17,10 +17,13 @@ def fetch_file(url, filename , outdir = False):
     print('fetch ...')
     print(' ' * 4 +  url)
 
-    urllib.request.urlretrieve(url, os.path.join(den_dir, filename))
+    outfile = os.path.join(den_dir, filename)
+    if os.path.exists(outfile):
+        return True
+    urllib.request.urlretrieve(url, outfile)
 
     if outdir:
-        zip_file = os.path.join(den_dir, filename)
+        zip_file = outfile
         f = zipfile.ZipFile(zip_file, 'r')
         for zfile in f.namelist():
             if outdir == '':
