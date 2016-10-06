@@ -80,9 +80,10 @@ def do_tabapp():
         # print(info_rec.uid)
         # info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
         extinfo = info_rec.extinfo
-        old_cat_id = extinfo['def_cat_uid']
-        extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
-        extinfo['def_cat_pid'] = retag(old_cat_id[:2]) + '00'
+        if 'def_cat_uid' in extinfo:
+            old_cat_id = extinfo['def_cat_uid']
+            extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
+            extinfo['def_cat_pid'] = retag(old_cat_id[:2]) + '00'
 
 
         post_data = {
