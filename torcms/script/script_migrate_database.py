@@ -101,7 +101,10 @@ def do_tabapp():
         # print(info_rec.uid)
         mpost.add_or_update(info_rec.uid, post_data)
         if 'def_cat_uid' in extinfo:
-            mpost2tag.add_record(  info_rec.uid, extinfo['def_cat_uid'], 1)
+            try:
+                mpost2tag.add_record( info_rec.uid, extinfo['def_cat_uid'], 1)
+            except:
+                print(info_rec.title)
         # mpost.update(post_rec.uid, post_data)
 
 
