@@ -1,17 +1,29 @@
 from  tornado.escape import xhtml_unescape as unescape
 
 foo_dic = {
-    '03': 'a1',
-    '05': 'a2',
-    '06': 'a3',
-    '09': 'a4',
-    '25': 'a5',
-    '32': 'a6',
-    '40': 'a7',
-    '88': 'a8',
+    '03': '21',
+    '05': '22',
+    '06': '23',
+    '09': '24',
+    '25': '25',
+    '32': '26',
+    '40': '27',
+    '88': '28',
     'a0': 'a0',
 }
 
+def retag(catid):
+    '''
+
+    >>> retag('0355')
+    '2155'
+    >>> retag('2539')
+    '2539'
+    >>> retag('4039')
+    '2739'
+
+    '''
+    return  foo_dic[catid[:2]] + catid[2:]
 
 def buqi_postid(post_id):
     '''
@@ -123,10 +135,10 @@ def do_cabcatalog():
             'name': cat.name,
             'slug': 'g' + cat.slug,
             'order': cat.order,
-            'uid': cat.uid,
+            # 'uid': cat.uid,
             'kind': '20',
         }
-        mcat.insert_data(cat.uid, post_data)
+        mcat.insert_data( retag(cat.uid), post_data)
 
 
 def do_app2catalog():
@@ -149,7 +161,7 @@ def do_app2catalog():
 
     raw_recs = minfo2cat.query_all(2000000)
     for raw_rec in raw_recs:
-        mpost2tag.add_record(  raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
+        mpost2tag.add_record(  raw_rec.post.uid, retag(raw_rec.catalog.uid), raw_rec.order)
 
 
 def do_post_label():
