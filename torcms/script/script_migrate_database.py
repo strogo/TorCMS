@@ -117,7 +117,7 @@ def do_cabcatalog():
     for cat in mpostcat.query_all():
         post_data = {
             'name': cat.name,
-            'slug': cat.slug,
+            'slug': 'g' + cat.slug,
             'order': cat.order,
             'uid': cat.uid,
             'kind': '10',

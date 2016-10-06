@@ -8,6 +8,29 @@ from torcms.model.core_tab import g_Tag, g_Post, g_Post2Tag
 from torcms.model.supertable_model import MSuperTable
 from torcms.core.tools import constant
 
+foo_dic = {
+    '03': '21',
+    '05': '22',
+    '06': '23',
+    '09': '24',
+    '25': '25',
+    '32': '26',
+    '40': '27',
+    '88': '28',
+    'a0': 'a0',
+}
+
+foo_dic = {
+    '03': 'a1',
+    '05': 'a2',
+    '06': 'a3',
+    '09': 'a4',
+    '25': 'a5',
+    '32': 'a6',
+    '40': 'a7',
+    '88': 'a8',
+    'a0': 'a0',
+}
 
 class MPost2Catalog(MSuperTable):
     def __init__(self):
