@@ -105,6 +105,9 @@ class InfoListHandler(BaseHandler):
             'zhiding': zhiding_str,
             'tuiguang': tuiguang_str,
         }
+        print(kwd)
+        print('list type:', list_type)
+        print('infos count', len(infos))
         self.render('autogen/infolist/infolist_{1}.html'.format(self.template_dir_name, list_type),
                     userinfo=self.userinfo,
                     kwd=kwd,
