@@ -20,8 +20,11 @@ def fetch_file(url, filename , outdir = False):
     outfile = os.path.join(den_dir, filename)
     if os.path.exists(outfile):
         return True
-    urllib.request.urlretrieve(url, outfile)
+    try:
 
+        urllib.request.urlretrieve(url, outfile)
+    except:
+        return False
     if outdir:
         zip_file = outfile
         f = zipfile.ZipFile(zip_file, 'r')
