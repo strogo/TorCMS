@@ -273,6 +273,7 @@ class MInfor(MInforBase):
                                               (self.tab_app.valid == 1) & (
                                                   self.tab_app.extinfo.contains(condition))).order_by(
             self.tab_app.time_update.desc())
+        print('count:', db_data.count())
         return (db_data)
 
     def get_num_condition(self, con):
@@ -322,6 +323,7 @@ class MInfor(MInforBase):
             )
 
     def get_list_fenye(self, tag_slug, page_num):
+        print('get_list_fenye para:', tag_slug, page_num)
 
         all_list = self.get_list(tag_slug)
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]

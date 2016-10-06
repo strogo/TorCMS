@@ -84,7 +84,7 @@ def do_tabapp():
             old_cat_id = extinfo['def_cat_uid']
             extinfo['def_cat_uid'] = retag(old_cat_id)
             extinfo['def_cat_pid'] = retag(old_cat_id)[:2] + '00'
-
+        # print(extinfo['def_cat_uid'])
 
         post_data = {
             'title': info_rec.title,
@@ -98,9 +98,10 @@ def do_tabapp():
             'time_update': info_rec.time_update,
         }
         # mpost.insert_data('m' + info_rec.uid, post_data)
-        print(info_rec.uid)
+        # print(info_rec.uid)
         mpost.add_or_update(info_rec.uid, post_data)
-
+        if 'def_cat_uid' in extinfo:
+            mpost2tag.add_record(  info_rec.uid, extinfo['def_cat_uid'], 1)
         # mpost.update(post_rec.uid, post_data)
 
 
@@ -361,13 +362,13 @@ def do_wiki():
 
 
 def run_migrate_db():
-    do_cabpost()
+    # do_cabpost()
     do_tabapp()
-    do_cabcatalog()
-    do_post_label()
-    do_app_label()
-    do_post2label()
-    do_app2label()
-    do_wiki()
-    do_member()
-    do_app2catalog()
+    # do_cabcatalog()
+    # do_post_label()
+    # do_app_label()
+    # do_post2label()
+    # do_app2label()
+    # do_wiki()
+    # do_member()
+    # do_app2catalog()
