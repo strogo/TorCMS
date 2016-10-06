@@ -14,7 +14,10 @@ def retag(catid):
     '2739'
 
     '''
-    return  foo_dic[catid[:2]] + catid[2:]
+    if catid[:2] in foo_dic:
+        return  foo_dic[catid[:2]] + catid[2:]
+    else:
+        return  catid
 
 def buqi_postid(post_id):
     '''

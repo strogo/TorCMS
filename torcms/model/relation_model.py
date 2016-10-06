@@ -49,10 +49,10 @@ class MRelation():
         ).where((self.tab_relation.app_f == app_f) & (self.tab_relation.app_t == app_t))
         entry.execute()
 
-    def get_app_relations(self, app_id, num=20):
+    def get_app_relations(self, app_id, num=20, kind = '1'):
         '''
         The the related infors.
         '''
-        x = self.tab_relation.select().join(self.tab_post).where((self.tab_relation.post_f == app_id)&(self.tab_post.kind == '2')).order_by(
+        x = self.tab_relation.select().join(self.tab_post).where((self.tab_relation.post_f == app_id)&(self.tab_post.kind == kind)).order_by(
             self.tab_relation.count.desc()).limit(num)
         return x
