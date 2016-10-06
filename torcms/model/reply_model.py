@@ -7,7 +7,7 @@ import tornado.escape
 
 from torcms.core import tools
 from torcms.model.core_tab import g_Reply
-from torcms.model.core_tab import g_Voter2Reply as     RabVoter2Reply
+from torcms.model.core_tab import g_Voter2Reply
 from torcms.model.supertable_model import MSuperTable
 
 
@@ -61,4 +61,4 @@ class MReply(MSuperTable):
         return rec
 
     def get_by_zan(self, reply_id):
-        return RabVoter2Reply.select().where(RabVoter2Reply.reply_id == reply_id).count()
+        return g_Voter2Reply.select().where(g_Voter2Reply.reply_id == reply_id).count()
