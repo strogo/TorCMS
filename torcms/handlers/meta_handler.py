@@ -103,11 +103,11 @@ class MetaHandler(PostHandler):
                     )
 
     @tornado.web.authenticated
-    def user_to_add(self, catid):
+    def user_to_add(self, catid, sig = ''):
 
-        uid = 'g' + tools.get_uu4d()
+        uid = sig +  tools.get_uu4d()
         while self.mpost.get_by_uid(uid):
-            uid ='g' + tools.get_uu4d()
+            uid = sig + tools.get_uu4d()
 
         kwd = {
             'uid': uid,
@@ -272,7 +272,7 @@ class MetaHandler(PostHandler):
         self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated
-    def add(self, uid=''):
+    def add(self, uid='', sig = ''):
 
         ext_dic = {}
         post_data = {}
@@ -288,9 +288,9 @@ class MetaHandler(PostHandler):
             return False
 
         if uid == '':
-            uid = 'g' + tools.get_uu4d()
+            uid = sig + tools.get_uu4d()
             while self.mpost.get_by_uid(uid):
-                uid = 'g' + tools.get_uu4d()
+                uid = sig + tools.get_uu4d()
             post_data['uid'] = uid
 
         post_data['user_name'] = self.userinfo.user_name

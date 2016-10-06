@@ -45,6 +45,7 @@ class MPost(MSuperTable):
                 keywords=post_data['keywords'],
                 kind = post_data['kind'] if 'kind' in post_data else 1,
                 extinfo = post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
+                valid = 1,
             ).where(g_Post.uid == uid)
             entry.execute()
         except:
@@ -80,7 +81,8 @@ class MPost(MSuperTable):
             logo=post_data['logo'],
             keywords=post_data['keywords'],
             extinfo = post_data['extinfo'] if 'extinfo'  in post_data else {},
-            kind = post_data['kind'] if 'kind' in post_data else 1,
+            kind = post_data['kind'] if 'kind' in post_data else '1',
+            valid = 1,
         )
         return (entry.uid)
 

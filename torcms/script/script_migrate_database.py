@@ -13,6 +13,22 @@ foo_dic = {
 }
 
 
+def buqi_postid(post_id):
+    '''
+    Function to get absolute value of number.
+
+    >>> buqi_postid('12')
+    '12ggg'
+
+    >>> buqi_postid('badf')
+    'badfg'
+
+    >>> buqi_postid('zvfg')
+    'zvfgg'
+
+    '''
+    return post_id + 'g' * (5 - len(post_id))
+
 def do_cabpost():
     print('==============================')
     print('For Post ... ')
@@ -25,19 +41,22 @@ def do_cabpost():
     post_recs = mpost_old.query_all()
     for post_rec in post_recs:
         # print(post_rec.uid)
+
+        if post_rec.uid.startswith('m') or post_rec.uid.startswith('g'):
+            continue
         post_data = {
             'title': post_rec.title,
             'user_name': post_rec.user_name,
             'logo': post_rec.logo,
-            'cnt_md': unescape(post_rec.cnt_md),
+            'cnt_md': unescape(unescape(post_rec.cnt_md)),
             'keywords': post_rec.keywords,
-
             'time_create': post_rec.time_create,
             'time_update': post_rec.time_update,
-            'kind': '1'
+            'kind': '1',
+            'valid' : 1,
         }
         print(post_rec.uid)
-        mpost.add_or_update(post_rec.uid, post_data)
+        mpost.add_or_update(  buqi_postid(post_rec.uid), post_data)
 
 
 def do_tabapp():
@@ -53,10 +72,10 @@ def do_tabapp():
     info_recs = minfor.query_all(20000)
     for info_rec in info_recs:
         # print(info_rec.uid)
-        info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
+        # info_tag = mpost2tag.get_entry_catalog(info_rec.uid).uid
         extinfo = info_rec.extinfo
-        old_cat_id = extinfo['def_cat_uid']
-        extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
+        # old_cat_id = extinfo['def_cat_uid']
+        # extinfo['def_cat_uid'] = foo_dic[old_cat_id[:2]] + old_cat_id[2:]
         post_data = {
             'title': info_rec.title,
             'user_name': info_rec.user_name,
@@ -68,9 +87,8 @@ def do_tabapp():
             # 'time_create': info_rec.time_create,
             'time_update': info_rec.time_update,
         }
-        print(post_data)
         # mpost.insert_data('m' + info_rec.uid, post_data)
-        mpost.add_or_update('g' + info_rec.uid, post_data)
+        mpost.add_or_update(info_rec.uid, post_data)
 
         # mpost.update(post_rec.uid, post_data)
 
@@ -122,14 +140,16 @@ def do_app2catalog():
 
     raw_recs = mpost2cat.query_all(limit_num=200000)
     for raw_rec in raw_recs:
-        mpost2tag.add_record(raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
+        if raw_rec.post.uid.startswith('m') or  raw_rec.post.uid.startswith('g'):
+            continue
+        mpost2tag.add_record(buqi_postid(raw_rec.post.uid), raw_rec.catalog.uid, raw_rec.order)
 
     from model_ent.infor2catalog_model import MInfor2Catalog
     minfo2cat = MInfor2Catalog()
 
     raw_recs = minfo2cat.query_all(2000000)
     for raw_rec in raw_recs:
-        mpost2tag.add_record('g' + raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
+        mpost2tag.add_record(  raw_rec.post.uid, raw_rec.catalog.uid, raw_rec.order)
 
 
 def do_post_label():
@@ -142,6 +162,7 @@ def do_post_label():
     mcat = MPostCatalog()
 
     for rec in mlabel.query_all(limit_num=200000):
+
         post_data = {
             'name': rec.name,
             'slug': rec.uid,
@@ -186,7 +207,10 @@ def do_post2label():
     mcat = MPost2Catalog()
 
     for rec in mlabel.query_all(limit_num=200000):
-        mcat.add_record(rec.app.uid, convert_20d(rec.tag.uid))
+        if rec.app.uid.startswith('m') or rec.app.uid.startswith('g'):
+            continue
+
+        mcat.add_record(buqi_postid(rec.app.uid), convert_20d(rec.tag.uid))
 
 
 def do_app2label():
@@ -200,7 +224,7 @@ def do_app2label():
 
     for rec in mlabel.query_all(limit_num=200000):
         # print(rec.app.uid)
-        mcat.add_record('g' + rec.app.uid, convert_20d(rec.tag.uid))
+        mcat.add_record( rec.app.uid, convert_20d(rec.tag.uid))
 
 
 def convert_20d(instr):
@@ -286,12 +310,9 @@ def do_wiki():
     print('got it')
 
     abc = oldwiki.query_all(limit_num=2000)
-    print(abc.count())
 
     ded = oldpage.query_all()
-    print(ded.count())
     for rec in oldwiki.query_all(limit_num=20000):
-        print(rec.uid)
         post_data = {
             "uid": '_' + ''.join(rec.uid.split('-')),
             "title": rec.title,

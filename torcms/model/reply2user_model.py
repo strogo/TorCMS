@@ -8,18 +8,18 @@ import tornado.escape
 import config
 from torcms.core import tools
 from torcms.model.core_tab import g_Post2Tag
-from torcms.model.core_tab import g_Voter2Reply as RabVoter2Reply
+from torcms.model.core_tab import g_Voter2Reply
 from torcms.model.core_tab import g_Reply
-from torcms.model.core_tab import g_Post2Reply
+
 from torcms.model.core_tab import g_Post2Reply
 from torcms.model.supertable_model import MSuperTable
 
 
 class MReply2User(MSuperTable):
     def __init__(self):
-        self.tab = RabVoter2Reply
+        self.tab = g_Voter2Reply
         try:
-            RabVoter2Reply.create_table()
+            g_Voter2Reply.create_table()
         except:
             pass
 
@@ -43,27 +43,27 @@ class MReply2User(MSuperTable):
 
     def insert_data(self, user_id, reply_id):
 
-        record = RabVoter2Reply.select().where(
-            (RabVoter2Reply.reply_id == reply_id) & (RabVoter2Reply.voter_id == user_id))
+        record = g_Voter2Reply.select().where(
+            (g_Voter2Reply.reply_id == reply_id) & (g_Voter2Reply.voter_id == user_id))
 
         if record.count() > 0:
             return (False)
 
         try:
-            RabVoter2Reply.create(
+            g_Voter2Reply.create(
                 uid=tools.get_uuid(),
                 reply_id=reply_id,
                 voter_id=user_id,
                 timestamp=time.time(),
             )
-            return RabVoter2Reply.select().where(RabVoter2Reply.reply_id == reply_id).count()
+            return g_Voter2Reply.select().where(g_Voter2Reply.reply_id == reply_id).count()
 
         except:
             return False
 
     def delete(self, del_id):
         try:
-            del_count2 = RabVoter2Reply.delete().where(RabVoter2Reply.reply_id == del_id)
+            del_count2 = g_Voter2Reply.delete().where(g_Voter2Reply.reply_id == del_id)
             del_count2.execute()
 
             del_count3 = g_Post2Reply.delete().where(g_Post2Reply.reply_id == del_id)
@@ -82,45 +82,45 @@ class MReply2User(MSuperTable):
 
 
     def get_num_by_cat(self, cat_str):
-        return RabVoter2Reply.select().where(RabVoter2Reply.id_cats.contains(',{0},'.format(cat_str))).count()
+        return g_Voter2Reply.select().where(g_Voter2Reply.id_cats.contains(',{0},'.format(cat_str))).count()
 
     def query_keywords_empty(self):
-        return RabVoter2Reply.select().where(RabVoter2Reply.keywords == '')
+        return g_Voter2Reply.select().where(g_Voter2Reply.keywords == '')
 
     def query_dated(self, num=8):
-        return RabVoter2Reply.select().order_by(RabVoter2Reply.time_update).limit(num)
+        return g_Voter2Reply.select().order_by(g_Voter2Reply.time_update).limit(num)
 
     def query_cat_recent(self, cat_id, num=8):
-        return RabVoter2Reply.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
-            RabVoter2Reply.time_update.desc()).limit(num)
+        return g_Voter2Reply.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
+            g_Voter2Reply.time_update.desc()).limit(num)
 
     def query_most(self, num=8):
-        return RabVoter2Reply.select().order_by(RabVoter2Reply.view_count.desc()).limit(num)
+        return g_Voter2Reply.select().order_by(g_Voter2Reply.view_count.desc()).limit(num)
 
     def update_view_count(self, citiao):
-        entry = RabVoter2Reply.update(view_count=RabVoter2Reply.view_count + 1).where(RabVoter2Reply.title == citiao)
+        entry = g_Voter2Reply.update(view_count=g_Voter2Reply.view_count + 1).where(g_Voter2Reply.title == citiao)
         entry.execute()
 
     def update_view_count_by_uid(self, uid):
-        entry = RabVoter2Reply.update(view_count=RabVoter2Reply.view_count + 1).where(RabVoter2Reply.uid == uid)
+        entry = g_Voter2Reply.update(view_count=g_Voter2Reply.view_count + 1).where(g_Voter2Reply.uid == uid)
         entry.execute()
 
     def update_keywords(self, uid, inkeywords):
-        entry = RabVoter2Reply.update(keywords=inkeywords).where(RabVoter2Reply.uid == uid)
+        entry = g_Voter2Reply.update(keywords=inkeywords).where(g_Voter2Reply.uid == uid)
         entry.execute()
 
     def get_by_wiki(self, citiao):
-        tt = RabVoter2Reply.select().where(RabVoter2Reply.title == citiao).count()
+        tt = g_Voter2Reply.select().where(g_Voter2Reply.title == citiao).count()
         if tt == 0:
             return None
         else:
             self.update_view_count(citiao)
-            return RabVoter2Reply.get(RabVoter2Reply.title == citiao)
+            return g_Voter2Reply.get(g_Voter2Reply.title == citiao)
 
     def get_next_record(self, in_uid):
         current_rec = self.get_by_id(in_uid)
-        query = RabVoter2Reply.select().where(RabVoter2Reply.time_update < current_rec.time_update).order_by(
-            RabVoter2Reply.time_update.desc())
+        query = g_Voter2Reply.select().where(g_Voter2Reply.time_update < current_rec.time_update).order_by(
+            g_Voter2Reply.time_update.desc())
         if query.count() == 0:
             return None
         else:
@@ -128,8 +128,8 @@ class MReply2User(MSuperTable):
 
     def get_previous_record(self, in_uid):
         current_rec = self.get_by_id(in_uid)
-        query = RabVoter2Reply.select().where(RabVoter2Reply.time_update > current_rec.time_update).order_by(
-            RabVoter2Reply.time_update)
+        query = g_Voter2Reply.select().where(g_Voter2Reply.time_update > current_rec.time_update).order_by(
+            g_Voter2Reply.time_update)
         if query.count() == 0:
             return None
         else:
