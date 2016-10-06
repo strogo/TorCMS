@@ -269,9 +269,9 @@ class rel_post2app(tornado.web.UIModule):
             'app_t': 'info',
             'uid': uid,
         }
-        rel_recs = self.relation.get_app_relations(uid, num)
+        rel_recs = self.relation.get_app_relations(uid, num, kind='2')
 
-        rand_recs = self.app.query_random(num - rel_recs.count() + 2)
+        rand_recs = self.app.query_random(num - rel_recs.count() + 2, kind='2')
 
         return self.render_string('infor/modules/relation_post2app.html',
                                   relations=rel_recs,
@@ -288,9 +288,9 @@ class rel_app2post(tornado.web.UIModule):
             'app_t': 'post',
             'uid': uid,
         }
-        rel_recs = self.relation.get_app_relations(uid, num)
+        rel_recs = self.relation.get_app_relations(uid, num, kind='1')
 
-        rand_recs = self.mpost.query_random(num - rel_recs.count() + 2)
+        rand_recs = self.mpost.query_random(num - rel_recs.count() + 2, kind = '1')
 
         return self.render_string('infor/modules/relation_app2post.html',
                                   relations=rel_recs,
