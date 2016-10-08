@@ -174,7 +174,7 @@ class InfoHandler(BaseHandler):
                     tag_info=self.mapp2tag.get_by_id(info_id, kind = tools.constant['tag_info']),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     post_info=app_rec,
-                    replys=replys,
+                    replys=[], # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
                     role_mask_idx=role_mask_idx,
                     )
