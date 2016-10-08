@@ -19,7 +19,7 @@ class MPost(MSuperTable):
         except:
             pass
 
-    def update(self, uid, post_data, update_time=False):
+    def update(self, uid, post_data, update_time=True):
         title = post_data['title'].strip()
         if len(title) < 2:
             return False

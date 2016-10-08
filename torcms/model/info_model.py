@@ -210,7 +210,7 @@ class MInfor(MInforBase):
             entry = self.tab_app.update(
                 title=title,
                 keywords=','.join([x.strip() for x in data_dic['keywords'].strip().strip(',').split(',')]),
-                time_update=int(time.time()),
+                time_update= tools.timestamp(),
                 date=datetime.now(),
                 cnt_md=data_dic['cnt_md'],
                 logo=data_dic['logo'],
