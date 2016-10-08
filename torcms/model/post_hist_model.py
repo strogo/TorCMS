@@ -17,6 +17,14 @@ class MPostHist(MSuperTable):
     def query_by_postid(self, postid):
         recs = self.tab.select().where(self.tab.post_id == postid)
         return recs
+
+    def get_last(self, postid):
+        recs = self.tab.select().where(self.tab.post_id == postid).order_by(self.tab.time_update.desc())
+        if recs.count() == 0:
+            return False
+        else:
+            return recs.get()
+
     def insert_data(self, raw_data):
 
         uid = tools.get_uuid()

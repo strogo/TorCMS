@@ -29,25 +29,23 @@ def run_edit_diff():
     email_cnt = email_cnt + '<table border=1>'
     idx = 1
     for recent_post in recent_posts:
-        hist_recs = mposthist.query_by_postid(recent_post.uid)
-        if hist_recs.count() == 0:
+        hist_recs = mposthist.get_last(recent_post.uid)
+        if hist_recs:
+            continue
+        else:
             foo_str = '''
-            <tr><td>{0}</td><td>{1}</td>
-            <td><a href="{2}">{2}</a></td></tr>
-            '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                <tr><td>{0}</td><td>{1}</td>
+                <td><a href="{2}">{2}</a></td></tr>
+                '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
             idx = idx + 1
-        else:
-            continue
-    email_cnt = email_cnt + '</table>'
+            email_cnt = email_cnt + '</table>'
 
     recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
 
     for recent_post in recent_posts:
-        hist_recs = mposthist.query_by_postid(recent_post.uid)
-        if hist_recs.count() == 0:
-            continue
-        else:
+        hist_recs = mposthist.get_last(recent_post.uid)
+        if hist_recs:
             print('=' * 10)
 
             print(recent_post.title)
@@ -58,14 +56,13 @@ def run_edit_diff():
 
             test = HtmlDiff.make_file(HtmlDiff(), [raw_title], [new_title])
 
-
-
             # if len(test) > 1:
             start = test.find('<table class="diff"')  # 起点记录查询位置
             end = test.find('</table>')
             infobox = test[start:end] + '</table>'
             if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                email_cnt = email_cnt + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> TITLE'.format(recent_post.title) + infobox
+                email_cnt = email_cnt + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> TITLE'.format(
+                    recent_post.title) + infobox
 
             raw_md = hist_rec.cnt_md.split('\n')
             new_md = recent_post.cnt_md.split('\n')
@@ -77,8 +74,12 @@ def run_edit_diff():
 
             infobox = test[start:end] + '</table>'
             if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                email_cnt = email_cnt +  '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> CONTENT'.format(recent_post.title) +  infobox + '</hr>'
+                email_cnt = email_cnt + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> CONTENT'.format(
+                    recent_post.title) + infobox + '</hr>'
 
+
+        else:
+            continue
     email_cnt = email_cnt + '''<table class="diff" summary="Legends">
         <tr> <th colspan="2"> Legends </th> </tr>
         <tr> <td> <table border="" summary="Colors">
