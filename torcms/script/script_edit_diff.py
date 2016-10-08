@@ -8,8 +8,16 @@ from difflib import HtmlDiff
 from torcms.core.tool.send_email import send_mail
 from config import smtp_cfg
 from config import site_url
+from config_email import post_emails
 import os
 import re
+
+import datetime
+
+now = datetime.datetime.now()
+
+datestr = now.strftime('%Y-%m-%d %H:%M:%S')
+
 def run_edit_diff():
     email_cnt = '''<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
@@ -29,8 +37,8 @@ def run_edit_diff():
     email_cnt = email_cnt + '<table border=1>'
     idx = 1
     for recent_post in recent_posts:
-        hist_recs = mposthist.get_last(recent_post.uid)
-        if hist_recs:
+        hist_rec = mposthist.get_last(recent_post.uid)
+        if hist_rec:
             continue
         else:
             foo_str = '''
@@ -39,17 +47,16 @@ def run_edit_diff():
                 '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
             idx = idx + 1
-            email_cnt = email_cnt + '</table>'
+    email_cnt = email_cnt + '</table>'
 
     recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
 
     for recent_post in recent_posts:
-        hist_recs = mposthist.get_last(recent_post.uid)
-        if hist_recs:
+        hist_rec = mposthist.get_last(recent_post.uid)
+        if hist_rec:
             print('=' * 10)
 
             print(recent_post.title)
-            hist_rec = hist_recs.get()
 
             raw_title = hist_rec.title
             new_title = recent_post.title
@@ -97,6 +104,6 @@ def run_edit_diff():
     </table></body>'''
 
     print (email_cnt)
-    send_mail(['bukun@osgeo.cn'], "{0}|{1}".format(smtp_cfg['name'], '新增文档'), email_cnt)
+    send_mail( post_emails , "{0}|{1}|{2}".format(smtp_cfg['name'], '文档更新情况', datestr), email_cnt)
 
 
