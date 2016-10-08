@@ -91,7 +91,7 @@ def run_edit_diff():
 
         else:
             continue
-    if len(diff_str) < 1000:
+    if len(diff_str) < 8000:
         email_cnt = email_cnt + diff_str 
     email_cnt = email_cnt + '''<table class="diff" summary="Legends">
         <tr> <th colspan="2"> Legends </th> </tr>
