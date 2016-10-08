@@ -105,7 +105,7 @@ class InfoHandler(BaseHandler):
             cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
         print('info category:',  cat_uid_arr)
-        replys = self.mreply.get_by_id(info_id)
+        replys = [] # self.mreply.get_by_id(info_id)
         rel_recs = self.mrel.get_app_relations(app_rec.uid, 0, kind = '2')
         if len(cat_uid_arr) > 0:
             rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
