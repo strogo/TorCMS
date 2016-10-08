@@ -7,7 +7,8 @@ from torcms.model.post_hist_model import MPostHist
 from difflib import HtmlDiff
 from torcms.core.tool.send_email import send_mail
 from config import smtp_cfg
-
+from config import site_url
+import os
 import re
 def run_edit_diff():
     email_cnt = '''<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -24,6 +25,21 @@ def run_edit_diff():
     mpost = MPost()
     mposthist = MPostHist()
     recent_posts = mpost.query_recent_edited( tools.timestamp() - 24 * 60 * 60)
+
+    email_cnt = email_cnt + '<table border=1>'
+    idx = 1
+    for recent_post in recent_posts:
+        hist_recs = mposthist.query_by_postid(recent_post.uid)
+        if hist_recs.count() == 0:
+            foo_str = '''
+            <tr><td>{0}</td><td>{1}</td>
+            <td><a href="{2}">{2}</a></td></tr>
+            '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+            email_cnt = email_cnt + foo_str
+            idx = idx + 1
+        else:
+            continue
+    email_cnt = email_cnt + '</table>'
     for recent_post in recent_posts:
         hist_recs = mposthist.query_by_postid(recent_post.uid)
         if hist_recs.count() == 0:
