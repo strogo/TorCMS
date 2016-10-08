@@ -40,6 +40,9 @@ def run_edit_diff():
         else:
             continue
     email_cnt = email_cnt + '</table>'
+
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
+
     for recent_post in recent_posts:
         hist_recs = mposthist.query_by_postid(recent_post.uid)
         if hist_recs.count() == 0:
