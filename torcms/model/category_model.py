@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-
 import config
 from torcms.model.core_tab import g_Tag
 from torcms.model.supertable_model import MSuperTable
@@ -29,7 +28,7 @@ class MCategory(MSuperTable):
     def query_uid_starts_with(self, qian2, kind='10'):
         return self.get_qian2(qian2, kind = kind)
 
-    def query_all(self, by_count=False, by_order=True, kind='1'):
+    def query_all(self, by_count=False, by_order=True, kind='10'):
         if by_count:
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc())
         elif by_order:
