@@ -62,8 +62,8 @@ class UserHandler(BaseHandler):
                 pass
             else:
                 self.redirect(config.site_url)
-        elif url_arr[0] == 'changeprivilege':
-            self.change_privilege(url_arr[1])
+        elif url_arr[0] == 'changerole':
+            self.change_role(url_arr[1])
         elif url_str == 'find':
             if self.tmpl_router == "user":
                 self.to_find()
@@ -105,8 +105,8 @@ class UserHandler(BaseHandler):
             self.find(url_arr[1])
         elif url_str == 'reset-password':
             self.reset_password()
-        elif url_arr[0] == 'changeprivilege':
-            self.changeprivilege(url_arr[1])
+        elif url_arr[0] == 'changerole':
+            self.changerole(url_arr[1])
 
     @tornado.web.authenticated
     def p_changepassword(self):
@@ -176,15 +176,15 @@ class UserHandler(BaseHandler):
             return False
 
     @tornado.web.authenticated
-    def changeprivilege(self, xg_username):
+    def changerole(self, xg_username):
         post_data = {}
         for key in self.request.arguments:
             post_data[key] = self.get_arguments(key)
         if self.tmpl_router == "user":
-            self.muser.update_role(xg_username, post_data['privilege'][0])
+            self.muser.update_role(xg_username, post_data['role'][0])
             self.redirect(('/user/info'))
         else:
-            if self.muser.update_role(xg_username, post_data['privilege'][0]):
+            if self.muser.update_role(xg_username, post_data['role'][0]):
                 output = {
                     'del_category ': 1,
                 }
@@ -215,8 +215,8 @@ class UserHandler(BaseHandler):
                     )
 
     @tornado.web.authenticated
-    def change_privilege(self, xg_username):
-        self.render('user/{0}/changeprivilege.html'.format(self.tmpl_router),
+    def change_role(self, xg_username):
+        self.render('user/{0}/changerole.html'.format(self.tmpl_router),
                     userinfo=self.muser.get_by_name(xg_username))
 
     @tornado.web.authenticated
@@ -323,7 +323,7 @@ class UserHandler(BaseHandler):
                 '1' for user_name
                 '2' for user_email
                 '3' for user_pass
-                '4' for user_privilege
+                '4' for user_role
                 The seconde char of 'code' stands for different status.
                 '1' for invalide
                 '2' for already exists.
@@ -348,7 +348,7 @@ class UserHandler(BaseHandler):
                 '1' for user_name
                 '2' for user_email
                 '3' for user_pass
-                '4' for user_privilege
+                '4' for user_role
                 The seconde char of 'code' stands for different status.
                 '1' for invalide
                 '2' for already exists.
@@ -385,7 +385,7 @@ class UserHandler(BaseHandler):
                 '1' for user_name
                 '2' for user_email
                 '3' for user_pass
-                '4' for user_privilege
+                '4' for user_role
                 The seconde char of 'code' stands for different status.
                 '1' for invalide
                 '2' for already exists.
