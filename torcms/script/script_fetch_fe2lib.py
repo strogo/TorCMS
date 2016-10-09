@@ -18,50 +18,41 @@ def fetch_file(url, filename , outdir = False):
     print(' ' * 4 +  url)
 
     outfile = os.path.join(den_dir, filename)
-    if os.path.exists(outfile):
-        return True
-    try:
 
-        urllib.request.urlretrieve(url, outfile)
-    except:
-        return False
-    if outdir:
-        zip_file = outfile
-        f = zipfile.ZipFile(zip_file, 'r')
-        for zfile in f.namelist():
-            if outdir == '':
-                f.extract(zfile, den_dir)
-            else:
-                f.extract(zfile, os.path.join(den_dir, outdir))
+    urllib.request.urlretrieve(url, outfile)
+    zip_file = outfile
+    f = zipfile.ZipFile(zip_file, 'r')
+    for zfile in f.namelist():
+        f.extract(zfile, den_dir)
 
 
 def get_jquery():
     # jquery_url = 'https://code.jquery.com/jquery-3.1.1.min.js'
-    jquery_url = 'http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js'
+    jquery_url = 'http://r.osgeo.cn/f2elib/jquery.zip'
     qian, hou = os.path.split(jquery_url)
     fetch_file(jquery_url, hou)
 
 def get_leaflet():
-    leaflet_url = 'http://cdn.leafletjs.com/leaflet/v1.0.1/leaflet.zip'
+    leaflet_url = 'http://r.osgeo.cn/f2elib/leaflet_1.0.1.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = 'leaflet')
 
 
 def get_bootstrap():
-    leaflet_url = 'https://github.com/twbs/bootstrap/releases/download/v3.3.7/bootstrap-3.3.7-dist.zip'
+    leaflet_url = 'http://r.osgeo.cn/f2elib/bootstrap_3.3.7.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = '')
 
 def get_js_valid():
-    leaflet_url = 'https://github.com/jzaefferer/jquery-validation/releases/download/1.15.1/jquery-validation-1.15.1.zip'
+    leaflet_url = 'http://r.osgeo.cn/f2elib/jquery-validation_1.15.0.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = 'validate')
 def get_codemirror():
-    leaflet_url = 'http://codemirror.net/codemirror.zip'
+    leaflet_url = 'http://r.osgeo.cn/f2elib/codemirror_5.19.0.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = '')
 def get_jqueryui():
-    leaflet_url = 'http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip'
+    leaflet_url = 'http://r.osgeo.cn/f2elib/jqueryui_1.12.1.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou, outdir = '')
 
@@ -91,7 +82,7 @@ def run_fetch_f2elib():
     get_js_valid()
     get_leaflet()
     get_jquery()
-    get_ol3()
+    # get_ol3()
     get_bootstrap()
 
 
