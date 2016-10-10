@@ -32,10 +32,12 @@ def run_edit_diff():
     </style></head><body>'''
     mpost = MPost()
     mposthist = MPostHist()
+
+
+    idx = 1
     email_cnt = email_cnt + '<table border=1>'
 
     recent_posts = mpost.query_recent_edited( tools.timestamp() - 24 * 60 * 60)
-    idx = 1
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -53,7 +55,6 @@ def run_edit_diff():
         idx = idx + 1
 
     recent_posts = mpost.query_recent_edited( tools.timestamp() - 24 * 60 * 60, kind = '2')
-    idx = 1
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -165,6 +166,7 @@ def run_edit_diff():
     </table></body>'''
 
     # print (email_cnt)
+    print('edit diff count:', idx)
     if idx > 1:
         send_mail( post_emails , "{0}|{1}|{2}".format(smtp_cfg['name'], '文档更新情况', datestr), email_cnt)
 
