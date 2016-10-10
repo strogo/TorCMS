@@ -5,14 +5,12 @@ from config import foo_dic
 
 def retag(catid):
     '''
-
     >>> retag('0355')
     '2155'
     >>> retag('2539')
     '2539'
     >>> retag('4039')
     '2739'
-
     '''
     if catid[:2] in foo_dic:
         return  foo_dic[catid[:2]] + catid[2:]
@@ -22,16 +20,12 @@ def retag(catid):
 def buqi_postid(post_id):
     '''
     Function to get absolute value of number.
-
     >>> buqi_postid('12')
     '12ggg'
-
     >>> buqi_postid('badf')
     'badfg'
-
     >>> buqi_postid('zvfg')
     'zvfgg'
-
     '''
     return post_id + 'g' * (5 - len(post_id))
 
