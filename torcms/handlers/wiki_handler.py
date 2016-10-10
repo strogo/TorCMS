@@ -106,13 +106,14 @@ class WikiHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
+        # for key in self.request.arguments:
+        #     post_data[key] = self.get_arguments(key)
+        #
         post_data['user_name'] = self.get_current_user()
         self.mwiki.update(uid, post_data)
         self.mwiki_hist.insert_data(raw_data)
-        self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'][0])))
+        self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'])))
 
     @tornado.web.authenticated
     def to_modify(self, id_rec):
@@ -160,14 +161,14 @@ class WikiHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
+        # for key in self.request.arguments:
+        #     post_data[key] = self.get_arguments(key)
 
         post_data['user_name'] = self.get_current_user()
-        if self.mwiki.get_by_wiki(post_data['title'][0]):
+        if self.mwiki.get_by_wiki(post_data['title']):
             pass
         else:
             self.mwiki.insert_data(post_data)
 
-        self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'][0])))
+        self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'])))

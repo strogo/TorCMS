@@ -76,6 +76,7 @@ class BaseHandler(tornado.web.RequestHandler):
             priv_dic['DELETE'] = True
         if userinfo.role[1] >= '7':
             priv_dic['ADMIN'] = True
+        print('user role: ', priv_dic)
         return priv_dic
 
     def get_current_user(self):

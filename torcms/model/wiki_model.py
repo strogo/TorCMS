@@ -18,20 +18,19 @@ class MWiki(MSuperTable):
             pass
 
     def update(self, uid, post_data):
-        title = post_data['title'][0].strip()
+        title = post_data['title'].strip()
         if len(title) < 2:
             return False
 
-        cnt_html = tools.markdown2html(post_data['cnt_md'][0])
+        cnt_html = tools.markdown2html(post_data['cnt_md'])
 
         entry = self.tab.update(
             title=title,
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
             user_name=post_data['user_name'],
-            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
-            kind=post_data['kink'],
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -58,14 +57,14 @@ class MWiki(MSuperTable):
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
             view_count=1,
-            kind=post_data['kind'] if 'kind' in post_data else 1,
+            kind=post_data['kind'] if 'kind' in post_data else '1',
         )
         return (entry.uid)
 
-    def query_dated(self, num=10, kind=1):
+    def query_dated(self, num=10, kind='1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.time_update.desc()).limit(num)
 
-    def query_most(self, num=8, kind=1):
+    def query_most(self, num=8, kind='1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.view_count.desc()).limit(num)
 
     def update_view_count(self, citiao):

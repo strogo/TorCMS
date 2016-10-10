@@ -77,7 +77,7 @@ class g_WikiHist(BaseModel):
                              max_length=255,
                              help_text='', )
     wiki_id = peewee.CharField(null=False,
-                               max_length=8,
+                               max_length=36,
                                help_text='', )
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
