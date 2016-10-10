@@ -54,6 +54,7 @@ class InfoTagHandler(BaseHandler):
             'tag_name': tag_name,
             'tag_slug': tag_slug,
             'title': tag_name,
+            'current_page': current_page_num
         }
 
         info = self.minfo.query_by_tagname(tag_slug)
@@ -63,7 +64,7 @@ class InfoTagHandler(BaseHandler):
         self.render('{0}/label/list.html'.format(self.template_dir_name),
                     kwd=kwd,
                     userinfo=self.userinfo,
-                    infos=self.minfo.get_label_fenye(tag_slug, current_page_num),
+                    infos=self.minfo.query_pager_by_tag(tag_slug, current_page_num),
                     pager=self.gen_pager(tag_slug, page_num, current_page_num),
 
                     )

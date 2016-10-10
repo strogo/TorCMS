@@ -81,9 +81,7 @@ class PageHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
 
         if 'slug' in post_data:
             pass
@@ -94,7 +92,7 @@ class PageHandler(BaseHandler):
         self.mpage_hist.insert_data(self.mpage.get_by_uid(slug))
         self.mpage.update(slug, post_data)
 
-        self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
+        self.redirect('/page/{0}.html'.format(post_data['slug']))
 
     @tornado.web.authenticated
     def to_modify(self, slug):
@@ -158,9 +156,13 @@ class PageHandler(BaseHandler):
         else:
             return False
 
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        #  post_data = {}
+        # for key in self.request.arguments:
+        #     post_data[key] = self.get_arguments(key)
+
+        post_data = self.get_post_data()
+
+
         post_data['user_name'] = self.userinfo.user_name
 
         if 'slug' in post_data:
@@ -169,12 +171,12 @@ class PageHandler(BaseHandler):
             self.set_status(400)
             return False
 
-        if self.mpage.get_by_uid(post_data['slug'][0]):
+        if self.mpage.get_by_uid(post_data['slug']):
             self.set_status(400)
             return False
         else:
             self.mpage.insert_data(post_data)
-            self.redirect('/page/{0}.html'.format(post_data['slug'][0]))
+            self.redirect('/page/{0}.html'.format(post_data['slug']))
 
 
 class PageAjaxHandler(PageHandler):

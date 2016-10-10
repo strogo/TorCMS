@@ -47,6 +47,8 @@ class PostLabelHandler(BaseHandler):
             'tag_name': tag_name,
             'tag_slug': tag_slug,
             'title': tag_name,
+            'current_page': current_page_number,
+
         }
 
         self.render('doc/label/list.html',

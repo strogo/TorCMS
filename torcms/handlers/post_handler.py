@@ -172,6 +172,7 @@ class PostHandler(BaseHandler):
             return False
 
         post_data = self.get_post_data()
+
         post_data['user_name'] = self.get_current_user()
         is_update_time = True # if post_data['is_update_time'][0] == '1' else False
 

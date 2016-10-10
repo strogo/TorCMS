@@ -10,7 +10,8 @@ import config
 import tornado.web
 from torcms.model.category_model import MCategory
 from torcms.core.tools import constant
-
+from torcms.model.info_model import MInfor as  MInfor
+from torcms.model.label_model import MPost2Label
 
 class reply_panel(tornado.web.UIModule):
     def render(self, sig, uid, userinfo, replys):
@@ -298,6 +299,60 @@ class catalog_pager(tornado.web.UIModule):
         return self.render_string('doc/modules/catalog_pager.html',
                                   kwd=kwd,
                                   cat_slug=cat_slug,
+                                  pager_num=page_num,
+                                  page_current=current,
+                                  )
+
+class info_label_pager(tornado.web.UIModule):
+    def render(self, *args, **kwargs):
+
+        self.minfo = MInfor()
+        tag_slug = args[0]
+        current = int(args[1])
+        # cat_slug 分类
+        # current 当前页面
+
+        cat_rec =  self.minfo.query_by_tagname(tag_slug)
+
+        page_num = int(cat_rec.count() / config.page_num)
+
+        kwd = {
+            'page_home': False if current <= 1 else True,
+            'page_end': False if current >= page_num else True,
+            'page_pre': False if current <= 1 else True,
+            'page_next': False if current >= page_num else True,
+        }
+
+        return self.render_string('doc/modules/info_label_pager.html',
+                                  kwd=kwd,
+                                  cat_slug=tag_slug,
+                                  pager_num=page_num,
+                                  page_current=current,
+                                  )
+
+class doc_label_pager(tornado.web.UIModule):
+    def render(self, *args, **kwargs):
+
+        self.mapp2tag = MPost2Label()
+        tag_slug = args[0]
+        current = int(args[1])
+        # cat_slug 分类
+        # current 当前页面
+
+
+
+        page_num = int(self.mapp2tag.total_number(tag_slug) / config.page_num)
+
+        kwd = {
+            'page_home': False if current <= 1 else True,
+            'page_end': False if current >= page_num else True,
+            'page_pre': False if current <= 1 else True,
+            'page_next': False if current >= page_num else True,
+        }
+
+        return self.render_string('doc/modules/doc_label_pager.html',
+                                  kwd=kwd,
+                                  cat_slug=tag_slug,
                                   pager_num=page_num,
                                   page_current=current,
                                   )

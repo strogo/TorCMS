@@ -31,6 +31,7 @@ class MWiki(MSuperTable):
             user_name=post_data['user_name'],
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
+
         ).where(self.tab.uid == uid)
         entry.execute()
 

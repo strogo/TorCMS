@@ -41,7 +41,7 @@ class EntityHandler(BaseHandler):
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
         if url_str == 'add_img' or url_str == 'add' or url_str == '':
-            self.add_pic()
+            self.add_entity()
         else:
             self.render('html/404.html', kwd={}, userinfo=self.userinfo)
 
@@ -68,50 +68,62 @@ class EntityHandler(BaseHandler):
                     userinfo=self.userinfo)
 
     @tornado.web.authenticated
+    def add_entity(self):
+        post_data = self.get_post_data()
+        if 'kind' in post_data:
+            if post_data['kind'] == '1':
+                self.add_pic()
+            elif post_data['kind'] == '2':
+                pass
+            else:
+                pass
+        else:
+            self.add_pic()
+
+
+    @tornado.web.authenticated
     def add_pic(self):
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        img_entiry = self.request.files['file'][0]
 
-        file_dict_list = self.request.files['file']
-        for file_dict in file_dict_list:
-            filename = file_dict["filename"]
-            if filename and allowed_file(filename):
-                pass
-            else:
-                return False
+        filename = img_entiry["filename"]
 
-            (qian, hou) = os.path.splitext(filename)
-            signature = str(uuid.uuid1())
-            outfilename = '{0}{1}'.format(signature, hou)
-            outpath = 'static/upload/{0}'.format(signature[:2])
-            if os.path.exists(outpath):
-                pass
-            else:
-                os.makedirs(outpath)
-            with open(os.path.join(outpath, outfilename), "wb") as f:
-                f.write(file_dict["body"])
-            path_save = os.path.join(signature[:2], outfilename)
-            sig_save = os.path.join(signature[:2], signature)
+        if filename and allowed_file(filename):
+            pass
+        else:
+            return False
 
-            imgpath = os.path.join(outpath, signature + '_m.jpg')
-            imgpath_sm = os.path.join(outpath, signature + '_sm.jpg')
+        (qian, hou) = os.path.splitext(filename)
+        signature = str(uuid.uuid1())
+        outfilename = '{0}{1}'.format(signature, hou)
+        outpath = 'static/upload/{0}'.format(signature[:2])
+        if os.path.exists(outpath):
+            pass
+        else:
+            os.makedirs(outpath)
+        with open(os.path.join(outpath, outfilename), "wb") as f:
+            f.write(img_entiry["body"])
+        path_save = os.path.join(signature[:2], outfilename)
+        sig_save = os.path.join(signature[:2], signature)
 
-            im = Image.open(os.path.join('static/upload', path_save))
-            tmpl_size = (768, 768)
-            thub_size = (256, 256)
-            (imgwidth, imgheight) = im.size
-            if imgwidth < tmpl_size[0] and imgheight < tmpl_size[1]:
-                tmpl_size = (imgwidth, imgheight)
-            im.thumbnail(tmpl_size)
+        imgpath = os.path.join(outpath, signature + '_m.jpg')
+        imgpath_sm = os.path.join(outpath, signature + '_sm.jpg')
 
-            im0 = im.convert('RGB')
-            im0.save(imgpath, 'JPEG')
+        im = Image.open(os.path.join('static/upload', path_save))
+        tmpl_size = (768, 768)
+        thub_size = (256, 256)
+        (imgwidth, imgheight) = im.size
+        if imgwidth < tmpl_size[0] and imgheight < tmpl_size[1]:
+            tmpl_size = (imgwidth, imgheight)
+        im.thumbnail(tmpl_size)
 
-            im0.thumbnail(thub_size)
-            im0.save(imgpath_sm, 'JPEG')
+        im0 = im.convert('RGB')
+        im0.save(imgpath, 'JPEG')
 
-            self.mpic.insert_data(signature, sig_save)
+        im0.thumbnail(thub_size)
+        im0.save(imgpath_sm, 'JPEG')
+
+        self.mpic.insert_data(signature, sig_save)
+
         self.redirect('/entity/{0}_m.jpg'.format(sig_save))
 
     @tornado.web.authenticated
