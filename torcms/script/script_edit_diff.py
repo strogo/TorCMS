@@ -40,15 +40,15 @@ def run_edit_diff():
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
             foo_str = '''
-                <tr><td>{0}</td><td class="diff_chg">Edit</td><td>{1}</td>
-                <td><a href="{2}">{2}</a></td></tr>
-                '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
+                <td><a href="{3}">{3}</a></td></tr>
+                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
         else:
             foo_str = '''
-                <tr><td>{0}</td><td class="diff_add">New </td><td>{1}</td>
-                <td><a href="{2}">{2}</a></td></tr>
-                '''.format(idx, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
+                <td><a href="{3}">{3}</a></td></tr>
+                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
         idx = idx + 1
     email_cnt = email_cnt + '</table>'
