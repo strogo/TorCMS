@@ -110,7 +110,7 @@ def run_edit_diff():
     </table></body>'''
 
     # print (email_cnt)
-    idx > 1:
+    if idx > 1:
         send_mail( post_emails , "{0}|{1}|{2}".format(smtp_cfg['name'], '文档更新情况', datestr), email_cnt)
 
 
