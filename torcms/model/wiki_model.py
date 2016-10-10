@@ -18,20 +18,20 @@ class MWiki(MSuperTable):
             pass
 
     def update(self, uid, post_data):
-        title = post_data['title'][0].strip()
+        title = post_data['title'].strip()
         if len(title) < 2:
             return False
 
-        cnt_html = tools.markdown2html(post_data['cnt_md'][0])
+        cnt_html = tools.markdown2html(post_data['cnt_md'])
 
         entry = self.tab.update(
             title=title,
             date=datetime.datetime.now(),
             cnt_html=cnt_html,
             user_name=post_data['user_name'],
-            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'][0]),
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
-            kind=post_data['kink'],
+            #kind=post_data['kind'],
         ).where(self.tab.uid == uid)
         entry.execute()
 

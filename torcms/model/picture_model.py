@@ -24,10 +24,11 @@ class MEntity(MSuperTable):
         else:
             return False
 
-    def insert_data(self, signature, impath):
+    def insert_data(self, signature, impath,kind = '1'):
         entry = g_Entity.create(
             uid=signature,
             path=impath,
-            time_create=time.time()
+            time_create=time.time(),
+            kind = kind,
         )
         return entry
