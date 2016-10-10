@@ -238,12 +238,19 @@ class MInfor(MInforBase):
                                                self.tab_app.extinfo['def_tag_arr'].contains(tag_name))).order_by(
             self.tab_app.time_update.desc())
 
+    def count_of_certain_category(self, cat_id):
+        return self.tab_app.select().where(self.tab_app.tag == cat_id).count()
+
     def get_label_fenye(self, tag_slug, page_num):
         all_list = self.query_by_tagname(tag_slug)
 
         # 当前分页的记录
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (all_list)
+
+    def query_pager_by_tag(self, tag, current_page_num=1):
+        recs = self.query_by_tagname(tag).paginate(current_page_num, config.page_num)
+        return recs
 
     def add_meta(self, uid, data_dic, extinfo={}):
         title = data_dic['title'].strip()

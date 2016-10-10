@@ -14,6 +14,7 @@ class MCategory(MSuperTable):
             pass
 
     def get_qian2(self, qian2, kind='10'):
+
         '''
         用于首页。根据前两位，找到所有的大类与小类。
         :param qian2: 分类id的前两位
