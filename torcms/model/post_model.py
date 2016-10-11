@@ -43,9 +43,9 @@ class MPost(MSuperTable):
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
                 logo=post_data['logo'],
                 keywords=post_data['keywords'],
-                kind = post_data['kind'] if 'kind' in post_data else 1,
-                extinfo = post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
-                valid = 1,
+                kind=post_data['kind'] if 'kind' in post_data else 1,
+                extinfo=post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
+                valid=1,
             ).where(g_Post.uid == uid)
             entry.execute()
         except:
@@ -67,22 +67,22 @@ class MPost(MSuperTable):
         cur_rec = self.get_by_id(id_post)
         if cur_rec:
             return (False)
-        print('to create...')
+
         entry = g_Post.create(
             title=title,
             date=datetime.datetime.now(),
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             cnt_html=tools.markdown2html(post_data['cnt_md']),
             uid=id_post,
-            time_create= post_data['time_create'] if 'time_create' in post_data else tools.timestamp(),
-            time_update= post_data['time_update'] if 'time_update' in post_data else tools.timestamp(),
+            time_create=post_data['time_create'] if 'time_create' in post_data else tools.timestamp(),
+            time_update=post_data['time_update'] if 'time_update' in post_data else tools.timestamp(),
             user_name=post_data['user_name'],
-            view_count= post_data['view_count'] if 'view_count' in post_data else 1,
+            view_count=post_data['view_count'] if 'view_count' in post_data else 1,
             logo=post_data['logo'],
             keywords=post_data['keywords'],
-            extinfo = post_data['extinfo'] if 'extinfo'  in post_data else {},
-            kind = post_data['kind'] if 'kind' in post_data else '1',
-            valid = 1,
+            extinfo=post_data['extinfo'] if 'extinfo' in post_data else {},
+            kind=post_data['kind'] if 'kind' in post_data else '1',
+            valid=1,
         )
         return (entry.uid)
 
@@ -91,41 +91,43 @@ class MPost(MSuperTable):
             return self.query_random(num)
 
         return g_Post.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
-                peewee.fn.Random()).limit(num)
+            peewee.fn.Random()).limit(num)
 
-    def query_recent_edited(self, timstamp, kind = 1):
-        return self.tab.select().where(( self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(g_Post.time_update.desc())
+    def query_recent_edited(self, timstamp, kind=1):
+        return self.tab.select().where((self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(
+            g_Post.time_update.desc())
 
-    def query_recent(self, num=8, kind = 1):
-        return self.tab.select().where( self.tab.kind == kind).order_by(g_Post.time_update.desc()).limit(num)
+    def query_recent(self, num=8, kind=1):
+        return self.tab.select().where(self.tab.kind == kind).order_by(g_Post.time_update.desc()).limit(num)
 
-    def query_all(self, kind = 1):
-        return self.tab.select().where( self.tab.kind == kind).order_by(g_Post.time_update.desc())
+    def query_all(self, kind=1):
+        return self.tab.select().where(self.tab.kind == kind).order_by(g_Post.time_update.desc())
 
-    def get_num_by_cat(self, cat_str, kind = 1):
-        return g_Post.select().where((self.tab.kind == kind) & (g_Post.id_cats.contains(',{0},'.format(cat_str)))).count()
+    def get_num_by_cat(self, cat_str, kind=1):
+        return g_Post.select().where(
+            (self.tab.kind == kind) & (g_Post.id_cats.contains(',{0},'.format(cat_str)))).count()
 
-    def query_keywords_empty(self, kind = 1):
+    def query_keywords_empty(self, kind=1):
         return g_Post.select().where((self.tab.kind == kind) & (g_Post.keywords == ''))
 
-    def query_dated(self, num=8, kind = 1):
+    def query_dated(self, num=8, kind=1):
         return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.time_update.asc()).limit(num)
 
-    def query_most_pic(self, num, kind = 1):
-        return g_Post.select().where((self.tab.kind == kind) & (g_Post.logo != "")).order_by(g_Post.view_count.desc()).limit(num)
+    def query_most_pic(self, num, kind=1):
+        return g_Post.select().where((self.tab.kind == kind) & (g_Post.logo != "")).order_by(
+            g_Post.view_count.desc()).limit(num)
 
-    def query_cat_recent(self, cat_id, num=8, kind = 1):
+    def query_cat_recent(self, cat_id, num=8, kind=1):
         return g_Post.select().join(g_Post2Tag).where((self.tab.kind == kind) & (g_Post2Tag.tag == cat_id)).order_by(
             g_Post.time_update.desc()).limit(num)
 
-    def query_most(self, num=8, kind = 1):
+    def query_most(self, num=8, kind=1):
         return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.view_count.desc()).limit(num)
 
-    def query_cat_by_pager(self, cat_str, cureent , kind = 1):
+    def query_cat_by_pager(self, cat_str, cureent, kind=1):
         tt = g_Post.select().where((self.tab.kind == kind) & (g_Post.id_cats.contains(str(cat_str)))).order_by(
             g_Post.time_update.desc()).paginate(cureent, config.page_num)
         return tt
-
 
     def update_view_count_by_uid(self, uid):
         entry = g_Post.update(view_count=g_Post.view_count + 1).where(g_Post.uid == uid)
@@ -139,18 +141,20 @@ class MPost(MSuperTable):
         entry = g_Post.update(keywords=inkeywords).where(g_Post.uid == uid)
         entry.execute()
 
-    def get_next_record(self, in_uid, kind = 1):
+    def get_next_record(self, in_uid, kind=1):
         current_rec = self.get_by_id(in_uid)
-        query = g_Post.select().where((self.tab.kind == kind) & (g_Post.time_update < current_rec.time_update)).order_by(
+        query = g_Post.select().where(
+            (self.tab.kind == kind) & (g_Post.time_update < current_rec.time_update)).order_by(
             g_Post.time_update.desc())
         if query.count() == 0:
             return None
         else:
             return query.get()
 
-    def get_previous_record(self, in_uid, kind = 1):
+    def get_previous_record(self, in_uid, kind=1):
         current_rec = self.get_by_id(in_uid)
-        query = g_Post.select().where((self.tab.kind == kind) & (g_Post.time_update > current_rec.time_update)).order_by(g_Post.time_update)
+        query = g_Post.select().where(
+            (self.tab.kind == kind) & (g_Post.time_update > current_rec.time_update)).order_by(g_Post.time_update)
         if query.count() == 0:
             return None
         else:

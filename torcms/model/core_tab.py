@@ -127,7 +127,9 @@ class g_Post2Tag(BaseModel):
 
 class g_Reply(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-    create_user_id = peewee.ForeignKeyField(g_Member, related_name='reply_member_id')
+    post_id = peewee.CharField(null=False, index=True, max_length=5, help_text='', )
+    user_id = peewee.CharField(null=False, index=True, max_length=36, help_text='', )
+    # create_user_id = peewee.ForeignKeyField(g_Member, related_name='reply_member_id')
     user_name = peewee.TextField()
     timestamp = peewee.IntegerField()
     date = peewee.DateTimeField()
@@ -136,17 +138,17 @@ class g_Reply(BaseModel):
     vote = peewee.IntegerField()
 
 
-class g_Post2Reply(BaseModel):
-    uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-    post = peewee.ForeignKeyField(g_Post, related_name='post_reply_id')
-    reply = peewee.ForeignKeyField(g_Reply, related_name='reply_post_id')
-    timestamp = peewee.IntegerField()
+# class g_Post2Reply(BaseModel):
+#     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
+#     post = peewee.ForeignKeyField(g_Post, related_name='post_reply_id')
+#     reply = peewee.ForeignKeyField(g_Reply, related_name='reply_post_id')
+#     timestamp = peewee.IntegerField()
 
 
-class g_Voter2Reply(BaseModel):
+class g_User2Reply(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
-    reply = peewee.ForeignKeyField(g_Reply, related_name='reply_voter_id')
-    voter = peewee.ForeignKeyField(g_Member, related_name='voter_reply_id')
+    reply_id =    peewee.CharField(null=False, index=True,max_length=36, help_text='', )
+    user_id = peewee.CharField(null=False, index=True,max_length=36, help_text='', )
     timestamp = peewee.IntegerField()
 
 

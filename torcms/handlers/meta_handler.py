@@ -7,7 +7,7 @@ import tornado.web
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
-from torcms.model.info_reply_model import MInfor2Reply
+# from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.category_model import MCategory
 
@@ -31,7 +31,7 @@ class MetaHandler(PostHandler):
         self.cats = self.mcat.query_all()
         self.mpost_hist = MInfoHist()
         self.mpost2catalog = MInfor2Catalog()
-        self.mpost2reply = MInfor2Reply()
+        # self.mpost2reply = MInfor2Reply()
         self.mpost2label = MInfor2Label()
         self.mrel = MInforRel()
 

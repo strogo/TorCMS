@@ -13,14 +13,18 @@ from torcms.core.tools import constant
 from torcms.model.info_model import MInfor as  MInfor
 from torcms.model.label_model import MPost2Label
 
+from torcms.model.reply_model import MReply
+
+
+mreply = MReply()
+
 class reply_panel(tornado.web.UIModule):
-    def render(self, sig, uid, userinfo, replys):
+    def render(self, uid, userinfo):
         return self.render_string('doc/modules/reply_panel.html',
-                                  sig=sig,
                                   uid=uid,
-                                  replys=replys,
+                                  replys= mreply.query_by_post(uid),
                                   userinfo=userinfo,
-                                  unescape=tornado.escape.url_unescape,
+                                  unescape=tornado.escape.xhtml_unescape,
                                   linkify=tornado.escape.linkify,
                                   )
 

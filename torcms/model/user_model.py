@@ -128,27 +128,27 @@ class MUser(MSuperTable):
     def insert_data(self, post_data):
         out_dic = {'success': False, 'code': '00'}
 
-        if tools.check_username_valid(post_data['user_name'][0]):
+        if tools.check_username_valid(post_data['user_name']):
             pass
         else:
             out_dic['code'] = '11'
             return out_dic
 
-        if tools.check_email_valid(post_data['user_email'][0]):
+        if tools.check_email_valid(post_data['user_email']):
             pass
         else:
             out_dic['code'] = '21'
             return out_dic
 
-        if 'privilege' in post_data:
-            role = post_data['privilege'][0]
+        if 'role' in post_data:
+            role = post_data['role']
         else:
             role = '10000'
 
         g_Member.create(uid=tools.get_uuid(),
-                        user_name=post_data['user_name'][0],
-                        user_pass=tools.md5(post_data['user_pass'][0]),
-                        user_email=post_data['user_email'][0],
+                        user_name=post_data['user_name'],
+                        user_pass=tools.md5(post_data['user_pass']),
+                        user_email=post_data['user_email'],
                         role=role,
                         time_create=tools.timestamp(),
                         time_update=tools.timestamp(),

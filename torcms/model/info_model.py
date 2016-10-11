@@ -13,7 +13,7 @@ from torcms.model.core_tab import g_Post2Tag
 from torcms.model.core_tab import g_Post2Tag as CabPost2Label
 from torcms.model.core_tab import g_Usage
 from torcms.model.core_tab import g_Rel
-from torcms.model.core_tab import g_Post2Reply
+# from torcms.model.core_tab import g_Post2Reply
 from torcms.model.core_tab import g_Reply
 from torcms.core.tools import constant
 
@@ -26,7 +26,7 @@ class MInforBase(MSuperTable):
         self.tab_relation = g_Rel
         self.tab_app2label = CabPost2Label
         self.tab_usage = g_Usage
-        self.tab_app2reply = g_Post2Reply
+        # self.tab_app2reply = g_Post2Reply
         self.cab_reply = g_Reply
         try:
             g_Post.create_table()
@@ -48,30 +48,31 @@ class MInforBase(MSuperTable):
         return (uid)
 
     def delete(self, del_id):
-        u1 = self.tab_app2catalog.delete().where(self.tab_app2catalog.post == del_id)
-        u1.execute()
-        u2 = self.tab_relation.delete().where(self.tab_relation.post_f == del_id)
-        u2.execute()
-        u3 = self.tab_relation.delete().where(self.tab_relation.post_t == del_id)
-        u3.execute()
-        u4 = self.tab_app2label.delete().where(self.tab_app2label.post == del_id)
-        u4.execute()
-        u5 = self.tab_usage.delete().where(self.tab_usage.post == del_id)
-        u5.execute()
-
-        reply_arr = []
-        for reply in self.tab_app2reply.select().where(self.tab_app2reply.post_id == del_id):
-            reply_arr.append(reply.reply_id.uid)
-
-        u6 = self.tab_app2reply.delete().where(self.tab_app2reply.post_id == del_id)
-        u6.execute()
-
-        for replyid in reply_arr:
-            self.cab_reply.delete().where(self.cab_reply.uid == replyid).execute()
-
-        uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
-        uu.execute()
-        return True
+        #todo: 
+        # u1 = self.tab_app2catalog.delete().where(self.tab_app2catalog.post == del_id)
+        # u1.execute()
+        # u2 = self.tab_relation.delete().where(self.tab_relation.post_f == del_id)
+        # u2.execute()
+        # u3 = self.tab_relation.delete().where(self.tab_relation.post_t == del_id)
+        # u3.execute()
+        # u4 = self.tab_app2label.delete().where(self.tab_app2label.post == del_id)
+        # u4.execute()
+        # u5 = self.tab_usage.delete().where(self.tab_usage.post == del_id)
+        # u5.execute()
+        #
+        # reply_arr = []
+        # for reply in self.tab_app2reply.select().where(self.tab_app2reply.post_id == del_id):
+        #     reply_arr.append(reply.reply_id.uid)
+        #
+        # u6 = self.tab_app2reply.delete().where(self.tab_app2reply.post_id == del_id)
+        # u6.execute()
+        #
+        # for replyid in reply_arr:
+        #     self.cab_reply.delete().where(self.cab_reply.uid == replyid).execute()
+        #
+        # uu = self.tab_app.delete().where(self.tab_app.uid == del_id)
+        # uu.execute()
+        return False
 
     def modify_meta(self, app_id, data_dic):
         '''
@@ -183,7 +184,7 @@ class MInfor(MInforBase):
         self.tab_relation = g_Rel
         self.tab_app2label = CabPost2Label
         self.tab_usage = g_Usage
-        self.tab_app2reply = g_Post2Reply
+        # self.tab_app2reply = g_Post2Reply
         self.cab_reply = g_Reply
         try:
             g_Post.create_table()

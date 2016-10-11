@@ -16,7 +16,7 @@ from torcms.handlers.maintain_handler import MaintainCategoryHandler, MaintainCa
 from torcms.handlers.maintain_info_handler import MaintainPycateCategoryHandler
 from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.page_handler import PageHandler, PageAjaxHandler
-from torcms.handlers.post2reply_handler import Post2ReplyHandler
+# from torcms.handlers.post2reply_handler import Post2ReplyHandler
 from torcms.handlers.post_handler import PostHandler, PostAjaxHandler
 from torcms.handlers.reply_handler import ReplyHandler
 from torcms.handlers.search_handler import SearchHandler
@@ -31,13 +31,13 @@ from torcms.handlers.user_info_list_handler import UserListHandler
 from torcms.handlers.collect_handler import CollectHandler
 from torcms.handlers.evaluation_handler import EvaluationHandler
 from torcms.handlers.post_info_relation_handler import RelHandler
-from torcms.handlers.info2reply_handler import Info2ReplyHandler
+# from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
 urls = [
 
     ("/label/(.*)", PostLabelHandler, dict()),
     ("/admin/(.*)", AdminHandler, dict()),
-    ("/post/toreply/(.*)", Post2ReplyHandler, dict()),
+    # ("/post/toreply/(.*)", Post2ReplyHandler, dict()),
     ("/entry/(.*)", EntityHandler, dict()),
     ("/entity/(.*)", EntityHandler, dict()),
     ("/category/(.*)", CategoryHandler, dict()),
@@ -60,7 +60,7 @@ urls = [
     ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
 
     ('/meta/(.*)', MetaHandler, dict()),
-    ("/info/reply/(.*)", Info2ReplyHandler, dict()),
+    # ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
 
 

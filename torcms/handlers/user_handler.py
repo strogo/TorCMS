@@ -240,7 +240,6 @@ class UserHandler(BaseHandler):
 
         if tools.check_username_valid(post_data['user_name']) == False:
             user_create_status['code'] = '11'
-
             return user_create_status
         elif tools.check_email_valid(post_data['user_email']) == False:
             user_create_status['code'] = '21'
@@ -326,10 +325,12 @@ class UserHandler(BaseHandler):
         if user_create_status['success'] == False:
             return json.dump(user_create_status, self)
 
+        print('user_register_status:', user_create_status)
         form = SumForm(self.request.arguments)
 
         if form.validate():
             user_create_status = self.muser.insert_data(post_data)
+            print('user_register_status:', user_create_status)
             return json.dump(user_create_status, self)
         else:
             return json.dump(user_create_status, self)

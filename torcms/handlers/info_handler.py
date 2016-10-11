@@ -11,7 +11,7 @@ from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
-from torcms.model.info_reply_model import MInfor2Reply
+# from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.category_model import MCategory
 from torcms.model.usage_model import MUsage
@@ -31,7 +31,7 @@ class InfoHandler(BaseHandler):
         self.musage = MUsage()
         self.mcat = MCategory()
         self.mrel = MInforRel()
-        self.mreply = MInfor2Reply()
+        # self.mreply = MInfor2Reply()
         self.kind = '2'
 
     def get(self, url_str=''):

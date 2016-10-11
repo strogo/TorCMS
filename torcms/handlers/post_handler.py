@@ -11,7 +11,7 @@ from torcms.model.category_model import MCategory
 from torcms.model.label_model import MPost2Label
 from torcms.model.post_model import MPost
 from torcms.model.post2catalog_model import MPost2Catalog
-from torcms.model.post2reply_model import MPost2Reply
+# from torcms.model.post2reply_model import MPost2Reply
 from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
 from torcms.core.tools import constant
@@ -24,7 +24,7 @@ class PostHandler(BaseHandler):
         self.cats = self.mcat.query_all()
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
-        self.mpost2reply = MPost2Reply()
+        # self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
         self.tmpl_dir = 'doc'
@@ -303,7 +303,7 @@ class PostHandler(BaseHandler):
         self.__gen_last_current_relation(post_id)
 
         cats = self.mpost2catalog.query_by_entity_uid(post_id)
-        replys = [] # self.mpost2reply.get_by_id(post_id)
+        # replys = self.mpost2reply.get_by_id(post_id)
         tag_info = self.mpost2label.get_by_id(post_id)
 
         rec = self.mpost.get_by_id(post_id)
@@ -339,7 +339,7 @@ class PostHandler(BaseHandler):
                     tag_info=tag_info,
                     relations=rel_recs,
                     rand_recs=rand_recs,
-                    replys=replys,
+                    replys=[],
                     cfg=config.cfg,
                     )
 
@@ -419,7 +419,7 @@ class PostAjaxHandler(PostHandler):
         self.cats = self.mcat.query_all()
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
-        self.mpost2reply = MPost2Reply()
+        # self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
 

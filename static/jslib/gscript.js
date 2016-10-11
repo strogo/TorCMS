@@ -132,10 +132,10 @@ $.ready()
         }
     }
 
-    function reply_zan(sig, reply_id, id_num) {
+    function reply_zan(reply_id, id_num) {
         id_num = id_num.toString();
         zans = $('#text_zan').val();
-        var AjaxUrl = "/" + sig + "/reply/zan/" + reply_id;
+        var AjaxUrl = "/reply/zan/" + reply_id;
         $.getJSON(AjaxUrl, function (Json) {
             if (Json.text_zan == 0) {
             }
@@ -145,7 +145,8 @@ $.ready()
         });
     }
 
-    function reply_del(sig, reply_id, id_num) {
+    function reply_del( reply_id, id_num) {
+
         id_num = id_num.toString();
         var AjaxUrl =  "/reply/delete/" + reply_id;
         $.getJSON(AjaxUrl, function (Json) {
@@ -167,7 +168,16 @@ $.ready()
         }
         $.post("/reply/add/" + view_id, {cnt_reply: txt}, function (result) {
             var msg_json = $.parseJSON(result);
-            $("#pinglun").load('/reply/get/' + msg_json.pinglun);
+
+            $("#pinglun").load('/reply/get/' + msg_json.uid);
+
+    //   $.get('/reply/get/' + msg_json.uid, function(result){
+    // $("#pinglun").html ( result);  // 这个也可，注意Jquery 3中，调用方式改变
+  // });
+
+
+
+            // $("#pinglun").load('/reply/get/' + msg_json.uid);
         });
         $('#cnt_reply').val('');
         $('#cnt_reply').attr("disabled", true);
