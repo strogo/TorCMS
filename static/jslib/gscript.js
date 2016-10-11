@@ -147,7 +147,7 @@ $.ready()
 
     function reply_del(sig, reply_id, id_num) {
         id_num = id_num.toString();
-        var AjaxUrl = "/" + sig + "/reply/delete/" + reply_id;
+        var AjaxUrl =  "/reply/delete/" + reply_id;
         $.getJSON(AjaxUrl, function (Json) {
             if (Json.del_zan == 1) {
                 $("#del_zan_" + id_num).html('');
@@ -159,17 +159,18 @@ $.ready()
     }
 
 
-    function reply_it(sig, view_id) {
-        var txt = $("#cnt_md").val();
+    function reply_it( view_id) {
+
+        var txt = $("#cnt_reply").val();
         if (txt.length < 10) {
             return;
         }
-        $.post("/" + sig + "/reply/add/" + view_id, {cnt_md: txt}, function (result) {
+        $.post("/reply/add/" + view_id, {cnt_reply: txt}, function (result) {
             var msg_json = $.parseJSON(result);
             $("#pinglun").load('/reply/get/' + msg_json.pinglun);
         });
-        $('#cnt_md').val('');
-        $('#cnt_md').attr("disabled", true);
+        $('#cnt_reply').val('');
+        $('#cnt_reply').attr("disabled", true);
         $('#btn_submit_reply').attr('disabled', true);
     }
 

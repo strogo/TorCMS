@@ -41,20 +41,19 @@ class MReply(MSuperTable):
 
     def insert_data(self, post_data):
         uid = tools.get_uuid()
-        try:
-            g_Reply.create(
-                uid=uid,
-                user_name=post_data['user_name'],
-                create_user_id=post_data['user_id'],
-                timestamp=tools.timestamp(),
-                date=datetime.datetime.now(),
-                cnt_md=post_data['cnt_md'][0],
-                cnt_html=tools.markdown2html(post_data['cnt_md'][0]),
-                vote=0,
-            )
-            return (uid)
-        except:
-            return False
+
+        g_Reply.create(
+            uid=uid,
+            user_name=post_data['user_name'],
+            create_user_id=post_data['user_id'],
+            timestamp=tools.timestamp(),
+            date=datetime.datetime.now(),
+            cnt_md=post_data['cnt_reply'],
+            cnt_html=tools.markdown2html(post_data['cnt_reply']),
+            vote=0,
+        )
+        return (uid)
+
 
     def get_reply_by_uid(self, reply_id):
         rec = g_Reply.get(g_Reply.uid == reply_id)

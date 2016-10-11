@@ -17,16 +17,15 @@ class MPost2Reply():
 
     def insert_data(self, id_post, id_reply):
         uid = tools.get_uuid()
-        try:
-            self.tab.create(
-                uid=uid,
-                post_id=id_post,
-                reply_id=id_reply,
-                timestamp=time.time(),
-            )
-            return (uid)
-        except:
-            return False
+
+        self.tab.create(
+            uid=uid,
+            post_id=id_post,
+            reply_id=id_reply,
+            timestamp=time.time(),
+        )
+        return (uid)
+
 
     def get_by_id(self, in_uid):
         recs = self.tab.select().join(g_Reply).where(self.tab.post_id == in_uid).order_by(self.tab.timestamp.desc())

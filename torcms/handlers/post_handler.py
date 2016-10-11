@@ -27,6 +27,7 @@ class PostHandler(BaseHandler):
         self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
+        self.tmpl_dir = 'doc'
         self.kind = '1'
 
     def get(self, url_str=''):
