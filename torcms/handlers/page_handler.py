@@ -19,6 +19,7 @@ class PageHandler(BaseHandler):
         self.mcat = MCategory()
         self.cats = self.mcat.query_all()
 
+
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
         if url_arr[0] in ['modify', 'edit']:
