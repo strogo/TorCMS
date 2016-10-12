@@ -13,11 +13,14 @@ if os.path.exists(den_dir):
 else:
     os.mkdir(den_dir)
 
-def fetch_file(url, filename , outdir = False):
-    print('fetch ...')
-    print(' ' * 4 +  url)
+def fetch_file(url, filename ):
 
     outfile = os.path.join(den_dir, filename)
+    if os.path.exists(outfile):
+        print('Exists: ', outfile)
+        return True
+    print('fetch ...')
+    print(' ' * 4 + url)
 
     urllib.request.urlretrieve(url, outfile)
     zip_file = outfile
@@ -35,26 +38,31 @@ def get_jquery():
 def get_leaflet():
     leaflet_url = 'http://r.osgeo.cn/f2elib/leaflet_1.0.1.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = 'leaflet')
+    fetch_file(leaflet_url, hou)
 
 
 def get_bootstrap():
     leaflet_url = 'http://r.osgeo.cn/f2elib/bootstrap_3.3.7.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = '')
+    fetch_file(leaflet_url, hou)
 
 def get_js_valid():
     leaflet_url = 'http://r.osgeo.cn/f2elib/jquery-validation_1.15.0.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = 'validate')
+    fetch_file(leaflet_url, hou)
 def get_codemirror():
     leaflet_url = 'http://r.osgeo.cn/f2elib/codemirror_5.19.0.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = '')
+    fetch_file(leaflet_url, hou)
 def get_jqueryui():
     leaflet_url = 'http://r.osgeo.cn/f2elib/jqueryui_1.12.1.zip'
     qian, hou = os.path.split(leaflet_url)
-    fetch_file(leaflet_url, hou, outdir = '')
+    fetch_file(leaflet_url, hou)
+
+def get_rating():
+    leaflet_url = 'http://r.osgeo.cn/f2elib/bootstrap-star-rating-master.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou)
 
 def get_ol3():
 
@@ -84,6 +92,7 @@ def run_fetch_f2elib():
     get_jquery()
     # get_ol3()
     get_bootstrap()
+    get_rating()
 
 
 
