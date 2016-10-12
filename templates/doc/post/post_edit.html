@@ -59,7 +59,7 @@
                             {% if taginfo.uid.endswith('00') %}
                             <option value="{{ taginfo.uid }}"
                                     {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.catalog.uid.startswith(taginfo.uid[:2]) %}
+                                    {% if tt.order== ii and tt.tag.uid.startswith(taginfo.uid[:2]) %}
                                     selected
                                     {% end %}
                                     {% end %} >{{ taginfo.name }}
@@ -78,8 +78,8 @@
                             {% set pcatid = 'xx' %}
                             {% for taginfo in tag_infos %}
                                 {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
-                                        {% set pcatid = tt.catalog.uid[:2] %}
+                                    {% if tt.order== ii and tt.tag.uid== taginfo.uid %}
+                                        {% set pcatid = tt.tag.uid[:2] %}
                                     {% end %}
                                 {% end %}
                             {% end %}
@@ -89,7 +89,7 @@
                             {% if not taginfo.uid.endswith('00') %}
                             <option value="{{ taginfo.uid }}"
                                     {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.catalog.uid== taginfo.uid %}
+                                    {% if tt.order== ii and tt.tag.uid== taginfo.uid %}
                                     selected
                                     {% end %}
                                     {% end %}  >{{ taginfo.name }}

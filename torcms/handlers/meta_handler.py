@@ -312,7 +312,6 @@ class MetaHandler(PostHandler):
         self.update_catalog(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
-        # self.redirect('/list/{0}'.format(ext_dic['def_cat_uid']))
         self.redirect('/info/{0}'.format(uid))
 
     @tornado.web.authenticated

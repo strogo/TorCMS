@@ -20,3 +20,5 @@ def run_create_admin():
     else:
 
         muser.insert_data(post_data)
+
+

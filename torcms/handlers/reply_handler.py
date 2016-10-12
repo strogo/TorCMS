@@ -2,9 +2,7 @@
 
 import tornado.escape
 import tornado.web
-
 from torcms.core.base_handler import BaseHandler
-# from torcms.model.post2reply_model import MPost2Reply
 from torcms.model.reply_model import MReply
 from torcms.model.reply2user_model import MReply2User
 
@@ -15,7 +13,6 @@ class ReplyHandler(BaseHandler):
         self.init()
         self.tab = MReply()
         self.mreply2user = MReply2User()
-        # self.mpost2reply = MPost2Reply()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)

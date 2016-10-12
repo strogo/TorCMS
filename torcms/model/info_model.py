@@ -26,15 +26,10 @@ class MInforBase(MSuperTable):
         self.tab_relation = g_Rel
         self.tab_app2label = CabPost2Label
         self.tab_usage = g_Usage
-        # self.tab_app2reply = g_Post2Reply
         self.cab_reply = g_Reply
-        try:
-            g_Post.create_table()
-        except:
-            pass
 
     def get_all(self, kind='2'):
-        return (self.tab_app.select().where((self.tab_app.kind == self.kind) & (self.tab_app.valid == 1)).order_by(
+        return (self.tab_app.select().where((self.tab_app.kind == kind) & (self.tab_app.valid == 1)).order_by(
             self.tab_app.time_update.desc()))
 
     def update_jsonb(self, uid, extinfo):

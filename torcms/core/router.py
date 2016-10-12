@@ -33,8 +33,10 @@ from torcms.handlers.evaluation_handler import EvaluationHandler
 from torcms.handlers.post_info_relation_handler import RelHandler
 # from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
-urls = [
+from torcms.handlers.post_manager import PostManHandler
 
+urls = [
+    ('/post_man/(.*)', PostManHandler, dict()),
     ("/label/(.*)", PostLabelHandler, dict()),
     ("/admin/(.*)", AdminHandler, dict()),
     # ("/post/toreply/(.*)", Post2ReplyHandler, dict()),

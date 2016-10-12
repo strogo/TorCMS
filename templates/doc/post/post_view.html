@@ -24,23 +24,23 @@
         <span>{{ str(view.date)[:10] }}</span>
         <span>Author: <a href="http://www.osgeo.cn/">OSGeo中国中心</a></span>
         <span>Browse: {{ view.view_count }} 次</span>
-        {% if userinfo and userinfo.role[2] >= '1' %}
-        <span class="cmts"><a href="/post/modify/{{ view.uid }}">编辑</a></span>
+        {% if userinfo %}
+        <span class="cmts"><a href="/post_man/edit/{{ view.uid }}" class="btn btn-xs btn-primary">EditInfo</a></span>
+        {% end %}
 
+        {% if userinfo and userinfo.role[2] >= '1' %}
+        <span class="cmts"><a href="/post/modify/{{ view.uid }}" class="btn btn-xs btn-primary">Edit</a></span>
+        {% end %}
+
+        {% if userinfo and userinfo.role[2] >= '9' %}
+        <span class="cmts"><a href="/post_man/view/{{ view.uid }}" class="btn btn-xs btn-primary"> Manage</a></span>
         {% end %}
     </div>
-
     <div class="panel-body">
-
-
         <div class="entry">
             <p class="summary"><strong>Abstract</strong>: {% module generate_abstract(view.cnt_html) %} </p>
-
             <div class="entrycontent">
-
-
                 {% raw unescape(view.cnt_html) %}
-
             </div>
         </div>
 

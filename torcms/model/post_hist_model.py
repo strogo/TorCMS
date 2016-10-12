@@ -4,7 +4,7 @@
 from torcms.core import tools
 from torcms.model.core_tab import g_PostHist
 from torcms.model.supertable_model import MSuperTable
-
+import tornado.escape
 
 class MPostHist(MSuperTable):
     def __init__(self):
@@ -14,8 +14,17 @@ class MPostHist(MSuperTable):
         except:
             pass
 
-    def query_by_postid(self, postid):
-        recs = self.tab.select().where(self.tab.post_id == postid)
+    def update_cnt(self, uid, post_data):
+        entry = self.tab.update(
+            user_name=post_data['user_name'],
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
+            time_update=tools.timestamp(),
+        ).where(self.tab.uid == uid)
+        entry.execute()
+
+
+    def query_by_postid(self, postid, limit = 5):
+        recs = self.tab.select().where(self.tab.post_id == postid).order_by(self.tab.time_update.desc()).limit(limit)
         return recs
 
     def get_last(self, postid):

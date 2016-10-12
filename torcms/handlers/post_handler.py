@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 import json
-
 import tornado.escape
 import tornado.web
 import config
@@ -11,7 +10,6 @@ from torcms.model.category_model import MCategory
 from torcms.model.label_model import MPost2Label
 from torcms.model.post_model import MPost
 from torcms.model.post2catalog_model import MPost2Catalog
-# from torcms.model.post2reply_model import MPost2Reply
 from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
 from torcms.core.tools import constant
@@ -24,7 +22,6 @@ class PostHandler(BaseHandler):
         self.cats = self.mcat.query_all()
         self.mpost_hist = MPostHist()
         self.mpost2catalog = MPost2Catalog()
-        # self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
         self.tmpl_dir = 'doc'
@@ -37,7 +34,9 @@ class PostHandler(BaseHandler):
         if url_str == '':
             self.recent()
         elif len(url_arr) == 1 and url_str.endswith('.html'):
-            self.wiki(url_str.split('.')[0])
+            self.view_or_add(url_str.split('.')[0])
+        elif len(url_arr) == 1:
+            self.view_or_add(url_str)
         elif url_str == 'add_document':
             self.to_add_document()
         elif url_arr[0] == 'add_document':
@@ -63,10 +62,12 @@ class PostHandler(BaseHandler):
     def post(self, url_str=''):
         if url_str == '':
             return
-        url_arr = url_str.split('/')
+        url_arr = self.parse_url(url_str)
 
-        if len(url_arr) == 1 and url_str.endswith('.html'):
+
+        if len(url_arr) == 1 :
             self.add_post()
+
         if url_arr[0] in ['modify', 'edit']:
             self.update(url_arr[1])
         elif url_str == 'add_document':
@@ -127,9 +128,9 @@ class PostHandler(BaseHandler):
     # def get_random(self):
     #     return self.mpost.query_random()
 
-    def wiki(self, uid):
+    def view_or_add(self, uid):
         if self.mpost.get_by_id(uid):
-            self.viewit(uid)
+            self.view_post(uid)
         else:
             self.to_add(uid)
 
@@ -303,7 +304,7 @@ class PostHandler(BaseHandler):
         if last_post_id and self.mpost.get_by_id(last_post_id):
             self.add_relation(last_post_id, post_id)
 
-    def viewit(self, post_id):
+    def view_post(self, post_id):
         self.__gen_last_current_relation(post_id)
 
         cats = self.mpost2catalog.query_by_entity_uid(post_id)
