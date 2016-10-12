@@ -77,14 +77,14 @@ class PostManHandler(BaseHandler):
         post_rec = self.mpost.get_by_uid(postid)
         if not post_rec:
             return False
-        if self.check_doc_priv(self.userinfo)['EDIT'] or post_rec.user_name == self.userinfo.user_name:
+        if self.check_post_role(self.userinfo)['EDIT'] or post_rec.user_name == self.userinfo.user_name:
             return True
         else:
             return False
 
     @tornado.web.authenticated
     def delete(self, uid):
-        if self.check_doc_priv(self.userinfo)['DELETE']:
+        if self.check_post_role(self.userinfo)['DELETE']:
             pass
         else:
             return False
@@ -131,7 +131,7 @@ class PostManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def restore(self, hist_uid):
-        if self.check_doc_priv(self.userinfo)['ADMIN']:
+        if self.check_post_role(self.userinfo)['ADMIN']:
             pass
         else:
             return False

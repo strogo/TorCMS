@@ -83,7 +83,7 @@ class WikiHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add(self, title):
-        if self.check_doc_priv(self.userinfo)['ADD']:
+        if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -102,7 +102,7 @@ class WikiHandler(BaseHandler):
     def update(self, uid):
 
         raw_data = self.mwiki.get_by_id(uid)
-        if self.check_doc_priv(self.userinfo)['EDIT'] or raw_data.user_name == self.get_current_user():
+        if self.check_post_role(self.userinfo)['EDIT'] or raw_data.user_name == self.get_current_user():
             pass
         else:
             return False
@@ -117,7 +117,7 @@ class WikiHandler(BaseHandler):
     def to_modify(self, id_rec):
         wiki_rec = self.mwiki.get_by_id(id_rec)
         # 用户具有管理权限，或文章是用户自己发布的。
-        if self.check_doc_priv(self.userinfo)['EDIT'] or wiki_rec.user_name == self.get_current_user():
+        if self.check_post_role(self.userinfo)['EDIT'] or wiki_rec.user_name == self.get_current_user():
             pass
         else:
             return False
@@ -155,7 +155,7 @@ class WikiHandler(BaseHandler):
 
     @tornado.web.authenticated
     def wikinsert(self):
-        if self.check_doc_priv(self.userinfo)['ADD']:
+        if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False

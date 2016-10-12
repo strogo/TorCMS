@@ -54,7 +54,7 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_add(self, citiao):
-        if self.check_doc_priv(self.userinfo)['ADD']:
+        if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False
@@ -71,7 +71,7 @@ class PageHandler(BaseHandler):
         page_rec = self.mpage.get_by_uid(slug)
         if not page_rec:
             return False
-        if self.check_doc_priv(self.userinfo)['EDIT'] or page_rec.user_name == self.userinfo.user_name:
+        if self.check_post_role(self.userinfo)['EDIT'] or page_rec.user_name == self.userinfo.user_name:
             return True
         else:
             return False
@@ -152,7 +152,7 @@ class PageHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add_page(self):
-        if self.check_doc_priv(self.userinfo)['ADD']:
+        if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False

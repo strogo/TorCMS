@@ -57,7 +57,7 @@ class BaseHandler(tornado.web.RequestHandler):
         url_arr = [] if len(url_str) == 0 else url_str.split('/')
         return url_arr
 
-    def check_doc_priv(self, userinfo):
+    def check_post_role(self, userinfo):
         '''
         check the user role for docs.
         :param userinfo:
@@ -83,7 +83,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return self.get_secure_cookie("user")
 
     def is_admin(self):
-        if self.userinfo and self.check_doc_priv(self.userinfo)['ADMIN']:
+        if self.userinfo and self.check_post_role(self.userinfo)['ADMIN']:
             return True
         else:
             return False
