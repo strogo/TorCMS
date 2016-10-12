@@ -29,6 +29,7 @@ class PostHandler(BaseHandler):
         self.mrel = MRelation()
         self.tmpl_dir = 'doc'
         self.kind = '1'
+        self.tmpl_router = 'post'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -39,6 +40,9 @@ class PostHandler(BaseHandler):
             self.wiki(url_str.split('.')[0])
         elif url_str == 'add_document':
             self.to_add_document()
+        elif url_arr[0] == 'add_document':
+            self.to_add_document()
+
         elif url_str == 'recent':
             self.recent()
         elif url_str == 'refresh':
@@ -86,10 +90,10 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('doc/post/post_list.html',
+        self.render('doc/{0}/post_list.html'.format(self.tmpl_router),
                     kwd=kwd,
                     view=self.mpost.query_recent(),
-                    # view_all=self.mpost.query_all(),
+                    view_all=self.mpost.query_all(),
                     format_date=tools.format_date,
                     userinfo=self.userinfo,
                     cfg=config.cfg,
@@ -141,7 +145,7 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('doc/post/post_add.html',
+        self.render('doc/{0}/post_add.html'.format(self.tmpl_router),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     userinfo=self.userinfo,
@@ -422,6 +426,7 @@ class PostAjaxHandler(PostHandler):
         # self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
+        self.tmpl_router = 'post_ajax'
 
     @tornado.web.authenticated
     def delete(self, del_id):
