@@ -13,10 +13,10 @@ class MLink(MSuperTable):
 
     def update(self, uid, post_data):
         entry = g_Link.update(
-            name=post_data['name'][0],
-            link=post_data['link'][0],
-            order=post_data['order'][0],
-            logo=post_data['logo'][0] if 'logo' in post_data else '',
+            name=post_data['name'],
+            link=post_data['link'],
+            order=post_data['order'],
+            logo=post_data['logo'] if 'logo' in post_data else '',
         ).where(g_Link.uid == uid)
         entry.execute()
 
@@ -25,10 +25,10 @@ class MLink(MSuperTable):
         if uu:
             return (False)
         entry = self.tab.create(
-            name=post_data['name'][0],
-            link=post_data['link'][0],
-            order=post_data['order'][0],
-            logo=post_data['logo'][0] if 'logo' in post_data else '',
+            name=post_data['name'],
+            link=post_data['link'],
+            order=post_data['order'],
+            logo=post_data['logo'] if 'logo' in post_data else '',
             uid=id_link,
         )
         return (id_link)

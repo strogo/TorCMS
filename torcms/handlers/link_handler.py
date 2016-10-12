@@ -141,9 +141,8 @@ class LinkHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
+
         post_data['user_name'] = self.get_current_user()
 
         if self.tmpl_router == "link":
@@ -211,13 +210,12 @@ class LinkHandler(BaseHandler):
 
     @tornado.web.authenticated
     def p_user_add_link(self):
+
         if self.check_doc_priv(self.userinfo)['ADD']:
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
 
         post_data['user_name'] = self.get_current_user()
 
@@ -244,9 +242,8 @@ class LinkHandler(BaseHandler):
             pass
         else:
             return False
-        post_data = {}
-        for key in self.request.arguments:
-            post_data[key] = self.get_arguments(key)
+        post_data = self.get_post_data()
+
 
         post_data['user_name'] = self.get_current_user()
 
