@@ -369,7 +369,7 @@ class PostHandler(BaseHandler):
         post_data = self.get_post_data()
 
         post_data['user_name'] = self.userinfo.user_name
-        id_post = post_data['uid'][0]
+        id_post = post_data['uid']
         cur_post_rec = self.mpost.get_by_id(id_post)
         if cur_post_rec is None:
             uid = self.mpost.insert_data(id_post, post_data)
