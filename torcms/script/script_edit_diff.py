@@ -91,14 +91,14 @@ def run_edit_diff():
                     <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
                     <td><a href="{3}">{3}</a></td></tr>
                     '''.format(idx, recent_post.user_name, recent_post.title,
-                               os.path.join(site_url, 'wiki', recent_post.uid ))
+                               os.path.join(site_url, 'wiki', recent_post.title ))
             email_cnt = email_cnt + foo_str
         else:
             foo_str = '''
                     <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
                     <td><a href="{3}">{3}</a></td></tr>
                     '''.format(idx, recent_post.user_name, recent_post.title,
-                               os.path.join(site_url, 'wiki', recent_post.uid ))
+                               os.path.join(site_url, 'wiki', recent_post.title ))
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 

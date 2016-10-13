@@ -68,13 +68,13 @@ class BaseHandler(tornado.web.RequestHandler):
             pass
         else:
             return priv_dic
-        if userinfo.role[1] >= '1':
+        if userinfo.role[1] > '0':
             priv_dic['ADD'] = True
-        if userinfo.role[1] >= '2':
-            priv_dic['EDIT'] = True
         if userinfo.role[1] >= '4':
+            priv_dic['EDIT'] = True
+        if userinfo.role[1] >= '8':
             priv_dic['DELETE'] = True
-        if userinfo.role[1] >= '7':
+        if userinfo.role[1] >= 'c':
             priv_dic['ADMIN'] = True
         print('user role: ', priv_dic)
         return priv_dic

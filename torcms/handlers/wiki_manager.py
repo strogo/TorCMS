@@ -44,7 +44,7 @@ class WikiManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update(self, uid):
-        if self.userinfo.role[0] > '0':
+        if self.userinfo.role[0] > '1':
             pass
         else:
             return False
@@ -65,7 +65,7 @@ class WikiManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_edit(self, postid):
-        if self.userinfo.role[0] > '0':
+        if self.userinfo.role[0] > '1':
             pass
         else:
             return False
@@ -76,16 +76,6 @@ class WikiManHandler(BaseHandler):
                     postinfo=post_rec,
                     )
 
-    @tornado.web.authenticated
-    def __could_edit(self, postid):
-
-        post_rec = self.mpost.get_by_uid(postid)
-        if not post_rec:
-            return False
-        if self.check_post_role(self.userinfo)['EDIT'] or post_rec.user_name == self.userinfo.user_name:
-            return True
-        else:
-            return False
 
     @tornado.web.authenticated
     def delete(self, uid):
