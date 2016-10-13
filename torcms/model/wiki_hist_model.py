@@ -15,7 +15,7 @@ class MWikiHist(MSuperTable):
             pass
 
     def get_last(self, postid):
-        recs = self.tab.select().where(self.tab.post_id == postid).order_by(self.tab.time_update.desc())
+        recs = self.tab.select().where(self.tab.wiki_id == postid).order_by(self.tab.time_update.desc())
         if recs.count() == 0:
             return False
         else:
