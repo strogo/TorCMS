@@ -24,17 +24,9 @@
         <span>{{ str(view.date)[:10] }}</span>
         <span>Author: <a href="http://www.osgeo.cn/">OSGeo中国中心</a></span>
         <span>Browse: {{ view.view_count }} 次</span>
-        {% if userinfo %}
-        <span class="cmts"><a href="/post_man/edit/{{ view.uid }}" class="btn btn-xs btn-primary">EditInfo</a></span>
-        {% end %}
 
-        {% if userinfo and userinfo.role[2] >= '1' %}
-        <span class="cmts"><a href="/post/modify/{{ view.uid }}" class="btn btn-xs btn-primary">Edit</a></span>
-        {% end %}
+        {% module widget_editor('post', view.uid, userinfo) %}
 
-        {% if userinfo and userinfo.role[2] >= '9' %}
-        <span class="cmts"><a href="/post_man/view/{{ view.uid }}" class="btn btn-xs btn-primary"> Manage</a></span>
-        {% end %}
     </div>
     <div class="panel-body">
         <div class="entry">

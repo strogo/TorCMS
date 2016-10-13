@@ -62,5 +62,6 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'app_most_used_by_cat': app_most_used_by_cat,
                 'app_least_used_by_cat': app_least_use_by_cat,
                 'app_user_recent_by_cat': app_user_recent_by_cat,
+                'widget_editor': widget_editor,
 
                 }

@@ -268,7 +268,8 @@ class PostHandler(BaseHandler):
                     tag_infos=self.mcat.query_all(kind = constant['cate_post']),
                     app2label_info=self.mpost2label.get_by_id(id_rec, kind=constant['tag_post'] ),
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, kind  = constant['cate_post']),
-                    dbrec=self.mpost.get_by_id(id_rec),
+                    dbrec=self.mpost.get_by_id(id_rec), # Deprecated.
+                    postinfo = self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
                     )
@@ -336,7 +337,8 @@ class PostHandler(BaseHandler):
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
         self.render('doc/post/post_view.html',
-                    view=rec,
+                    view=rec,  # Deprecated;
+                    postinfo = rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,

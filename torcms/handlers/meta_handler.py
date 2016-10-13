@@ -196,10 +196,12 @@ class MetaHandler(PostHandler):
 
         self.render(tmpl,
                     kwd=kwd,
-                    calc_info=rec_info,
-                    post_info=rec_info,
+                    calc_info=rec_info, # Deprecated
+                    post_info=rec_info, # Deprecated
+                    app_info=rec_info, # Deprecated
+                    postinfo  = rec_info,
                     userinfo=self.userinfo,
-                    app_info=rec_info,
+
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mcat.get_qian2(catid[:2], kind= self.kind + '0'),
                     tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
@@ -328,6 +330,7 @@ class MetaHandler(PostHandler):
         post_data = self.get_post_data()
         post_data['user_id'] = self.userinfo.uid
         post_data['user_name'] = self.userinfo.user_name
+        # todo:
         comment_uid = self.mpost2reply.insert_data(post_data, id_post)
         if comment_uid:
             output = {

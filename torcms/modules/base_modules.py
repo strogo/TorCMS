@@ -18,6 +18,8 @@ from torcms.model.reply_model import MReply
 
 mreply = MReply()
 
+
+
 class reply_panel(tornado.web.UIModule):
     def render(self, uid, userinfo):
         return self.render_string('doc/modules/reply_panel.html',
@@ -28,6 +30,17 @@ class reply_panel(tornado.web.UIModule):
                                   linkify=tornado.escape.linkify,
                                   )
 
+
+class widget_editor(tornado.web.UIModule):
+    def render(self,router, uid, userinfo):
+        kwd  = {'router': router,
+                'uid': uid,
+                }
+        return self.render_string('modules/widget_editor.html',
+                                  kwd  = kwd,
+                                  userinfo=userinfo,
+
+                                  )
 
 class get_footer(tornado.web.UIModule):
     def render(self):

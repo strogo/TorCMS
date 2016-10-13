@@ -14,6 +14,13 @@ class MWikiHist(MSuperTable):
         except:
             pass
 
+    def get_last(self, postid):
+        recs = self.tab.select().where(self.tab.post_id == postid).order_by(self.tab.time_update.desc())
+        if recs.count() == 0:
+            return False
+        else:
+            return recs.get()
+
     def update_cnt(self, uid, post_data):
         entry = self.tab.update(
             user_name=post_data['user_name'],

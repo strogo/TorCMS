@@ -38,10 +38,11 @@ from torcms.handlers.wiki_manager import WikiManHandler
 
 urls = [
     ('/post_man/(.*)', PostManHandler, dict()),
+    ('/meta_man/(.*)', PostManHandler, dict()),
     ('/wiki_man/(.*)', WikiManHandler, dict()),
+    ('/page_man/(.*)', WikiManHandler, dict()),
     ("/label/(.*)", PostLabelHandler, dict()),
     ("/admin/(.*)", AdminHandler, dict()),
-    # ("/post/toreply/(.*)", Post2ReplyHandler, dict()),
     ("/entry/(.*)", EntityHandler, dict()),
     ("/entity/(.*)", EntityHandler, dict()),
     ("/category/(.*)", CategoryHandler, dict()),

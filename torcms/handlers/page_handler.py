@@ -96,8 +96,8 @@ class PageHandler(BaseHandler):
         self.redirect('/page/{0}.html'.format(post_data['slug']))
 
     @tornado.web.authenticated
-    def to_modify(self, slug):
-        if self.__could_edit(slug):
+    def to_modify(self, uid):
+        if self.__could_edit(uid):
             pass
         else:
             return False
@@ -107,7 +107,8 @@ class PageHandler(BaseHandler):
 
         }
         self.render('doc/page/page_edit.html',
-                    view=self.mpage.get_by_uid(slug),
+                    view=self.mpage.get_by_uid(uid),  # Deprecated
+                    postinfo = self.mpage.get_by_uid(uid),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg,
@@ -120,7 +121,8 @@ class PageHandler(BaseHandler):
         }
         # rec.user_name = rec.user_name
         self.render('doc/page/page_view.html',
-                    view=rec,
+                    view=rec, # Deprecated
+                    postinfo = rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     format_date=tools.format_date,

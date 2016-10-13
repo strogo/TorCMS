@@ -29,6 +29,7 @@ class MPage(MSuperTable):
             cnt_html=tools.markdown2html(post_data['cnt_md']),
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=time.time(),
+            kind = '2',
         ).where(g_Wiki.uid == slug)
         entry.execute()
 
@@ -55,7 +56,7 @@ class MPage(MSuperTable):
                 cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
                 time_update=time.time(),
                 view_count=1,
-                kind  = '2', # 2 for page
+                kind = '2', # 2 for page
             )
             return slug
         except:

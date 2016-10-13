@@ -48,6 +48,7 @@ class WikiManHandler(BaseHandler):
             pass
         else:
             return False
+
         post_data = self.get_post_data()
         if self.userinfo:
             post_data['user_name'] = self.userinfo.user_name
@@ -56,7 +57,11 @@ class WikiManHandler(BaseHandler):
         cur_info = self.mpost.get_by_id(uid)
         self.mposthist.insert_data(cur_info)
         self.mpost.update_cnt(uid, post_data)
-        self.redirect('/wiki/{0}'.format(cur_info.title))
+        if cur_info.kind == '1':
+            self.redirect('/wiki/{0}'.format(cur_info.title))
+        elif cur_info.kind == '2':
+            self.redirect('/page/{0}.html'.format(cur_info.uid))
+
 
     @tornado.web.authenticated
     def to_edit(self, postid):
@@ -124,7 +129,7 @@ class WikiManHandler(BaseHandler):
         self.render('{0}/wiki_man_view.html'.format(self.tmpl_dir),
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_escape,
-                    view=postinfo,
+                    view=postinfo,  # Deprecated
                     postinfo=postinfo,
                     html_diff_arr=html_diff_arr
                     )
@@ -148,4 +153,8 @@ class WikiManHandler(BaseHandler):
         self.mpost.update_cnt(histinfo.wiki_id, {'cnt_md': old_cnt, 'user_name': self.userinfo.user_name})
 
         self.mposthist.update_cnt(histinfo.uid, {'cnt_md': cur_cnt, 'user_name': postinfo.user_name})
-        self.redirect('/wiki/{0}'.format( postinfo.title))
+
+        if postinfo.kind == '1':
+            self.redirect('/wiki/{0}'.format(postinfo.title))
+        elif postinfo.kind == '2':
+            self.redirect('/page/{0}.html'.format(postinfo.uid))

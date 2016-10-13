@@ -165,7 +165,9 @@ class InfoHandler(BaseHandler):
 
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(app_rec)),
-                    calc_info=app_rec,
+                    calc_info=app_rec, # Deprecated
+                    post_info=app_rec, # Deprecated
+                    postinfo = app_rec,
                     userinfo=self.userinfo,
                     relations=rel_recs,
                     rand_recs=rand_recs,
@@ -173,7 +175,6 @@ class InfoHandler(BaseHandler):
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mapp2tag.get_by_id(info_id, kind = tools.constant['tag_info']),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
-                    post_info=app_rec,
                     replys=[], # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = tools.constant['cate_info']) if ext_catid else [],
                     role_mask_idx=role_mask_idx,

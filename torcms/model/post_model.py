@@ -103,7 +103,7 @@ class MPost(MSuperTable):
         return g_Post.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
             peewee.fn.Random()).limit(num)
 
-    def query_recent_edited(self, timstamp, kind=1):
+    def query_recent_edited(self, timstamp, kind='1'):
         return self.tab.select().where((self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(
             g_Post.time_update.desc())
 

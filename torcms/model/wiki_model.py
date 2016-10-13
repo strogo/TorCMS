@@ -17,6 +17,10 @@ class MWiki(MSuperTable):
         except:
             pass
 
+    def query_recent_edited(self, timstamp, kind='1'):
+        return self.tab.select().where((self.tab.kind == kind) & (self.tab.time_update > timstamp)).order_by(
+            self.tab.time_update.desc())
+
     def update_cnt(self, uid, post_data):
 
         entry = g_Wiki.update(
@@ -41,6 +45,7 @@ class MWiki(MSuperTable):
             user_name=post_data['user_name'],
             cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
             time_update=tools.timestamp(),
+            kind = '1',
 
         ).where(self.tab.uid == uid)
         entry.execute()

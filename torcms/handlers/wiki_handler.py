@@ -128,7 +128,8 @@ class WikiHandler(BaseHandler):
         self.render('doc/wiki/wiki_edit.html',
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    dbrec=wiki_rec,
+                    dbrec=wiki_rec,  # Deprecated.
+                    postinfo = wiki_rec,
                     cfg=config.cfg,
                     userinfo=self.userinfo,
                     )
@@ -139,7 +140,8 @@ class WikiHandler(BaseHandler):
             'editable': self.editable(),
         }
         self.render('doc/wiki/wiki_view.html',
-                    view=view,
+                    view=view, # Deprecated
+                    postinfo = view,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,

@@ -4,6 +4,8 @@ import config
 from torcms.core import tools
 from torcms.model.post_model import MPost
 from torcms.model.post_hist_model import MPostHist
+from torcms.model.wiki_model import MWiki
+from torcms.model.wiki_hist_model import MWikiHist
 from difflib import HtmlDiff
 from torcms.core.tool.send_email import send_mail
 from config import smtp_cfg
@@ -13,10 +15,12 @@ import os
 import re
 
 import datetime
+from config import router_post
 
 now = datetime.datetime.now()
 
 datestr = now.strftime('%Y-%m-%d %H:%M:%S')
+
 
 def run_edit_diff():
     email_cnt = '''<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -30,46 +34,93 @@ def run_edit_diff():
         .diff_chg {background-color:#ffff77}
         .diff_sub {background-color:#ffaaaa}
     </style></head><body>'''
+
+    idx = 1
+
+    email_cnt = email_cnt + '<table border=1>'
+
     mpost = MPost()
     mposthist = MPostHist()
 
-
-    idx = 1
-    email_cnt = email_cnt + '<table border=1>'
-
-    recent_posts = mpost.query_recent_edited( tools.timestamp() - 24 * 60 * 60)
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
             foo_str = '''
                 <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
                 <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                '''.format(idx, recent_post.user_name, recent_post.title,
+                           os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
         else:
             foo_str = '''
                 <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
                 <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                '''.format(idx, recent_post.user_name, recent_post.title,
+                           os.path.join(site_url, 'post', recent_post.uid + '.html'))
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 
-    recent_posts = mpost.query_recent_edited( tools.timestamp() - 24 * 60 * 60, kind = '2')
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
             foo_str = '''
                 <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
                 <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                '''.format(idx, recent_post.user_name, recent_post.title,
+                           os.path.join(site_url, router_post['2'], recent_post.uid))
             email_cnt = email_cnt + foo_str
         else:
             foo_str = '''
                 <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
                 <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title, os.path.join(site_url, 'post', recent_post.uid + '.html'))
+                '''.format(idx, recent_post.user_name, recent_post.title,
+                           os.path.join(site_url, router_post['2'], recent_post.uid))
             email_cnt = email_cnt + foo_str
         idx = idx + 1
+
+    mpost = MWiki()
+    mposthist = MWikiHist()
+
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
+    for recent_post in recent_posts:
+        hist_rec = mposthist.get_last(recent_post.uid)
+        if hist_rec:
+            foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, 'wiki', recent_post.uid ))
+            email_cnt = email_cnt + foo_str
+        else:
+            foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, 'wiki', recent_post.uid ))
+            email_cnt = email_cnt + foo_str
+        idx = idx + 1
+
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
+    for recent_post in recent_posts:
+        hist_rec = mposthist.get_last(recent_post.uid)
+        if hist_rec:
+            foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, 'page', recent_post.uid + '.html'))
+            email_cnt = email_cnt + foo_str
+        else:
+            foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, 'page', recent_post.uid + '.html'))
+            email_cnt = email_cnt + foo_str
+        idx = idx + 1
+
     email_cnt = email_cnt + '</table>'
 
     diff_str = ''
@@ -110,7 +161,7 @@ def run_edit_diff():
         else:
             continue
     ######################################################
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind = '2')
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -146,9 +197,8 @@ def run_edit_diff():
         else:
             continue
 
-
     if len(diff_str) < 8000:
-        email_cnt = email_cnt + diff_str 
+        email_cnt = email_cnt + diff_str
     email_cnt = email_cnt + '''<table class="diff" summary="Legends">
         <tr> <th colspan="2"> Legends </th> </tr>
         <tr> <td> <table border="" summary="Colors">
@@ -168,6 +218,4 @@ def run_edit_diff():
     # print (email_cnt)
     print('edit diff count:', idx)
     if idx > 1:
-        send_mail( post_emails , "{0}|{1}|{2}".format(smtp_cfg['name'], '文档更新情况', datestr), email_cnt)
-
-
+        send_mail(post_emails, "{0}|{1}|{2}".format(smtp_cfg['name'], '文档更新情况', datestr), email_cnt)
