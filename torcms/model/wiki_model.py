@@ -17,6 +17,16 @@ class MWiki(MSuperTable):
         except:
             pass
 
+    def update_cnt(self, uid, post_data):
+
+        entry = g_Wiki.update(
+            cnt_html=tools.markdown2html(post_data['cnt_md']),
+            user_name=post_data['user_name'],
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
+            time_update = tools.timestamp(),
+        ).where(g_Wiki.uid == uid)
+        entry.execute()
+
     def update(self, uid, post_data):
         title = post_data['title'].strip()
         if len(title) < 2:

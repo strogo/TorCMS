@@ -34,9 +34,11 @@ from torcms.handlers.post_info_relation_handler import RelHandler
 # from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
 from torcms.handlers.post_manager import PostManHandler
+from torcms.handlers.wiki_manager import WikiManHandler
 
 urls = [
     ('/post_man/(.*)', PostManHandler, dict()),
+    ('/wiki_man/(.*)', WikiManHandler, dict()),
     ("/label/(.*)", PostLabelHandler, dict()),
     ("/admin/(.*)", AdminHandler, dict()),
     # ("/post/toreply/(.*)", Post2ReplyHandler, dict()),

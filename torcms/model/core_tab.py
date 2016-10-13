@@ -67,18 +67,9 @@ class g_PostHist(BaseModel):
 
 
 class g_WikiHist(BaseModel):
-    uid = peewee.CharField(null=False,
-                           index=True,
-                           unique=True,
-                           help_text='',
-                           primary_key=True,
-                           max_length=36)
-    title = peewee.CharField(null=False,
-                             max_length=255,
-                             help_text='', )
-    wiki_id = peewee.CharField(null=False,
-                               max_length=36,
-                               help_text='', )
+    uid = peewee.CharField(null=False,index=True,unique=True,help_text='',primary_key=True, max_length=36)
+    title = peewee.CharField(null=False,max_length=255,help_text='', )
+    wiki_id = peewee.CharField(null=False,max_length=36,help_text='', )
     user_name = peewee.CharField()
     cnt_md = peewee.TextField()
     time_update = peewee.IntegerField()
