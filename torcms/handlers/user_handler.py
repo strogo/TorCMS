@@ -34,6 +34,7 @@ class UserHandler(BaseHandler):
         self.init()
         self.muser = MUser()
         self.user_name = self.get_current_user()
+        self.tmpl_dir = 'user'
         self.tmpl_router = 'info'
 
     def get(self, url_str):
@@ -196,7 +197,7 @@ class UserHandler(BaseHandler):
     @tornado.web.authenticated
     def changepass(self):
 
-        self.render('user/{0}/changepass.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/changepass.html'.format(self.tmpl_router,self.tmpl_dir),
 
                     userinfo=self.userinfo,
 
@@ -204,18 +205,18 @@ class UserHandler(BaseHandler):
 
     @tornado.web.authenticated
     def change_info(self):
-        self.render('user/{0}/changeinfo.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/changeinfo.html'.format(self.tmpl_router,self.tmpl_dir),
                     userinfo=self.userinfo,
                     )
 
     @tornado.web.authenticated
     def change_role(self, xg_username):
-        self.render('user/{0}/changerole.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/changerole.html'.format(self.tmpl_router,self.tmpl_dir),
                     userinfo=self.muser.get_by_name(xg_username))
 
     @tornado.web.authenticated
     def show_info(self):
-        self.render('user/{0}/info.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/info.html'.format(self.tmpl_router,self.tmpl_dir),
                     userinfo=self.userinfo,
                     )
 
@@ -475,7 +476,7 @@ class UserHandler(BaseHandler):
             'pager': '',
 
         }
-        self.render('user/{0}/find_list.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/find_list.html'.format(self.tmpl_router,self.tmpl_dir),
                     kwd=kwd,
                     view=self.muser.get_by_keyword(""),
                     cfg=config.cfg,
@@ -622,4 +623,5 @@ class UserAjaxHandler(UserHandler):
         self.init()
         self.muser = MUser()
         self.user_name = self.get_current_user()
+        self.tmpl_dir = 'admin'
         self.tmpl_router = 'user_ajax'
