@@ -334,6 +334,7 @@ class PostHandler(BaseHandler):
 
         self.render('doc/post/post_view.html',
                     view=rec,
+                    postinfo = rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
