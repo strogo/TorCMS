@@ -9,15 +9,13 @@
 {% end %}
 
 {% block content %}
-
+<div class="panel panel-default ">
 <div class="panel-heading">
+    您的位置: <a href="{% module site_url() %}">首页</a> >
+            用户列表
 </div>
 <div class="panel-body">
 
-    <div class="content">
-        <div class="breadcrumb"> 您的位置: <a href="{% module site_url() %}">首页</a> >
-            用户列表
-        </div>
 
         <form class="pure-form pure-form-aligned" method="post" id="find_calc" action="/user/find">
             <fieldset>

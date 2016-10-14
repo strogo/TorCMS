@@ -10,40 +10,42 @@
 
 {% block content %}
 <ol class="breadcrumb">
-  <li>当前位置: <a href="{% module site_url() %}">首页</a> </li>
-  <li>用户 </li>
-  <li><a href="/user/info"> 用户信息</a></li>
+    <li>当前位置: <a href="{% module site_url() %}">首页</a></li>
+    <li>用户</li>
+    <li><a href="/user/info"> 用户信息</a></li>
 </ol>
 <div class="panel panel-default">
-  <div class="panel-heading">
+    <div class="panel-heading">
         用户信息
     </div>
-        <ul class="list-group">
-            <li class="list-group-item"> 用户名：{{ userinfo.user_name }}</li>
-           <li class="list-group-item">电子邮箱：{{ userinfo.user_email }}</li>
-            <li class="list-group-item"> 权限：{{ userinfo.role}}</li>
+    <ul class="list-group">
+        <li class="list-group-item"> 用户名：{{ userinfo.user_name }}</li>
+        <li class="list-group-item">电子邮箱：{{ userinfo.user_email }}</li>
+        <li class="list-group-item"> 权限：{{ userinfo.role}}</li>
 
-
+        <li class="list-group-item">
             {% if userinfo and userinfo.role[1] >= '1' %}
-            <li class="list-group-item">
-                <a href="/post/add_document" class="btn btn-primary">添加文档</a>
-                </li>
+
+            <a href="/post/add_document" class="btn btn-primary" style="margin-right: 10px">添加文档</a>
+
+
             {% end %}
-            <li class="list-group-item">
-                <a href="/publish/" class="btn btn-primary">发布信息</a></li>
 
-            <li class="list-group-item"><a href="/user/changepass" class="btn btn-primary" style="margin-right: 10px">修改密码</a>
+            {% if userinfo and( userinfo.role[2] >= '2') %}
+            <a href="/publish/" class="btn btn-primary" style="margin-right: 10px">发布信息</a>
+            {% end %}
 
-                <a href="/user/changeinfo" class="btn btn-primary" style="margin-right: 10px">修改个人信息</a>
+        </li>
+        <li class="list-group-item"><a href="/user/changepass" class="btn btn-primary"
+                                       style="margin-right: 10px">修改密码</a>
 
-
-                <a href="/user/logout" class="btn btn-primary" >注销</a>
-            </li>
-
-        </ul>
+            <a href="/user/changeinfo" class="btn btn-primary" style="margin-right: 10px">修改个人信息</a>
 
 
+            <a href="/user/logout" class="btn btn-primary">注销</a>
+        </li>
 
+    </ul>
 
 
 </div>
