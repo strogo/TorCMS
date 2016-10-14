@@ -15,6 +15,7 @@ class LinkHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mlink = MLink()
+        self.tmpl_dir = 'doc'
         self.tmpl_router = 'link'
 
     def get(self, url_str=''):
@@ -68,7 +69,7 @@ class LinkHandler(BaseHandler):
             'unescape': tornado.escape.xhtml_unescape,
             'title': '最近文档',
         }
-        self.render('doc/{0}/link_list.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/link_list.html'.format(self.tmpl_router,self.tmpl_dir),
                     kwd=kwd,
                     view=self.mlink.query_recent(),
                     format_date=tools.format_date,
@@ -285,5 +286,6 @@ class LinkAjaxHandler(LinkHandler):
     def initialize(self):
         self.init()
         self.user_name = self.get_current_user()
+        self.tmpl_dir = 'admin'
         self.tmpl_router = 'link_ajax'
         self.mlink = MLink()

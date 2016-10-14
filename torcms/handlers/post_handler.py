@@ -87,7 +87,7 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('doc/{0}/post_list.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/post_list.html'.format(self.tmpl_router,self.tmpl_dir),
                     kwd=kwd,
                     view=self.mpost.query_recent(),
                     view_all=self.mpost.query_all(),
@@ -142,7 +142,7 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('doc/{0}/post_add.html'.format(self.tmpl_router),
+        self.render('{1}/{0}/post_add.html'.format(self.tmpl_router,self.tmpl_dir),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     userinfo=self.userinfo,
@@ -434,6 +434,7 @@ class PostAjaxHandler(PostHandler):
         # self.mpost2reply = MPost2Reply()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
+        self.tmpl_dir = 'admin'
         self.tmpl_router = 'post_ajax'
 
     @tornado.web.authenticated
