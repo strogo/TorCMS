@@ -14,6 +14,7 @@ from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
 from torcms.core.tools import constant
 
+
 class PostHandler(BaseHandler):
     def initialize(self):
         self.init()
@@ -63,16 +64,12 @@ class PostHandler(BaseHandler):
             return
         url_arr = self.parse_url(url_str)
 
-
-        if len(url_arr) == 1 :
-            self.add_post()
-
         if url_arr[0] in ['modify', 'edit']:
             self.update(url_arr[1])
-        elif url_str == 'add_document':
+        elif url_arr[0] in ['add_document', '_add']:
             self.user_add_post()
-        elif url_arr[0] == 'add_document':
-            self.user_add_post()
+        elif len(url_arr) == 1 and url_str.endswith('.html'):
+            self.add_post(url_str)
         else:
             self.redirect('html/404.html')
 
@@ -268,8 +265,7 @@ class PostHandler(BaseHandler):
                     tag_infos=self.mcat.query_all(kind = constant['cate_post']),
                     app2label_info=self.mpost2label.get_by_id(id_rec, kind=constant['tag_post'] ),
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, kind  = constant['cate_post']),
-                    dbrec=self.mpost.get_by_id(id_rec), # Deprecated.
-                    postinfo = self.mpost.get_by_id(id_rec),
+                    dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
                     )
@@ -337,8 +333,7 @@ class PostHandler(BaseHandler):
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
         self.render('doc/post/post_view.html',
-                    view=rec,  # Deprecated;
-                    postinfo = rec,
+                    view=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -363,7 +358,17 @@ class PostHandler(BaseHandler):
         return True
 
     @tornado.web.authenticated
-    def add_post(self):
+    def add_post(self, url_str):
+        url_arr = url_str.split('.')
+        if len(url_arr) == 2:
+            id_post= url_arr[0]
+            if len(id_post) == 5:
+                pass
+            else:
+                return False
+        else:
+            return False
+
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
@@ -371,7 +376,7 @@ class PostHandler(BaseHandler):
         post_data = self.get_post_data()
 
         post_data['user_name'] = self.userinfo.user_name
-        id_post = post_data['uid']
+
         cur_post_rec = self.mpost.get_by_id(id_post)
         if cur_post_rec is None:
             uid = self.mpost.insert_data(id_post, post_data)
