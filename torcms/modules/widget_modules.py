@@ -20,6 +20,16 @@ mreply = MReply()
 mpage = MPage()
 
 
+class reply_panel(tornado.web.UIModule):
+    def render(self, uid, userinfo):
+        return self.render_string('modules/widget/reply_panel.html',
+                                  uid=uid,
+                                  replys= mreply.query_by_post(uid),
+                                  userinfo=userinfo,
+                                  unescape=tornado.escape.xhtml_unescape,
+                                  linkify=tornado.escape.linkify,
+                                  )
+
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
     def render(self, signature):
         if self.get_secure_cookie("user"):

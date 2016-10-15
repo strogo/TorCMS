@@ -20,15 +20,7 @@ mreply = MReply()
 mpage = MPage()
 
 
-class reply_panel(tornado.web.UIModule):
-    def render(self, uid, userinfo):
-        return self.render_string('modules/post/reply_panel.html',
-                                  uid=uid,
-                                  replys= mreply.query_by_post(uid),
-                                  userinfo=userinfo,
-                                  unescape=tornado.escape.xhtml_unescape,
-                                  linkify=tornado.escape.linkify,
-                                  )
+
 
 
 class show_page(tornado.web.UIModule):
