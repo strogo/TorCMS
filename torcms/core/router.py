@@ -21,7 +21,7 @@ from torcms.handlers.post_handler import PostHandler, PostAjaxHandler
 from torcms.handlers.reply_handler import ReplyHandler
 from torcms.handlers.search_handler import SearchHandler
 from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
-from torcms.handlers.widget_handler import WidgetHandler
+# from torcms.handlers.widget_handler import WidgetHandler
 from torcms.handlers.wiki_handler import WikiHandler
 
 from torcms.handlers.index import IndexHandler as  AppIndexHandler
@@ -62,7 +62,7 @@ urls = [
     ("/search/(.*)", SearchHandler, dict()),
     ("/reply/(.*)", ReplyHandler, dict()),
 
-    ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
+    # ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
 
     ('/meta/(.*)', MetaHandler, dict()),
     # ("/info/reply/(.*)", Info2ReplyHandler, dict()),

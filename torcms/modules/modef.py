@@ -2,6 +2,7 @@
 
 from torcms.modules.base_modules import *
 from torcms.modules.info_modules import *
+from torcms.modules.widget_modules import *
 
 core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'get_footer': get_footer,

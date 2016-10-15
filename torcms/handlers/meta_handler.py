@@ -194,6 +194,9 @@ class MetaHandler(PostHandler):
         else:
             tmpl = 'infor/app/edit.html'
 
+        print('site_type: ', cfg['site_type'])
+        print('Meta template:', tmpl)
+
         self.render(tmpl,
                     kwd=kwd,
                     calc_info=rec_info, # Deprecated
