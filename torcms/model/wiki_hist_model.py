@@ -17,8 +17,10 @@ class MWikiHist(MSuperTable):
     def get_last(self, postid):
         recs = self.tab.select().where(self.tab.wiki_id == postid).order_by(self.tab.time_update.desc())
         if recs.count() == 0:
+            print('No old file: ', postid)
             return False
         else:
+            print('Got old file.')
             return recs.get()
 
     def update_cnt(self, uid, post_data):

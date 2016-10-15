@@ -2,11 +2,10 @@
 
 import tornado.escape
 import tornado.web
-from config import router_post
 from torcms.core.base_handler import BaseHandler
 from torcms.model.wiki_model import MWiki
 from torcms.model.wiki_hist_model import MWikiHist
-from difflib import HtmlDiff
+from torcms.core.tools import diff_table
 
 
 class WikiManHandler(BaseHandler):
@@ -106,13 +105,9 @@ class WikiManHandler(BaseHandler):
         for hist_rec in hist_recs:
 
             if hist_rec:
-                test = HtmlDiff.make_file(HtmlDiff(), hist_rec.cnt_md.split('\n'), postinfo.cnt_md.split('\n'))
+                infobox = diff_table(hist_rec.cnt_md, postinfo.cnt_md)
             else:
-                test = ''
-
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
-            infobox = test[start:end] + '</table>'
+                infobox = ''
 
             html_diff_arr.append({'hist_uid': hist_rec.uid, 'html_diff': infobox})
 

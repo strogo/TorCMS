@@ -6,8 +6,7 @@ from config import router_post
 from torcms.core.base_handler import BaseHandler
 from torcms.model.post_model import MPost
 from torcms.model.post_hist_model import MPostHist
-from difflib import HtmlDiff
-
+from torcms.core.tools import diff_table
 
 class PostManHandler(BaseHandler):
     def initialize(self):
@@ -108,15 +107,10 @@ class PostManHandler(BaseHandler):
         hist_recs = self.mposthist.query_by_postid(uid, limit=5)
         html_diff_arr = []
         for hist_rec in hist_recs:
-
             if hist_rec:
-                test = HtmlDiff.make_file(HtmlDiff(), hist_rec.cnt_md.split('\n'), postinfo.cnt_md.split('\n'))
+                infobox = diff_table(hist_rec.cnt_md, postinfo.cnt_md)
             else:
-                test = ''
-
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
-            infobox = test[start:end] + '</table>'
+                infobox = ''
 
             html_diff_arr.append({'hist_uid': hist_rec.uid, 'html_diff': infobox})
 

@@ -10,7 +10,14 @@ from bs4 import BeautifulSoup
 import time
 import hashlib
 import re
+from difflib import HtmlDiff
 
+
+
+def diff_table(rawinfo, newinfo):
+    return HtmlDiff.make_table(HtmlDiff(), rawinfo.split('\n'), newinfo.split('\n'),
+                        context=True,
+                        numlines=1)
 
 def check_username_valid(username):
     '''

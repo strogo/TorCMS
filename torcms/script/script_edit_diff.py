@@ -12,6 +12,7 @@ from config import smtp_cfg
 from config import site_url
 from config_email import post_emails
 import os
+from torcms.core.tools import diff_table
 import re
 
 import datetime
@@ -123,6 +124,8 @@ def run_edit_diff():
 
     email_cnt = email_cnt + '</table>'
 
+    mpost = MPost()
+    mposthist = MPostHist()
     diff_str = ''
     ######################################################
     recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
@@ -130,34 +133,31 @@ def run_edit_diff():
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
             print('=' * 10)
-
             print(recent_post.title)
 
             raw_title = hist_rec.title
             new_title = recent_post.title
 
-            test = HtmlDiff.make_file(HtmlDiff(), [raw_title], [new_title])
+            infobox = diff_table(raw_title, new_title)
 
             # if len(test) > 1:
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
-            infobox = test[start:end] + '</table>'
-            if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> TITLE'.format(
+            # start = test.find('<table class="diff"')  # 起点记录查询位置
+            # end = test.find('</table>')
+            # infobox = test[start:end] + '</table>'
+            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
+            diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2>'.format(
                     recent_post.title) + infobox
 
-            raw_md = hist_rec.cnt_md.split('\n')
-            new_md = recent_post.cnt_md.split('\n')
-            test = HtmlDiff.make_file(HtmlDiff(), raw_md, new_md)
-
+            test = diff_table(hist_rec.cnt_md, recent_post.cnt_md)
+            print(test)
             # if len(test) >1 :
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
+            # start = test.find('<table class="diff"')  # 起点记录查询位置
+            # end = test.find('</table>')
 
-            infobox = test[start:end] + '</table>'
-            if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> CONTENT'.format(
-                    recent_post.title) + infobox + '</hr>'
+            # infobox = test[start:end] + '</table>'
+            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
+            diff_str = diff_str + '<h3>CONTENT</h3>'.format(
+                    recent_post.title) + test + '</hr>'
         else:
             continue
     ######################################################
@@ -172,32 +172,20 @@ def run_edit_diff():
             raw_title = hist_rec.title
             new_title = recent_post.title
 
-            test = HtmlDiff.make_file(HtmlDiff(), [raw_title], [new_title])
-
-            # if len(test) > 1:
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
-            infobox = test[start:end] + '</table>'
-            if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> TITLE'.format(
+            infobox = diff_table(raw_title, new_title)
+            # infobox = test[start:end] + '</table>'
+            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
+            diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2>'.format(
                     recent_post.title) + infobox
 
-            raw_md = hist_rec.cnt_md.split('\n')
-            new_md = recent_post.cnt_md.split('\n')
-            test = HtmlDiff.make_file(HtmlDiff(), raw_md, new_md)
+            infobox = diff_table(hist_rec.cnt_md, recent_post.cnt_md)
 
-            # if len(test) >1 :
-            start = test.find('<table class="diff"')  # 起点记录查询位置
-            end = test.find('</table>')
-
-            infobox = test[start:end] + '</table>'
-            if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-                diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2> CONTENT'.format(
+            diff_str = diff_str + '<h3>CONTENT</h3>'.format(
                     recent_post.title) + infobox + '</hr>'
         else:
             continue
-
-    if len(diff_str) < 8000:
+    ###########################################################
+    if len(diff_str) < 20000:
         email_cnt = email_cnt + diff_str
     email_cnt = email_cnt + '''<table class="diff" summary="Legends">
         <tr> <th colspan="2"> Legends </th> </tr>
