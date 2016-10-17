@@ -59,3 +59,5 @@ class MReply(MSuperTable):
         return g_Reply.select().where(g_Reply.post_id == postid).order_by(g_Reply.timestamp.desc())
     def get_by_zan(self, reply_id):
         return g_User2Reply.select().where(g_User2Reply.reply_id == reply_id).count()
+    def query_all(self):
+        return self.tab.select().order_by(g_Reply.timestamp.desc())

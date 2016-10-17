@@ -18,6 +18,8 @@ class ReplyHandler(BaseHandler):
         url_arr = self.parse_url(url_str)
         if url_arr[0] == 'get':
             self.get_by_id(url_arr[1])
+        elif url_arr[0] == 'list':
+            self.list()
         elif url_arr[0] == 'delete':
             self.delete(url_arr[1])
         elif url_arr[0] == 'zan':
@@ -27,6 +29,19 @@ class ReplyHandler(BaseHandler):
 
         if url_arr[0] == 'add':
             self.add(url_arr[1])
+
+    def list(self):
+        kwd = {
+            'pager': '',
+            'unescape': tornado.escape.xhtml_unescape,
+            'title': '单页列表',
+        }
+        self.render('admin/reply_ajax/reply_list.html',
+                    kwd=kwd,
+                    view_all=self.tab.query_all(),
+                    userinfo=self.userinfo,
+
+                    )
 
     def get_by_id(self, reply_id):
 
