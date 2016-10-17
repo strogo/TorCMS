@@ -53,6 +53,8 @@ class MetaHandler(PostHandler):
             self.catalog()
         # elif len(url_arr) == 1 and len(url_str) == 4:
         #     self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
+        elif url_arr[0] == '_add':
+            self.add_app()
         elif len(url_arr) == 2:
             if url_arr[0] == 'edit':
                 self.to_edit_app(url_arr[1])
@@ -93,6 +95,8 @@ class MetaHandler(PostHandler):
             self.update(url_arr[1])
         elif url_arr[0] == 'add':
             self.add(url_arr[1])
+        elif url_arr[0] == '_add':
+            self.map_add()
         else:
             return False
 
@@ -134,6 +138,16 @@ class MetaHandler(PostHandler):
         if userinfo.role[role_mask_idx] >= '8':
             priv_dic['ADMIN'] = True
         return priv_dic
+
+    @tornado.web.authenticated
+    def add_app(self):
+
+
+        self.render('infor/app/add.html',
+                    tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
+                    userinfo=self.userinfo,
+
+                    )
 
     @tornado.web.authenticated
     def to_add_app(self, uid):
@@ -275,6 +289,48 @@ class MetaHandler(PostHandler):
         self.update_catalog(uid)
         self.update_tag(uid)
         self.redirect('/info/{0}'.format(uid))
+
+    @tornado.web.authenticated
+    def map_add(self, uid='', sig = ''):
+
+        ext_dic = {}
+        post_data = {}
+        for key in self.request.arguments:
+            if key.startswith('ext_') or key.startswith('tag_'):
+                ext_dic[key] = self.get_argument(key)
+            else:
+                post_data[key] = self.get_arguments(key)[0]
+
+
+
+        if uid == '':
+            uid = sig + tools.get_uu4d()
+            while self.mpost.get_by_uid(uid):
+                uid = sig + tools.get_uu4d()
+            post_data['uid'] = uid
+
+
+        post_data['user_name'] = self.userinfo.user_name
+        if 'valid' in post_data:
+            post_data['valid'] = int(post_data['valid'])
+        else:
+            post_data['valid'] = 1
+
+        ext_dic['def_uid'] = ext_dic['ext_map_uid']
+
+        ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
+
+        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
+        ext_dic = self.extra_data(ext_dic, post_data)
+
+        self.mpost.modify_meta(ext_dic['def_uid'],
+                               post_data,
+                               extinfo=ext_dic)
+        self.update_catalog(ext_dic['def_uid'])
+        self.update_tag(ext_dic['def_uid'])
+
+        self.redirect('/info/{0}'.format(ext_dic['def_uid']))
+
 
     @tornado.web.authenticated
     def add(self, uid='', sig = ''):
