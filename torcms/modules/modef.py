@@ -65,5 +65,6 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'app_user_recent_by_cat': app_user_recent_by_cat,
                 'widget_editor': widget_editor,
                 'show_page': show_page,
+               'star_rating': star_rating,
 
-                }
+}

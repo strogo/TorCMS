@@ -35,8 +35,10 @@ from torcms.handlers.post_info_relation_handler import RelHandler
 
 from torcms.handlers.post_manager import PostManHandler
 from torcms.handlers.wiki_manager import WikiManHandler
+from torcms.handlers.rating_handler import RatingHandler
 
 urls = [
+    ('/_rating/(.*)', RatingHandler, dict()),
     ('/post_man/(.*)', PostManHandler, dict()),
     ('/meta_man/(.*)', PostManHandler, dict()),
     ('/wiki_man/(.*)', WikiManHandler, dict()),

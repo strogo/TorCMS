@@ -19,6 +19,12 @@ class MPost(MSuperTable):
         except:
             pass
 
+    def update_rating(self, uid, rating):
+        entry = g_Post.update(
+            rating = rating
+        ).where(g_Post.uid == uid)
+        entry.execute()
+
     def update_cnt(self, uid, post_data):
 
         entry = g_Post.update(

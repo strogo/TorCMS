@@ -15,20 +15,23 @@ from torcms.model.label_model import MPost2Label
 
 from torcms.model.reply_model import MReply
 from torcms.model.page_model import MPage
+from torcms.model.rating_model import MRating
 
 mreply = MReply()
 mpage = MPage()
+mrating = MRating()
 
 
 class reply_panel(tornado.web.UIModule):
     def render(self, uid, userinfo):
         return self.render_string('modules/widget/reply_panel.html',
                                   uid=uid,
-                                  replys= mreply.query_by_post(uid),
+                                  replys=mreply.query_by_post(uid),
                                   userinfo=userinfo,
                                   unescape=tornado.escape.xhtml_unescape,
                                   linkify=tornado.escape.linkify,
                                   )
+
 
 class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
     def render(self, signature):
@@ -38,19 +41,36 @@ class userinfo_widget(tornado.web.UIModule, tornado.web.RequestHandler):
         else:
             self.render('modules/widget/tologinfo.html')
 
-class widget_editor(tornado.web.UIModule):
-    def render(self,router, uid, userinfo):
-        kwd  = {'router': router,
-                'uid': uid,
-                }
-        return self.render_string('modules/widget/widget_editor.html',
-                                  kwd  = kwd,
-                                  userinfo=userinfo,
 
+class widget_editor(tornado.web.UIModule):
+    def render(self, router, uid, userinfo):
+        kwd = {'router': router,
+               'uid': uid,
+               }
+        return self.render_string('modules/widget/widget_editor.html',
+                                  kwd=kwd,
+                                  userinfo=userinfo,
                                   )
+
 
 class widget_search(tornado.web.UIModule):
     def render(self, ):
         self.mcat = MCategory()
-
         return self.render_string('modules/widget/widget_search.html', cat_enum=self.mcat.query_pcat())
+
+
+class star_rating(tornado.web.UIModule):
+    def render(self, postinfo, userinfo):
+        rating = False
+        if userinfo:
+            rating = mrating.get_rating(postinfo.uid, userinfo.uid)
+        if rating:
+            pass
+        else:
+            rating = postinfo.rating
+        return self.render_string('modules/widget/star_rating.html',
+                                  unescape=tornado.escape.xhtml_unescape,
+                                  postinfo=postinfo,
+                                  userinfo=userinfo,
+                                  rating=rating,
+                                  )

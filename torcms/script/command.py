@@ -2,7 +2,7 @@
 
 import sys, getopt
 
-# from .script_migrate import run_migrate
+from .script_migrate import run_migrate
 from .gen_category import run_gen_category
 from .script_init_database_shema import run_init_tables
 from .script_update_count import run_update_count
