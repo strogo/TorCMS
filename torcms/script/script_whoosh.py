@@ -34,8 +34,8 @@ def do_for_app(writer, rand=True, doc_type=''):
         # # sleep(0.1)
         text2 = rec.title + ',' + html2text.html2text(tornado.escape.xhtml_unescape(rec.cnt_html))
         # writer.update_document(path=u"/a",content="Replacement for the first document")
-        catid = rec.extinfo['def_cat_uid'][:2] + '00'
         writer.update_document(
+                catid = '00000',
             title=rec.title,
             type=doc_type,
             link='/{0}/{1}'.format(router_post['2'], rec.uid),
