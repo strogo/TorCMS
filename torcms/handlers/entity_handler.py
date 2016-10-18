@@ -16,9 +16,14 @@ thub_size = (256, 256)
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
+ALLOWED_EXTENSIONS_PDF = set(['pdf'])
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def allowed_file_pdf(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_PDF
 
 
 class EntityHandler(BaseHandler):
@@ -69,12 +74,14 @@ class EntityHandler(BaseHandler):
 
     @tornado.web.authenticated
     def add_entity(self):
+
         post_data = self.get_post_data()
+
         if 'kind' in post_data:
             if post_data['kind'] == '1':
                 self.add_pic()
             elif post_data['kind'] == '2':
-                pass
+                self.add_pdf()
             else:
                 pass
         else:
@@ -125,6 +132,36 @@ class EntityHandler(BaseHandler):
         self.mpic.insert_data(signature, sig_save)
 
         self.redirect('/entity/{0}_m.jpg'.format(sig_save))
+
+    @tornado.web.authenticated
+    def add_pdf(self):
+
+        img_entiry = self.request.files['file'][0]
+
+        filename = img_entiry["filename"]
+
+        if filename and allowed_file_pdf(filename):
+            pass
+        else:
+            return False
+
+        (qian, hou) = os.path.splitext(filename)
+        signature = str(uuid.uuid1())
+        outfilename = '{0}{1}'.format(signature, hou)
+        outpath = 'static/upload/{0}'.format(signature[:2])
+        if os.path.exists(outpath):
+            pass
+        else:
+            os.makedirs(outpath)
+        with open(os.path.join(outpath, outfilename), "wb") as f:
+            f.write(img_entiry["body"])
+        
+        sig_save = os.path.join(signature[:2], signature)
+
+
+        self.mpic.insert_data(signature, sig_save)
+
+        self.redirect('/entity/{0}.pdf'.format(sig_save))
 
     @tornado.web.authenticated
     def view(self, outfilename):
