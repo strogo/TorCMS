@@ -16,7 +16,7 @@ thub_size = (256, 256)
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-ALLOWED_EXTENSIONS_PDF = set(['pdf'])
+ALLOWED_EXTENSIONS_PDF = set(['pdf', 'doc', 'docx', 'zip','rar'])
 
 
 def allowed_file(filename):
@@ -140,6 +140,8 @@ class EntityHandler(BaseHandler):
 
         filename = img_entiry["filename"]
 
+        qian, hou = os.path.splitext(filename)
+
         if filename and allowed_file_pdf(filename):
             pass
         else:
@@ -155,13 +157,13 @@ class EntityHandler(BaseHandler):
             os.makedirs(outpath)
         with open(os.path.join(outpath, outfilename), "wb") as f:
             f.write(img_entiry["body"])
-        
+
         sig_save = os.path.join(signature[:2], signature)
 
 
         self.mpic.insert_data(signature, sig_save)
 
-        self.redirect('/entity/{0}.pdf'.format(sig_save))
+        self.redirect('/entity/{0}{1}'.format(sig_save,  hou.lower()))
 
     @tornado.web.authenticated
     def view(self, outfilename):
