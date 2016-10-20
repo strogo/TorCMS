@@ -66,7 +66,7 @@ class PostManHandler(BaseHandler):
         post_rec = self.mpost.get_by_uid(postid)
         self.render('{0}/post_man_edit.html'.format(self.tmpl_dir),
                     userinfo=self.userinfo,
-                    unescape=tornado.escape.xhtml_escape,
+                    unescape=tornado.escape.xhtml_unescape,
                     postinfo=post_rec,
                     )
 
@@ -116,7 +116,7 @@ class PostManHandler(BaseHandler):
 
         self.render('{0}/post_man_view.html'.format(self.tmpl_dir),
                     userinfo=self.userinfo,
-                    unescape=tornado.escape.xhtml_escape,
+                    unescape=tornado.escape.xhtml_unescape,
                     view=postinfo,
                     postinfo=postinfo,
                     html_diff_arr=html_diff_arr
