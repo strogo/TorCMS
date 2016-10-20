@@ -81,22 +81,7 @@ class WikiHandler(BaseHandler):
         else:
             self.to_add(title)
 
-    @tornado.web.authenticated
-    def to_add(self, title):
-        if self.check_post_role(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
 
-        kwd = {
-            'title': title,
-            'pager': '',
-        }
-        self.render('doc/wiki/wiki_add.html',
-                    kwd=kwd,
-                    cfg=config.cfg,
-                    userinfo=self.userinfo,
-                    )
 
     @tornado.web.authenticated
     def update(self, uid):
@@ -156,13 +141,30 @@ class WikiHandler(BaseHandler):
         return json.dump(output, self)
 
     @tornado.web.authenticated
-    def wikinsert(self):
-        if self.check_post_role(self.userinfo)['ADD']:
+    def to_add(self, title):
+        if self.userinfo.role[0] > '1':
             pass
         else:
             return False
-        post_data = self.get_post_data()
 
+        kwd = {
+            'title': title,
+            'pager': '',
+        }
+        self.render('doc/wiki/wiki_add.html',
+                    kwd=kwd,
+                    cfg=config.cfg,
+                    userinfo=self.userinfo,
+                    )
+        
+    @tornado.web.authenticated
+    def wikinsert(self):
+        if self.userinfo.role[0] > '1':
+            pass
+        else:
+            return False
+
+        post_data = self.get_post_data()
 
         post_data['user_name'] = self.get_current_user()
         if self.mwiki.get_by_wiki(post_data['title']):
