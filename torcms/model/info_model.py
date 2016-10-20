@@ -205,6 +205,7 @@ class MInfor(MInforBase):
                 cur_extinfo[key] = extinfo[key]
             entry = self.tab_app.update(
                 title=title,
+                user_name=data_dic['user_name'],
                 keywords=','.join([x.strip() for x in data_dic['keywords'].strip().strip(',').split(',')]),
                 time_update= tools.timestamp(),
                 date=datetime.now(),
