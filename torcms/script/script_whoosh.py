@@ -21,6 +21,8 @@ from config import router_post
 
 mappcat = MInforCatalog()
 
+from torcms.model.wiki_model import MWiki
+from torcms.model.page_model import MPage
 
 def do_for_app(writer, rand=True, doc_type=''):
     mpost = MApp()
@@ -67,6 +69,7 @@ def do_for_app2(writer, rand=True):
 
 
 def do_for_post(writer, rand=True, doc_type=''):
+
     mpost = MPost()
     if rand:
         recs = mpost.query_random(50)
@@ -87,6 +90,45 @@ def do_for_post(writer, rand=True, doc_type=''):
         )
 
 
+def do_for_wiki(writer, rand=True, doc_type=''):
+    mpost = MWiki()
+    if rand:
+        recs = mpost.query_random(50, )
+    else:
+        recs = mpost.query_recent(50, )
+
+    print(recs.count())
+    for rec in recs:
+        # sleep(0.1)
+        text2 = rec.title + ',' + html2text.html2text(tornado.escape.xhtml_unescape(rec.cnt_html))
+        # writer.update_document(path=u"/a",content="Replacement for the first document")
+        writer.update_document(
+            title=rec.title,
+            catid='0000',
+            type=doc_type,
+            link='/wiki/{0}'.format(rec.title),
+            content=text2
+        )
+
+def do_for_page(writer, rand=True, doc_type=''):
+    mpost = MPage()
+    if rand:
+        recs = mpost.query_random(50, )
+    else:
+        recs = mpost.query_recent(50, )
+
+    print(recs.count())
+    for rec in recs:
+        # sleep(0.1)
+        text2 = rec.title + ',' + html2text.html2text(tornado.escape.xhtml_unescape(rec.cnt_html))
+        # writer.update_document(path=u"/a",content="Replacement for the first document")
+        writer.update_document(
+            title=rec.title,
+            catid='0000',
+            type=doc_type,
+            link='/page/{0}.html'.format(rec.uid),
+            content=text2
+        )
 def gen_whoosh_database(if_rand=True, kind='1', post_type={}):
     analyzer = ChineseAnalyzer()
     schema = Schema(title=TEXT(stored=True, analyzer=analyzer),
@@ -108,6 +150,8 @@ def gen_whoosh_database(if_rand=True, kind='1', post_type={}):
     else:
         do_for_app2(writer, rand=if_rand)
     do_for_post(writer, rand=if_rand, doc_type=post_type['doc_type'])
+    do_for_wiki(writer, rand=if_rand, doc_type=post_type['doc_type'])
+    do_for_page(writer, rand=if_rand, doc_type=post_type['doc_type'])
     print('-' * 10)
     writer.commit()
 

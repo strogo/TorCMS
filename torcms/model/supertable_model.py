@@ -58,8 +58,8 @@ class MSuperTable():
             else:
                 return self.tab.select().limit(limit_num)
 
-    def query_recent(self, num=8):
-        return self.tab.select().limit(num)
+    def query_recent(self, num=8, kind = '1'):
+        return self.tab.select().where(self.tab.kind == kind).limit(num)
 
     def delete(self, del_id):
         try:
