@@ -140,23 +140,23 @@ class WikiHandler(BaseHandler):
 
         return json.dump(output, self)
 
-    @tornado.web.authenticated
-    def to_add(self, title):
-        if self.userinfo.role[0] > '1':
-            pass
-        else:
-            return False
 
+    def to_add(self, title):
         kwd = {
             'title': title,
             'pager': '',
         }
-        self.render('doc/wiki/wiki_add.html',
-                    kwd=kwd,
-                    cfg=config.cfg,
-                    userinfo=self.userinfo,
-                    )
-        
+        if self.userinfo and self.userinfo.role[0] > '1':
+            tmpl = 'doc/wiki/wiki_add.html'
+        else:
+            tmpl = 'doc/wiki/wiki_login.html'
+
+        self.render(tmpl,
+                kwd=kwd,
+                cfg=config.cfg,
+                userinfo=self.userinfo,
+                )
+
     @tornado.web.authenticated
     def wikinsert(self):
         if self.userinfo.role[0] > '1':
