@@ -96,7 +96,7 @@ class g_Member(BaseModel):
     user_name = peewee.CharField(null=False, index=True, unique=True, max_length=16, help_text='User Name', )
     user_email = peewee.CharField(null=False, unique=True, max_length=255, help_text='User Email', )
     user_pass = peewee.CharField(null=False, max_length=255, help_text='User Password')
-    role = peewee.CharField(null=False, default='1000', help_text='Member Privilege', )
+    role = peewee.CharField(null=False, default='0000', help_text='Member Privilege', max_length='4')
     time_reset_passwd = peewee.IntegerField(null=False, default=0)
     time_login = peewee.IntegerField(null=False, default=0)
     time_create = peewee.IntegerField(null=False, default=0)
