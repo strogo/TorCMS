@@ -309,6 +309,11 @@ class PostHandler(BaseHandler):
 
         rec = self.mpost.get_by_id(post_id)
 
+        if rec.kind == self.kind:
+            pass
+        else:
+            return
+
         if not rec:
             kwd = {
                 'info': '您要查看的页面不存在。',

@@ -86,9 +86,14 @@ class InfoHandler(BaseHandler):
         :param info_id:
         :return: Nonthing.
         '''
-        app_rec = self.minfo.get_by_uid(info_id)
+        postinfo = self.minfo.get_by_uid(info_id)
 
-        if app_rec:
+        if postinfo.kind == self.kind:
+            pass
+        else:
+            return
+
+        if postinfo:
             pass
         else:
             kwd = {
@@ -106,7 +111,7 @@ class InfoHandler(BaseHandler):
             cat_uid_arr.append(cat_uid)
         print('info category:',  cat_uid_arr)
         replys = [] # self.mreply.get_by_id(info_id)
-        rel_recs = self.mrel.get_app_relations(app_rec.uid, 0, kind = '2')
+        rel_recs = self.mrel.get_app_relations(postinfo.uid, 0, kind = '2')
         if len(cat_uid_arr) > 0:
             rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
@@ -115,8 +120,8 @@ class InfoHandler(BaseHandler):
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
 
-        if 'def_cat_uid' in app_rec.extinfo:
-            ext_catid = app_rec.extinfo['def_cat_uid']
+        if 'def_cat_uid' in postinfo.extinfo:
+            ext_catid = postinfo.extinfo['def_cat_uid']
         else:
             ext_catid = ''
 
@@ -158,16 +163,16 @@ class InfoHandler(BaseHandler):
         if self.get_current_user():
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
-        tmpl = self.ext_tmpl_name(app_rec) if self.ext_tmpl_name(app_rec) else self.get_tmpl_name(app_rec)
+        tmpl = self.ext_tmpl_name(postinfo) if self.ext_tmpl_name(postinfo) else self.get_tmpl_name(postinfo)
         print('info tmpl: ' + tmpl )
-        ext_catid2 = app_rec.extinfo['def_cat_uid'] if 'def_cat_uid' in app_rec.extinfo else None
+        ext_catid2 = postinfo.extinfo['def_cat_uid'] if 'def_cat_uid' in postinfo.extinfo else None
 
 
         self.render(tmpl,
-                    kwd=dict(kwd, **self.extra_kwd(app_rec)),
-                    calc_info=app_rec, # Deprecated
-                    post_info=app_rec, # Deprecated
-                    postinfo = app_rec,
+                    kwd=dict(kwd, **self.extra_kwd(postinfo)),
+                    calc_info=postinfo, # Deprecated
+                    post_info=postinfo, # Deprecated
+                    postinfo = postinfo,
                     userinfo=self.userinfo,
                     relations=rel_recs,
                     rand_recs=rand_recs,

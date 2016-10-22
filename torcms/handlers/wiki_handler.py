@@ -17,6 +17,7 @@ class WikiHandler(BaseHandler):
         self.init()
         self.mwiki = MWiki()
         self.mwiki_hist = MWikiHist()
+        self.kind = '1'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -75,9 +76,12 @@ class WikiHandler(BaseHandler):
                     )
 
     def wiki(self, title):
-        dbdate = self.mwiki.get_by_wiki(title)
-        if dbdate:
-            self.viewit(dbdate)
+        postinfo = self.mwiki.get_by_wiki(title)
+        if postinfo:
+            if postinfo.kind == self.kind:
+                self.viewit(postinfo)
+            else:
+                return False
         else:
             self.to_add(title)
 
