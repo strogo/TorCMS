@@ -43,7 +43,7 @@ class PostManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update(self, uid):
-        if self.userinfo.role[0] > 0:
+        if self.userinfo.role[0] > '0':
             pass
         else:
             return False
@@ -59,7 +59,7 @@ class PostManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_edit(self, postid):
-        if self.userinfo.role[0] > 0:
+        if self.userinfo.role[0] > '0':
             pass
         else:
             return False

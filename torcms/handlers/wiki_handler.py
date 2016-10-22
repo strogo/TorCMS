@@ -151,7 +151,7 @@ class WikiHandler(BaseHandler):
             'title': title,
             'pager': '',
         }
-        if self.userinfo and self.userinfo.role[0] > 0:
+        if self.userinfo and self.userinfo.role[0] > '0':
             tmpl = 'doc/wiki/wiki_add.html'
         else:
             tmpl = 'doc/wiki/wiki_login.html'
@@ -164,7 +164,7 @@ class WikiHandler(BaseHandler):
 
     @tornado.web.authenticated
     def wikinsert(self):
-        if self.userinfo.role[0] > 0:
+        if self.userinfo.role[0] > '0':
             pass
         else:
             return False
