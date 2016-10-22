@@ -63,6 +63,11 @@ def get_rating():
     leaflet_url = 'http://r.osgeo.cn/f2elib/bootstrap-star-rating-master.zip'
     qian, hou = os.path.split(leaflet_url)
     fetch_file(leaflet_url, hou)
+def get_magnific():
+    leaflet_url = 'http://r.osgeo.cn/f2elib/magnific-popup_1.1.0.zip'
+    qian, hou = os.path.split(leaflet_url)
+    fetch_file(leaflet_url, hou)
+
 
 def get_ol3():
 
@@ -93,6 +98,7 @@ def run_fetch_f2elib():
     # get_ol3()
     get_bootstrap()
     get_rating()
+    get_magnific()
 
 
 
