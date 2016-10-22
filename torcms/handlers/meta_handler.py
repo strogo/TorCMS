@@ -7,7 +7,6 @@ import tornado.web
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
-# from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.category_model import MCategory
 
@@ -15,7 +14,6 @@ from torcms.model.usage_model import MUsage
 
 from  config import cfg
 from torcms.core import tools
-from torcms.core.base_handler import BaseHandler
 from torcms.handlers.post_handler import PostHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.info_hist_model import MInfoHist
@@ -31,7 +29,6 @@ class MetaHandler(PostHandler):
         self.cats = self.mcat.query_all()
         self.mpost_hist = MInfoHist()
         self.mpost2catalog = MInfor2Catalog()
-        # self.mpost2reply = MInfor2Reply()
         self.mpost2label = MInfor2Label()
         self.mrel = MInforRel()
 
@@ -89,8 +86,8 @@ class MetaHandler(PostHandler):
                 self.add_relation(url_arr[1])
             else:
                 self.redirect('/user/login')
-        elif url_arr[0] == 'comment_add':
-            self.add_comment(url_arr[1])
+        # elif url_arr[0] == 'comment_add':
+        #     self.add_comment(url_arr[1])
         elif url_arr[0] == 'edit':
             self.update(url_arr[1])
         elif url_arr[0] == 'add':
@@ -109,6 +106,10 @@ class MetaHandler(PostHandler):
     @tornado.web.authenticated
     def user_to_add(self, catid, sig = ''):
 
+        if self.check_post_role(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         uid = sig +  tools.get_uu4d()
         while self.mpost.get_by_uid(uid):
             uid = sig + tools.get_uu4d()
@@ -125,24 +126,13 @@ class MetaHandler(PostHandler):
                     userinfo=self.userinfo,
                     kwd=kwd)
 
-    def check_priv(self, userinfo, cat_id):
-        cat_rec = self.mcat.get_by_uid(cat_id)
-        role_mask_idx = cat_rec.role_mask.index('1')
-        priv_dic = {'ADD': False, 'EDIT': False, 'DELETE': False, 'ADMIN': False}
-        if userinfo.role[role_mask_idx] >= '1':
-            priv_dic['ADD'] = True
-        if userinfo.role[role_mask_idx] >= '2':
-            priv_dic['EDIT'] = True
-        if userinfo.role[role_mask_idx] >= '4':
-            priv_dic['DELETE'] = True
-        if userinfo.role[role_mask_idx] >= '8':
-            priv_dic['ADMIN'] = True
-        return priv_dic
-
     @tornado.web.authenticated
     def add_app(self):
 
-
+        if self.check_post_role(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
         self.render('infor/app/add.html',
                     tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
                     userinfo=self.userinfo,
@@ -151,6 +141,11 @@ class MetaHandler(PostHandler):
 
     @tornado.web.authenticated
     def to_add_app(self, uid):
+        if self.check_post_role(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
+
         if self.mpost.get_by_uid(uid):
             # todo:
             # self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
@@ -165,7 +160,8 @@ class MetaHandler(PostHandler):
     @tornado.web.authenticated
     def to_del_app(self, uid):
         current_infor = self.mpost.get_by_uid(uid)
-        if self.check_priv(self.userinfo, current_infor.extinfo['def_cat_uid'])['DELETE']:
+
+        if self.check_post_role(self.userinfo)['DELETE']:
             pass
         else:
             return False
@@ -177,6 +173,11 @@ class MetaHandler(PostHandler):
 
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
+
+        if self.check_post_role(self.userinfo)['EDIT']:
+            pass
+        else:
+            return False
 
         rec_info = self.mpost.get_by_uid(infoid)
 
@@ -226,16 +227,16 @@ class MetaHandler(PostHandler):
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind = constant['cate_info']),
                     app2label_info=self.mpost2label.get_by_id(infoid,kind = constant['tag_info'] ))
 
-    def check_update_role(self, current_info, post_data):
-        #  to check if current user could update the meta
-        if current_info.user_name == self.userinfo.user_name:
-            return True
-        elif self.userinfo.role[2] >= '1':
-            return True
-        elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'])['EDIT']:
-            return True
-        else:
-            return False
+    # def check_update_role(self, current_info, post_data):
+    #     #  to check if current user could update the meta
+    #     if current_info.user_name == self.userinfo.user_name:
+    #         return True
+    #     elif self.userinfo.role[2] >= '1':
+    #         return True
+    #     elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'])['EDIT']:
+    #         return True
+    #     else:
+    #         return False
 
     def get_def_cat_uid(self, post_data):
         # 下面两种处理方式，上面是原有的，暂时保留以保持兼容
@@ -251,6 +252,12 @@ class MetaHandler(PostHandler):
 
     @tornado.web.authenticated
     def update(self, uid):
+
+        if self.check_post_role(self.userinfo)['EDIT']:
+            pass
+        else:
+            return False
+
         post_data = {}
         ext_dic = {}
         for key in self.request.arguments:
@@ -263,11 +270,6 @@ class MetaHandler(PostHandler):
 
         current_info = self.mpost.get_by_uid(uid)
 
-        if self.check_update_role(current_info, post_data):
-            pass
-        else:
-            print('No privilege.')
-            return False
 
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
@@ -292,6 +294,11 @@ class MetaHandler(PostHandler):
 
     @tornado.web.authenticated
     def map_add(self, uid='', sig = ''):
+
+        if self.check_post_role(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
 
         ext_dic = {}
         post_data = {}
@@ -335,6 +342,11 @@ class MetaHandler(PostHandler):
     @tornado.web.authenticated
     def add(self, uid='', sig = ''):
 
+        if self.check_post_role(self.userinfo)['ADD']:
+            pass
+        else:
+            return False
+
         ext_dic = {}
         post_data = {}
         for key in self.request.arguments:
@@ -343,10 +355,6 @@ class MetaHandler(PostHandler):
             else:
                 post_data[key] = self.get_arguments(key)[0]
 
-        if self.check_priv(self.userinfo, post_data['def_cat_uid'])['ADD']:
-            pass
-        else:
-            return False
 
         if uid == '':
             uid = sig + tools.get_uu4d()
@@ -384,22 +392,22 @@ class MetaHandler(PostHandler):
         '''
         return ext_dic
 
-    @tornado.web.authenticated
-    def add_comment(self, id_post):
-        post_data = self.get_post_data()
-        post_data['user_id'] = self.userinfo.uid
-        post_data['user_name'] = self.userinfo.user_name
-        # todo:
-        comment_uid = self.mpost2reply.insert_data(post_data, id_post)
-        if comment_uid:
-            output = {
-                'pinglun': comment_uid,
-            }
-        else:
-            output = {
-                'pinglun': 0,
-            }
-        return json.dump(output, self)
+    # @tornado.web.authenticated
+    # def add_comment(self, id_post):
+    #     post_data = self.get_post_data()
+    #     post_data['user_id'] = self.userinfo.uid
+    #     post_data['user_name'] = self.userinfo.user_name
+    #     # todo:
+    #     comment_uid = self.mpost2reply.insert_data(post_data, id_post)
+    #     if comment_uid:
+    #         output = {
+    #             'pinglun': comment_uid,
+    #         }
+    #     else:
+    #         output = {
+    #             'pinglun': 0,
+    #         }
+    #     return json.dump(output, self)
 
     def add_relation(self, f_uid, t_uid):
         if False == self.mpost.get_by_uid(t_uid):

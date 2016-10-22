@@ -43,7 +43,7 @@ class WikiManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update(self, uid):
-        if self.userinfo.role[0] > '1':
+        if self.userinfo.role[0] > 0:
             pass
         else:
             return False
@@ -64,7 +64,7 @@ class WikiManHandler(BaseHandler):
 
     @tornado.web.authenticated
     def to_edit(self, postid):
-        if self.userinfo.role[0] > '1':
+        if self.userinfo.role[0] > 0:
             pass
         else:
             return False

@@ -78,21 +78,25 @@ class g_WikiHist(BaseModel):
 
 class g_Member(BaseModel):
     '''
-    privilege:
-    11111
+    role:  the index and value should not greater than 3.
+    "0123"
     read,add,edit,delete,manage
-    [0]: read
-    [1]: for post, page, wiki,
-    [2]: for infor.
+    [0]: for wiki, and post editing.
+    [1]: post create, and management.
+    [2]: keep
     [3]: keep
-    [4]: keep
     And, could be extended.
+    The Value:
+    0: for view
+    1: for basic editing
+    2: for management
+    3:
     '''
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
     user_name = peewee.CharField(null=False, index=True, unique=True, max_length=16, help_text='User Name', )
     user_email = peewee.CharField(null=False, unique=True, max_length=255, help_text='User Email', )
     user_pass = peewee.CharField(null=False, max_length=255, help_text='User Password')
-    role = peewee.CharField(null=False, default='10000', help_text='Member Privilege', )
+    role = peewee.CharField(null=False, default='1000', help_text='Member Privilege', )
     time_reset_passwd = peewee.IntegerField(null=False, default=0)
     time_login = peewee.IntegerField(null=False, default=0)
     time_create = peewee.IntegerField(null=False, default=0)
