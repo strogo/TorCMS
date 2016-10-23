@@ -15,7 +15,6 @@ class g_Tag(BaseModel):
                             help_text='tag type: 0 for category, 1 for label', )
     role_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
-
 class g_Link(BaseModel):
     uid = peewee.CharField(null=False, index=False, unique=True, primary_key=True, default='0000',
                            max_length=4, help_text='', )

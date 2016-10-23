@@ -6,6 +6,7 @@ from torcms.model.user_model import MUser
 import time
 from config_email import email_cfg
 from config import smtp_cfg
+
 def run_send_all():
     muser = MUser()
     user_recs = muser.query_all()
