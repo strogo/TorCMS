@@ -17,12 +17,11 @@ from torcms.core import tools
 from torcms.handlers.post_handler import PostHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.info_hist_model import MInfoHist
-from torcms.core.tools import constant
+from config import router_post
 
 
 class MetaHandler(PostHandler):
     def initialize(self):
-
         self.init()
         self.mpost = MInfor()
         self.mcat = MCategory()
@@ -31,7 +30,6 @@ class MetaHandler(PostHandler):
         self.mpost2catalog = MInfor2Catalog()
         self.mpost2label = MInfor2Label()
         self.mrel = MInforRel()
-
         self.musage = MUsage()
         self.mevaluation = MEvaluation()
         self.kind = '2'
@@ -48,8 +46,7 @@ class MetaHandler(PostHandler):
             self.user_to_add(url_arr[1])
         elif url_arr[0] == 'catalog':
             self.catalog()
-        # elif len(url_arr) == 1 and len(url_str) == 4:
-        #     self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
+
         elif url_arr[0] == '_add':
             self.add_app()
         elif len(url_arr) == 2:
@@ -98,14 +95,19 @@ class MetaHandler(PostHandler):
             return False
 
     def catalog(self):
-        self.render('infor/app/catalog.html',
+        self.render('post{0}/catalog.html'.format(self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': '',}
                     )
 
     @tornado.web.authenticated
     def user_to_add(self, catid, sig = ''):
-
+        '''
+        Used for OSGeo
+        :param catid:
+        :param sig:
+        :return:
+        '''
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
@@ -128,13 +130,13 @@ class MetaHandler(PostHandler):
 
     @tornado.web.authenticated
     def add_app(self):
-
+        # Used for yunsuan, maplet
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False
-        self.render('infor/app/add.html',
-                    tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
+        self.render('post{0}/add.html'.format(self.kind),
+                    tag_infos=self.mcat.query_all(by_order=True, kind = self.kind  + '0'),
                     userinfo=self.userinfo,
 
                     )
@@ -151,7 +153,7 @@ class MetaHandler(PostHandler):
             # self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
             pass
         else:
-            self.render('infor/app/add.html',
+            self.render('post{0}/add.html'.format(self.kind),
                         tag_infos=self.mcat.query_all(),
                         userinfo=self.userinfo,
                         kwd={'uid': uid,}
@@ -169,7 +171,7 @@ class MetaHandler(PostHandler):
         if self.mpost.delete(uid):
             self.redirect('/list/{0}'.format(current_infor.extinfo['def_cat_uid']))
         else:
-            self.redirect('/info/{0}'.format(uid))
+            self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))
 
     @tornado.web.authenticated
     def to_edit_app(self, infoid):
@@ -207,10 +209,10 @@ class MetaHandler(PostHandler):
         if cfg['site_type'] == 2:
             tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
         else:
-            tmpl = 'infor/app/edit.html'
+            tmpl = 'post{0}/edit.html'.format(self.kind)
 
-        print('site_type: ', cfg['site_type'])
-        print('Meta template:', tmpl)
+        # print('site_type: ', cfg['site_type'])
+        # print('Meta template:', tmpl)
 
         self.render(tmpl,
                     kwd=kwd,
@@ -222,21 +224,12 @@ class MetaHandler(PostHandler):
 
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mcat.get_qian2(catid[:2], kind= self.kind + '0'),
-                    tag_infos=self.mcat.query_all(by_order=True, kind = constant['cate_info']),
-                    tag_infos2 = self.mcat.query_all(by_order=True, kind = constant['cate_info']),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind = constant['cate_info']),
-                    app2label_info=self.mpost2label.get_by_id(infoid,kind = constant['tag_info'] ))
+                    tag_infos=self.mcat.query_all(by_order=True, kind = self.kind + '0'),
+                    tag_infos2 = self.mcat.query_all(by_order=True, kind = self.kind + '0'),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind = self.kind + '0'),
+                    app2label_info=self.mpost2label.get_by_id(infoid,kind = self.kind + '1' ))
 
-    # def check_update_role(self, current_info, post_data):
-    #     #  to check if current user could update the meta
-    #     if current_info.user_name == self.userinfo.user_name:
-    #         return True
-    #     elif self.userinfo.role[2] >= '1':
-    #         return True
-    #     elif 'def_cat_uid' in post_data and self.check_priv(self.userinfo, post_data['def_cat_uid'])['EDIT']:
-    #         return True
-    #     else:
-    #         return False
+
 
     def get_def_cat_uid(self, post_data):
         # 下面两种处理方式，上面是原有的，暂时保留以保持兼容
@@ -267,6 +260,7 @@ class MetaHandler(PostHandler):
                 post_data[key] = self.get_arguments(key)[0]
 
         post_data['user_name'] = self.userinfo.user_name
+        post_data['kind'] = self.kind
 
         current_info = self.mpost.get_by_uid(uid)
 
@@ -290,7 +284,7 @@ class MetaHandler(PostHandler):
                                extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/info/{0}'.format(uid))
+        self.redirect('/{0}/{1}'.format(router_post[self.kind],uid))
 
     @tornado.web.authenticated
     def map_add(self, uid='', sig = ''):
@@ -308,7 +302,7 @@ class MetaHandler(PostHandler):
             else:
                 post_data[key] = self.get_arguments(key)[0]
 
-
+        post_data['kind'] = self.kind
 
         if uid == '':
             uid = sig + tools.get_uu4d()
@@ -336,7 +330,7 @@ class MetaHandler(PostHandler):
         self.update_catalog(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
-        self.redirect('/info/{0}'.format(ext_dic['def_uid']))
+        self.redirect('/{0}/{1}'.format( router_post[self.kind] ,  ext_dic['def_uid']))
 
 
     @tornado.web.authenticated
@@ -363,6 +357,8 @@ class MetaHandler(PostHandler):
             post_data['uid'] = uid
 
         post_data['user_name'] = self.userinfo.user_name
+        post_data['kind'] = self.kind
+
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
         else:
@@ -381,7 +377,7 @@ class MetaHandler(PostHandler):
         self.update_catalog(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
-        self.redirect('/info/{0}'.format(uid))
+        self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))
 
     @tornado.web.authenticated
     def extra_data(self, ext_dic, post_data):
@@ -391,23 +387,6 @@ class MetaHandler(PostHandler):
         :return: directory.
         '''
         return ext_dic
-
-    # @tornado.web.authenticated
-    # def add_comment(self, id_post):
-    #     post_data = self.get_post_data()
-    #     post_data['user_id'] = self.userinfo.uid
-    #     post_data['user_name'] = self.userinfo.user_name
-    #     # todo:
-    #     comment_uid = self.mpost2reply.insert_data(post_data, id_post)
-    #     if comment_uid:
-    #         output = {
-    #             'pinglun': comment_uid,
-    #         }
-    #     else:
-    #         output = {
-    #             'pinglun': 0,
-    #         }
-    #     return json.dump(output, self)
 
     def add_relation(self, f_uid, t_uid):
         if False == self.mpost.get_by_uid(t_uid):

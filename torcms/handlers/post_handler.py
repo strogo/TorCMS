@@ -12,7 +12,6 @@ from torcms.model.post_model import MPost
 from torcms.model.post2catalog_model import MPost2Catalog
 from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
-from torcms.core.tools import constant
 
 
 class PostHandler(BaseHandler):
@@ -25,10 +24,9 @@ class PostHandler(BaseHandler):
         self.mpost2catalog = MPost2Catalog()
         self.mpost2label = MPost2Label()
         self.mrel = MRelation()
-        self.tmpl_dir = 'doc'
+        # self.tmpl_dir = 'doc'
+        # self.tmpl_router = 'post'
         self.kind = '1'
-        self.tmpl_router = 'post'
-
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
@@ -87,7 +85,7 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('{1}/{0}/post_list.html'.format(self.tmpl_router,self.tmpl_dir),
+        self.render('post{0}/post_list.html'.format(self.kind),
                     kwd=kwd,
                     view=self.mpost.query_recent(),
                     view_all=self.mpost.query_all(),
@@ -113,7 +111,7 @@ class PostHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('doc/post/post_list.html',
+        self.render('post{0}/post_list.html'.format(self.kind),
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
@@ -142,7 +140,7 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('{1}/{0}/post_add.html'.format(self.tmpl_router,self.tmpl_dir),
+        self.render('post{0}/post_add.html'.format(self.kind),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     userinfo=self.userinfo,
@@ -160,7 +158,7 @@ class PostHandler(BaseHandler):
             'uid': uid,
             'pager': '',
         }
-        self.render('doc/post/post_add.html',
+        self.render('post{0}/post_add.html'.format(self.kind),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     cfg=config.cfg,
@@ -259,12 +257,12 @@ class PostHandler(BaseHandler):
             'cats': self.cats,
 
         }
-        self.render('doc/post/post_edit.html',
+        self.render('post{0}/post_edit.html'.format(self.kind),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    tag_infos=self.mcat.query_all(kind = constant['cate_post']),
-                    app2label_info=self.mpost2label.get_by_id(id_rec, kind=constant['tag_post'] ),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, kind  = constant['cate_post']),
+                    tag_infos=self.mcat.query_all(kind = self.kind + '0'),
+                    app2label_info=self.mpost2label.get_by_id(id_rec, self.kind + '1'),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, self.kind + '0'),
                     dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
@@ -337,7 +335,7 @@ class PostHandler(BaseHandler):
 
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
-        self.render('doc/post/post_view.html',
+        self.render('post{0}/post_view.html'.format(self.kind),
                     view=rec,
                     postinfo = rec,
                     unescape=tornado.escape.xhtml_unescape,

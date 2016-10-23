@@ -6,7 +6,7 @@ import config
 from torcms.core import tools
 from torcms.model.core_tab import g_Tag, g_Post, g_Post2Tag
 from torcms.model.supertable_model import MSuperTable
-from torcms.core.tools import constant
+
 
 
 
@@ -15,6 +15,7 @@ class MPost2Catalog(MSuperTable):
         self.tab_post2catalog = g_Post2Tag
         self.tab_catalog = g_Tag
         self.tab_post = g_Post
+        self.kind = '1'
         try:
             g_Post2Tag.create_table()
         except:
@@ -82,8 +83,8 @@ class MPost2Catalog(MSuperTable):
         return self.query_by_entity_uid(idd)
 
 
-    def get_entry_catalog(self, app_uid, ):
-        uu = self.query_by_entity_uid(app_uid, kind = constant['cate_info'])
+    def get_entry_catalog(self, app_uid, kind = '20'):
+        uu = self.query_by_entity_uid(app_uid, kind = kind)
         if uu.count() > 0:
             return uu.get()
         else:

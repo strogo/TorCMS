@@ -11,7 +11,6 @@ from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
-# from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.category_model import MCategory
 from torcms.model.usage_model import MUsage
@@ -31,7 +30,6 @@ class InfoHandler(BaseHandler):
         self.musage = MUsage()
         self.mcat = MCategory()
         self.mrel = MInforRel()
-        # self.mreply = MInfor2Reply()
         self.kind = '2'
 
     def get(self, url_str=''):
@@ -178,10 +176,10 @@ class InfoHandler(BaseHandler):
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
-                    tag_info=self.mapp2tag.get_by_id(info_id, kind = tools.constant['tag_info']),
+                    tag_info=self.mapp2tag.get_by_id(info_id, kind = self.kind + '1'),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     replys=[], # replys,
-                    cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = tools.constant['cate_info']) if ext_catid else [],
+                    cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = self.kind + '0' ) if ext_catid else [],
                     role_mask_idx=role_mask_idx,
                     )
 
@@ -223,7 +221,7 @@ class InfoHandler(BaseHandler):
         if cat_id:
             tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
         else:
-            tmpl = 'infor/app/show_map.html'
+            tmpl = 'post{0}/show_map.html'.format(self.kind)
         return tmpl
 
     def add_relation(self, f_uid, t_uid):

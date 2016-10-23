@@ -13,9 +13,7 @@ from torcms.model.core_tab import g_Post2Tag
 from torcms.model.core_tab import g_Post2Tag as CabPost2Label
 from torcms.model.core_tab import g_Usage
 from torcms.model.core_tab import g_Rel
-# from torcms.model.core_tab import g_Post2Reply
 from torcms.model.core_tab import g_Reply
-from torcms.core.tools import constant
 
 
 class MInforBase(MSuperTable):
