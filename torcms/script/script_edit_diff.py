@@ -22,6 +22,7 @@ now = datetime.datetime.now()
 
 datestr = now.strftime('%Y-%m-%d %H:%M:%S')
 
+time_limit  = 7 * 60 * 60 # 每7小时
 
 def run_edit_diff():
     email_cnt = '''<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -43,7 +44,7 @@ def run_edit_diff():
     mpost = MPost()
     mposthist = MPostHist()
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -62,7 +63,7 @@ def run_edit_diff():
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -84,7 +85,7 @@ def run_edit_diff():
     mpost = MWiki()
     mposthist = MWikiHist()
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -103,7 +104,7 @@ def run_edit_diff():
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -128,7 +129,7 @@ def run_edit_diff():
     mposthist = MPostHist()
     diff_str = ''
     ######################################################
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60)
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
@@ -161,7 +162,7 @@ def run_edit_diff():
         else:
             continue
     ######################################################
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - 24 * 60 * 60, kind='2')
+    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
         if hist_rec:
