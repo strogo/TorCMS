@@ -43,6 +43,21 @@ class MLabel(MSuperTable):
         )
         return uid
 
+    def create_tag_with_uid(self, uid, tag_name):
+
+        if self.tab.select().where(self.tab.uid == uid).count():
+            return False
+
+        self.tab.create(
+            uid=uid,
+            slug = uid,
+            name=tag_name,
+            order = 1,
+            count=0,
+            kind = 'z',
+        )
+        return uid
+
 
 class MPost2Label(MSuperTable):
     def __init__(self):

@@ -23,6 +23,7 @@ class InfoTagHandler(BaseHandler):
         self.mcat = MCategory()
 
     def get(self, url_str=''):
+        print('tag:', url_str)
         url_arr = self.parse_url(url_str)
 
         if len(url_arr) == 1:
@@ -60,6 +61,8 @@ class InfoTagHandler(BaseHandler):
         info = self.minfo.query_by_tagname(tag_slug)
 
         page_num = int(info.count() / config.page_num) + 1
+
+        print('tag tmpl:', '{0}/label/list.html'.format(self.template_dir_name))
 
         self.render('{0}/label/list.html'.format(self.template_dir_name),
                     kwd=kwd,

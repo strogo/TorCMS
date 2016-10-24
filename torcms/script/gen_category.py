@@ -11,7 +11,7 @@ from torcms.model.category_model import MCategory
 
 def gen_infor_category():
     wb = load_workbook(filename='./database/meta/info_tags.xlsx')
-    sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
+    sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2'], wb['Sheet3']]
     class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
     sig_name_arr = []
     mappcat = MCategory()
@@ -46,13 +46,18 @@ def gen_infor_category():
                 role_mask = cell_arr[1].strip().strip('t')
                 t_name_arr = c_cell_val.strip().split(',')
                 u_uid = '{0}{1}'.format(p_uid, c_iud)
+            if u_uid[0] > 'f':
+                kind = u_uid[0]
+            else:
+                kind = '2'
+
             post_data = {
                 'name': t_name_arr[0],
                 'slug': t_name_arr[1],
                 'order': order_index,
                 'uid': u_uid,
                 'role_mask': role_mask,
-                'kind': '2',
+                'kind': kind,
             }
             print(post_data)
             mappcat.insert_data(u_uid, post_data)
@@ -70,7 +75,7 @@ def gen_category(yaml_file, sig):
     mcat = MCategory()
     f = open(yaml_file)
     out_dic = yaml.load(f)
-    print(out_dic)
+    # print(out_dic)
     vv = json.dumps(out_dic, indent=2)
 
     porder = 0
@@ -79,7 +84,7 @@ def gen_category(yaml_file, sig):
 
         if key.endswith('00'):
             uid = key[1:]
-            print(uid)
+            # print(uid)
             cur_dic = out_dic[key]
             porder = cur_dic['order']
             cat_dic = {
@@ -97,8 +102,8 @@ def gen_category(yaml_file, sig):
             pid = key[1:3]
 
             for sub_dic in sub_arr:
-                print('x' * 10)
-                print(sub_dic)
+                # print('x' * 10)
+                # print(sub_dic)
                 # cur_dic = sub_dic
                 porder = out_dic['z' + pid + '00']['order']
 

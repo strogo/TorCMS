@@ -25,6 +25,10 @@ class MPost2Catalog(MSuperTable):
         entry = self.tab_post2catalog.delete().where(
             (self.tab_post2catalog.post == post_id) & (self.tab_post2catalog.tag == tag_id))
         entry.execute()
+    def remove_tag(self,  tag_id):
+        entry = self.tab_post2catalog.delete().where(self.tab_post2catalog.tag == tag_id)
+        entry.execute()
+
 
     def query_by_catid(self, catid):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.tag == catid)

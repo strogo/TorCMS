@@ -13,7 +13,6 @@ class InforTagHandler(BaseHandler):
     '''
     List the infos by the slug of the catalog.
     '''
-
     def initialize(self):
         self.init()
         self.kind = '2'
@@ -22,6 +21,7 @@ class InforTagHandler(BaseHandler):
         self.mapp2tag = MInfor2Catalog()
 
     def get(self, url_str=''):
+        print('tag:', url_str)
         if len(url_str.strip()) == 0:
             return False
 
@@ -60,13 +60,13 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mcat.get_by_slug(tag_slug)
-        if taginfo.kind == self.kind :
-            pass
-        else:
-            return False
+        # if taginfo.kind == self.kind :
+        #     pass
+        # else:
+        #     return False
 
         num_of_tag = self.mapp2tag.count_of_certain_category(taginfo.uid)
-        page_num = math_ceil(num_of_tag / config.page_num) 
+        page_num = math_ceil(num_of_tag / config.page_num)
         tag_name = taginfo.name
 
         kwd = {
@@ -74,7 +74,8 @@ class InforTagHandler(BaseHandler):
             'tag_slug': tag_slug,
             'title': tag_name,
         }
-
+        postinfos = self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number)
+        print(postinfos.count())
         self.render('infor/tag/list.html',
                     tag_name=tag_name,
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),

@@ -70,6 +70,8 @@ class InfoHandler(PostHandler):
 
         elif len(url_arr) == 1 and len(url_str) == 4:
             self.view_info(url_str)
+        elif len(url_arr) == 1 and len(url_str) == 5:
+            self.view_info(url_str)
         else:
             kwd = {
                 'title': '',
