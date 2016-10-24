@@ -14,9 +14,9 @@ from html2text import html2text
 
 
 class app_catalog_of(tornado.web.UIModule):
-    def render(self, uid_with_str):
+    def render(self, uid_with_str, kind = '20', slug = True):
         self.mcat = MCategory()
-        recs = self.mcat.query_uid_starts_with(uid_with_str, kind = '20')
+        recs = self.mcat.query_uid_starts_with(uid_with_str, kind = kind, )
         # return ''
         return self.render_string('modules/info/catalog_of.html', recs=recs)
 

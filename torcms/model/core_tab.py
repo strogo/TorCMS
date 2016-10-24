@@ -11,8 +11,9 @@ class g_Tag(BaseModel):
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
     count = peewee.IntegerField(default=0)
-    kind = peewee.CharField(null=False, max_length=2, default='11',
-                            help_text='tag type: 0 for category, 1 for label', )
+    kind = peewee.CharField(null=False, max_length=2, default='z',
+                            help_text='4 - f for category. g -  for tags', )
+    # todo: useless
     role_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
 
 class g_Link(BaseModel):
@@ -111,7 +112,6 @@ class g_Entity(BaseModel):
                             max_length=1,
                             default='1',
                             help_text='1 for image', )
-
 
 class g_Post2Tag(BaseModel):
     uid = peewee.CharField(null=False, index=True, unique=True, primary_key=True, max_length=36, help_text='', )
