@@ -55,7 +55,7 @@ def gen_infor_category():
                 'order': order_index,
                 'uid': u_uid,
                 'role_mask': role_mask,
-                'kind': 'g',
+                'kind': '2',
             }
             print(post_data)
             mappcat.insert_data(u_uid, post_data)
@@ -91,7 +91,7 @@ def gen_category(yaml_file, sig):
                 'name': cur_dic['name'],
                 'count': 0,
                 'order':porder * 100,
-                'kind': '{0}0'.format(sig),
+                'kind': '{0}'.format(sig),
             }
 
             mcat.insert_data(uid, cat_dic)

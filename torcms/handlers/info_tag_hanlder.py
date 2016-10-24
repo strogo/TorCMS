@@ -60,7 +60,7 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mcat.get_by_slug(tag_slug)
-        if taginfo.kind == self.kind + '0':
+        if taginfo.kind == self.kind :
             pass
         else:
             return False

@@ -197,7 +197,7 @@ class PostHandler(BaseHandler):
             if tag_name == '':
                 pass
             else:
-                self.mpost2label.add_record(signature, tag_name, 1, kind = self.kind + '1')
+                self.mpost2label.add_record(signature, tag_name, 1)
 
         for cur_info in current_tag_infos:
             print(cur_info.tag.name)
@@ -211,7 +211,7 @@ class PostHandler(BaseHandler):
     def update_catalog(self, uid):
         post_data = self.get_post_data()
 
-        current_infos = self.mpost2catalog.query_by_entity_uid(uid, kind= self.kind + '0')
+        current_infos = self.mpost2catalog.query_by_entity_uid(uid, kind= self.kind )
         new_tag_arr = []
         # HTML中预定义的
         def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
@@ -260,9 +260,9 @@ class PostHandler(BaseHandler):
         self.render('post{0}/post_edit.html'.format(self.kind),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    tag_infos=self.mcat.query_all(kind = self.kind + '0'),
-                    app2label_info=self.mpost2label.get_by_id(id_rec, self.kind + '1'),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, self.kind + '0'),
+                    tag_infos=self.mcat.query_all(kind = self.kind ),
+                    app2label_info=self.mpost2label.get_by_id(id_rec),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, self.kind ),
                     dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,

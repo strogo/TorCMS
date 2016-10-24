@@ -8,13 +8,13 @@ from torcms.model.supertable_model import MSuperTable
 class MCategory(MSuperTable):
     def __init__(self):
         self.tab = g_Tag
-        self.kind = '10'
+        self.kind = '1'
         try:
             g_Tag.create_table()
         except:
             pass
 
-    def get_qian2(self, qian2, kind='10'):
+    def get_qian2(self, qian2, kind='1'):
 
         '''
         用于首页。根据前两位，找到所有的大类与小类。
@@ -24,13 +24,13 @@ class MCategory(MSuperTable):
         return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.startswith(qian2))).order_by(
             self.tab.order)
 
-    def query_pcat(self, kind='10'):
+    def query_pcat(self, kind='1'):
         return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
 
-    def query_uid_starts_with(self, qian2, kind='10'):
+    def query_uid_starts_with(self, qian2, kind='1'):
         return self.get_qian2(qian2, kind = kind)
 
-    def query_all(self, by_count=False, by_order=True, kind='10'):
+    def query_all(self, by_count=False, by_order=True, kind='1'):
         if by_count:
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc())
         elif by_order:
@@ -39,7 +39,7 @@ class MCategory(MSuperTable):
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.uid)
         return (recs)
 
-    def query_field_count(self, limit_num, kind='10'):
+    def query_field_count(self, limit_num, kind='1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):
@@ -62,7 +62,7 @@ class MCategory(MSuperTable):
             slug=post_data['slug'] if 'slug' in post_data else raw_rec.slug,
             order=post_data['order'] if 'order' in post_data else raw_rec.order,
             kind=post_data['kind'] if 'kind' in post_data else raw_rec.kind,
-            role_mask = post_data['role_mask'] if 'role_mask' in post_data else '00100',
+            # role_mask = post_data['role_mask'] if 'role_mask' in post_data else '00100',
         ).where(self.tab.uid == uid)
         entry.execute()
 
@@ -76,7 +76,7 @@ class MCategory(MSuperTable):
                 name=post_data['name'],
                 slug=post_data['slug'],
                 order=post_data['order'],
-                kind=post_data['kind'] if 'kind' in post_data else '10',
-                role_mask=post_data['role_mask'] if 'role_mask' in post_data else '00100',
+                kind=post_data['kind'] if 'kind' in post_data else '1',
+                # role_mask=post_data['role_mask'] if 'role_mask' in post_data else '00100',
             )
             return (entry.uid)
