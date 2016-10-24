@@ -9,9 +9,6 @@ from openpyxl.reader.excel import load_workbook
 from torcms.model.category_model import MCategory
 
 
-
-
-
 def gen_infor_category():
     wb = load_workbook(filename='./database/meta/info_tags.xlsx')
     sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
@@ -63,14 +60,14 @@ def gen_infor_category():
 
 
 def gen_doc_category():
-    for  wroot, wdirs, wfiles in os.walk('./database/meta'):
+    for wroot, wdirs, wfiles in os.walk('./database/meta'):
         for wfile in wfiles:
             if wfile.endswith('.yaml'):
                 gen_category(os.path.join(wroot, wfile), wfile[0])
 
-def gen_category(yaml_file, sig):
 
-    mcat  = MCategory()
+def gen_category(yaml_file, sig):
+    mcat = MCategory()
     f = open(yaml_file)
     out_dic = yaml.load(f)
     print(out_dic)
@@ -90,7 +87,7 @@ def gen_category(yaml_file, sig):
                 'slug': cur_dic['slug'],
                 'name': cur_dic['name'],
                 'count': 0,
-                'order':porder * 100,
+                'order': porder * 100,
                 'kind': '{0}'.format(sig),
             }
 
@@ -106,9 +103,7 @@ def gen_category(yaml_file, sig):
                 porder = out_dic['z' + pid + '00']['order']
 
                 for key in sub_dic:
-
                     uid = key[1:]
-
 
                     cur_dic = sub_dic[key]
 
@@ -118,15 +113,16 @@ def gen_category(yaml_file, sig):
                         'slug': cur_dic['slug'],
                         'name': cur_dic['name'],
                         'count': 0,
-                        'order': porder *100 +sorder,
+                        'order': porder * 100 + sorder,
                         'kind': '{0}'.format(sig),
                     }
 
-                    mcat.insert_data( pid + uid, cat_dic)
+                    mcat.insert_data(pid + uid, cat_dic)
+
 
 def gen_doc_category():
-    mcat  = MCategory()
-    for  wroot, wdirs, wfiles in os.walk('./database/meta'):
+    mcat = MCategory()
+    for wroot, wdirs, wfiles in os.walk('./database/meta'):
         for wfile in wfiles:
             if wfile.endswith('.yaml'):
                 gen_category(os.path.join(wroot, wfile), wfile[0])
