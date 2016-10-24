@@ -37,7 +37,7 @@ def do_for_app(writer, rand=True, doc_type=''):
         text2 = rec.title + ',' + html2text.html2text(tornado.escape.xhtml_unescape(rec.cnt_html))
         # writer.update_document(path=u"/a",content="Replacement for the first document")
         writer.update_document(
-                catid = '00000',
+             catid = '00000',
             title=rec.title,
             type=doc_type,
             link='/{0}/{1}'.format(router_post['2'], rec.uid),
@@ -149,6 +149,7 @@ def gen_whoosh_database(if_rand=True, kind='1', post_type={}):
         do_for_app(writer, rand=if_rand, doc_type=post_type['info_type'])
     else:
         do_for_app2(writer, rand=if_rand)
+
     do_for_post(writer, rand=if_rand, doc_type=post_type['doc_type'])
     do_for_wiki(writer, rand=if_rand, doc_type=post_type['doc_type'])
     do_for_page(writer, rand=if_rand, doc_type=post_type['doc_type'])

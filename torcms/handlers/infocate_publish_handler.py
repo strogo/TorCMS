@@ -40,7 +40,7 @@ class InfoPublishHandler(BaseHandler):
             role_mask_idx = rec.role_mask.index('1')
             if self.userinfo.role[role_mask_idx] >= '1':
                 outstr += '''
-            <a href="/meta/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
+            <a href="/info/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
         outstr += '</ul>'
         return (outstr)
