@@ -8,6 +8,7 @@ from torcms.model.supertable_model import MSuperTable
 class MCategory(MSuperTable):
     def __init__(self):
         self.tab = g_Tag
+        self.kind = '10'
         try:
             g_Tag.create_table()
         except:
@@ -38,7 +39,7 @@ class MCategory(MSuperTable):
             recs = self.tab.select().where(self.tab.kind == kind).order_by(self.tab.uid)
         return (recs)
 
-    def query_field_count(self, limit_num, kind='1'):
+    def query_field_count(self, limit_num, kind='10'):
         return self.tab.select().where(self.tab.kind == kind).order_by(self.tab.count.desc()).limit(limit_num)
 
     def get_by_slug(self, slug):

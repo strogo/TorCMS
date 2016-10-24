@@ -83,7 +83,3 @@ def run_init_tables():
     except:
         pass
 
-    try:
-        g_Post2Reply.create_table()
-    except:
-        pass

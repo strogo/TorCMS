@@ -9,7 +9,8 @@ from torcms.core.base_handler import BaseHandler
 from torcms.core import tools
 from torcms.model.wiki_model import MWiki
 from torcms.model.wiki_hist_model import MWikiHist
-import config
+# import config
+
 
 
 class WikiHandler(BaseHandler):
@@ -17,6 +18,7 @@ class WikiHandler(BaseHandler):
         self.init()
         self.mwiki = MWiki()
         self.mwiki_hist = MWikiHist()
+        self.kind = '1'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -55,7 +57,7 @@ class WikiHandler(BaseHandler):
         self.render('doc/wiki/wiki_list.html',
                     view=self.mwiki.query_recent(),
                     format_date=tools.format_date,
-                    cfg=config.cfg,
+                    # cfg=cfg, # Todo: Should delete.
                     kwd=kwd,
                     userinfo=self.userinfo,
                     )
@@ -70,14 +72,17 @@ class WikiHandler(BaseHandler):
                     view=self.mwiki.query_dated(16),
                     format_date=tools.format_date,
                     kwd=kwd,
-                    cfg=config.cfg,
+                    # cfg=cfg, # Todo: Should delete
                     userinfo=self.userinfo,
                     )
 
     def wiki(self, title):
-        dbdate = self.mwiki.get_by_wiki(title)
-        if dbdate:
-            self.viewit(dbdate)
+        postinfo = self.mwiki.get_by_wiki(title)
+        if postinfo:
+            if postinfo.kind == self.kind:
+                self.viewit(postinfo)
+            else:
+                return False
         else:
             self.to_add(title)
 
@@ -115,7 +120,7 @@ class WikiHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     dbrec=wiki_rec,  # Deprecated.
                     postinfo = wiki_rec,
-                    cfg=config.cfg,
+                    # cfg=cfg, # Todo: Should delete
                     userinfo=self.userinfo,
                     )
 
@@ -130,7 +135,7 @@ class WikiHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
-                    cfg=config.cfg,
+                    # cfg=cfg, # Todo: Should delete
                     )
 
     def ajax_count_plus(self, slug):
@@ -140,26 +145,26 @@ class WikiHandler(BaseHandler):
 
         return json.dump(output, self)
 
-    @tornado.web.authenticated
-    def to_add(self, title):
-        if self.userinfo.role[0] > '1':
-            pass
-        else:
-            return False
 
+    def to_add(self, title):
         kwd = {
             'title': title,
             'pager': '',
         }
-        self.render('doc/wiki/wiki_add.html',
-                    kwd=kwd,
-                    cfg=config.cfg,
-                    userinfo=self.userinfo,
-                    )
-        
+        if self.userinfo and self.userinfo.role[0] > '0':
+            tmpl = 'doc/wiki/wiki_add.html'
+        else:
+            tmpl = 'doc/wiki/wiki_login.html'
+
+        self.render(tmpl,
+                kwd=kwd,
+                # cfg= cfg, # Todo: should delete
+                userinfo=self.userinfo,
+                )
+
     @tornado.web.authenticated
     def wikinsert(self):
-        if self.userinfo.role[0] > '1':
+        if self.userinfo.role[0] > '0':
             pass
         else:
             return False

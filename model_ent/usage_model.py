@@ -48,7 +48,7 @@ class MUsage(object):
 
     def add_or_update(self, user_id, sig):
         tt =self.get_by_signature(user_id, sig)
-        uu = self.mapp2catalog.get_entry_catalog(sig)
+        uu = self.mapp2catalog.get_entry_catalog(sig, kind= '20')
         if uu == False:
             return False
         cat_id = uu.catalog.uid

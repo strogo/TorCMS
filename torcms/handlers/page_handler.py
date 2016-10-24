@@ -18,6 +18,7 @@ class PageHandler(BaseHandler):
         self.mpage_hist = MPageHist()
         self.mcat = MCategory()
         self.cats = self.mcat.query_all()
+        self.kind = '2'
 
 
     def get(self, url_str=''):
@@ -46,8 +47,10 @@ class PageHandler(BaseHandler):
         rec_page = self.mpage.get_by_uid(slug)
 
         if rec_page:
-
-            self.viewit(rec_page)
+            if rec_page.kind == self.kind:
+                self.viewit(rec_page)
+            else:
+                return False
         else:
 
             self.to_add(slug)

@@ -7,7 +7,6 @@ from torcms.model.category_model import MCategory
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
-from torcms.core.tools import constant
 
 
 class InforTagHandler(BaseHandler):
@@ -17,7 +16,7 @@ class InforTagHandler(BaseHandler):
 
     def initialize(self):
         self.init()
-        self.kind = constant['cate_info']
+        self.kind = '2'
         self.mequa = MInfor()
         self.mcat = MCategory()
         self.mapp2tag = MInfor2Catalog()
@@ -37,7 +36,7 @@ class InforTagHandler(BaseHandler):
                 self.list(url_arr[0], url_arr[1])
 
     def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2, kind = self.kind )
+        cur_cat = self.mcat.query_uid_starts_with(qian2, kind = self.kind + '0' )
 
         out_arr = {}
         for x in cur_cat:
@@ -61,7 +60,7 @@ class InforTagHandler(BaseHandler):
         else:
             current_page_number = int(cur_p)
         taginfo = self.mcat.get_by_slug(tag_slug)
-        if taginfo.kind == self.kind:
+        if taginfo.kind == self.kind + '0':
             pass
         else:
             return False

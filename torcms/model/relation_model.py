@@ -58,7 +58,7 @@ class MRelation():
         '''
         The the related infors.
         '''
-        info_tag = self.minfo2tag.get_entry_catalog(app_id)
+        info_tag = self.minfo2tag.get_entry_catalog(app_id, kind=kind + '0')
         if info_tag:
             return self.tab_post2tag.select().join(self.tab_post).where(
                 (self.tab_post2tag.tag == info_tag.tag.uid) & (self.tab_post.kind == kind)).order_by(

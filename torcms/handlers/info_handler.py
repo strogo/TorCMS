@@ -11,7 +11,6 @@ from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
 from torcms.model.info_relation_model import MInforRel
-# from torcms.model.info_reply_model import MInfor2Reply
 from torcms.model.evaluation_model import MEvaluation
 from torcms.model.category_model import MCategory
 from torcms.model.usage_model import MUsage
@@ -31,7 +30,6 @@ class InfoHandler(BaseHandler):
         self.musage = MUsage()
         self.mcat = MCategory()
         self.mrel = MInforRel()
-        # self.mreply = MInfor2Reply()
         self.kind = '2'
 
     def get(self, url_str=''):
@@ -86,9 +84,14 @@ class InfoHandler(BaseHandler):
         :param info_id:
         :return: Nonthing.
         '''
-        app_rec = self.minfo.get_by_uid(info_id)
+        postinfo = self.minfo.get_by_uid(info_id)
 
-        if app_rec:
+        if postinfo.kind == self.kind:
+            pass
+        else:
+            return
+
+        if postinfo:
             pass
         else:
             kwd = {
@@ -106,7 +109,7 @@ class InfoHandler(BaseHandler):
             cat_uid_arr.append(cat_uid)
         print('info category:',  cat_uid_arr)
         replys = [] # self.mreply.get_by_id(info_id)
-        rel_recs = self.mrel.get_app_relations(app_rec.uid, 0, kind = '2')
+        rel_recs = self.mrel.get_app_relations(postinfo.uid, 0, kind = '2')
         if len(cat_uid_arr) > 0:
             rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
@@ -115,8 +118,8 @@ class InfoHandler(BaseHandler):
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
 
-        if 'def_cat_uid' in app_rec.extinfo:
-            ext_catid = app_rec.extinfo['def_cat_uid']
+        if 'def_cat_uid' in postinfo.extinfo:
+            ext_catid = postinfo.extinfo['def_cat_uid']
         else:
             ext_catid = ''
 
@@ -158,25 +161,25 @@ class InfoHandler(BaseHandler):
         if self.get_current_user():
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
-        tmpl = self.ext_tmpl_name(app_rec) if self.ext_tmpl_name(app_rec) else self.get_tmpl_name(app_rec)
+        tmpl = self.ext_tmpl_name(postinfo) if self.ext_tmpl_name(postinfo) else self.get_tmpl_name(postinfo)
         print('info tmpl: ' + tmpl )
-        ext_catid2 = app_rec.extinfo['def_cat_uid'] if 'def_cat_uid' in app_rec.extinfo else None
+        ext_catid2 = postinfo.extinfo['def_cat_uid'] if 'def_cat_uid' in postinfo.extinfo else None
 
 
         self.render(tmpl,
-                    kwd=dict(kwd, **self.extra_kwd(app_rec)),
-                    calc_info=app_rec, # Deprecated
-                    post_info=app_rec, # Deprecated
-                    postinfo = app_rec,
+                    kwd=dict(kwd, **self.extra_kwd(postinfo)),
+                    calc_info=postinfo, # Deprecated
+                    post_info=postinfo, # Deprecated
+                    postinfo = postinfo,
                     userinfo=self.userinfo,
                     relations=rel_recs,
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
-                    tag_info=self.mapp2tag.get_by_id(info_id, kind = tools.constant['tag_info']),
+                    tag_info=self.mapp2tag.get_by_id(info_id, kind = self.kind + '1'),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     replys=[], # replys,
-                    cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = tools.constant['cate_info']) if ext_catid else [],
+                    cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = self.kind + '0' ) if ext_catid else [],
                     role_mask_idx=role_mask_idx,
                     )
 
@@ -218,7 +221,7 @@ class InfoHandler(BaseHandler):
         if cat_id:
             tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
         else:
-            tmpl = 'infor/app/show_map.html'
+            tmpl = 'post{0}/show_map.html'.format(self.kind)
         return tmpl
 
     def add_relation(self, f_uid, t_uid):

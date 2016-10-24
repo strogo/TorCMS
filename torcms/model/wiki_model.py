@@ -7,11 +7,14 @@ import tornado.escape
 from torcms.core import tools
 from torcms.model.core_tab import g_Wiki
 from torcms.model.supertable_model import MSuperTable
+import peewee
+
 
 
 class MWiki(MSuperTable):
     def __init__(self):
         self.tab = g_Wiki
+        self.kind = '1'
         try:
             self.tab.create_table()
         except:
@@ -103,3 +106,8 @@ class MWiki(MSuperTable):
     def get_by_title(self, in_title):
         # Aka get_by_wiki
         return self.get_by_wiki(in_title)
+
+    def query_random(self, num=6):
+        return self.tab.select().where(self.tab.kind == self.kind).order_by(peewee.fn.Random()).limit(num)
+    def query_recent(self, num=8):
+        return self.tab.select().where(self.tab.kind == self.kind).order_by(self.tab.time_update).limit(num)

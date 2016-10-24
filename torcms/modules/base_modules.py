@@ -6,21 +6,16 @@ import tornado.web
 from torcms.model.post_model import MPost
 from torcms.model.link_model import MLink
 from torcms.model.post2catalog_model import MPost2Catalog
-import config
 import tornado.web
 from torcms.model.category_model import MCategory
-from torcms.core.tools import constant
 from torcms.model.info_model import MInfor as  MInfor
 from torcms.model.label_model import MPost2Label
-
 from torcms.model.reply_model import MReply
 from torcms.model.page_model import MPage
+import config
 
 mreply = MReply()
 mpage = MPage()
-
-
-
 
 
 class show_page(tornado.web.UIModule):
@@ -29,12 +24,10 @@ class show_page(tornado.web.UIModule):
         if page:
             return self.render_string('modules/show_page.html',
                                       unescape=tornado.escape.xhtml_unescape,
-                                      postinfo = page
-                                  )
+                                      postinfo=page
+                                      )
         else:
             return '<a href="/page/{0}.html">{0}</a>'.format(page_id)
-
-
 
 
 class get_footer(tornado.web.UIModule):
@@ -191,9 +184,8 @@ class the_category(tornado.web.UIModule):
     def render(self, post_id):
         tmpl_str = '''<a href="/category/{0}">{1}</a>'''
         format_arr = [tmpl_str.format(uu.tag.slug, uu.tag.name) for uu in
-                      MPost2Catalog().query_by_entity_uid(post_id, kind = constant['cate_post'])]
+                      MPost2Catalog().query_by_entity_uid(post_id)]
         return ', '.join(format_arr)
-
 
 
 class list_categories(tornado.web.UIModule):
@@ -249,7 +241,6 @@ class post_tags(tornado.web.UIModule):
         return out_str
 
 
-
 class ModuleCatMenu(tornado.web.UIModule):
     def render(self, with_count=True):
         self.mcat = MCategory()
@@ -260,9 +251,6 @@ class ModuleCatMenu(tornado.web.UIModule):
         }
         return self.render_string('modules/post/menu_post.html',
                                   kwd=kwd)
-
-
-
 
 
 class ToplineModule(tornado.web.UIModule):
@@ -308,16 +296,14 @@ class catalog_pager(tornado.web.UIModule):
                                   page_current=current,
                                   )
 
+
 class info_label_pager(tornado.web.UIModule):
     def render(self, *args, **kwargs):
-
         self.minfo = MInfor()
         tag_slug = args[0]
         current = int(args[1])
-        # cat_slug 分类
-        # current 当前页面
 
-        cat_rec =  self.minfo.query_by_tagname(tag_slug)
+        cat_rec = self.minfo.query_by_tagname(tag_slug)
 
         page_num = int(cat_rec.count() / config.page_num)
 
@@ -335,16 +321,12 @@ class info_label_pager(tornado.web.UIModule):
                                   page_current=current,
                                   )
 
+
 class doc_label_pager(tornado.web.UIModule):
     def render(self, *args, **kwargs):
-
         self.mapp2tag = MPost2Label()
         tag_slug = args[0]
         current = int(args[1])
-        # cat_slug 分类
-        # current 当前页面
-
-
 
         page_num = int(self.mapp2tag.total_number(tag_slug) / config.page_num)
 
