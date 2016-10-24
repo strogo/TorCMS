@@ -373,7 +373,7 @@ class InfoHandler( PostHandler ):
         else:
             return False
         self.render('post{0}/add.html'.format(self.kind),
-                    tag_infos=self.mcat.query_all(by_order=True, kind = self.kind  + '0'),
+                    tag_infos=self.mcat.query_all(by_order=True, kind = self.kind ),
                     userinfo=self.userinfo,
 
                     )

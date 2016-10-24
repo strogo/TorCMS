@@ -184,7 +184,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        current_tag_infos = self.mpost2label.get_by_id(signature, kind= self.kind + '1')
+        current_tag_infos = self.mpost2label.get_by_id(signature, kind= self.kind )
         post_data = self.get_post_data()
         if 'tags' in post_data:
             pass
