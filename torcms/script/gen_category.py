@@ -1,6 +1,6 @@
 # -*- coding: utf-8
 
-
+import os
 import yaml
 import json
 
@@ -63,10 +63,15 @@ def gen_infor_category():
 
 
 def gen_doc_category():
+    for  wroot, wdirs, wfiles in os.walk('./database/meta'):
+        for wfile in wfiles:
+            if wfile.endswith('.yaml'):
+                gen_category(os.path.join(wroot, wfile), wfile[0])
+
+def gen_category(yaml_file, sig):
+
     mcat  = MCategory()
-
-
-    f = open('./database/meta/doc_catalog.yaml')
+    f = open(yaml_file)
     out_dic = yaml.load(f)
     print(out_dic)
     vv = json.dumps(out_dic, indent=2)
@@ -86,7 +91,7 @@ def gen_doc_category():
                 'name': cur_dic['name'],
                 'count': 0,
                 'order':porder * 100,
-                'kind': '10',
+                'kind': '{0}0'.format(sig),
             }
 
             mcat.insert_data(uid, cat_dic)
@@ -114,10 +119,18 @@ def gen_doc_category():
                         'name': cur_dic['name'],
                         'count': 0,
                         'order': porder *100 +sorder,
-                        'kind': '10',
+                        'kind': '{0}0'.format(sig),
                     }
 
                     mcat.insert_data( pid + uid, cat_dic)
+
+def gen_doc_category():
+    mcat  = MCategory()
+    for  wroot, wdirs, wfiles in os.walk('./database/meta'):
+        for wfile in wfiles:
+            if wfile.endswith('.yaml'):
+                gen_category(os.path.join(wroot, wfile), wfile[0])
+
 
 def run_gen_category():
     gen_doc_category()
