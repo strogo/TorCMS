@@ -18,7 +18,7 @@ from torcms.model.reply_model import MReply
 from config import router_post
 from config import cfg
 from torcms.handlers.post_handler import PostHandler
-
+from torcms.model.info_hist_model import MInfoHist
 
 import tornado.gen
 import tornado.web
@@ -28,33 +28,33 @@ class InfoHandler( PostHandler ):
     def initialize(self, hinfo=''):
         self.init()
         self.mevaluation = MEvaluation()
-        self.mapp2catalog = MInfor2Catalog()
-        self.mapp2tag = MInfor2Label()
-
-        self.minfo = MInfor()
+        self.mpost2label = MInfor2Label()
+        self.mpost2catalog = MInfor2Catalog()
         self.mpost = MInfor()
-
         self.musage = MUsage()
         self.mcat = MCategory()
         self.mrel = MInforRel()
         self.mreply = MReply()
+        self.mpost_hist = MInfoHist()
         self.kind = '2'
         self.sig = '2'  # '1' for maplet,  '2' for drr
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] in  ['cat_add', '_cat_add']:
+        if url_str == '':
+            self.index()
+        elif url_arr[0] in  ['cat_add', '_cat_add']:
             #  分类方式
             self.user_to_add(url_arr[1])
-        elif url_arr[0] == '_add':
+        elif url_arr[0] in ['_add','add_document']:
             # 直接添加
             self.add_app()
         elif url_arr[0] == 'catalog':
             self.catalog()
 
         elif len(url_arr) == 2:
-            if url_arr[0] == 'edit':
+            if url_arr[0] in ['edit','modify','_edit']:
                 self.to_edit_app(url_arr[1])
             elif url_arr[0] == 'add':
                 self.to_add_app(url_arr[1])
@@ -79,8 +79,15 @@ class InfoHandler( PostHandler ):
             self.render('html/404.html',
                         kwd=kwd,
                         userinfo=self.userinfo, )
+    def index(self):
+        self.render('post{0}/index.html'.format(self.kind),
+                    userinfo=self.userinfo,
+                    kwd={'uid': '',}
+                    )
+
 
     def post(self, url_str=''):
+
         url_arr = self.parse_url(url_str)
 
         if url_arr[0] == 'to_add':
@@ -135,7 +142,7 @@ class InfoHandler( PostHandler ):
         :param info_id:
         :return: Nonthing.
         '''
-        postinfo = self.minfo.get_by_uid(info_id)
+        postinfo = self.mpost.get_by_uid(info_id)
 
         if postinfo.kind == self.kind:
             pass
@@ -153,7 +160,7 @@ class InfoHandler( PostHandler ):
                         userinfo=self.userinfo, )
             return False
         #
-        cats = self.mapp2catalog.query_by_entity_uid(info_id, kind='20')
+        cats = self.mpost2catalog.query_by_entity_uid(info_id, kind='20')
         cat_uid_arr = []
         for cat_rec in cats:
             cat_uid = cat_rec.tag.uid
@@ -162,9 +169,9 @@ class InfoHandler( PostHandler ):
         replys = [] # self.mreply.get_by_id(info_id)
         rel_recs = self.mrel.get_app_relations(postinfo.uid, 0, kind = '2')
         if len(cat_uid_arr) > 0:
-            rand_recs = self.minfo.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
+            rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
-            rand_recs = self.minfo.query_random(4 - rel_recs.count() + 4)
+            rand_recs = self.mpost.query_random(4 - rel_recs.count() + 4)
 
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
@@ -208,11 +215,12 @@ class InfoHandler( PostHandler ):
             'parentname': parentname,
             'catname': catname,
         }
-        self.minfo.view_count_increase(info_id)
+        self.mpost.view_count_increase(info_id)
         if self.get_current_user():
             self.musage.add_or_update(self.userinfo.uid, info_id)
         self.set_cookie('user_pass', cookie_str)
         tmpl = self.ext_tmpl_name(postinfo) if self.ext_tmpl_name(postinfo) else self.get_tmpl_name(postinfo)
+
         print('info tmpl: ' + tmpl )
         ext_catid2 = postinfo.extinfo['def_cat_uid'] if 'def_cat_uid' in postinfo.extinfo else None
 
@@ -227,7 +235,7 @@ class InfoHandler( PostHandler ):
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
-                    tag_info=self.mapp2tag.get_by_id(info_id, kind = self.kind + '1'),
+                    tag_info=self.mpost2label.get_by_id(info_id, kind = self.kind + '1'),
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     replys=[], # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2],kind = self.kind + '0' ) if ext_catid else [],
@@ -253,7 +261,7 @@ class InfoHandler( PostHandler ):
         if last_app_uid:
             last_app_uid = last_app_uid.decode('utf-8')
         self.set_secure_cookie('use_app_uid', app_id)
-        if last_app_uid and self.minfo.get_by_uid(last_app_uid):
+        if last_app_uid and self.mpost.get_by_uid(last_app_uid):
             self.add_relation(last_app_uid, app_id)
 
     def ext_tmpl_name(self, rec):
@@ -282,7 +290,7 @@ class InfoHandler( PostHandler ):
         :param t_uid:
         :return: return True if the relation has been succesfully added.
         '''
-        if self.minfo.get_by_uid(t_uid):
+        if self.mpost.get_by_uid(t_uid):
             pass
         else:
             return False
@@ -290,8 +298,8 @@ class InfoHandler( PostHandler ):
             return False
 
         # 针对分类进行处理。只有落入相同分类的，才加1
-        f_cats = self.mapp2catalog.query_by_entity_uid(f_uid)
-        t_cats = self.mapp2catalog.query_by_entity_uid(t_uid)
+        f_cats = self.mpost2catalog.query_by_entity_uid(f_uid)
+        t_cats = self.mpost2catalog.query_by_entity_uid(t_uid)
         flag = False
 
         for f_cat in f_cats:
@@ -489,7 +497,7 @@ class InfoHandler( PostHandler ):
                 post_data[key] = self.get_arguments(key)[0]
 
         post_data['user_name'] = self.userinfo.user_name
-        post_data['kind'] = self.kind
+        # post_data['kind'] = self.kind
 
         current_info = self.mpost.get_by_uid(uid)
 
@@ -513,7 +521,12 @@ class InfoHandler( PostHandler ):
                                extinfo=ext_dic)
         self.update_catalog(uid)
         self.update_tag(uid)
-        self.redirect('/{0}/{1}'.format(router_post[self.kind],uid))
+
+        print('post kind:' + self.kind)
+        print('update jump to:','/{0}/{1}'.format(router_post[self.kind],uid))
+
+        # Todo: won't work with self.kind
+        self.redirect('/{0}/{1}'.format(router_post[current_info.kind],uid))
 
     @tornado.web.authenticated
     def map_add(self, uid='', sig = ''):
