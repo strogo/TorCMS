@@ -13,19 +13,19 @@ class MLabel(MSuperTable):
         self.tab = CabLabel
 
 
-    def get_id_by_name(self, tag_name, kind = '11'):
-        uu = self.tab.select().where((self.tab.name == tag_name) & (self.tab.kind ==  kind))
+    def get_id_by_name(self, tag_name, kind = 'z'):
+        uu = self.tab.select().where(self.tab.name == tag_name)
         if uu.count() == 1:
             return uu.get().uid
         elif uu.count() > 1:
             for x in uu:
                 self.delete(x.uid)
         else:
-            return self.create_tag(tag_name, kind)
+            return self.create_tag(tag_name)
 
-    def create_tag(self, tag_name, kind='11'):
+    def create_tag(self, tag_name, kind='z'):
 
-        cur_count = self.tab.select().where((self.tab.name == tag_name) & (self.tab.kind ==  kind)).count()
+        cur_count = self.tab.select().where(self.tab.name == tag_name).count()
         if cur_count > 0:
             return False
 
@@ -39,7 +39,7 @@ class MLabel(MSuperTable):
             name=tag_name,
             order = 1,
             count=0,
-            kind = kind,
+            kind = 'z',
         )
         return uid
 
@@ -66,14 +66,13 @@ class MPost2Label(MSuperTable):
             out_str += tmp_str
         return out_str
 
-    def get_by_id(self, idd, kind = '11'):
-        print('select kind: {0}'.format(kind))
-        return self.tab.select().join(self.tab_label).where((self.tab.post == idd) & (self.tab_label.kind == kind) )
+    def get_by_id(self, idd, kind = 'z'):
+        return self.tab.select().join(self.tab_label).where((self.tab.post == idd) & (self.tab_label.kind == 'z') )
 
 
 
-    def get_by_info(self, post_id, catalog_id, kind =  '11'):
-        tmp_recs = self.tab.select().join(self.tab_label).where((self.tab.post == post_id) & (self.tab.tag == catalog_id) & (self.tab_label.kind == kind))
+    def get_by_info(self, post_id, catalog_id, kind =  'z'):
+        tmp_recs = self.tab.select().join(self.tab_label).where((self.tab.post == post_id) & (self.tab.tag == catalog_id) & (self.tab_label.kind == 'z'))
 
         if tmp_recs.count() > 1:
             ''' 如果多于1个，则全部删除
@@ -87,10 +86,10 @@ class MPost2Label(MSuperTable):
         else:
             return False
 
-    def add_record(self, post_id, tag_name, order=1, kind = '11'):
+    def add_record(self, post_id, tag_name, order=1, kind = 'z'):
         print('Add label kind: {0}'.format(kind))
-        tag_id = self.mtag.get_id_by_name(tag_name, kind)
-        tt = self.get_by_info(post_id, tag_id, kind=kind)
+        tag_id = self.mtag.get_id_by_name(tag_name, 'z')
+        tt = self.get_by_info(post_id, tag_id, kind='z')
         if tt:
             entry = self.tab.update(
                 order=order,
@@ -102,7 +101,7 @@ class MPost2Label(MSuperTable):
                 post=post_id,
                 tag=tag_id,
                 order=order,
-                kind = kind,
+                kind = 'z',
             )
             return entry.uid
 
