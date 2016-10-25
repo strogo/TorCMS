@@ -27,8 +27,7 @@ class RatingHandler(BaseHandler):
         self.mrating = MRating()
 
     def post(self, url_str=''):
-        print('=' * 10)
-        print(url_str)
+
         url_arr = self.parse_url(url_str)
         print(url_arr)
         if len(url_arr) == 2 and url_arr[0] == '_update':

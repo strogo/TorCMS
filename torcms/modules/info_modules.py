@@ -110,7 +110,7 @@ class app_tags(tornado.web.UIModule):
     def render(self, signature):
         print('x' * 100)
         self.mapp2tag = torcms.model.infor2catalog_model.MInfor2Catalog()
-        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind = '20')
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind = '2')
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -134,7 +134,7 @@ class label_count(tornado.web.UIModule):
 class app_menu(tornado.web.UIModule):
     def render(self, limit):
         self.mcat = MCategory()
-        all_cats = self.mcat.query_field_count(limit, kind ='20')
+        all_cats = self.mcat.query_field_count(limit, kind ='2')
         kwd = {
             'cats': all_cats,
         }

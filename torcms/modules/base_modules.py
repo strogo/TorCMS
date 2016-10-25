@@ -230,7 +230,7 @@ class copyright(tornado.web.UIModule):
 class post_tags(tornado.web.UIModule):
     def render(self, signature):
         self.mapp2tag = MPost2Catalog()
-        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind='10')
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind='1')
         out_str = ''
         ii = 1
         for tag_info in tag_infos:

@@ -49,7 +49,7 @@ class widget_editor(tornado.web.UIModule):
 class widget_search(tornado.web.UIModule):
     def render(self, ):
         self.mcat = MCategory()
-        tag_enum = self.mcat.query_pcat(kind='20')
+        tag_enum = self.mcat.query_pcat(kind='2')
         return self.render_string('modules/widget/widget_search.html',
                                   cat_enum=tag_enum,
                                   tag_enum = tag_enum)

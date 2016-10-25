@@ -30,7 +30,7 @@ class MSuperTable():
     def query_random(self, num=6, kind = '1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(peewee.fn.Random()).limit(num)
 
-    def get_parent_list(self, kind='10'):
+    def get_parent_list(self, kind='1'):
         db_data = self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(
             self.tab.uid)
         return (db_data)

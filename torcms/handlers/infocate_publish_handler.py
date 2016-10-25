@@ -32,7 +32,7 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def format_class2(self, fatherid):
-        dbdata = self.minforcatalog.get_qian2(fatherid[:2], kind = '20')
+        dbdata = self.minforcatalog.get_qian2(fatherid[:2], kind = '2')
         outstr = '<ul class="list-group">'
         for rec in dbdata:
             if rec.uid.endswith('00'):
@@ -47,7 +47,7 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def view_class1(self):
-        dbdata = self.minforcatalog.get_parent_list( kind = '20')
+        dbdata = self.minforcatalog.get_parent_list( kind = '2')
         class1str = ''
         for rec in dbdata:
             role_mask_idx = rec.role_mask.index('1')
