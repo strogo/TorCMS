@@ -57,15 +57,17 @@ def do_for_app2(writer, rand=True):
         # # sleep(0.1)
         text2 = rec.title + ',' + html2text.html2text(tornado.escape.xhtml_unescape(rec.cnt_html))
         # writer.update_document(path=u"/a",content="Replacement for the first document")
-        catid = rec.extinfo['def_cat_uid'][:2] + '00'
-        writer.update_document(
-            title=rec.title,
-            catid=catid,
-            type='<span style="color:red;">[{0}]</span>'.format(
-                mappcat.get_by_uid(rec.extinfo['def_cat_uid'][:2] + '00').name),
-            link='/{0}/{1}'.format(router_post['2'], rec.uid),
-            content=text2
-        )
+        if 'def_cat_uid' in rec.extinfo:
+            print(rec.extinfo['def_cat_uid'])
+            catid = rec.extinfo['def_cat_uid'][:2] + '00'
+            writer.update_document(
+                title=rec.title,
+                catid=catid,
+                type='<span style="color:red;">[{0}]</span>'.format(
+                    mappcat.get_by_uid(rec.extinfo['def_cat_uid'][:2] + '00').name),
+                link='/{0}/{1}'.format(router_post['2'], rec.uid),
+                content=text2
+            )
 
 
 def do_for_post(writer, rand=True, doc_type=''):
