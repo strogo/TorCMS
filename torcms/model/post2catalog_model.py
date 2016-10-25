@@ -76,9 +76,14 @@ class MPost2Catalog(MSuperTable):
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return recs
 
-    def query_by_entity_uid(self, idd, kind='1'):
 
-        return self.tab_post2catalog.select().join(self.tab_catalog).where(
+    def query_by_entity_uid(self, idd, kind=''):
+        if kind == '':
+            return  self.tab_post2catalog.select().join(self.tab_catalog).where(
+                 self.tab_post2catalog.post == idd).order_by(
+                self.tab_post2catalog.order)
+        else:
+            return self.tab_post2catalog.select().join(self.tab_catalog).where(
             (self.tab_catalog.kind == kind) & (self.tab_post2catalog.post == idd)).order_by(
             self.tab_post2catalog.order)
 

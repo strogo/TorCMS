@@ -83,6 +83,7 @@ class InfoHandler(PostHandler):
                         userinfo=self.userinfo, )
 
     def index(self):
+        print('index', self.kind)
         self.render('post{0}/index.html'.format(self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': '',}

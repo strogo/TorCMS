@@ -108,9 +108,10 @@ class app_random_choose(tornado.web.UIModule):
 
 class app_tags(tornado.web.UIModule):
     def render(self, signature):
-        print('x' * 100)
+        print('-' * 10)
+        print(signature)
         self.mapp2tag = torcms.model.infor2catalog_model.MInfor2Catalog()
-        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind = '2')
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature)
         out_str = ''
         ii = 1
         for tag_info in tag_infos:
@@ -118,8 +119,7 @@ class app_tags(tornado.web.UIModule):
                                                                                             tag_info.tag.name)
             out_str += tmp_str
             ii += 1
-        print(out_str)
-        print('y' * 20)
+        print('info category', out_str)
         return out_str
 
 
