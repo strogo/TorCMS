@@ -231,6 +231,10 @@ class InfoHandler(PostHandler):
         print('info tmpl: ' + tmpl)
         ext_catid2 = postinfo.extinfo['def_cat_uid'] if 'def_cat_uid' in postinfo.extinfo else None
 
+        if self.userinfo:
+            recent_apps = self.musage.query_recent(self.userinfo.uid, postinfo.kind, 6)[1:]
+        else:
+            recent_apps = []
         self.render(tmpl,
                     kwd=dict(kwd, **self.extra_kwd(postinfo)),
                     calc_info=postinfo,  # Deprecated
@@ -242,10 +246,8 @@ class InfoHandler(PostHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
-                    recent_apps=self.musage.query_recent(self.userinfo.uid, postinfo.kind, 6)[1:],
-                    replys=[],  # replys,
+                    recent_apps=recent_apps,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2], kind=self.kind ) if ext_catid else [],
-                    role_mask_idx=0,
                     )
 
     def extra_kwd(self, info_rec):
