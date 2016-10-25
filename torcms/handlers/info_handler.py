@@ -242,7 +242,7 @@ class InfoHandler(PostHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
-                    recent_apps=self.musage.query_recent(self.get_current_user(), postinfo.kind, 6)[1:],
+                    recent_apps=self.musage.query_recent(self.userinfo.uid, postinfo.kind, 6)[1:],
                     replys=[],  # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2], kind=self.kind ) if ext_catid else [],
                     role_mask_idx=0,
