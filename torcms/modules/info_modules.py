@@ -71,6 +71,7 @@ class app_most_used(tornado.web.UIModule):
         all_cats = self.mcat.query_most(kind, num)
         kwd = {
             'with_tag': with_tag,
+            'router': router_post[kind],
         }
         return self.render_string('modules/info/list_equation.html', recs=all_cats,
                                   kwd=kwd,
@@ -92,11 +93,12 @@ class app_least_use_by_cat(tornado.web.UIModule):
 
 
 class app_recent_used(tornado.web.UIModule):
-    def render(self, num, with_tag=False):
+    def render(self,   kind, num, with_tag=False):
         self.mcat = torcms.model.info_model.MInfor()
-        all_cats = self.mcat.query_recent(num)
+        all_cats = self.mcat.query_recent(num, kind = kind)
         kwd = {
             'with_tag': with_tag,
+            'router': router_post[kind]
         }
         return self.render_string('modules/info/list_equation.html',
                                   recs=all_cats,
@@ -104,9 +106,9 @@ class app_recent_used(tornado.web.UIModule):
 
 
 class app_random_choose(tornado.web.UIModule):
-    def render(self, num):
+    def render(self, kind, num):
         self.mcat = torcms.model.info_model.MInfor()
-        all_cats = self.mcat.query_random(num)
+        all_cats = self.mcat.query_random(num = num, kind = kind)
         return self.render_string('modules/info/list_equation.html', recs=all_cats)
 
 

@@ -175,7 +175,7 @@ class InfoHandler(PostHandler):
         if len(cat_uid_arr) > 0:
             rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
-            rand_recs = self.mpost.query_random(4 - rel_recs.count() + 4)
+            rand_recs = self.mpost.query_random( num = 4 - rel_recs.count() + 4, kind = postinfo.kind)
 
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
