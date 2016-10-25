@@ -187,14 +187,18 @@ class InfoHandler(PostHandler):
             pass
         else:
             ext_catid = ''
-        parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name if ext_catid != '' else ''
+
+        parent_name = ''
+        if ext_catid != '':
+            if self.mcat.get_by_id(ext_catid[:2] + '00'):
+                parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name
+
+        cat_name = ''
         if ext_catid != '':
             cat_rec = self.mcat.get_by_uid(ext_catid)
-            role_mask_idx = cat_rec.role_mask.index('1')
-            cat_name = cat_rec.name
-        else:
-            role_mask_idx = 0
-            cat_name = ''
+            if cat_rec:
+                cat_name = cat_rec.name
+
 
         parentname = '<a href="/list/{0}">{1}</a>'.format(ext_catid[:2] + '00', parent_name)
 
@@ -239,7 +243,7 @@ class InfoHandler(PostHandler):
                     recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
                     replys=[],  # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2], kind=self.kind ) if ext_catid else [],
-                    role_mask_idx=role_mask_idx,
+                    role_mask_idx=0,
                     )
 
     def extra_kwd(self, info_rec):
@@ -435,10 +439,18 @@ class InfoHandler(PostHandler):
         else:
             catid = ''
 
+        p_name = ''
+        if catid != '':
+            if self.mcat.get_by_id(catid[:2] + '00'):
+                p_name = self.mcat.get_by_id(catid[:2] + '00').name
+        c_name = ''
+        if catid != '':
+            if self.mcat.get_by_id(catid):
+                c_name =self.mcat.get_by_id(catid).name
         kwd = {
             'def_cat_uid': catid,
-            'parentname': self.mcat.get_by_id(catid[:2] + '00').name if catid != '' else '',
-            'catname': self.mcat.get_by_id(catid).name if catid != '' else '',
+            'parentname':  p_name,
+            'catname':  c_name,
             'parentlist': self.mcat.get_parent_list(),
             'userip': self.request.remote_ip
         }
