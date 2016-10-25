@@ -80,7 +80,7 @@ class MPost2Catalog(MSuperTable):
     def query_by_entity_uid(self, idd, kind=''):
         if kind == '':
             return self.tab_post2catalog.select().join(self.tab_catalog).where(
-                 self.tab_post2catalog.post == idd).order_by(
+                 (self.tab_post2catalog.post == idd) & (self.tab_catalog.kind != 'z')).order_by(
                 self.tab_post2catalog.order)
         else:
             return self.tab_post2catalog.select().join(self.tab_catalog).where(
@@ -98,7 +98,7 @@ class MPost2Catalog(MSuperTable):
         :return:
         '''
 
-        uu = self.query_by_entity_uid(app_uid, app_uid.kind)
+        uu = self.query_by_entity_uid(app_uid)
         if uu.count() > 0:
             return uu.get()
         else:
