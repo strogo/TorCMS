@@ -119,7 +119,7 @@ class app_tags(tornado.web.UIModule):
                                                                                             tag_info.tag.name)
             out_str += tmp_str
             ii += 1
-        print('info category', out_str)
+        #print('info category', out_str)
         return out_str
 
 

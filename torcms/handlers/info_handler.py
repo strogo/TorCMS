@@ -171,6 +171,7 @@ class InfoHandler(PostHandler):
         print('info category:', cat_uid_arr)
         replys = []  # self.mreply.get_by_id(info_id)
         rel_recs = self.mrel.get_app_relations(postinfo.uid, 8, kind=postinfo.kind)
+        print('rel_recs count:', rel_recs.count())
         if len(cat_uid_arr) > 0:
             rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
