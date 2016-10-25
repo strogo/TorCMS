@@ -47,10 +47,11 @@ class InfoLabelHandler(BaseHandler):
             'tag_slug': tag_slug,
 
             'title': tag_name,
+            'current_page': current_page_number,
 
         }
 
-        self.render('infor/label/list.html',
+        self.render('infor/label/map_list.html',
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
