@@ -239,6 +239,18 @@ class post_tags(tornado.web.UIModule):
             out_str += tmp_str
             ii += 1
         return out_str
+class map_tags(tornado.web.UIModule):
+    def render(self, signature):
+        self.mapp2tag = MPost2Catalog()
+        tag_infos = self.mapp2tag.query_by_entity_uid(signature, kind='m')
+        out_str = ''
+        ii = 1
+        for tag_info in tag_infos:
+            tmp_str = '<a href="/tag/{0}" class="tag{1}">{2}</a>'.format(tag_info.tag.slug, ii,
+                                                                              tag_info.tag.name)
+            out_str += tmp_str
+            ii += 1
+        return out_str
 
 
 class ModuleCatMenu(tornado.web.UIModule):
