@@ -76,7 +76,7 @@ class InforTagHandler(BaseHandler):
         }
         postinfos = self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number)
         print(postinfos.count())
-        self.render('infor/tag/list.html',
+        self.render('post{0}/tag_list.html'.format(taginfo.kind),
                     taginfo = taginfo,
                     # tag_name=tag_name,
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),
