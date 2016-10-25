@@ -14,12 +14,23 @@ class MLabel(MSuperTable):
 
 
     def get_id_by_name(self, tag_name, kind = 'z'):
-        uu = self.tab.select().where(self.tab.name == tag_name)
+        uu = self.tab.select().where((self.tab.name == tag_name) & (self.tab.kind == kind))
+        print('tag count of name:', tag_name, uu.count())
         if uu.count() == 1:
             return uu.get().uid
         elif uu.count() > 1:
+            idx = 0
             for x in uu:
-                self.delete(x.uid)
+                tx = x
+                # Only keep one.
+                if idx == 0:
+                    pass
+                else:
+                    print('Delete tag,', x.uid )
+                    CabPost2Label.delete().where(CabPost2Label.tag == x.uid ).execute()
+                    self.tab.delete().where( self.tab.uid  == x.uid ).execute()
+                idx = idx + 1
+            return tx.get().uid
         else:
             return self.create_tag(tag_name)
 
@@ -31,7 +42,7 @@ class MLabel(MSuperTable):
 
     def create_tag(self, tag_name, kind='z'):
 
-        cur_count = self.tab.select().where(self.tab.name == tag_name).count()
+        cur_count = self.tab.select().where((self.tab.name == tag_name) & (self.tab.kind == kind)).count()
         if cur_count > 0:
             return False
 
@@ -110,6 +121,7 @@ class MPost2Label(MSuperTable):
     def add_record(self, post_id, tag_name, order=1, kind = 'z'):
         print('Add label kind: {0}'.format(kind))
         tag_id = self.mtag.get_id_by_name(tag_name, 'z')
+        print('tag_id:', tag_id)
         tt = self.get_by_info(post_id, tag_id, kind='z')
         if tt:
             entry = self.tab.update(
