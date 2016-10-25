@@ -14,6 +14,8 @@ class InfoLabelHandler(BaseHandler):
         self.mtag = MInforLabel()
         self.mapp2tag = MInfor2Label()
 
+
+
     def get(self, url_str=''):
 
         if len(url_str.strip()) == 0:
@@ -40,10 +42,11 @@ class InfoLabelHandler(BaseHandler):
         # num_of_tag = self.mapp2tag.catalog_record_number(taginfo.uid)
         # page_num = int(num_of_tag / config.page_num ) + 1
         # tag_name = taginfo.name
+        taginfo = self.mtag.get_name_by_slug(tag_slug)
 
         tag_name = 'fd'
         kwd = {
-            'tag_name': tag_name,
+            'tag_name': taginfo,
             'tag_slug': tag_slug,
 
             'title': tag_name,

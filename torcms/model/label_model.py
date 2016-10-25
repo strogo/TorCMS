@@ -23,6 +23,12 @@ class MLabel(MSuperTable):
         else:
             return self.create_tag(tag_name)
 
+    def get_name_by_slug(self, tag_slug):
+        uu = self.tab.select().where(self.tab.slug == tag_slug)
+
+        return uu.get().name
+
+
     def create_tag(self, tag_name, kind='z'):
 
         cur_count = self.tab.select().where(self.tab.name == tag_name).count()
