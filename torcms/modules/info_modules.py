@@ -138,9 +138,9 @@ class label_count(tornado.web.UIModule):
 
 
 class app_menu(tornado.web.UIModule):
-    def render(self, limit):
+    def render(self, kind, limit):
         self.mcat = MCategory()
-        all_cats = self.mcat.query_field_count(limit, kind ='2')
+        all_cats = self.mcat.query_field_count(limit, kind =kind )
         kwd = {
             'cats': all_cats,
         }
