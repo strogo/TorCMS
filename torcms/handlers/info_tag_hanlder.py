@@ -7,7 +7,7 @@ from torcms.model.category_model import MCategory
 import config
 from torcms.core.base_handler import BaseHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
-
+from config import router_post
 
 class InforTagHandler(BaseHandler):
     '''
@@ -83,6 +83,7 @@ class InforTagHandler(BaseHandler):
                     kwd=kwd,
                     pager=self.gen_pager_bootstrap(tag_slug, page_num, current_page_number),
                     userinfo=self.userinfo,
+                    router = router_post[taginfo.kind],
                     )
 
     def gen_pager_bootstrap(self, cat_slug, page_num, current):
