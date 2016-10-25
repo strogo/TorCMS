@@ -98,7 +98,7 @@ class MPost2Catalog(MSuperTable):
         :return:
         '''
 
-        uu = self.query_by_entity_uid(app_uid)
+        uu = self.query_by_entity_uid(app_uid, app_uid.kind)
         if uu.count() > 0:
             return uu.get()
         else:

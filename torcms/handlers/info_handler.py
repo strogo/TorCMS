@@ -169,7 +169,7 @@ class InfoHandler(PostHandler):
             cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
         print('info category:', cat_uid_arr)
-        replys = []  # self.mreply.get_by_id(info_id)
+
         rel_recs = self.mrel.get_app_relations(postinfo.uid, 8, kind=postinfo.kind)
         print('rel_recs count:', rel_recs.count())
         if len(cat_uid_arr) > 0:
