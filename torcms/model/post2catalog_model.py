@@ -79,7 +79,7 @@ class MPost2Catalog(MSuperTable):
 
     def query_by_entity_uid(self, idd, kind=''):
         if kind == '':
-            return  self.tab_post2catalog.select().join(self.tab_catalog).where(
+            return self.tab_post2catalog.select().join(self.tab_catalog).where(
                  self.tab_post2catalog.post == idd).order_by(
                 self.tab_post2catalog.order)
         else:
@@ -91,8 +91,14 @@ class MPost2Catalog(MSuperTable):
         return self.query_by_entity_uid(idd)
 
 
-    def get_entry_catalog(self, app_uid, kind = '2'):
-        uu = self.query_by_entity_uid(app_uid, kind = kind)
+    def get_entry_catalog(self, app_uid):
+        '''
+        Get the first, uniqe category of post.
+        :param app_uid:
+        :return:
+        '''
+
+        uu = self.query_by_entity_uid(app_uid)
         if uu.count() > 0:
             return uu.get()
         else:

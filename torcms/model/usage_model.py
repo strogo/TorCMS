@@ -27,33 +27,33 @@ class MUsage(object):
         fn = peewee.fn
         return self.tab.select().order_by(fn.Random()).limit(6)
 
-    def query_recent(self, uname, num):
-        return self.tab.select().join(g_Member).where(g_Member.user_name == uname).order_by(
+    def query_recent(self, user_id, kind, num, ):
+        return self.tab.select().where((self.tab.user_id == user_id) & (self.tab.kind == kind )).order_by(
             self.tab.timestamp.desc()).limit(num)
 
-    def query_recent_by_cat(self, uname, cat_id, num):
-        return self.tab.select().join(g_Member).where(
-            (self.tab.tag == cat_id) & (g_Member.user_name == uname)).order_by(self.tab.timestamp.desc()).limit(
+    def query_recent_by_cat(self, user_id, cat_id, num):
+        return self.tab.select().where(
+            (self.tab.tag_id == cat_id) & (self.tab.user_id == user_id)).order_by(self.tab.timestamp.desc()).limit(
             num)
 
-    def query_most(self, uname, num):
-        return self.tab.select().join(g_Member).where(g_Member.user_name == uname).order_by(
+    def query_most(self, user_id, kind, num):
+        return self.tab.select().where((self.tab.user_id == user_id) & (self.tab.kind == kind)).order_by(
             self.tab.count.desc()).limit(num)
 
-    def get_by_signature(self, u_name, sig):
-        return self.tab.select().join(g_Member).where((self.tab.post == sig) & (g_Member.uid == u_name))
+    def get_by_signature(self, user_id, sig):
+        return self.tab.select().where((self.tab.post_id == sig) & (self.tab.user_id == user_id))
 
     def count_increate(self, rec, cat_id, num):
         entry = self.tab.update(
             timestamp=int(time.time()),
             count=num + 1,
-            tag=cat_id,
+            tag_id=cat_id,
         ).where(self.tab.uid == rec)
         entry.execute()
 
-    def add_or_update(self, user_id, sig):
-        tt = self.get_by_signature(user_id, sig)
-        uu = self.mapp2catalog.get_entry_catalog(sig)
+    def add_or_update(self, user_id, post_id, kind):
+        tt = self.get_by_signature(user_id, post_id)
+        uu = self.mapp2catalog.get_entry_catalog(post_id)
         if uu == False:
             return False
         cat_id = uu.tag.uid
@@ -61,14 +61,14 @@ class MUsage(object):
             rec = tt.get()
             self.count_increate(rec.uid, cat_id, rec.count)
         else:
-
             self.tab.create(
                 uid=tools.get_uuid(),
-                post=sig,
-                user=user_id,
+                post=post_id,
+                user_id=user_id,
                 count=1,
-                tag=cat_id,
+                tag_id=cat_id,
                 timestamp=int(time.time()),
+                kind = kind,
             )
 
 

@@ -129,7 +129,7 @@ class MInforBase(MSuperTable):
             (self.tab_app.kind == kind) & (self.tab_app.valid == 1) & (self.tab_app2catalog.tag == catid)).order_by(
             peewee.fn.Random()).limit(num)
 
-    def query_most(self, num=8, kind='2'):
+    def query_most(self, kind='2', num=8, ):
         return self.tab_app.select().where((self.tab_app.kind == kind) & (self.tab_app.valid == 1)).order_by(
             self.tab_app.view_count.desc()).limit(num)
 

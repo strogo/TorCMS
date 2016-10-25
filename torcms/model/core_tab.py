@@ -11,7 +11,7 @@ class g_Tag(BaseModel):
     name = peewee.CharField(null=False, max_length=255, help_text='', )
     order = peewee.IntegerField()
     count = peewee.IntegerField(default=0)
-    kind = peewee.CharField(null=False, max_length=2, default='z',
+    kind = peewee.CharField(null=False, max_length=1, default='z',
                             help_text='4 - f for category. g -  for tags', )
     # todo: useless
     role_mask = peewee.CharField(null=False, default='00100', help_text='Member Privilege')
@@ -182,11 +182,12 @@ class g_Rating(BaseModel):
 class g_Usage(BaseModel):
     uid = peewee.CharField(max_length=36, null=False, unique=True, help_text='', primary_key=True)
     post = peewee.ForeignKeyField(g_Post, related_name='info_id')
-    user = peewee.ForeignKeyField(g_Member, related_name='user_id')
+    # post_id = peewee.CharField(null=False, index=True, max_length=5, help_text='', )
+    user_id = peewee.CharField(null=False, index=True, max_length=36, help_text='', )
     count = peewee.IntegerField()
-    tag = peewee.CharField(null=True)
+    tag_id = peewee.CharField(null=False, max_length=4, help_text='', )
+    kind = peewee.CharField(null=False, max_length=1 )
     timestamp = peewee.IntegerField()
-
 
 class g_Rel(BaseModel):
     '''

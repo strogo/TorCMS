@@ -11,6 +11,7 @@ from torcms.model.category_model import MCategory
 import torcms.model.infor2catalog_model
 from torcms.model.post_model import MPost
 from html2text import html2text
+from config import router_post
 
 
 class app_catalog_of(tornado.web.UIModule):
@@ -26,11 +27,12 @@ class app_catalog_of(tornado.web.UIModule):
 
 
 class app_user_most(tornado.web.UIModule):
-    def render(self, user_name, num, with_tag=False):
+    def render(self, user_name, kind, num,  with_tag=False):
         self.mcat = torcms.model.usage_model.MUsage()
-        all_cats = self.mcat.query_most(user_name, num)
+        all_cats = self.mcat.query_most(user_name, kind, num)
         kwd = {
             'with_tag': with_tag,
+            'router': router_post[kind],
         }
         return self.render_string('modules/info/list_user_equation.html',
                                   recs=all_cats,
@@ -42,11 +44,12 @@ class app_user_most_by_cat(tornado.web.UIModule):
 
 
 class app_user_recent(tornado.web.UIModule):
-    def render(self, user_name, num, with_tag=False):
+    def render(self, user_name, kind, num,  with_tag=False):
         self.mcat = torcms.model.usage_model.MUsage()
-        all_cats = self.mcat.query_recent(user_name, num)
+        all_cats = self.mcat.query_recent(user_name, kind, num)
         kwd = {
             'with_tag': with_tag,
+            'router': router_post[kind],
         }
         return self.render_string('modules/info/list_user_equation.html',
                                   recs=all_cats,
@@ -58,13 +61,14 @@ class app_user_recent_by_cat(tornado.web.UIModule):
     def render(self, user_name, cat_id, num):
         self.mcat = torcms.model.usage_model.MUsage()
         all_cats = self.mcat.query_recent_by_cat(user_name, cat_id, num)
+
         return self.render_string('modules/info/list_user_equation_no_catalog.html', recs=all_cats)
 
 
 class app_most_used(tornado.web.UIModule):
-    def render(self, num, with_tag=False):
+    def render(self, kind, num, with_tag=False):
         self.mcat = torcms.model.info_model.MInfor()
-        all_cats = self.mcat.query_most(num)
+        all_cats = self.mcat.query_most(kind, num)
         kwd = {
             'with_tag': with_tag,
         }

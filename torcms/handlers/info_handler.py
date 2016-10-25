@@ -224,7 +224,7 @@ class InfoHandler(PostHandler):
         }
         self.mpost.view_count_increase(info_id)
         if self.get_current_user():
-            self.musage.add_or_update(self.userinfo.uid, info_id)
+            self.musage.add_or_update(self.userinfo.uid, info_id, postinfo.kind)
         self.set_cookie('user_pass', cookie_str)
         tmpl = self.ext_tmpl_name(postinfo) if self.ext_tmpl_name(postinfo) else self.get_tmpl_name(postinfo)
 
@@ -242,7 +242,7 @@ class InfoHandler(PostHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
-                    recent_apps=self.musage.query_recent(self.get_current_user(), 6)[1:],
+                    recent_apps=self.musage.query_recent(self.get_current_user(), postinfo.kind, 6)[1:],
                     replys=[],  # replys,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2], kind=self.kind ) if ext_catid else [],
                     role_mask_idx=0,
