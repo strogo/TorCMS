@@ -163,14 +163,14 @@ class InfoHandler(PostHandler):
                         userinfo=self.userinfo, )
             return False
         #
-        cats = self.mpost2catalog.query_by_entity_uid(info_id, kind=self.kind)
+        cats = self.mpost2catalog.query_by_entity_uid(info_id, kind=postinfo.kind)
         cat_uid_arr = []
         for cat_rec in cats:
             cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
         print('info category:', cat_uid_arr)
         replys = []  # self.mreply.get_by_id(info_id)
-        rel_recs = self.mrel.get_app_relations(postinfo.uid, 0, kind=self.kind)
+        rel_recs = self.mrel.get_app_relations(postinfo.uid, 8, kind=postinfo.kind)
         if len(cat_uid_arr) > 0:
             rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
