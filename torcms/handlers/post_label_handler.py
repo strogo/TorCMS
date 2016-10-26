@@ -74,8 +74,8 @@ class PostLabelHandler(BaseHandler):
 
         pager_shouye = '''
         <li class="{0}">
-        <a href="/label/{1}/{2}/{3}">&lt;&lt; 首页</a>
-                    </li>'''.format('hidden' if current <= 1 else '', kind, cat_slug, current)
+        <a href="/label/{1}/{2}">&lt;&lt; 首页</a>
+                    </li>'''.format('hidden' if current <= 1 else '', kind, cat_slug)
 
         pager_pre = '''
                     <li class="{0}">
