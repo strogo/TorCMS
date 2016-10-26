@@ -70,9 +70,9 @@ class MPost2Catalog(MSuperTable):
     def count_of_certain_category(self, cat_id):
         return self.tab_post2catalog.select().where(self.tab_post2catalog.tag == cat_id).count()
 
-    def query_pager_by_slug(self, slug, current_page_num=1):
+    def query_pager_by_slug(self, slug, current_page_num=1, kind = '1'):
         recs = self.tab_post.select().join(self.tab_post2catalog).join(self.tab_catalog).where(
-            self.tab_catalog.slug == slug).order_by(
+             (self.tab_catalog.slug == slug) ^ (self.tab_catalog.kind = kind )).order_by(
             self.tab_post.time_update.desc()).paginate(current_page_num, config.page_num)
         return recs
 
