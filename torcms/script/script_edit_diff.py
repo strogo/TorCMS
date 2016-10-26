@@ -162,21 +162,7 @@ def run_edit_diff():
     ###########################################################
     if len(diff_str) < 20000:
         email_cnt = email_cnt + diff_str
-    email_cnt = email_cnt + '''<table class="diff" summary="Legends">
-        <tr> <th colspan="2"> Legends </th> </tr>
-        <tr> <td> <table border="" summary="Colors">
-                      <tr><th> Colors </th> </tr>
-                      <tr><td class="diff_add">&nbsp;Added&nbsp;</td></tr>
-                      <tr><td class="diff_chg">Changed</td> </tr>
-                      <tr><td class="diff_sub">Deleted</td> </tr>
-                  </table></td>
-             <td> <table border="" summary="Links">
-                      <tr><th colspan="2"> Links </th> </tr>
-                      <tr><td>(f)irst change</td> </tr>
-                      <tr><td>(n)ext change</td> </tr>
-                      <tr><td>(t)op</td> </tr>
-                  </table></td> </tr>
-    </table></body>'''
+    email_cnt = email_cnt + '''</body></html>'''
 
     # print (email_cnt)
     print('edit diff count:', idx)
