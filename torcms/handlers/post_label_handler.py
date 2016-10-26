@@ -61,6 +61,44 @@ class PostLabelHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
-                    pager=tools.gen_pager_bootstrap_url('/label/{0}'.format(tag_slug), pager_num, current_page_number),
+                    pager= self.gen_pager(kind, tag_slug, pager_num, current_page_number),
                     cfg=config.cfg,
                     )
+
+    def gen_pager(self, kind, cat_slug, page_num, current):
+        # cat_slug 分类
+        # page_num 页面总数
+        # current 当前页面
+        if page_num == 1:
+            return ''
+
+        pager_shouye = '''
+        <li class="{0}">
+        <a href="/label/{1}/{2}/{3}">&lt;&lt; 首页</a>
+                    </li>'''.format('hidden' if current <= 1 else '', kind, cat_slug, current)
+
+        pager_pre = '''
+                    <li class="{0}">
+                    <a href="/label/{1}/{2}/{3}">&lt; 前页</a>
+                    </li>
+                    '''.format('hidden' if current <= 1 else '',kind,  cat_slug, current - 1)
+        pager_mid = ''
+        for ind in range(0, page_num):
+            tmp_mid = '''
+                    <li class="{0}">
+                    <a  href="/label/{1}/{2}/{3}">{3}</a></li>
+                    '''.format('active' if ind + 1 == current else '',kind, cat_slug, ind + 1)
+            pager_mid += tmp_mid
+        pager_next = '''
+                    <li class=" {0}">
+                    <a  href="/label/{1}/{2}/{3}">后页 &gt;</a>
+                    </li>
+                    '''.format('hidden' if current >= page_num else '', kind,  cat_slug, current + 1)
+        pager_last = '''
+                    <li class=" {0}">
+                    <a href="/label/{1}/{2}/{3}">末页
+                        &gt;&gt;</a>
+                    </li>
+                    '''.format('hidden' if current >= page_num else '', kind, cat_slug, page_num)
+        pager = pager_shouye + pager_pre + pager_mid + pager_next + pager_last
+        return (pager)
