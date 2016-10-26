@@ -119,7 +119,8 @@ class PostManHandler(BaseHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     view=postinfo,
                     postinfo=postinfo,
-                    html_diff_arr=html_diff_arr
+                    html_diff_arr=html_diff_arr,
+                    router = router_post[postinfo.kind],
                     )
 
     @tornado.web.authenticated
