@@ -37,9 +37,17 @@ class MPost2Catalog(MSuperTable):
         recs = self.tab_post2catalog.select().where(
             (self.tab_post2catalog.post == post_id) & (self.tab_post2catalog.tag == catalog_id))
         if recs.count() > 1:
+            idx = 0
             for rec in recs:
-                self.delete(rec.uid)
-            return False
+                if idx == 0:
+                    out_rec = rec
+                    pass
+                else:
+                    entry = self.tab_post2catalog.delete().where(self.tab_post2catalog.uid == rec.uid)
+                    entry.excute()
+                    # self.delete(rec.uid)
+                idx = idx + 1
+            return out_rec.get()
         elif recs.count() == 1:
             return self.tab_post2catalog.get(
                 (self.tab_post2catalog.post == post_id) & (self.tab_post2catalog.tag == catalog_id))
