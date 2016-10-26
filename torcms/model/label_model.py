@@ -2,7 +2,7 @@
 
 import config
 from torcms.core import tools
-from torcms.model.core_tab import g_Tag as CabLabel
+from torcms.model.core_tab import g_Tag
 from torcms.model.core_tab import g_Post
 from torcms.model.core_tab import g_Post2Tag as CabPost2Label
 from torcms.model.supertable_model import MSuperTable
@@ -10,7 +10,7 @@ from torcms.model.supertable_model import MSuperTable
 
 class MLabel(MSuperTable):
     def __init__(self):
-        self.tab = CabLabel
+        self.tab = g_Tag
 
 
     def get_id_by_name(self, tag_name, kind = 'z'):
@@ -34,11 +34,12 @@ class MLabel(MSuperTable):
         else:
             return self.create_tag(tag_name)
 
-    def get_name_by_slug(self, tag_slug):
+    def get_by_slug(self, tag_slug):
         uu = self.tab.select().where(self.tab.slug == tag_slug)
-
-        return uu.get().name
-
+        if uu:
+            return uu.get()
+        else:
+            return False
 
     def create_tag(self, tag_name, kind='z'):
 
@@ -79,7 +80,7 @@ class MLabel(MSuperTable):
 class MPost2Label(MSuperTable):
     def __init__(self):
         self.tab = CabPost2Label
-        self.tab_label = CabLabel
+        self.tab_label = g_Tag
         self.tab_post = g_Post
         self.mtag = MLabel()
         try:
@@ -139,9 +140,9 @@ class MPost2Label(MSuperTable):
             return entry.uid
 
 
-    def total_number(self, slug):
-        return self.tab_post.select().join(self.tab).where(self.tab.tag == slug).count()
+    def total_number(self, slug,kind = '1'):
+        return self.tab_post.select().join(self.tab).where((self.tab.tag == slug) & (self.tab_post.kind == kind)).count()
 
-    def query_pager_by_slug(self, slug, current_page_num=1):
-        return self.tab_post.select().join(self.tab).where(self.tab.tag == slug).paginate(current_page_num,
+    def query_pager_by_slug(self, slug, kind = '1', current_page_num=1):
+        return self.tab_post.select().join(self.tab).where((self.tab.tag == slug) & (self.tab_post.kind == kind)).paginate(current_page_num,
                                                                                           config.page_num)

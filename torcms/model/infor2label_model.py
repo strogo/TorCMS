@@ -2,27 +2,26 @@
 
 import config
 from torcms.model.core_tab import g_Post
-from torcms.model.core_tab import g_Tag as CabLabel
-from torcms.model.core_tab import g_Post2Tag as CabPost2Label
+from torcms.model.core_tab import g_Tag
+from torcms.model.core_tab import g_Post2Tag
 from torcms.model.label_model import MLabel
 from torcms.model.label_model import MPost2Label
 
 
 class MInforLabel(MLabel):
     def __init__(self):
-        self.tab = CabLabel
-        self.tab2 = CabPost2Label
-
+        self.tab = g_Tag
+        self.tab2 = g_Post2Tag
 
 
 class MInfor2Label(MPost2Label):
     def __init__(self):
-        self.tab = CabPost2Label
-        self.tab_label = CabLabel
+        self.tab = g_Post2Tag
+        self.tab_label = g_Tag
         self.tab_post = g_Post
         self.mtag = MInforLabel()
         try:
-            CabPost2Label.create_table()
+            g_Post2Tag.create_table()
         except:
             pass
 
