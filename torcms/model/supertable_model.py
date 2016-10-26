@@ -62,13 +62,10 @@ class MSuperTable():
         return self.tab.select().where(self.tab.kind == kind).limit(num)
 
     def delete(self, del_id):
-        try:
-            del_count = self.tab.delete().where(self.tab.uid == del_id)
-            del_count.execute()
-            return True
-        except:
-            return False
 
+        del_count = self.tab.delete().where(self.tab.uid == del_id)
+        del_count.execute()
+        
     def query_recent_most(self, num=8, recent=30):
         time_that = int(time.time()) - recent * 24 * 3600
         return self.tab.select().where(self.tab.time_update > time_that).order_by(self.tab.view_count.desc()).limit(num)
