@@ -68,7 +68,7 @@ class CategoryHandler(BaseHandler):
         }
 
         self.render('doc/catalog/list.html',
-                    infos=self.mpost2catalog.query_pager_by_slug(cat_slug, current_page_num),
+                    infos=self.mpost2catalog.query_pager_by_slug(cat_slug, current_page_num, kind= cat_rec.kind ),
                     pager=tools.gen_pager_purecss('/category/{0}'.format(cat_slug), page_num, current_page_num),
                     userinfo=self.userinfo,
                     unescape = tornado.escape.xhtml_unescape,
