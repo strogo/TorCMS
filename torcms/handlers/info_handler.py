@@ -532,7 +532,7 @@ class InfoHandler(PostHandler):
         self.mpost.modify_meta(uid,
                                post_data,
                                extinfo=ext_dic)
-        self.update_catalog(uid)
+        self.update_category(uid)
         self.update_tag(uid)
 
         print('post kind:' + self.kind)
@@ -581,7 +581,7 @@ class InfoHandler(PostHandler):
         self.mpost.modify_meta(ext_dic['def_uid'],
                                post_data,
                                extinfo=ext_dic)
-        self.update_catalog(ext_dic['def_uid'])
+        self.update_category(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
         self.redirect('/{0}/{1}'.format(router_post[self.kind], ext_dic['def_uid']))
@@ -626,7 +626,7 @@ class InfoHandler(PostHandler):
         self.mpost.modify_meta(ext_dic['def_uid'],
                                post_data,
                                extinfo=ext_dic)
-        self.update_catalog(ext_dic['def_uid'])
+        self.update_category(ext_dic['def_uid'])
         self.update_tag(ext_dic['def_uid'])
 
         self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))

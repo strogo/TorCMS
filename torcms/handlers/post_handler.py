@@ -178,7 +178,7 @@ class PostHandler(BaseHandler):
 
         self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
         self.mpost.update(uid, post_data, update_time=is_update_time)
-        self.update_catalog(uid)
+        self.update_category(uid)
         self.update_tag(uid)
         self.redirect('/post/{0}.html'.format(uid))
 
@@ -208,7 +208,7 @@ class PostHandler(BaseHandler):
 
 
     @tornado.web.authenticated
-    def update_catalog(self, uid):
+    def update_category(self, uid):
         post_data = self.get_post_data()
 
         current_infos = self.mpost2catalog.query_by_entity_uid(uid )
@@ -385,7 +385,7 @@ class PostHandler(BaseHandler):
         if cur_post_rec is None:
             uid = self.mpost.insert_data(id_post, post_data)
             self.update_tag(uid)
-            self.update_catalog(uid)
+            self.update_category(uid)
         self.redirect('/post/{0}.html'.format(id_post))
 
     @tornado.web.authenticated
@@ -410,7 +410,7 @@ class PostHandler(BaseHandler):
 
         uid = self.mpost.insert_data(cur_uid, post_data)
         self.update_tag(uid)
-        self.update_catalog(uid)
+        self.update_category(uid)
         self.redirect('/post/{0}.html'.format(cur_uid))
 
     @tornado.web.authenticated

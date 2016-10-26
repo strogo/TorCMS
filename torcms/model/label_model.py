@@ -4,7 +4,7 @@ import config
 from torcms.core import tools
 from torcms.model.core_tab import g_Tag
 from torcms.model.core_tab import g_Post
-from torcms.model.core_tab import g_Post2Tag as CabPost2Label
+from torcms.model.core_tab import g_Post2Tag as g_Post2Tag
 from torcms.model.supertable_model import MSuperTable
 
 
@@ -27,7 +27,7 @@ class MLabel(MSuperTable):
                     pass
                 else:
                     print('Delete tag,', x.uid )
-                    CabPost2Label.delete().where(CabPost2Label.tag == x.uid ).execute()
+                    g_Post2Tag.delete().where(g_Post2Tag.tag == x.uid ).execute()
                     self.tab.delete().where( self.tab.uid  == x.uid ).execute()
                 idx = idx + 1
             return tx.get().uid
@@ -79,12 +79,12 @@ class MLabel(MSuperTable):
 
 class MPost2Label(MSuperTable):
     def __init__(self):
-        self.tab = CabPost2Label
+        self.tab = g_Post2Tag
         self.tab_label = g_Tag
         self.tab_post = g_Post
         self.mtag = MLabel()
         try:
-            CabPost2Label.create_table()
+            g_Post2Tag.create_table()
         except:
             pass
     def remove_relation(self, post_id, tag_id):
@@ -104,15 +104,20 @@ class MPost2Label(MSuperTable):
 
 
 
-    def get_by_info(self, post_id, catalog_id, kind =  'z'):
+    def get_by_info(self, post_id, catalog_id):
         tmp_recs = self.tab.select().join(self.tab_label).where((self.tab.post == post_id) & (self.tab.tag == catalog_id) & (self.tab_label.kind == 'z'))
 
         if tmp_recs.count() > 1:
             ''' 如果多于1个，则全部删除
             '''
+            idx = 0
             for tmp_rec in tmp_recs:
-                self.delete(tmp_rec.uid)
-            return False
+                if idx == 0:
+                    out_rec = tmp_rec
+                else:
+                    self.delete(tmp_rec.uid)
+                idx = idx + 1
+            return out_rec.get()
 
         elif tmp_recs.count() == 1:
             return tmp_recs.get()
