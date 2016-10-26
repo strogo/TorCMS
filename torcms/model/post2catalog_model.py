@@ -44,7 +44,7 @@ class MPost2Catalog(MSuperTable):
                     pass
                 else:
                     entry = self.tab_post2catalog.delete().where(self.tab_post2catalog.uid == rec.uid)
-                    entry.excute()
+                    entry.execute()
                     # self.delete(rec.uid)
                 idx = idx + 1
             return out_rec.get()
