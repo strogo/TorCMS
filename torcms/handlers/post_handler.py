@@ -211,7 +211,7 @@ class PostHandler(BaseHandler):
     def update_catalog(self, uid):
         post_data = self.get_post_data()
 
-        current_infos = self.mpost2catalog.query_by_entity_uid(uid, kind= self.kind )
+        current_infos = self.mpost2catalog.query_by_entity_uid(uid )
         new_tag_arr = []
         # HTML中预定义的
         def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
