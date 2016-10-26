@@ -26,11 +26,11 @@ from torcms.model.wiki_model import MWiki
 from torcms.model.page_model import MPage
 
 def do_for_app(writer, rand=True, kind = '',  doc_type=''):
-    mpost = MApp(kind = kind)
+    mpost = MApp()
     if rand:
-        recs = mpost.query_random(50)
+        recs = mpost.query_random(50, kind = kind)
     else:
-        recs = mpost.query_recent(50)
+        recs = mpost.query_recent(50, kind = kind)
 
     print(recs.count())
     for rec in recs:
