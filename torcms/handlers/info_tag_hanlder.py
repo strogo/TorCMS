@@ -79,7 +79,7 @@ class InforTagHandler(BaseHandler):
         self.render('post{0}/tag_list.html'.format(taginfo.kind),
                     taginfo = taginfo,
                     # tag_name=tag_name,
-                    infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),
+                    infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number, kind=taginfo.kind),
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     pager=self.gen_pager_bootstrap(tag_slug, page_num, current_page_number),
