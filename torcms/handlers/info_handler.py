@@ -102,7 +102,7 @@ class InfoHandler(PostHandler):
                 self.redirect('/user/login')
         # elif url_arr[0] == 'comment_add':
         #     self.add_comment(url_arr[1])
-        elif url_arr[0] == 'edit':
+        elif url_arr[0] in ['edit', '_edit']:
             self.update(url_arr[1])
         elif url_arr[0] == 'add':
             self.add(url_arr[1])
@@ -247,7 +247,7 @@ class InfoHandler(PostHandler):
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
                     recent_apps=recent_apps,
-                    cat_enum=self.mcat.get_qian2(ext_catid2[:2], kind=self.kind ) if ext_catid else [],
+                    cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
                     )
 
     def extra_kwd(self, info_rec):
@@ -476,7 +476,7 @@ class InfoHandler(PostHandler):
                     userinfo=self.userinfo,
 
                     unescape=tornado.escape.xhtml_unescape,
-                    cat_enum=self.mcat.get_qian2(catid[:2], kind=self.kind ),
+                    cat_enum=self.mcat.get_qian2(catid[:2]),
                     tag_infos=self.mcat.query_all(by_order=True, kind=self.kind ),
                     tag_infos2=self.mcat.query_all(by_order=True, kind=self.kind ),
                     app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind=self.kind ),

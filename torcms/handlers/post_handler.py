@@ -40,7 +40,7 @@ class PostHandler(BaseHandler):
             self.to_add_document()
         elif url_str == 'recent':
             self.recent()
-        elif url_str == 'refresh':
+        elif url_str == '_refresh':
             self.refresh()
         elif url_arr[0] in ['modify', 'edit']:
             self.to_modify(url_arr[1])

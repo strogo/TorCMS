@@ -18,7 +18,7 @@ class app_catalog_of(tornado.web.UIModule):
 
     def render(self, uid_with_str, kind = '2', slug = False):
         self.mcat = MCategory()
-        recs = self.mcat.query_uid_starts_with(uid_with_str, kind = kind)
+        recs = self.mcat.query_uid_starts_with(uid_with_str)
         # return ''
         if slug:
             return self.render_string('modules/info/catalog_slug.html', recs=recs)

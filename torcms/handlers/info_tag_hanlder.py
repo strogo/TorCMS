@@ -36,7 +36,7 @@ class InforTagHandler(BaseHandler):
                 self.list(url_arr[0], url_arr[1])
 
     def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2, kind = self.kind)
+        cur_cat = self.mcat.query_uid_starts_with(qian2)
 
         out_arr = {}
         for x in cur_cat:

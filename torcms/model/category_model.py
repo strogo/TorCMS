@@ -14,21 +14,21 @@ class MCategory(MSuperTable):
         except:
             pass
 
-    def get_qian2(self, qian2, kind='1'):
+    def get_qian2(self, qian2):
 
         '''
         用于首页。根据前两位，找到所有的大类与小类。
         :param qian2: 分类id的前两位
         :return: 数组，包含了找到的分类
         '''
-        return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.startswith(qian2))).order_by(
+        return self.tab.select().where( self.tab.uid.startswith(qian2)).order_by(
             self.tab.order)
 
     def query_pcat(self, kind='1'):
         return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
 
-    def query_uid_starts_with(self, qian2, kind='1'):
-        return self.get_qian2(qian2, kind = kind)
+    def query_uid_starts_with(self, qian2):
+        return self.get_qian2(qian2)
 
     def query_all(self, by_count=False, by_order=True, kind='1'):
         if by_count:
