@@ -176,7 +176,13 @@ class PostHandler(BaseHandler):
         post_data['user_name'] = self.get_current_user()
         is_update_time = True # if post_data['is_update_time'][0] == '1' else False
 
-        self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
+        postinfo_old = self.mpost.get_by_id(uid)
+        cnt_old = tornado.escape.xhtml_unescape(postinfo_old.cnt_md).strip()
+        cnt_new = post_data['cnt_md'].strip()
+        if cnt_old == cnt_new:
+            pass
+        else:
+            self.mpost_hist.insert_data(postinfo_old)
         self.mpost.update(uid, post_data, update_time=is_update_time)
         self.update_category(uid)
         self.update_tag(uid)

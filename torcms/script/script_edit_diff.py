@@ -44,44 +44,46 @@ def run_edit_diff():
     mpost = MPost()
     mposthist = MPostHist()
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
-    for recent_post in recent_posts:
-        hist_rec = mposthist.get_last(recent_post.uid)
-        if hist_rec:
-            foo_str = '''
-                <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
-                <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title,
-                           os.path.join(site_url, 'post', recent_post.uid + '.html'))
-            email_cnt = email_cnt + foo_str
-        else:
-            foo_str = '''
-                <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
-                <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title,
-                           os.path.join(site_url, 'post', recent_post.uid + '.html'))
-            email_cnt = email_cnt + foo_str
-        idx = idx + 1
+    # recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
+    # for recent_post in recent_posts:
+    #     hist_rec = mposthist.get_last(recent_post.uid)
+    #     if hist_rec:
+    #         foo_str = '''
+    #             <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
+    #             <td><a href="{3}">{3}</a></td></tr>
+    #             '''.format(idx, recent_post.user_name, recent_post.title,
+    #                        os.path.join(site_url, 'post', recent_post.uid + '.html'))
+    #         email_cnt = email_cnt + foo_str
+    #     else:
+    #         foo_str = '''
+    #             <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
+    #             <td><a href="{3}">{3}</a></td></tr>
+    #             '''.format(idx, recent_post.user_name, recent_post.title,
+    #                        os.path.join(site_url, 'post', recent_post.uid + '.html'))
+    #         email_cnt = email_cnt + foo_str
+    #     idx = idx + 1
 
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
-    for recent_post in recent_posts:
-        hist_rec = mposthist.get_last(recent_post.uid)
-        if hist_rec:
-            foo_str = '''
-                <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
-                <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title,
-                           os.path.join(site_url, router_post['2'], recent_post.uid))
-            email_cnt = email_cnt + foo_str
-        else:
-            foo_str = '''
-                <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
-                <td><a href="{3}">{3}</a></td></tr>
-                '''.format(idx, recent_post.user_name, recent_post.title,
-                           os.path.join(site_url, router_post['2'], recent_post.uid))
-            email_cnt = email_cnt + foo_str
-        idx = idx + 1
+    for key in router_post.keys():
+        recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind= key)
+        for recent_post in recent_posts:
+            hist_rec = mposthist.get_last(recent_post.uid)
+            if hist_rec:
+                foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, router_post[key], recent_post.uid))
+                email_cnt = email_cnt + foo_str
+            else:
+                foo_str = '''
+                    <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
+                    <td><a href="{3}">{3}</a></td></tr>
+                    '''.format(idx, recent_post.user_name, recent_post.title,
+                               os.path.join(site_url, router_post[key], recent_post.uid))
+                email_cnt = email_cnt + foo_str
+            idx = idx + 1
 
+    ## wiki
     mpost = MWiki()
     mposthist = MWikiHist()
 
@@ -104,6 +106,7 @@ def run_edit_diff():
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 
+    ## page.
     recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
     for recent_post in recent_posts:
         hist_rec = mposthist.get_last(recent_post.uid)
@@ -129,62 +132,33 @@ def run_edit_diff():
     mposthist = MPostHist()
     diff_str = ''
     ######################################################
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
-    for recent_post in recent_posts:
-        hist_rec = mposthist.get_last(recent_post.uid)
-        if hist_rec:
-            print('=' * 10)
-            print(recent_post.title)
 
-            raw_title = hist_rec.title
-            new_title = recent_post.title
-
-            infobox = diff_table(raw_title, new_title)
-
-            # if len(test) > 1:
-            # start = test.find('<table class="diff"')  # 起点记录查询位置
-            # end = test.find('</table>')
-            # infobox = test[start:end] + '</table>'
-            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-            diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2>'.format(
-                    recent_post.title) + infobox
-
-            test = diff_table(hist_rec.cnt_md, recent_post.cnt_md)
-            print(test)
-            # if len(test) >1 :
-            # start = test.find('<table class="diff"')  # 起点记录查询位置
-            # end = test.find('</table>')
-
-            # infobox = test[start:end] + '</table>'
-            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-            diff_str = diff_str + '<h3>CONTENT</h3>'.format(
-                    recent_post.title) + test + '</hr>'
-        else:
-            continue
     ######################################################
-    recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind='2')
-    for recent_post in recent_posts:
-        hist_rec = mposthist.get_last(recent_post.uid)
-        if hist_rec:
-            print('=' * 10)
 
-            print(recent_post.title)
+    for key in router_post.keys():
+        recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind=key)
+        for recent_post in recent_posts:
+            hist_rec = mposthist.get_last(recent_post.uid)
+            if hist_rec:
+                print('=' * 10)
 
-            raw_title = hist_rec.title
-            new_title = recent_post.title
+                print(recent_post.title)
 
-            infobox = diff_table(raw_title, new_title)
-            # infobox = test[start:end] + '</table>'
-            # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
-            diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2>'.format(
-                    recent_post.title) + infobox
+                raw_title = hist_rec.title
+                new_title = recent_post.title
 
-            infobox = diff_table(hist_rec.cnt_md, recent_post.cnt_md)
+                infobox = diff_table(raw_title, new_title)
+                # infobox = test[start:end] + '</table>'
+                # if ('diff_add' in infobox) or ('diff_chg' in infobox) or ('diff_sub' in infobox):
+                diff_str = diff_str + '<h2 style="color:red; font-size:larger; font-weight:70;">TITLE: {0}</h2>'.format(
+                        recent_post.title) + infobox
 
-            diff_str = diff_str + '<h3>CONTENT</h3>'.format(
-                    recent_post.title) + infobox + '</hr>'
-        else:
-            continue
+                infobox = diff_table(hist_rec.cnt_md, recent_post.cnt_md)
+
+                diff_str = diff_str + '<h3>CONTENT</h3>'.format(
+                        recent_post.title) + infobox + '</hr>'
+            else:
+                continue
     ###########################################################
     if len(diff_str) < 20000:
         email_cnt = email_cnt + diff_str

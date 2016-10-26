@@ -175,7 +175,7 @@ class InfoHandler(PostHandler):
         if len(cat_uid_arr) > 0:
             rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
-            rand_recs = self.mpost.query_random( num = 4 - rel_recs.count() + 4, kind = postinfo.kind)
+            rand_recs = self.mpost.query_random(num=4 - rel_recs.count() + 4, kind=postinfo.kind)
 
         self.chuli_cookie_relation(info_id)
         cookie_str = tools.get_uuid()
@@ -200,7 +200,6 @@ class InfoHandler(PostHandler):
             cat_rec = self.mcat.get_by_uid(ext_catid)
             if cat_rec:
                 cat_name = cat_rec.name
-
 
         parentname = '<a href="/list/{0}">{1}</a>'.format(ext_catid[:2] + '00', parent_name)
 
@@ -450,11 +449,11 @@ class InfoHandler(PostHandler):
         c_name = ''
         if catid != '':
             if self.mcat.get_by_id(catid):
-                c_name =self.mcat.get_by_id(catid).name
+                c_name = self.mcat.get_by_id(catid).name
         kwd = {
             'def_cat_uid': catid,
-            'parentname':  p_name,
-            'catname':  c_name,
+            'parentname': p_name,
+            'catname': c_name,
             'parentlist': self.mcat.get_parent_list(),
             'userip': self.request.remote_ip
         }
@@ -477,9 +476,9 @@ class InfoHandler(PostHandler):
 
                     unescape=tornado.escape.xhtml_unescape,
                     cat_enum=self.mcat.get_qian2(catid[:2]),
-                    tag_infos=self.mcat.query_all(by_order=True, kind=self.kind ),
-                    tag_infos2=self.mcat.query_all(by_order=True, kind=self.kind ),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind=self.kind ),
+                    tag_infos=self.mcat.query_all(by_order=True, kind=self.kind),
+                    tag_infos2=self.mcat.query_all(by_order=True, kind=self.kind),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(infoid, kind=self.kind),
                     app2label_info=self.mpost2label.get_by_id(infoid, kind=self.kind + '1'))
 
     def get_def_cat_uid(self, post_data):
@@ -513,12 +512,12 @@ class InfoHandler(PostHandler):
         post_data['user_name'] = self.userinfo.user_name
         # post_data['kind'] = self.kind
 
-        current_info = self.mpost.get_by_uid(uid)
+        postinfo_old = self.mpost.get_by_uid(uid)
 
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
         else:
-            post_data['valid'] = current_info.valid
+            post_data['valid'] = postinfo_old.valid
 
         ext_dic['def_uid'] = str(uid)
         print(post_data)
@@ -527,7 +526,13 @@ class InfoHandler(PostHandler):
 
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
-        self.mpost_hist.insert_data(self.mpost.get_by_id(uid))
+
+        cnt_old = tornado.escape.xhtml_unescape(postinfo_old.cnt_md).strip()
+        cnt_new = post_data['cnt_md'].strip()
+        if cnt_old == cnt_new:
+            pass
+        else:
+            self.mpost_hist.insert_data(postinfo_old)
 
         self.mpost.modify_meta(uid,
                                post_data,
@@ -539,7 +544,7 @@ class InfoHandler(PostHandler):
         print('update jump to:', '/{0}/{1}'.format(router_post[self.kind], uid))
 
         # Todo: won't work with self.kind
-        self.redirect('/{0}/{1}'.format(router_post[current_info.kind], uid))
+        self.redirect('/{0}/{1}'.format(router_post[postinfo_old.kind], uid))
 
     @tornado.web.authenticated
     def map_add(self, uid='', sig=''):

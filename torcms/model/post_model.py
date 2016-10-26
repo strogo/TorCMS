@@ -56,7 +56,7 @@ class MPost(MSuperTable):
                 title=title,
                 cnt_html=cnt_html,
                 user_name=post_data['user_name'],
-                cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md']),
+                cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'].strip()),
                 logo=post_data['logo'],
                 keywords=post_data['keywords'],
                 kind=post_data['kind'] if 'kind' in post_data else 1,
