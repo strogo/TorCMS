@@ -128,7 +128,7 @@ class MPost2Label(MSuperTable):
         print('Add label kind: {0}'.format(kind))
         tag_id = self.mtag.get_id_by_name(tag_name, 'z')
         print('tag_id:', tag_id)
-        tt = self.get_by_info(post_id, tag_id, kind='z')
+        tt = self.get_by_info(post_id, tag_id)
         if tt:
             entry = self.tab.update(
                 order=order,
