@@ -10,6 +10,7 @@ class MInfor2Catalog(MPost2Catalog):
         self.tab_post2catalog = g_Post2Tag
         self.tab_catalog = g_Tag
         self.tab_post = g_Post
+
         try:
             g_Post2Tag.create_table()
         except:
