@@ -35,7 +35,7 @@ class MPost(MSuperTable):
         ).where(g_Post.uid == uid)
         entry.execute()
 
-    def update(self, uid, post_data, update_time=True):
+    def update(self, uid, post_data, update_time=False):
         title = post_data['title'].strip()
         if len(title) < 2:
             return False
@@ -43,7 +43,8 @@ class MPost(MSuperTable):
         try:
             if update_time:
                 entry2 = g_Post.update(
-                    time_update=time.time()
+                    date=datetime.datetime.now(),
+                    time_create  = tools.timestamp(),
                 ).where(g_Post.uid == uid)
                 entry2.execute()
         except:
@@ -61,6 +62,7 @@ class MPost(MSuperTable):
                 keywords=post_data['keywords'],
                 kind=post_data['kind'] if 'kind' in post_data else 1,
                 extinfo=post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
+                time_update= tools.timestamp(),
                 valid=1,
             ).where(g_Post.uid == uid)
             entry.execute()
@@ -109,12 +111,9 @@ class MPost(MSuperTable):
         return g_Post.select().join(g_Post2Tag).where(g_Post2Tag.tag == cat_id).order_by(
             peewee.fn.Random()).limit(num)
 
-    def query_recent_edited(self, timstamp, kind='1'):
-        return self.tab.select().where((self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(
-            g_Post.time_update.desc())
 
     def query_recent(self, num=8, kind='1'):
-        return self.tab.select().where(self.tab.kind == kind).order_by(g_Post.time_update.desc()).limit(num)
+        return self.tab.select().where(self.tab.kind == kind).order_by(g_Post.time_create.desc()).limit(num)
 
     def query_all(self, kind='1'):
         return self.tab.select().where(self.tab.kind == kind).order_by(g_Post.time_update.desc())
@@ -126,6 +125,10 @@ class MPost(MSuperTable):
     def query_keywords_empty(self, kind='1'):
         return g_Post.select().where((self.tab.kind == kind) & (g_Post.keywords == ''))
 
+    def query_recent_edited(self, timstamp, kind='1'):
+        return self.tab.select().where((self.tab.kind == kind) & (g_Post.time_update > timstamp)).order_by(
+            g_Post.time_update.desc())
+
     def query_dated(self, num=8, kind='1'):
         return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.time_update.asc()).limit(num)
 
@@ -135,14 +138,14 @@ class MPost(MSuperTable):
 
     def query_cat_recent(self, cat_id, num=8, kind='1'):
         return g_Post.select().join(g_Post2Tag).where((self.tab.kind == kind) & (g_Post2Tag.tag == cat_id)).order_by(
-            g_Post.time_update.desc()).limit(num)
+            g_Post.time_create.desc()).limit(num)
 
     def query_most(self, num=8, kind='1'):
         return g_Post.select().where(self.tab.kind == kind).order_by(g_Post.view_count.desc()).limit(num)
 
     def query_cat_by_pager(self, cat_str, cureent, kind='1'):
         tt = g_Post.select().where((self.tab.kind == kind) & (g_Post.id_cats.contains(str(cat_str)))).order_by(
-            g_Post.time_update.desc()).paginate(cureent, config.page_num)
+            g_Post.time_create.desc()).paginate(cureent, config.page_num)
         return tt
 
     def update_view_count_by_uid(self, uid):
@@ -160,8 +163,8 @@ class MPost(MSuperTable):
     def get_next_record(self, in_uid, kind='1'):
         current_rec = self.get_by_id(in_uid)
         query = g_Post.select().where(
-            (self.tab.kind == kind) & (g_Post.time_update < current_rec.time_update)).order_by(
-            g_Post.time_update.desc())
+            (self.tab.kind == kind) & (g_Post.time_create < current_rec.time_create)).order_by(
+            g_Post.time_create.desc())
         if query.count() == 0:
             return None
         else:
@@ -170,7 +173,7 @@ class MPost(MSuperTable):
     def get_previous_record(self, in_uid, kind='1'):
         current_rec = self.get_by_id(in_uid)
         query = g_Post.select().where(
-            (self.tab.kind == kind) & (g_Post.time_update > current_rec.time_update)).order_by(g_Post.time_update)
+            (self.tab.kind == kind) & (g_Post.time_create > current_rec.time_create)).order_by(g_Post.time_create)
         if query.count() == 0:
             return None
         else:

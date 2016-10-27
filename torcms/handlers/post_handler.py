@@ -62,7 +62,7 @@ class PostHandler(BaseHandler):
             return
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] in ['modify', 'edit']:
+        if url_arr[0] in ['modify', 'edit', '_edit']:
             self.update(url_arr[1])
         elif url_arr[0] in ['add_document', '_add']:
             self.user_add_post()
@@ -174,7 +174,7 @@ class PostHandler(BaseHandler):
         post_data = self.get_post_data()
 
         post_data['user_name'] = self.get_current_user()
-        is_update_time = True # if post_data['is_update_time'][0] == '1' else False
+        is_update_time = True if post_data['is_update_time'][0] == '1' else False
 
         postinfo_old = self.mpost.get_by_id(uid)
         cnt_old = tornado.escape.xhtml_unescape(postinfo_old.cnt_md).strip()
