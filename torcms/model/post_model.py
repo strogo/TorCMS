@@ -14,10 +14,7 @@ from torcms.model.supertable_model import MSuperTable
 class MPost(MSuperTable):
     def __init__(self):
         self.tab = g_Post
-        try:
-            g_Post.create_table()
-        except:
-            pass
+
 
     def update_rating(self, uid, rating):
         entry = g_Post.update(
@@ -49,25 +46,22 @@ class MPost(MSuperTable):
                 entry2.execute()
         except:
             pass
-
         cur_rec = self.get_by_id(uid)
 
-        try:
-            entry = g_Post.update(
-                title=title,
-                cnt_html=cnt_html,
-                user_name=post_data['user_name'],
-                cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'].strip()),
-                logo=post_data['logo'],
-                keywords=post_data['keywords'],
-                kind=post_data['kind'] if 'kind' in post_data else 1,
-                extinfo=post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
-                time_update= tools.timestamp(),
-                valid=1,
-            ).where(g_Post.uid == uid)
-            entry.execute()
-        except:
-            return False
+        entry = g_Post.update(
+            title=title,
+            cnt_html=cnt_html,
+            user_name=post_data['user_name'],
+            cnt_md=tornado.escape.xhtml_escape(post_data['cnt_md'].strip()),
+            logo=post_data['logo'],
+            keywords=post_data['keywords'] if 'keywords' in post_data else '',
+            kind=post_data['kind'] if 'kind' in post_data else 1,
+            extinfo=post_data['extinfo'] if 'extinfo' in post_data else cur_rec.extinfo,
+            time_update= tools.timestamp(),
+            valid=1,
+        ).where(g_Post.uid == uid)
+        entry.execute()
+
 
     def add_or_update(self, uid, post_data):
 
@@ -97,7 +91,7 @@ class MPost(MSuperTable):
             user_name=post_data['user_name'],
             view_count=post_data['view_count'] if 'view_count' in post_data else 1,
             logo=post_data['logo'],
-            keywords=post_data['keywords'],
+            keywords=post_data['keywords'] if 'keywords' in post_data else '',
             extinfo=post_data['extinfo'] if 'extinfo' in post_data else {},
             kind=post_data['kind'] if 'kind' in post_data else '1',
             valid=1,

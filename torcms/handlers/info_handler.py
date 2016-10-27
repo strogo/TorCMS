@@ -501,6 +501,12 @@ class InfoHandler(PostHandler):
         else:
             return False
 
+        postinfo = self.mpost.get_by_uid(uid)
+        if postinfo.kind == self.kind:
+            pass
+        else:
+            return False
+
         post_data = {}
         ext_dic = {}
         for key in self.request.arguments:
@@ -512,12 +518,12 @@ class InfoHandler(PostHandler):
         post_data['user_name'] = self.userinfo.user_name
         # post_data['kind'] = self.kind
 
-        postinfo_old = self.mpost.get_by_uid(uid)
+
 
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
         else:
-            post_data['valid'] = postinfo_old.valid
+            post_data['valid'] = postinfo.valid
 
         ext_dic['def_uid'] = str(uid)
         print(post_data)
@@ -527,12 +533,12 @@ class InfoHandler(PostHandler):
         ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
         ext_dic = self.extra_data(ext_dic, post_data)
 
-        cnt_old = tornado.escape.xhtml_unescape(postinfo_old.cnt_md).strip()
+        cnt_old = tornado.escape.xhtml_unescape(postinfo.cnt_md).strip()
         cnt_new = post_data['cnt_md'].strip()
         if cnt_old == cnt_new:
             pass
         else:
-            self.mpost_hist.insert_data(postinfo_old)
+            self.mpost_hist.insert_data(postinfo)
 
         self.mpost.modify_meta(uid,
                                post_data,
@@ -544,7 +550,7 @@ class InfoHandler(PostHandler):
         print('update jump to:', '/{0}/{1}'.format(router_post[self.kind], uid))
 
         # Todo: won't work with self.kind
-        self.redirect('/{0}/{1}'.format(router_post[postinfo_old.kind], uid))
+        self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], uid))
 
     @tornado.web.authenticated
     def map_add(self, uid='', sig=''):
@@ -636,11 +642,4 @@ class InfoHandler(PostHandler):
 
         self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))
 
-    @tornado.web.authenticated
-    def extra_data(self, ext_dic, post_data):
-        '''
-        The additional information.
-        :param post_data:
-        :return: directory.
-        '''
-        return ext_dic
+
