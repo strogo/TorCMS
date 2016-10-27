@@ -27,7 +27,7 @@ class show_page(tornado.web.UIModule):
                                       postinfo=page
                                       )
         else:
-            return '<a href="/page/{0}.html">{0}</a>'.format(page_id)
+            return '<a href="/page/{0}">{0}</a>'.format(page_id)
 
 
 class get_footer(tornado.web.UIModule):
@@ -48,7 +48,7 @@ class previous_post_link(tornado.web.UIModule):
         if prev_record is None:
             outstr = '<a>已经是最后一篇了</a>'
         else:
-            outstr = '''<a href="/post/{0}.html">上一篇</a>'''.format(prev_record.uid, prev_record.title)
+            outstr = '''<a href="/post/{0}">上一篇</a>'''.format(prev_record.uid, prev_record.title)
         return outstr
 
 
@@ -176,7 +176,7 @@ class next_post_link(tornado.web.UIModule):
         if next_record is None:
             outstr = '<a>已经是最新一篇了</a>'
         else:
-            outstr = '''<a href="/post/{0}.html">下一篇</a>'''.format(next_record.uid)
+            outstr = '''<a href="/post/{0}">下一篇</a>'''.format(next_record.uid)
         return outstr
 
 
