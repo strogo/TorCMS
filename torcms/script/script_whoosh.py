@@ -70,11 +70,16 @@ def do_for_app2(writer, rand=True ):
             continue
 
         catid = info.tag.uid[:2] + '00'
+
+        cat_name = ''
+        if 'def_cat_uid' in rec.extinfo and rec.extinfo['def_cat_uid']:
+            uu = mappcat.get_by_uid(rec.extinfo['def_cat_uid'][:2] + '00')
+            if uu:
+                cat_name = uu.name
         writer.update_document(
             title=rec.title,
             catid=catid,
-            type='<span style="color:red;">[{0}]</span>'.format(
-                mappcat.get_by_uid(rec.extinfo['def_cat_uid'][:2] + '00').name),
+            type='<span style="color:red;">[{0}]</span>'.format( cat_name               ),
             link='/{0}/{1}'.format(router_post[rec.kind], rec.uid),
             content=text2
         )
@@ -97,7 +102,7 @@ def do_for_post(writer, rand=True, doc_type=''):
             title=rec.title,
             catid='0000',
             type=doc_type,
-            link='/post/{0}.html'.format(rec.uid),
+            link='/post/{0}'.format(rec.uid),
             content=text2
         )
 
@@ -138,7 +143,7 @@ def do_for_page(writer, rand=True, doc_type=''):
             title=rec.title,
             catid='0000',
             type=doc_type,
-            link='/page/{0}.html'.format(rec.uid),
+            link='/page/{0}'.format(rec.uid),
             content=text2
         )
 def gen_whoosh_database(if_rand=True, kind='1', kind_arr = [] , post_type={}):

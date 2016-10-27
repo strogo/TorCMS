@@ -44,25 +44,6 @@ def run_edit_diff():
     mpost = MPost()
     mposthist = MPostHist()
 
-    # recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit)
-    # for recent_post in recent_posts:
-    #     hist_rec = mposthist.get_last(recent_post.uid)
-    #     if hist_rec:
-    #         foo_str = '''
-    #             <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
-    #             <td><a href="{3}">{3}</a></td></tr>
-    #             '''.format(idx, recent_post.user_name, recent_post.title,
-    #                        os.path.join(site_url, 'post', recent_post.uid + '.html'))
-    #         email_cnt = email_cnt + foo_str
-    #     else:
-    #         foo_str = '''
-    #             <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
-    #             <td><a href="{3}">{3}</a></td></tr>
-    #             '''.format(idx, recent_post.user_name, recent_post.title,
-    #                        os.path.join(site_url, 'post', recent_post.uid + '.html'))
-    #         email_cnt = email_cnt + foo_str
-    #     idx = idx + 1
-
     for key in router_post.keys():
         recent_posts = mpost.query_recent_edited(tools.timestamp() - time_limit, kind= key)
         for recent_post in recent_posts:
@@ -115,14 +96,14 @@ def run_edit_diff():
                     <tr><td>{0}</td><td>{1}</td><td class="diff_chg">Edit</td><td>{2}</td>
                     <td><a href="{3}">{3}</a></td></tr>
                     '''.format(idx, recent_post.user_name, recent_post.title,
-                               os.path.join(site_url, 'page', recent_post.uid + '.html'))
+                               os.path.join(site_url, 'page', recent_post.uid ))
             email_cnt = email_cnt + foo_str
         else:
             foo_str = '''
                     <tr><td>{0}</td><td>{1}</td><td class="diff_add">New </td><td>{2}</td>
                     <td><a href="{3}">{3}</a></td></tr>
                     '''.format(idx, recent_post.user_name, recent_post.title,
-                               os.path.join(site_url, 'page', recent_post.uid + '.html'))
+                               os.path.join(site_url, 'page', recent_post.uid ))
             email_cnt = email_cnt + foo_str
         idx = idx + 1
 
