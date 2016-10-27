@@ -31,6 +31,8 @@ class PageHandler(BaseHandler):
             self.ajax_count_plus(url_arr[1])
         elif len(url_arr) == 1 and url_str.endswith('.html'):
             self.to_view(url_str.split('.')[0])
+        elif len(url_arr) == 1:
+            self.to_view(url_str)
         else:
             self.render('html/404.html', userinfo=self.userinfo, kwd={})
 
