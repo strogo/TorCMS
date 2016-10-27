@@ -186,7 +186,7 @@ class PostHandler(BaseHandler):
         self.mpost.update(uid, post_data, update_time=is_update_time)
         self.update_category(uid)
         self.update_tag(uid)
-        self.redirect('/post/{0}.html'.format(uid))
+        self.redirect('/post/{0}'.format(uid))
 
     @tornado.web.authenticated
     def update_tag(self, signature):
@@ -392,7 +392,7 @@ class PostHandler(BaseHandler):
             uid = self.mpost.insert_data(id_post, post_data)
             self.update_tag(uid)
             self.update_category(uid)
-        self.redirect('/post/{0}.html'.format(id_post))
+        self.redirect('/post/{0}'.format(id_post))
 
     @tornado.web.authenticated
     def user_add_post(self):
@@ -417,7 +417,7 @@ class PostHandler(BaseHandler):
         uid = self.mpost.insert_data(cur_uid, post_data)
         self.update_tag(uid)
         self.update_category(uid)
-        self.redirect('/post/{0}.html'.format(cur_uid))
+        self.redirect('/post/{0}'.format(cur_uid))
 
     @tornado.web.authenticated
     def delete(self, del_id):
