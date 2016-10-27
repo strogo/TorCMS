@@ -65,5 +65,6 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'widget_editor': widget_editor,
                 'show_page': show_page,
                'star_rating': star_rating,
+                'use_f2e': use_f2e,
 
 }

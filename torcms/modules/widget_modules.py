@@ -78,3 +78,9 @@ class star_rating(tornado.web.UIModule):
                                   userinfo=userinfo,
                                   rating=rating,
                                   )
+
+class use_f2e(tornado.web.UIModule):
+    def render(self, f2ename):
+        return self.render_string('modules/usef2e/{0}.html'.format(f2ename),
+
+                                  )
