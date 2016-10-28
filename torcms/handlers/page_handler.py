@@ -23,14 +23,16 @@ class PageHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        if url_arr[0] in ['modify', 'edit']:
+
+        if len(url_arr) == 1 and url_str.endswith('.html'):
+            self.redirect(url_str.split('.')[0])
+        elif url_arr[0] in ['modify', 'edit', '_edit']:
             self.to_modify(url_arr[1])
         elif url_str == 'list':
             self.list()
         elif url_arr[0] == 'ajax_count_plus':
             self.ajax_count_plus(url_arr[1])
-        elif len(url_arr) == 1 and url_str.endswith('.html'):
-            self.to_view(url_str.split('.')[0])
+
         elif len(url_arr) == 1:
             self.to_view(url_str)
         else:
@@ -39,7 +41,7 @@ class PageHandler(BaseHandler):
     def post(self, url_str=''):
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] in ['modify', 'edit']:
+        if url_arr[0] in ['modify', 'edit', '_add']:
             self.update(url_arr[1])
         else:
             self.add_page()
