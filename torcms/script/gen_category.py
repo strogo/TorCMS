@@ -11,7 +11,11 @@ from torcms.model.category_model import MCategory
 
 def gen_infor_category():
     wb = load_workbook(filename='./database/meta/info_tags.xlsx')
-    sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2'], wb['Sheet3']]
+    sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
+    try:
+        sheet_ranges_arr.append(wb['Sheet3'])
+    except:
+        pass
     class_arr = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
     sig_name_arr = []
     mappcat = MCategory()
