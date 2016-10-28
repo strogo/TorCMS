@@ -50,9 +50,8 @@ class InfoHandler(PostHandler):
         elif url_arr[0] in ['_add', 'add_document']:
             # 直接添加
             self.add_app()
-        elif url_arr[0] == 'catalog':
-            self.catalog()
-
+        # elif url_arr[0] == 'catalog':
+        #     self.catalog()
         elif len(url_arr) == 2:
             if url_arr[0] in ['edit', 'modify', '_edit']:
                 self.to_edit_app(url_arr[1])
@@ -82,18 +81,11 @@ class InfoHandler(PostHandler):
                         kwd=kwd,
                         userinfo=self.userinfo, )
 
-    def index(self):
-        print('index', self.kind)
-        self.render('post{0}/index.html'.format(self.kind),
-                    userinfo=self.userinfo,
-                    kwd={'uid': '',}
-                    )
-
     def post(self, url_str=''):
 
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] == 'to_add':
+        if url_arr[0] in ['to_add', '_add']:
             self.add()
         elif url_arr[0] == 'rel':
             if self.get_current_user():
@@ -106,8 +98,6 @@ class InfoHandler(PostHandler):
             self.update(url_arr[1])
         elif url_arr[0] == 'add':
             self.add(url_arr[1])
-        elif url_arr[0] == '_add':
-            self.map_add()
 
         elif url_arr[0] == 'rel':
             if self.get_current_user():
@@ -336,13 +326,13 @@ class InfoHandler(PostHandler):
     #     self.mrel.add_relation(t_uid, f_uid, 1)
     #     return True
 
-
-
-    def catalog(self):
-        self.render('post{0}/catalog.html'.format(self.kind),
-                    userinfo=self.userinfo,
-                    kwd={'uid': '',}
-                    )
+    #
+    #
+    # def catalog(self):
+    #     self.render('post{0}/catalog.html'.format(self.kind),
+    #                 userinfo=self.userinfo,
+    #                 kwd={'uid': '',}
+    #                 )
 
     @tornado.web.authenticated
     def user_to_add(self, catid, sig=''):
@@ -552,50 +542,7 @@ class InfoHandler(PostHandler):
         # Todo: won't work with self.kind
         self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], uid))
 
-    @tornado.web.authenticated
-    def map_add(self, uid='', sig=''):
 
-        if self.check_post_role(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
-
-        ext_dic = {}
-        post_data = {}
-        for key in self.request.arguments:
-            if key.startswith('ext_') or key.startswith('tag_'):
-                ext_dic[key] = self.get_argument(key)
-            else:
-                post_data[key] = self.get_arguments(key)[0]
-
-        post_data['kind'] = self.kind
-
-        if uid == '':
-            uid = sig + tools.get_uu4d()
-            while self.mpost.get_by_uid(uid):
-                uid = sig + tools.get_uu4d()
-            post_data['uid'] = uid
-
-        post_data['user_name'] = self.userinfo.user_name
-        if 'valid' in post_data:
-            post_data['valid'] = int(post_data['valid'])
-        else:
-            post_data['valid'] = 1
-
-        ext_dic['def_uid'] = ext_dic['ext_map_uid']
-
-        ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
-
-        ext_dic['def_tag_arr'] = [x.strip() for x in post_data['tags'].strip().strip(',').split(',')]
-        ext_dic = self.extra_data(ext_dic, post_data)
-
-        self.mpost.modify_meta(ext_dic['def_uid'],
-                               post_data,
-                               extinfo=ext_dic)
-        self.update_category(ext_dic['def_uid'])
-        self.update_tag(ext_dic['def_uid'])
-
-        self.redirect('/{0}/{1}'.format(router_post[self.kind], ext_dic['def_uid']))
 
     @tornado.web.authenticated
     def add(self, uid='', sig=''):
@@ -627,7 +574,7 @@ class InfoHandler(PostHandler):
         else:
             post_data['valid'] = 1
 
-        ext_dic['def_uid'] = str(uid)
+        ext_dic['def_uid'] = uid
 
         ext_dic = dict(ext_dic, **self.get_def_cat_uid(post_data))
 
@@ -641,5 +588,3 @@ class InfoHandler(PostHandler):
         self.update_tag(ext_dic['def_uid'])
 
         self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))
-
-

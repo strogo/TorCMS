@@ -57,6 +57,12 @@ class PostHandler(BaseHandler):
             self.render('html/404.html', kwd=kwd,
                         userinfo=self.userinfo, )
 
+    def index(self):
+        print('index', self.kind)
+        self.render('post{0}/index.html'.format(self.kind),
+                    userinfo=self.userinfo,
+                    kwd={'uid': '',}
+                    )
     def post(self, url_str=''):
         if url_str == '':
             return
