@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 
-import json
+
 import random
 import tornado.escape
 import tornado.web
+import tornado.gen
 
-import config
 from torcms.core import tools
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
@@ -15,13 +15,9 @@ from torcms.model.category_model import MCategory
 from torcms.model.usage_model import MUsage
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from torcms.model.reply_model import MReply
-from config import router_post
-from config import cfg
 from torcms.handlers.post_handler import PostHandler
 from torcms.model.info_hist_model import MInfoHist
-
-import tornado.gen
-import tornado.web
+from config import router_post
 
 
 class InfoHandler(PostHandler):
@@ -45,18 +41,16 @@ class InfoHandler(PostHandler):
         if url_str == '':
             self.index()
         elif url_arr[0] in ['cat_add', '_cat_add']:
-            #  分类方式
-            self.user_to_add(url_arr[1])
+            self.to_add_with_category(url_arr[1])
         elif url_arr[0] in ['_add', 'add_document']:
-            # 直接添加
-            self.add_app()
+            self.to_add()
         # elif url_arr[0] == 'catalog':
         #     self.catalog()
         elif len(url_arr) == 2:
             if url_arr[0] in ['edit', 'modify', '_edit']:
-                self.to_edit_app(url_arr[1])
+                self.to_edit(url_arr[1])
             elif url_arr[0] == 'add':
-                self.to_add_app(url_arr[1])
+                self.to_add(url_arr[1])
             elif url_arr[0] == 'delete':
                 self.to_del_app(url_arr[1])
             else:
@@ -67,10 +61,10 @@ class InfoHandler(PostHandler):
                 # self.mrel.update_relation(url_arr[1], url_arr[0])
                 # self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
 
-        elif len(url_arr) == 1 and len(url_str) == 4:
-            self.view_info(url_str)
-        elif len(url_arr) == 1 and len(url_str) == 5:
-            self.view_info(url_str)
+        elif len(url_arr) == 1:
+            if len(url_str) in [4, 5]:
+                self.view_info(url_str)
+
         else:
             kwd = {
                 'title': '',
@@ -204,7 +198,6 @@ class InfoHandler(PostHandler):
             'tdesc': '',
             'eval_0': self.mevaluation.app_evaluation_count(info_id, 0),
             'eval_1': self.mevaluation.app_evaluation_count(info_id, 1),
-            'site_url': config.site_url,
             'login': 1 if self.get_current_user() else 0,
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
@@ -274,7 +267,7 @@ class InfoHandler(PostHandler):
             cat_id = rec.extinfo['def_cat_uid']
         else:
             cat_id = False
-        if cat_id:
+        if cat_id and self.sig == '2':
             tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
         else:
             tmpl = 'post{0}/show_map.html'.format(self.kind)
@@ -334,8 +327,15 @@ class InfoHandler(PostHandler):
     #                 kwd={'uid': '',}
     #                 )
 
+
+    def gen_uid(self):
+        cur_uid = self.kind + tools.get_uu4d()
+        while self.mpost.get_by_id(cur_uid):
+            cur_uid = self.kind + tools.get_uu4d()
+        return cur_uid
+
     @tornado.web.authenticated
-    def user_to_add(self, catid, sig=''):
+    def to_add_with_category(self, catid):
         '''
         Used for OSGeo
         :param catid:
@@ -346,12 +346,9 @@ class InfoHandler(PostHandler):
             pass
         else:
             return False
-        uid = sig + tools.get_uu4d()
-        while self.mpost.get_by_uid(uid):
-            uid = sig + tools.get_uu4d()
 
         kwd = {
-            'uid': uid,
+            'uid': self.gen_uid(),
             'userid': self.userinfo.user_name,
             'def_cat_uid': catid,
             'parentname': self.mcat.get_by_id(catid[:2] + '00').name,
@@ -363,35 +360,21 @@ class InfoHandler(PostHandler):
                     kwd=kwd)
 
     @tornado.web.authenticated
-    def add_app(self):
+    def to_add(self, uid=''):
         # Used for yunsuan, maplet
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False
-        self.render('post{0}/add.html'.format(self.kind),
-                    tag_infos=self.mcat.query_all(by_order=True, kind=self.kind),
-                    userinfo=self.userinfo,
-
-                    )
-
-    @tornado.web.authenticated
-    def to_add_app(self, uid):
-        if self.check_post_role(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
-
-        if self.mpost.get_by_uid(uid):
+        if uid != '' and self.mpost.get_by_uid(uid):
             # todo:
             # self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
             pass
-        else:
-            self.render('post{0}/add.html'.format(self.kind),
-                        tag_infos=self.mcat.query_all(),
-                        userinfo=self.userinfo,
-                        kwd={'uid': uid,}
-                        )
+        self.render('post{0}/add.html'.format(self.kind),
+                    tag_infos=self.mcat.query_all(by_order=True, kind=self.kind),
+                    userinfo=self.userinfo,
+                    kwd={'uid': uid,}
+                    )
 
     @tornado.web.authenticated
     def to_del_app(self, uid):
@@ -408,7 +391,7 @@ class InfoHandler(PostHandler):
             self.redirect('/{0}/{1}'.format(router_post[self.kind], uid))
 
     @tornado.web.authenticated
-    def to_edit_app(self, infoid):
+    def to_edit(self, infoid):
 
         if self.check_post_role(self.userinfo)['EDIT']:
             pass
@@ -542,10 +525,8 @@ class InfoHandler(PostHandler):
         # Todo: won't work with self.kind
         self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], uid))
 
-
-
     @tornado.web.authenticated
-    def add(self, uid='', sig=''):
+    def add(self, uid=''):
 
         if self.check_post_role(self.userinfo)['ADD']:
             pass
@@ -561,10 +542,7 @@ class InfoHandler(PostHandler):
                 post_data[key] = self.get_arguments(key)[0]
 
         if uid == '':
-            uid = sig + tools.get_uu4d()
-            while self.mpost.get_by_uid(uid):
-                uid = sig + tools.get_uu4d()
-            post_data['uid'] = uid
+            uid = self.gen_uid()
 
         post_data['user_name'] = self.userinfo.user_name
         post_data['kind'] = self.kind

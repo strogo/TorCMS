@@ -14,8 +14,8 @@ from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
 from config import router_post
 
-class PostHandler(BaseHandler):
 
+class PostHandler(BaseHandler):
     def initialize(self):
         self.init()
         self.mpost = MPost()
@@ -31,19 +31,17 @@ class PostHandler(BaseHandler):
         url_arr = self.parse_url(url_str)
 
         if url_str == '':
-            self.recent()
+            self.index()
         elif len(url_arr) == 1 and url_str.endswith('.html'):
             self.view_or_add(url_str.split('.')[0])
-        elif url_str == 'add_document':
-            self.to_add_document()
-        elif url_arr[0] == 'add_document':
-            self.to_add_document()
+        elif url_arr[0] in ['add_document', '_add']:
+            self.to_add()
         elif url_str == 'recent':
             self.recent()
         elif url_str == '_refresh':
             self.refresh()
         elif url_arr[0] in ['modify', 'edit']:
-            self.to_modify(url_arr[1])
+            self.to_edit(url_arr[1])
         elif url_arr[0] == 'delete':
             self.delete(url_arr[1])
         elif url_arr[0] == 'ajax_count_plus':
@@ -57,33 +55,33 @@ class PostHandler(BaseHandler):
             self.render('html/404.html', kwd=kwd,
                         userinfo=self.userinfo, )
 
+
+
+    def post(self, url_str=''):
+        print('post url:', url_str)
+        url_arr = self.parse_url(url_str)
+
+        if url_arr[0] in ['modify', 'edit', '_edit']:
+            self.update(url_arr[1])
+        elif url_arr[0] in ['add_document', '_add']:
+            self.add()
+        elif len(url_arr) == 1:
+            if len(url_str) in [4, 5]:
+                self.add(url_str)
+        else:
+            self.redirect('html/404.html')
+
     def index(self):
         print('index', self.kind)
         self.render('post{0}/index.html'.format(self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': '',}
                     )
-    def post(self, url_str=''):
-        if url_str == '':
-            return
-        url_arr = self.parse_url(url_str)
-
-        if url_arr[0] in ['modify', 'edit', '_edit']:
-            self.update(url_arr[1])
-        elif url_arr[0] in ['add_document', '_add']:
-            self.user_add_post()
-        elif len(url_arr) == 1 and url_str.endswith('.html'):
-            self.add_post(url_str)
-        else:
-            self.redirect('html/404.html')
-
     def ajax_count_plus(self, uid):
         output = {
             'status': 1 if self.mpost.update_view_count_by_uid(uid) else 0,
         }
         return json.dump(output, self)
-
-
 
     @tornado.web.authenticated
     def extra_data(self, ext_dic, post_data):
@@ -104,8 +102,8 @@ class PostHandler(BaseHandler):
         }
         self.render('post{0}/post_list.html'.format(self.kind),
                     kwd=kwd,
-                    view= self.mpost.query_recent(num = 20, kind=self.kind),
-                    postinfo = self.mpost.query_recent(num = 20, kind=self.kind),
+                    view=self.mpost.query_recent(num=20, kind=self.kind),
+                    postinfo=self.mpost.query_recent(num=20, kind=self.kind),
                     # view_all=self.mpost.query_all(),
                     format_date=tools.format_date,
                     userinfo=self.userinfo,
@@ -133,7 +131,7 @@ class PostHandler(BaseHandler):
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
-                    postrecs = self.mpost.query_dated(10),
+                    postrecs=self.mpost.query_dated(10),
                     format_date=tools.format_date,
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg, )
@@ -142,14 +140,14 @@ class PostHandler(BaseHandler):
     #     return self.mpost.query_random()
 
     def view_or_add(self, uid):
-        print('self.kind:' ,self.kind, uid)
+        print('self.kind:', self.kind, uid)
         if self.mpost.get_by_id(uid):
             self.view_post(uid)
         else:
             self.to_add(uid)
 
     @tornado.web.authenticated
-    def to_add_document(self, ):
+    def to_add(self, uid=''):
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
@@ -168,23 +166,6 @@ class PostHandler(BaseHandler):
                     )
 
     @tornado.web.authenticated
-    def to_add(self, uid):
-        if self.check_post_role(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
-        kwd = {
-            'cats': self.cats,
-            'uid': uid,
-            'pager': '',
-        }
-        self.render('post{0}/post_add.html'.format(self.kind),
-                    kwd=kwd,
-                    tag_infos=self.mcat.query_all(),
-                    cfg=config.cfg,
-                    userinfo=self.userinfo, )
-
-    @tornado.web.authenticated
     def update(self, uid):
         if self.__could_edit(uid):
             pass
@@ -199,11 +180,9 @@ class PostHandler(BaseHandler):
 
         post_data = self.get_post_data()
 
-
         post_data['user_name'] = self.get_current_user()
         post_data['kind'] = self.kind
         is_update_time = True if post_data['is_update_time'][0] == '1' else False
-
 
         cnt_old = tornado.escape.xhtml_unescape(postinfo.cnt_md).strip()
         cnt_new = post_data['cnt_md'].strip()
@@ -213,7 +192,7 @@ class PostHandler(BaseHandler):
             self.mpost_hist.insert_data(postinfo)
 
         print('upadte, ', uid)
-        print('post_data:' ,post_data)
+        print('post_data:', post_data)
         self.mpost.update(uid, post_data, update_time=is_update_time)
         self.update_category(uid)
         self.update_tag(uid)
@@ -221,7 +200,7 @@ class PostHandler(BaseHandler):
 
     @tornado.web.authenticated
     def update_tag(self, signature):
-        current_tag_infos = self.mpost2label.get_by_id(signature, kind= self.kind )
+        current_tag_infos = self.mpost2label.get_by_id(signature, kind=self.kind)
         post_data = self.get_post_data()
         if 'tags' in post_data:
             pass
@@ -243,12 +222,11 @@ class PostHandler(BaseHandler):
             else:
                 self.mpost2label.remove_relation(signature, cur_info.tag)
 
-
     @tornado.web.authenticated
     def update_category(self, uid):
         post_data = self.get_post_data()
 
-        current_infos = self.mpost2catalog.query_by_entity_uid(uid )
+        current_infos = self.mpost2catalog.query_by_entity_uid(uid)
         new_tag_arr = []
         # HTML中预定义的
         def_cate_arr = ['gcat{0}'.format(x) for x in range(10)]
@@ -260,7 +238,7 @@ class PostHandler(BaseHandler):
                 pass
             else:
                 continue
-            print('a' * 4 )
+            print('a' * 4)
             print(post_data[key])
             if post_data[key] == '' or post_data[key] == '0':
                 continue
@@ -283,7 +261,7 @@ class PostHandler(BaseHandler):
                 self.mpost2catalog.remove_relation(uid, cur_info.tag)
 
     @tornado.web.authenticated
-    def to_modify(self, id_rec):
+    def to_edit(self, id_rec):
         if self.__could_edit(id_rec):
             pass
         else:
@@ -297,9 +275,9 @@ class PostHandler(BaseHandler):
         self.render('post{0}/post_edit.html'.format(self.kind),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
-                    tag_infos=self.mcat.query_all(kind = self.kind ),
+                    tag_infos=self.mcat.query_all(kind=self.kind),
                     app2label_info=self.mpost2label.get_by_id(id_rec),
-                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, self.kind ),
+                    app2tag_info=self.mpost2catalog.query_by_entity_uid(id_rec, self.kind),
                     dbrec=self.mpost.get_by_id(id_rec),
                     userinfo=self.userinfo,
                     cfg=config.cfg,
@@ -374,7 +352,7 @@ class PostHandler(BaseHandler):
 
         self.render('post{0}/post_view.html'.format(self.kind),
                     view=rec,
-                    postinfo = rec,
+                    postinfo=rec,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,
@@ -399,55 +377,33 @@ class PostHandler(BaseHandler):
         return True
 
     @tornado.web.authenticated
-    def add_post(self, url_str):
-        url_arr = url_str.split('.')
-        if len(url_arr) == 2:
-            id_post= url_arr[0]
-            if len(id_post) == 5:
-                pass
-            else:
-                return False
-        else:
-            return False
-
+    def add(self, uid=''):
+        print('adding:', uid)
         if self.check_post_role(self.userinfo)['ADD']:
             pass
         else:
             return False
         post_data = self.get_post_data()
-
-        post_data['user_name'] = self.userinfo.user_name
-        post_data ['kind'] = self.kind
-        cur_post_rec = self.mpost.get_by_id(id_post)
-        if cur_post_rec is None:
-            uid = self.mpost.insert_data(id_post, post_data)
-            self.update_tag(uid)
-            self.update_category(uid)
-        self.redirect('/{0}/{1}'.format(router_post[self.kind], id_post))
-
-    @tornado.web.authenticated
-    def user_add_post(self):
-        if self.check_post_role(self.userinfo)['ADD']:
-            pass
-        else:
-            return False
-        post_data = self.get_post_data()
-
         if not ('title' in post_data):
             self.set_status(400)
             return False
         else:
             pass
 
-        post_data['user_name'] = self.get_current_user()
+        id_post = uid
+        if id_post == '':
+            id_post = self.gen_uid()
+
+        post_data['user_name'] = self.userinfo.user_name
         post_data['kind'] = self.kind
-
-        cur_uid = self.gen_uid()
-
-        uid = self.mpost.insert_data(cur_uid, post_data)
-        self.update_tag(uid)
-        self.update_category(uid)
-        self.redirect('/{0}/{1}'.format(router_post[self.kind], cur_uid))
+        cur_post_rec = self.mpost.get_by_id(id_post)
+        if cur_post_rec:
+            pass
+        else:
+            if self.mpost.insert_data(id_post, post_data):
+                self.update_tag(id_post)
+                self.update_category(id_post)
+        self.redirect('/{0}/{1}'.format(router_post[self.kind], id_post))
 
     def gen_uid(self):
         cur_uid = tools.get_uu5d()
