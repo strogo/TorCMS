@@ -37,7 +37,17 @@ from torcms.handlers.post_manager import PostManHandler
 from torcms.handlers.wiki_manager import WikiManHandler
 from torcms.handlers.rating_handler import RatingHandler
 
+from torcms.handlers.geojson import GeoJsonHandler
+from torcms.handlers.layout_handler import LayoutHandler
+from torcms.handlers.map_handler import MapPostHandler
+from torcms.handlers.overlay_handler import MapOverlayHandler
+
 urls = [
+    ('/map/overlay/(.*)', MapOverlayHandler, dict()),
+    ("/map/(.*)", MapPostHandler, dict()),
+    ('/geojson/(.*)', GeoJsonHandler, dict()),
+    ('/layout/(.*)', LayoutHandler, dict()),
+
     ('/_rating/(.*)', RatingHandler, dict()),
     ('/post_man/(.*)', PostManHandler, dict()),
     ('/meta_man/(.*)', PostManHandler, dict()),
@@ -69,7 +79,6 @@ urls = [
     # ('/meta/(.*)', PostHandler, dict()),
     # ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
-
 
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),
     ("/list/(.*)", torcms.handlers.infocate_list_handler.InfoListHandler, dict()),
