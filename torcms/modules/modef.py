@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from torcms.modules.base_modules import *
-from torcms.modules.info_modules import *
-from torcms.modules.widget_modules import *
-
+from .base_modules import *
+from .info_modules import *
+from .widget_modules import *
+from .map_modules import *
 core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'get_footer': get_footer,
                 'previous_post_link': previous_post_link,
@@ -66,5 +66,8 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'show_page': show_page,
                'star_rating': star_rating,
                 'use_f2e': use_f2e,
+'app_layout': app_layout,
+                'app_json': app_json,
+
 
 }
