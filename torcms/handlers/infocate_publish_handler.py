@@ -53,7 +53,7 @@ class InfoPublishHandler(BaseHandler):
             role_mask_idx = rec.role_mask.index('1')
             if self.userinfo.role[role_mask_idx] >= '1':
                 class1str += '''
-             <a onclick="select('/publish/2{0}');" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
+             <a onclick="select_sub_tag('/publish/2{0}');" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
 
         kwd = {
