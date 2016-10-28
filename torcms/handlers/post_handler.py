@@ -127,6 +127,7 @@ class PostHandler(BaseHandler):
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
+                    postrecs = self.mpost.query_dated(10),
                     format_date=tools.format_date,
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg, )
