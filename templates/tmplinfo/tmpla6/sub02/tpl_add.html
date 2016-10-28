@@ -2,9 +2,7 @@
 
 
 
-
 {% block typebody %}
-
 <div class="panel panel-default" id="guarantee">
 
     <div class="alert alert-info">
@@ -18,12 +16,11 @@
     <div class="panel-body">
 
         <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
-              enctype="multipart/form-data" action="/meta/to_add">
-
-                        <input type='hidden' name="valid" value="1">
+              enctype="multipart/form-data" action="/info/to_add">
 
 
             <input type='hidden' name="uid" value="{% raw kwd['uid'] %}">
+            <input type='hidden' name="valid" value="1">
 
             <input type='hidden' name="def_cat_uid" value="{% raw kwd['def_cat_uid'] %}">
 

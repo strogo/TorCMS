@@ -2,45 +2,7 @@
 
 
 {% block mainbody %}
-<script type="text/javascript" src="{{ static_url('jslib/gscript.js') }}"></script>
-
-<script src="{{ static_url('f2elib/codemirror_5.19.0/lib/codemirror.js') }}"></script>
-<script src="{{ static_url('f2elib/codemirror_5.19.0/addon/edit/continuelist.js') }}"></script>
-<script src="{{ static_url('f2elib/codemirror_5.19.0/mode/markdown/markdown.js') }}"></script>
-<link rel="stylesheet" href="{{ static_url('f2elib/codemirror_5.19.0/lib/codemirror.css') }}">
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        var editor = CodeMirror.fromTextArea(document.getElementById("cnt_md"), {
-            lineWrapping: true,
-            mode: 'markdown',
-            lineNumbers: true,
-            theme: "default",
-            extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
-        });
-    });
-</script>
-
-<style type="text/css">
-    .CodeMirror {
-        border-top: 1px solid #666;
-        border-bottom: 1px solid #666;
-    }
-
-    .cm-s-default .cm-trailing-space-a:before,
-    .cm-s-default .cm-trailing-space-b:before {
-        position: absolute;
-        content: "\00B7";
-        color: #777;
-    }
-
-    .cm-s-default .cm-trailing-space-new-line:before {
-        position: absolute;
-        content: "\21B5";
-        color: #777;
-    }
-</style>
+{% module use_f2e('codemirror') %}
 
 <div class="row">
     <div class="col-sm-9">

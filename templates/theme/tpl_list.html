@@ -33,7 +33,6 @@
         select();
     }
     function select() {
-
         // 选择之后，将条件放到 url 中，
         var html_condition = window.location.href + '/con';
         var html_pagination = window.location.href + '/num';
@@ -43,11 +42,9 @@
                 html_pagination += '/' + ii + '/' + obj[ii];
             }
         }
-
         $('#resultSpan').load(html_condition);
         $('#resultFenye').load(html_pagination);
     }
-
 </script>
 
 <script type="text/javascript">
@@ -58,15 +55,10 @@
 
 <script type="text/javascript">
     function keyword_del(key_name, id_num) {
-
         id_num = id_num.toString();
-
         var AjaxUrl = "/info_tag/remove/" + key_name;
-
         $.getJSON(AjaxUrl, function (Json) {
-
             $("#del_key_" + id_num).html('');
-
             select();
         });
     }

@@ -41,7 +41,7 @@
             <div class="clear"></div>
             <br>
             <strong>Article link:</strong>
-            <a href="{% module site_url() %}/post/{{view.uid}}.html" class="underline"> {{ view.title }}</a>
+            <a href="{% module site_url() %}/post/{{view.uid}}" class="underline"> {{ view.title }}</a>
             <br/>
             <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
             source：
@@ -58,7 +58,7 @@
             <ul class="list-group">
                 {% for s in relations %}
                 <li class="list-group-item">
-                    <a href="/post/{{ s.post.uid }}.html">
+                    <a href="/post/{{ s.post.uid }}">
                         <span class="glyphicon glyphicon-list-alt"></span> {{ s.post.title }}
                     </a>
                 </li>

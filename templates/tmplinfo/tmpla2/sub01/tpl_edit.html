@@ -9,7 +9,7 @@
 
     <div class="alert alert-info">
         <div class="row">
-            <div class="col-sm-3"> 当前位置：<a href="/"> 首页 </a> ></div>
+            <div class="col-sm-3"> 当前位置：<a href="{% module site_url() %}"> 首页 </a> ></div>
             <div class="col-sm-9"> 修改-{{ post_info.title }}</div>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
 
         <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
-              enctype="multipart/form-data" action="/meta/edit/{{ post_info.uid }}">
+              enctype="multipart/form-data" action="/info/edit/{{ post_info.uid }}">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">

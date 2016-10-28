@@ -10,6 +10,7 @@
 
 {% block typebody %}
 
+
 <script>
 
 var post_uid = "{{ post_info.uid }}";
@@ -35,10 +36,17 @@ var login = {{ kwd['login'] }};
                 <div class="col-sm-9">
 
                 <h3 class="title colorme">{{ post_info.title }}</h3>
-                    {% if userinfo and( userinfo.role[role_mask_idx] >= '2' or userinfo.user_name == post_info.user_name) %}
-                    <a href="/meta/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">修改</a>
-                    <a href="/meta/delete/{{ post_info.uid }}" class="btn btn-sm btn-primary">删除</a>
+
+
+
+                    {% if userinfo and( userinfo.role[2] >= '2' or userinfo.user_name == post_info.user_name) %}
+                    <a href="/info/edit/{{ post_info.uid }}" class="btn btn-sm btn-primary">修改</a>
+                    <a href="/info/delete/{{ post_info.uid }}" class="btn btn-sm btn-primary">删除</a>
                     {% end %}
+<span class="cmts"><a href="/post_man/edit/{{ post_info.uid }}" class="btn btn-xs btn-primary">EditInfo</a></span>
+                    {% if userinfo and userinfo.role[2] >= '9' %}
+        <span class="cmts"><a href="/post_man/view/{{ post_info.uid }}" class="btn btn-xs btn-primary"> Manage</a></span>
+        {% end %}
 
 <div class="row bor_bottom">
     <div class="col-sm-5"><b>Tag:</b><span class="post_cat">

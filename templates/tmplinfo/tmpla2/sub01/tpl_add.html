@@ -7,7 +7,7 @@
 
     <div class="alert alert-info">
         <div class="row">
-            <div class="col-sm-3"> 当前位置：<a href="/"> 首页 </a> ></div>
+            <div class="col-sm-3"> 当前位置：<a href="{% module site_url() %}"> 首页 </a> ></div>
             <div class="col-sm-9"> {% module BreadcrumbPublish(2) %}</div>
         </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="panel-body">
 
         <form class="form-horizontal" role="form" id="form_add_info" name="form_add_info" method="post"
-              enctype="multipart/form-data" action="/meta/to_add">
+              enctype="multipart/form-data" action="/info/to_add">
 
 
             <input type='hidden' name="uid" value="{% raw kwd['uid'] %}">

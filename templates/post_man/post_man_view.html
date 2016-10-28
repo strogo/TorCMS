@@ -31,7 +31,7 @@
         <span>Browse: {{ view.view_count }} 次</span>
         {% if userinfo and userinfo.role[2] >= '1' %}
         <span class="cmts"><a href="/post/modify/{{ view.uid }}" class="btn btn-xs btn-primary">Edit</a></span>
-        <span class="cmts"><a href="/post/{{ view.uid }}.html" class="btn btn-xs btn-primary">View</a></span>
+        <span class="cmts"><a href="/post/{{ view.uid }}" class="btn btn-xs btn-primary">View</a></span>
         {% end %}
 
     </div>
@@ -65,7 +65,7 @@
             <div class="clear"></div>
             <br>
             <strong>Article link:</strong>
-            <a href="{% module site_url() %}/post/{{view.uid}}.html" class="underline"> {{ view.title }}</a>
+            <a href="{% module site_url() %}/post/{{view.uid}}" class="underline"> {{ view.title }}</a>
             <br/>
             <strong>Copyright:</strong> Non special statement are original articles, reproduced please indicate the
             source：

@@ -4,23 +4,19 @@
 
 
 <script type="text/javascript">
-
     jQuery.validator.addMethod("isMobile", function (value, element) {
         var length = value.length;
         var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
         return this.optional(element) || (length == 11 && mobile.test(value));
     }, "请正确填写您的手机号码");
-
     jQuery.validator.addMethod("isphone", function (value, element) {
         var length = value.length;
         var phone = /(^(\d{3,4}-)?\d{6,8}$)|(^(\d{3,4}-)?\d{6,8}(-\d{1,5})?$)|(\d{11})/;
         return this.optional(element) || (phone.test(value));
     }, "请填写正确的电话号码");
-
     $().ready(function () {
         $("#form_add_info").validate();
     });
-
     function chuli_kw() {
         $.ajaxSetup({cache: false});
         var myVAriable = $("#keywords")[0].value;
@@ -29,9 +25,7 @@
         out_str += stringArray.join('</span> <span class="btn btn-warning btn-xs">');
         out_str += '</span';
         $('#kwlist').html(out_str);
-
     }
-
 </script>
 
 
@@ -156,10 +150,8 @@
 
             <hr/>
        <!--     <label>
-
                 <span></span>
                 <a href="/entry/add" target="_blank" class="contactbutton" role="button">Upload pictures </a>
-
             </label>
             <br>
 -->

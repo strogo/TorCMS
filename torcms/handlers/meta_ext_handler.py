@@ -5,7 +5,7 @@ import yaml
 from torcms.handlers.info_handler import InfoHandler
 
 
-class MetaExtHander(InfoHandler):
+class gfMetaExtHander(InfoHandler):
     def extra_data(self, ext_dict, data_dic):
         if 'def_cat_uid' in data_dic and data_dic['def_cat_uid'].startswith('22'):
             ext_dict['ext_yaml'] =  data_dic['extra_yaml']
