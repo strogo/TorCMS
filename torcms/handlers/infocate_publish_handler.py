@@ -32,14 +32,12 @@ class InfoPublishHandler(BaseHandler):
 
     @tornado.web.authenticated
     def format_class2(self, fatherid):
-        dbdata = self.minforcatalog.get_qian2(fatherid[:2])
+        # dbdata = self.minforcatalog.get_qian2(fatherid[:2])
+
+        dbdata = self.minforcatalog.query_sub_cat( fatherid )
         outstr = '<ul class="list-group">'
         for rec in dbdata:
-            if rec.uid.endswith('00'):
-                continue
-            role_mask_idx = rec.role_mask.index('1')
-            if self.userinfo.role[role_mask_idx] >= '1':
-                outstr += '''
+            outstr += '''
             <a href="/info/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
         outstr += '</ul>'
@@ -50,9 +48,7 @@ class InfoPublishHandler(BaseHandler):
         dbdata = self.minforcatalog.get_parent_list( kind = '2')
         class1str = ''
         for rec in dbdata:
-            role_mask_idx = rec.role_mask.index('1')
-            if self.userinfo.role[role_mask_idx] >= '1':
-                class1str += '''
+            class1str += '''
              <a onclick="select_sub_tag('/publish/2{0}');" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
             '''.format(rec.uid, rec.name)
 
@@ -76,7 +72,7 @@ class InfoPublishHandler(BaseHandler):
             pass
         else:
             return False
-        fatherid = fatherid[:2] + '00'
+
         kwd = {
             'class1str': self.format_class2(fatherid),
             'parentid': '0',

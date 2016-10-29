@@ -61,8 +61,8 @@ class MapPostHandler(InfoHandler):
 
     def get_tmpl_name(self, rec):
         if 'fullscreen' in self.request.arguments:
-            tmpl = 'post{0}/full_screen.html'.format(self.kind)
+            tmpl = 'post_{0}/full_screen.html'.format(self.kind)
         else:
 
-            tmpl = 'post{0}/show_map.html'.format(self.kind)
+            tmpl = 'post_{0}/show_map.html'.format(self.kind)
         return tmpl

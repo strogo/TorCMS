@@ -15,6 +15,19 @@ def run_migrate():
     except:
         pass
 
+    pid = CharField(null=False, max_length=4, default='xxxx', help_text='parent id')
+    tmpl = IntegerField(null=False, default=9, help_text='tmplate type')
+
+    try:
+        migrate(migrator.add_column('g_tag', 'pid', pid))
+    except:
+        pass
+
+    try:
+        migrate(migrator.add_column('g_tag', 'tmpl', tmpl))
+    except:
+        pass
+
     # try:
     #     migrate(migrator.add_column('tabapp', 'user_name',
     #                                 CharField(null=False, default='', max_length=36, help_text='UserName', )))
@@ -26,10 +39,10 @@ def run_migrate():
     # except:
     #     pass
     #
-    # try:
-    #     migrate(migrator.drop_column('cabpagehist', 'cnt_html'))
-    # except:
-    #     pass
+    try:
+        migrate(migrator.drop_column('g_tag', 'role_mask'))
+    except:
+        pass
     #
     # try:
     #     migrate(migrator.drop_column('cabpagehist', 'time_create'))

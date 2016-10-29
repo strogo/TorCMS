@@ -58,6 +58,8 @@ class MLabel(MSuperTable):
             order = 1,
             count=0,
             kind = 'z',
+            tmpl = 9,
+            pid = 'zzzz',
         )
         return uid
 
@@ -73,9 +75,10 @@ class MLabel(MSuperTable):
             order = 1,
             count=0,
             kind = 'z',
+            tmpl=9,
+            pid='zzzz',
         )
         return uid
-
 
 class MPost2Label(MSuperTable):
     def __init__(self):

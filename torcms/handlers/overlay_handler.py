@@ -63,9 +63,9 @@ class MapOverlayHandler(BaseHandler):
                'zoom_current': int(average(zoom_current_zrr)),
                }
         if 'fullscreen' in self.request.arguments:
-            tmpl = 'postm/overlay/overlay_full.html'
+            tmpl = 'post_m/overlay/overlay_full.html'
         else:
-            tmpl = 'postm/overlay/overlay.html'
+            tmpl = 'post_m/overlay/overlay.html'
         self.render(tmpl,
                     topmenu='',
                     kwd=kwd,

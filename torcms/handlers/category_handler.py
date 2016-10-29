@@ -28,24 +28,25 @@ class CategoryHandler(BaseHandler):
             self.list_catalog(url_str)
         elif len(url_arr) == 2:
             if url_arr[0] == 'j_subcat':
-                self.ajax_subcat_arr(url_arr[1][:2])
+                self.ajax_subcat_arr(url_arr[1])
             else:
                 self.list_catalog(url_arr[0], url_arr[1])
         else:
             self.render('html/404.html')
 
-    def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2)
+    def ajax_subcat_arr(self, pid):
+        '''
+        Get the sub category.
+        :param qian2:
+        :return:
+        '''
+        # cur_cat = self.mcat.query_uid_starts_with(qian2)
+        cur_cat = self.mcat.query_sub_cat(pid)
 
 
         out_arr = {}
         for x in cur_cat:
-            if x.uid.endswith('00'):
-                continue
-            # out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
             out_arr[x.uid] = x.name
-
-        # out_dic = {'arr': out_arr}
         json.dump(out_arr, self)
 
     def list_catalog(self, cat_slug, cur_p=''):

@@ -15,19 +15,28 @@ from config import router_post
 
 
 class app_catalog_of(tornado.web.UIModule):
-
-    def render(self, uid_with_str, kind = '2', slug = False):
+    def render(self, uid_with_str, slug=False):
         self.mcat = MCategory()
-        recs = self.mcat.query_uid_starts_with(uid_with_str)
-        # return ''
+
+        curinfo = self.mcat.get_by_uid(uid_with_str)
+
+        sub_cats = self.mcat.query_sub_cat(uid_with_str)
+
         if slug:
-            return self.render_string('modules/info/catalog_slug.html', recs=recs)
+            return self.render_string('modules/info/catalog_slug.html',
+                                      pcatinfo=curinfo,
+                                      sub_cats=sub_cats,
+                                      recs=sub_cats, )
         else:
-            return self.render_string('modules/info/catalog_of.html', recs=recs)
+            return self.render_string('modules/info/catalog_of.html',
+                                      pcatinfo=curinfo,
+                                      sub_cats=sub_cats,
+                                      recs=sub_cats,
+                                      )
 
 
 class app_user_most(tornado.web.UIModule):
-    def render(self, user_name, kind, num,  with_tag=False):
+    def render(self, user_name, kind, num, with_tag=False):
         self.mcat = torcms.model.usage_model.MUsage()
         all_cats = self.mcat.query_most(user_name, kind, num)
         kwd = {
@@ -44,7 +53,7 @@ class app_user_most_by_cat(tornado.web.UIModule):
 
 
 class app_user_recent(tornado.web.UIModule):
-    def render(self, user_name, kind, num,  with_tag=False):
+    def render(self, user_name, kind, num, with_tag=False):
         self.mcat = torcms.model.usage_model.MUsage()
         all_cats = self.mcat.query_recent(user_name, kind, num)
         kwd = {
@@ -93,9 +102,9 @@ class app_least_use_by_cat(tornado.web.UIModule):
 
 
 class app_recent_used(tornado.web.UIModule):
-    def render(self,   kind, num, with_tag=False):
+    def render(self, kind, num, with_tag=False):
         self.mcat = torcms.model.info_model.MInfor()
-        all_cats = self.mcat.query_recent(num, kind = kind)
+        all_cats = self.mcat.query_recent(num, kind=kind)
         kwd = {
             'with_tag': with_tag,
             'router': router_post[kind]
@@ -108,7 +117,7 @@ class app_recent_used(tornado.web.UIModule):
 class app_random_choose(tornado.web.UIModule):
     def render(self, kind, num):
         self.mcat = torcms.model.info_model.MInfor()
-        all_cats = self.mcat.query_random(num = num, kind = kind)
+        all_cats = self.mcat.query_random(num=num, kind=kind)
         return self.render_string('modules/info/list_equation.html', recs=all_cats)
 
 
@@ -125,7 +134,7 @@ class app_tags(tornado.web.UIModule):
                                                                                             tag_info.tag.name)
             out_str += tmp_str
             ii += 1
-        #print('info category', out_str)
+        # print('info category', out_str)
         return out_str
 
 
@@ -140,7 +149,7 @@ class label_count(tornado.web.UIModule):
 class app_menu(tornado.web.UIModule):
     def render(self, kind, limit):
         self.mcat = MCategory()
-        all_cats = self.mcat.query_field_count(limit, kind =kind )
+        all_cats = self.mcat.query_field_count(limit, kind=kind)
         kwd = {
             'cats': all_cats,
         }
@@ -154,6 +163,7 @@ class baidu_search(tornado.web.UIModule):
         '''
         return self.render_string('modules/info/baidu_script.html',
                                   baidu_script=baidu_script)
+
 
 class rel_post2app(tornado.web.UIModule):
     def render(self, uid, num, ):
@@ -185,7 +195,7 @@ class rel_app2post(tornado.web.UIModule):
         }
         rel_recs = self.relation.get_app_relations(uid, num, kind='1')
 
-        rand_recs = self.mpost.query_random(num - rel_recs.count() + 2, kind = '1')
+        rand_recs = self.mpost.query_random(num - rel_recs.count() + 2, kind='1')
 
         return self.render_string('modules/info/relation_app2post.html',
                                   relations=rel_recs,

@@ -5,11 +5,12 @@ import tornado.escape
 from torcms.model.info_model import MInfor
 from torcms.model.category_model import MCategory
 import config
-from torcms.core.base_handler import BaseHandler
+
+from torcms.handlers.category_handler import CategoryHandler
 from torcms.model.infor2catalog_model import MInfor2Catalog
 from config import router_post
 
-class InforTagHandler(BaseHandler):
+class InforTagHandler(CategoryHandler):
     '''
     List the infos by the slug of the catalog.
     '''
@@ -31,22 +32,10 @@ class InforTagHandler(BaseHandler):
             self.list(url_str)
         elif len(url_arr) == 2:
             if url_arr[0] == 'j_subcat':
-                self.ajax_subcat_arr(url_arr[1][:2])
+                self.ajax_subcat_arr(url_arr[1])
+
             else:
                 self.list(url_arr[0], url_arr[1])
-
-    def ajax_subcat_arr(self, qian2):
-        cur_cat = self.mcat.query_uid_starts_with(qian2)
-
-        out_arr = {}
-        for x in cur_cat:
-            if x.uid.endswith('00'):
-                continue
-            # out_arr.append(['zid:'+ x.uid,'name:'+ x.name])
-            out_arr[x.uid] = x.name
-
-        # out_dic = {'arr': out_arr}
-        json.dump(out_arr, self)
 
 
     def list(self, tag_slug, cur_p=''):
@@ -76,7 +65,7 @@ class InforTagHandler(BaseHandler):
         }
         # postinfos = self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number, kind=taginfo.kind)
         # print(postinfos.count())
-        self.render('post{0}/tag_list.html'.format(taginfo.kind),
+        self.render('post_{0}/tag_list.html'.format(taginfo.kind),
                     taginfo = taginfo,
                     # tag_name=tag_name,
                     infos=self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number),

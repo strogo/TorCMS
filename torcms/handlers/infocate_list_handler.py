@@ -23,7 +23,7 @@ class InfoListHandler(BaseHandler):
         self.init()
         self.template_dir_name = 'infor'
         self.minfo = MInfor()
-        self.mappcat = MCategory()
+        self.mcat = MCategory()
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -60,7 +60,9 @@ class InfoListHandler(BaseHandler):
 
         num = (len(url_arr) - 2) // 2
 
-        if sig.endswith('00'):
+        catinfo = self.mcat.get_by_uid(sig)
+
+        if catinfo.pid == '0000':
             condition['def_cat_pid'] = sig
         else:
             condition['def_cat_uid'] = sig
@@ -193,19 +195,20 @@ class InfoListHandler(BaseHandler):
         bread_title = ''
         bread_crumb_nav_str = '<li>当前位置：<a href="/">信息</a></li>'
 
-        if input.endswith('00'):
+        catinfo = self.mcat.get_by_uid(input )
+        if catinfo.pid == '0000':
             parent_id = input
-            parent_catname = self.mappcat.get_by_id(parent_id).name
+            parent_catname = self.mcat.get_by_id(parent_id).name
             condition['parentid'] = [parent_id]
-            catname = self.mappcat.get_by_id(sig).name
+            catname = self.mcat.get_by_id(sig).name
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
             bread_title = '{1}'.format(sig, catname)
 
         else:
             condition['catid'] = [sig]
-            parent_id = sig[:2] + '00'
-            parent_catname = self.mappcat.get_by_id(parent_id).name
-            catname = self.mappcat.get_by_id(sig).name
+            parent_id = catinfo.uid
+            parent_catname = self.mcat.get_by_id(parent_id).name
+            catname = self.mcat.get_by_id(sig).name
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(parent_id, parent_catname)
 
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(sig, catname)
@@ -219,14 +222,13 @@ class InfoListHandler(BaseHandler):
             'daohangstr': bread_crumb_nav_str,
             'breadtilte': bread_title,
             'parentid': parent_id,
-            'parentlist': self.mappcat.get_parent_list(),
+            'parentlist': self.mcat.get_parent_list(),
             'condition': condition,
             'catname': catname,
             'rec_num': num,
         }
 
-        cat_rec = self.mappcat.get_by_uid(input)
-        role_mask_idx = cat_rec.role_mask.index('1')
+        cat_rec = self.mcat.get_by_uid(input)
 
         if self.get_current_user():
             redis_kw = redisvr.smembers(config.redis_kw + self.userinfo.user_name)
@@ -240,7 +242,6 @@ class InfoListHandler(BaseHandler):
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
-                    cat_enum=self.mappcat.get_qian2(parent_id[:2]),
-                    role_mask_idx=role_mask_idx,
+                    cat_enum=self.mcat.get_qian2(parent_id[:2]),
 
                     )

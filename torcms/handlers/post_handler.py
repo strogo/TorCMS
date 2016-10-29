@@ -73,7 +73,7 @@ class PostHandler(BaseHandler):
 
     def index(self):
         print('index', self.kind)
-        self.render('post{0}/index.html'.format(self.kind),
+        self.render('post_{0}/index.html'.format(self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': '',}
                     )
@@ -100,7 +100,7 @@ class PostHandler(BaseHandler):
             'with_catalog': with_catalog,
             'with_date': with_date,
         }
-        self.render('post{0}/post_list.html'.format(self.kind),
+        self.render('post_{0}/post_list.html'.format(self.kind),
                     kwd=kwd,
                     view=self.mpost.query_recent(num=20, kind=self.kind),
                     postinfo=self.mpost.query_recent(num=20, kind=self.kind),
@@ -127,7 +127,7 @@ class PostHandler(BaseHandler):
             'pager': '',
             'title': '最近文档',
         }
-        self.render('post{0}/post_list.html'.format(self.kind),
+        self.render('post_{0}/post_list.html'.format(self.kind),
                     kwd=kwd,
                     userinfo=self.userinfo,
                     view=self.mpost.query_dated(10),
@@ -158,7 +158,7 @@ class PostHandler(BaseHandler):
             'uid': '',
 
         }
-        self.render('post{0}/post_add.html'.format(self.kind),
+        self.render('post_{0}/post_add.html'.format(self.kind),
                     kwd=kwd,
                     tag_infos=self.mcat.query_all(),
                     userinfo=self.userinfo,
@@ -272,7 +272,7 @@ class PostHandler(BaseHandler):
             'cats': self.cats,
 
         }
-        self.render('post{0}/post_edit.html'.format(self.kind),
+        self.render('post_{0}/post_edit.html'.format(self.kind),
                     kwd=kwd,
                     unescape=tornado.escape.xhtml_unescape,
                     tag_infos=self.mcat.query_all(kind=self.kind),
@@ -350,7 +350,7 @@ class PostHandler(BaseHandler):
 
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
-        self.render('post{0}/post_view.html'.format(self.kind),
+        self.render('post_{0}/post_view.html'.format(self.kind),
                     view=rec,
                     postinfo=rec,
                     unescape=tornado.escape.xhtml_unescape,

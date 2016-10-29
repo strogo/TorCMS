@@ -13,7 +13,7 @@ class MCategory(MSuperTable):
             g_Tag.create_table()
         except:
             pass
-
+    # Deprived
     def get_qian2(self, qian2):
 
         '''
@@ -23,7 +23,9 @@ class MCategory(MSuperTable):
         '''
         return self.tab.select().where( self.tab.uid.startswith(qian2)).order_by(
             self.tab.order)
-
+    
+    def query_sub_cat(self, pid):
+        return self.tab.select().where(self.tab.pid == pid ).order_by(   self.tab.order)
     def query_pcat(self, kind='1'):
         return self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(self.tab.order)
 
@@ -62,6 +64,8 @@ class MCategory(MSuperTable):
             slug=post_data['slug'] if 'slug' in post_data else raw_rec.slug,
             order=post_data['order'] if 'order' in post_data else raw_rec.order,
             kind=post_data['kind'] if 'kind' in post_data else raw_rec.kind,
+            tmpl=post_data['tmpl'],
+            pid=post_data['pid'],
             # role_mask = post_data['role_mask'] if 'role_mask' in post_data else '00100',
         ).where(self.tab.uid == uid)
         entry.execute()
@@ -77,6 +81,8 @@ class MCategory(MSuperTable):
                 slug=post_data['slug'],
                 order=post_data['order'],
                 kind=post_data['kind'] if 'kind' in post_data else '1',
+                tmpl = post_data['tmpl'],
+                pid = post_data['pid'],
                 # role_mask=post_data['role_mask'] if 'role_mask' in post_data else '00100',
             )
             return (entry.uid)

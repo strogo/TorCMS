@@ -31,15 +31,18 @@ def gen_infor_category():
     # 逐行遍历
     for sheet_ranges in sheet_ranges_arr:
 
+        kind_sig = str(sheet_ranges['A1'].value).strip()
+
         for row_num in range(3, 48):
             # 父类
             p_cell_val = sheet_ranges['A{0}'.format(row_num)].value
             if p_cell_val and p_cell_val != '':
                 cell_arr = p_cell_val.split(',')
                 p_uid = cell_arr[0].strip().strip('t')
-                role_mask = cell_arr[1].strip().strip('t')
+                # role_mask = cell_arr[1].strip().strip('t')
                 t_name_arr = sheet_ranges['B{0}'.format(row_num)].value.strip().split(',')
                 u_uid = '{0}00'.format(p_uid)
+                pp_uid = '0000'
 
             # 子类
             b_cell_val = sheet_ranges['B{0}'.format(row_num)].value
@@ -47,9 +50,10 @@ def gen_infor_category():
             if c_cell_val and c_cell_val != '':
                 cell_arr = b_cell_val.split(',')
                 c_iud = cell_arr[0].strip().strip('t')
-                role_mask = cell_arr[1].strip().strip('t')
+                # role_mask = cell_arr[1].strip().strip('t')
                 t_name_arr = c_cell_val.strip().split(',')
                 u_uid = '{0}{1}'.format(p_uid, c_iud)
+                pp_uid = '{0}00'.format(p_uid)
             if u_uid[0] > 'f':
                 kind = u_uid[0]
             else:
@@ -60,8 +64,10 @@ def gen_infor_category():
                 'slug': t_name_arr[1],
                 'order': order_index,
                 'uid': u_uid,
-                'role_mask': role_mask,
-                'kind': kind,
+                'tmpl': 1,
+                'pid': pp_uid,
+                # 'role_mask': role_mask,
+                'kind': kind_sig,
             }
             print(post_data)
             mappcat.insert_data(u_uid, post_data)
@@ -96,6 +102,8 @@ def gen_category(yaml_file, sig):
                 'slug': cur_dic['slug'],
                 'name': cur_dic['name'],
                 'count': 0,
+                'tmpl':1,
+                'pid': '0000',
                 'order': porder * 100,
                 'kind': '{0}'.format(sig),
             }
@@ -122,6 +130,8 @@ def gen_category(yaml_file, sig):
                         'slug': cur_dic['slug'],
                         'name': cur_dic['name'],
                         'count': 0,
+                        'tmpl': 1,
+                        'pid': pid + '00',
                         'order': porder * 100 + sorder,
                         'kind': '{0}'.format(sig),
                     }

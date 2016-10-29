@@ -19,7 +19,6 @@ from torcms.handlers.post_handler import PostHandler
 from torcms.model.info_hist_model import MInfoHist
 from config import router_post
 
-
 class InfoHandler(PostHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -123,14 +122,12 @@ class InfoHandler(PostHandler):
 
 
     def view_info(self, info_id):
-
         '''
         Render the info
         :param info_id:
         :return: Nonthing.
         '''
         postinfo = self.mpost.get_by_uid(info_id)
-
         if postinfo.kind == self.kind:
             pass
         else:
@@ -174,20 +171,15 @@ class InfoHandler(PostHandler):
         else:
             ext_catid = ''
 
-        parent_name = ''
+        # parent_name = ''
+        # cat_name = ''
+        # parentname = ''
+        # catname = ''
+        catinfo = None
+        p_catinfo = None
         if ext_catid != '':
-            if self.mcat.get_by_id(ext_catid[:2] + '00'):
-                parent_name = self.mcat.get_by_id(ext_catid[:2] + '00').name
-
-        cat_name = ''
-        if ext_catid != '':
-            cat_rec = self.mcat.get_by_uid(ext_catid)
-            if cat_rec:
-                cat_name = cat_rec.name
-
-        parentname = '<a href="/list/{0}">{1}</a>'.format(ext_catid[:2] + '00', parent_name)
-
-        catname = '<a href="/list/{0}">{1}</a>'.format(ext_catid, cat_name)
+            catinfo = self.mcat.get_by_uid(ext_catid)
+            p_catinfo = self.mcat.get_by_uid(catinfo.pid)
 
         kwd = {
             'pager': '',
@@ -201,8 +193,8 @@ class InfoHandler(PostHandler):
             'login': 1 if self.get_current_user() else 0,
             'has_image': 0,
             'parentlist': self.mcat.get_parent_list(),
-            'parentname': parentname,
-            'catname': catname,
+            'parentname': '',
+            'catname': '',
         }
         self.mpost.view_count_increase(info_id)
         if self.get_current_user():
@@ -223,11 +215,15 @@ class InfoHandler(PostHandler):
                     post_info=postinfo,  # Deprecated
                     postinfo=postinfo,
                     userinfo=self.userinfo,
+                    catinfo=catinfo,
+                    pcatinfo=p_catinfo,
+
                     relations=rel_recs,
                     rand_recs=rand_recs,
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
+
                     recent_apps=recent_apps,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
                     )
@@ -270,7 +266,7 @@ class InfoHandler(PostHandler):
         if cat_id and self.sig == '2':
             tmpl = 'autogen/view/view_{0}.html'.format(cat_id)
         else:
-            tmpl = 'post{0}/show_map.html'.format(self.kind)
+            tmpl = 'post_{0}/show_map.html'.format(self.kind)
         return tmpl
 
     def add_relation(self, f_uid, t_uid):
@@ -346,12 +342,12 @@ class InfoHandler(PostHandler):
             pass
         else:
             return False
-
+        catinfo = self.mcat.get_by_uid(catid)
         kwd = {
             'uid': self.gen_uid(),
             'userid': self.userinfo.user_name,
             'def_cat_uid': catid,
-            'parentname': self.mcat.get_by_id(catid[:2] + '00').name,
+            'parentname': self.mcat.get_by_id(catinfo.pid).name,
             'catname': self.mcat.get_by_id(catid).name,
         }
 
@@ -415,18 +411,25 @@ class InfoHandler(PostHandler):
         else:
             catid = ''
 
-        p_name = ''
+        # p_name = ''
+        # if catid != '':
+        #     if self.mcat.get_by_id(catid[:2] + 'zz'):
+        #         p_name = self.mcat.get_by_id(catid[:2] + 'zz').name
+        # c_name = ''
+        # if catid != '':
+        #     if self.mcat.get_by_id(catid):
+        #         c_name = self.mcat.get_by_id(catid).name
+
+        catinfo = None
+        p_catinfo = None
         if catid != '':
-            if self.mcat.get_by_id(catid[:2] + '00'):
-                p_name = self.mcat.get_by_id(catid[:2] + '00').name
-        c_name = ''
-        if catid != '':
-            if self.mcat.get_by_id(catid):
-                c_name = self.mcat.get_by_id(catid).name
+            catinfo = self.mcat.get_by_uid(catid)
+            p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+
         kwd = {
             'def_cat_uid': catid,
-            'parentname': p_name,
-            'catname': c_name,
+            'parentname': '',
+            'catname': '',
             'parentlist': self.mcat.get_parent_list(),
             'userip': self.request.remote_ip
         }
@@ -434,7 +437,7 @@ class InfoHandler(PostHandler):
         if self.sig == '2':
             tmpl = 'autogen/edit/edit_{0}.html'.format(catid)
         else:
-            tmpl = 'post{0}/edit.html'.format(self.kind)
+            tmpl = 'post_{0}/edit.html'.format(self.kind)
 
         # print('site_type: ', cfg['site_type'])
         # print('Meta template:', tmpl)
@@ -445,6 +448,11 @@ class InfoHandler(PostHandler):
                     post_info=rec_info,  # Deprecated
                     app_info=rec_info,  # Deprecated
                     postinfo=rec_info,
+
+                    catinfo=catinfo,
+                    pcatinfo=p_catinfo,
+
+
                     userinfo=self.userinfo,
 
                     unescape=tornado.escape.xhtml_unescape,
@@ -459,10 +467,10 @@ class InfoHandler(PostHandler):
         ext_cat_uid = {}
         if 'def_cat_uid' in post_data:
             ext_cat_uid['def_cat_uid'] = post_data['def_cat_uid']
-            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['def_cat_uid'][:2])
+            ext_cat_uid['def_cat_pid'] =  self.mcat.get_by_uid( post_data['def_cat_uid']).pid
         if 'gcat0' in post_data:
             ext_cat_uid['def_cat_uid'] = post_data['gcat0']
-            ext_cat_uid['def_cat_pid'] = '{0}00'.format(post_data['gcat0'][:2])
+            ext_cat_uid['def_cat_pid'] =  self.mcat.get_by_uid( post_data['gcat0']).pid
         print(ext_cat_uid)
         return ext_cat_uid
 
