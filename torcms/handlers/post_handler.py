@@ -320,14 +320,17 @@ class PostHandler(BaseHandler):
         # replys = self.mpost2reply.get_by_id(post_id)
         tag_info = self.mpost2label.get_by_id(post_id)
 
-        rec = self.mpost.get_by_id(post_id)
+        postinfo = self.mpost.get_by_id(post_id)
 
-        if rec.kind == self.kind:
+
+        if postinfo.kind == self.kind:
             pass
         else:
-            return
+            self.set_status(301)
+            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], post_id))
 
-        if not rec:
+
+        if not postinfo:
             kwd = {
                 'info': '您要查看的页面不存在。',
             }
@@ -346,13 +349,13 @@ class PostHandler(BaseHandler):
             'cat_id': cat_id
         }
 
-        rel_recs = self.mrel.get_app_relations(rec.uid, 4)
+        rel_recs = self.mrel.get_app_relations(postinfo.uid, 4)
 
         rand_recs = self.mpost.query_random(4 - rel_recs.count() + 2)
 
         self.render('post_{0}/post_view.html'.format(self.kind),
-                    view=rec,
-                    postinfo=rec,
+                    view=postinfo,
+                    postinfo=postinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
                     userinfo=self.userinfo,

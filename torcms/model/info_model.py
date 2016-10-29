@@ -8,6 +8,7 @@ from config import cfg
 import peewee
 from torcms.core import tools
 from torcms.model.supertable_model import MSuperTable
+from torcms.model.post_model import MPost
 from torcms.model.core_tab import g_Post
 from torcms.model.core_tab import g_Post2Tag
 from torcms.model.core_tab import g_Post2Tag as CabPost2Label
