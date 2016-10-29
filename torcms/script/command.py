@@ -12,6 +12,7 @@ from .script_create_admin import run_create_admin
 # from .script_migrate_database import run_migrate_db
 from .script_fetch_fe2lib import run_fetch_f2elib
 from .script_sitemap import run_sitemap
+from .script_check_kind import run_check_kind
 
 
 def entry(argv):
@@ -36,6 +37,7 @@ def entry(argv):
             print('  send_nologin: ')
             print('  create_admin: ')
             print('       sitemap: ')
+            print('    check_kind: ')
 
             sys.exit()
         elif opt in ("-i"):
