@@ -326,8 +326,7 @@ class PostHandler(BaseHandler):
         if postinfo.kind == self.kind:
             pass
         else:
-            self.set_status(301)
-            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], post_id))
+            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], post_id),  permanent=True)
 
 
         if not postinfo:

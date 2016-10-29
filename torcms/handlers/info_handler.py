@@ -136,8 +136,7 @@ class InfoHandler(PostHandler):
         if postinfo.kind == self.kind:
             pass
         else:
-            self.set_status(301)
-            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], info_id))
+            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], info_id), permanent=True)
 
         if postinfo:
             pass
