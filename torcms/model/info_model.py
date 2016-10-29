@@ -267,9 +267,14 @@ class MInfor(MInforBase):
             extinfo=extinfo,
             user_name=data_dic['user_name'],
             valid=data_dic['valid'] if 'valid' in data_dic else 1 ,
-            kind= data_dic['kind'] if 'kind' in data_dic else '2',
+            kind= data_dic['kind'] ,
         )
         return uid
+
+
+
+
+
 
     def get_list(self, condition, kind='2'):
         db_data = self.tab_app.select().where((self.tab_app.kind == kind) &
@@ -325,10 +330,10 @@ class MInfor(MInforBase):
                 extinfo=ext_dic
             )
 
-    def get_list_fenye(self, tag_slug, page_num):
+    def get_list_fenye(self, tag_slug, page_num, kind = '2'):
         print('get_list_fenye para:', tag_slug, page_num)
 
-        all_list = self.get_list(tag_slug)
+        all_list = self.get_list(tag_slug, kind = kind )
         current_list = all_list[(page_num - 1) * cfg['info_per_page']: (page_num) * cfg['info_per_page']]
         return (current_list)
 

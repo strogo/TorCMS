@@ -51,7 +51,7 @@ class InfoListHandler(BaseHandler):
         return condition
 
     def echo_html(self, url_str):
-        print(url_str)
+        print('info echo html:', url_str)
 
         condition = self.gen_redis_kw()
 
@@ -87,10 +87,10 @@ class InfoListHandler(BaseHandler):
 
         print(condition)
         if url_arr[1] == 'con':
-            infos = self.minfo.get_list_fenye(condition, fenye_num)
+            infos = self.minfo.get_list_fenye(condition, fenye_num, kind = catinfo.kind)
             self.echo_html_list_str(sig, infos)
         elif url_arr[1] == 'num':
-            allinfos = self.minfo.get_list(condition)
+            allinfos = self.minfo.get_list(condition, kind = catinfo.kind)
             self.echo_html_fenye_str(allinfos.count(), fenye_num)
 
     def echo_html_list_str(self, list_type, infos):

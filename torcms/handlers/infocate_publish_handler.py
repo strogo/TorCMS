@@ -6,6 +6,8 @@ import tornado.web
 from torcms.core.base_handler import BaseHandler
 from torcms.model.category_model import MCategory
 
+from config import router_post
+
 class InfoPublishHandler(BaseHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -13,8 +15,9 @@ class InfoPublishHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        if url_str == '':
-            self.view_class1()
+
+        if len(url_str) == 1:
+            self.view_class1(url_str)
         elif len(url_str) == 4:
             self.view_class2(url_str)
         elif len(url_str) == 5:
@@ -33,19 +36,19 @@ class InfoPublishHandler(BaseHandler):
     @tornado.web.authenticated
     def format_class2(self, fatherid):
         # dbdata = self.minforcatalog.get_qian2(fatherid[:2])
-
+        catinfo = self.minforcatalog.get_by_uid(fatherid)
         dbdata = self.minforcatalog.query_sub_cat( fatherid )
         outstr = '<ul class="list-group">'
         for rec in dbdata:
             outstr += '''
-            <a href="/info/cat_add/{0}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{1}</a>
-            '''.format(rec.uid, rec.name)
+            <a href="/{0}/_cat_add/{1}" class="btn btn-primary" style="display: inline-block;margin:3px;" >{2}</a>
+            '''.format(  router_post[catinfo.kind], rec.uid, rec.name)
         outstr += '</ul>'
         return (outstr)
 
     @tornado.web.authenticated
-    def view_class1(self):
-        dbdata = self.minforcatalog.get_parent_list( kind = '2')
+    def view_class1(self,  kind_sig):
+        dbdata = self.minforcatalog.get_parent_list( kind = kind_sig)
         class1str = ''
         for rec in dbdata:
             class1str += '''

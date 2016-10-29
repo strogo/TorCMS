@@ -13,6 +13,7 @@ from torcms.model.label_model import MPost2Label
 from torcms.model.reply_model import MReply
 from torcms.model.page_model import MPage
 import config
+from config import router_post
 
 mreply = MReply()
 mpage = MPage()
@@ -59,6 +60,7 @@ class post_most_view(tornado.web.UIModule):
         kwd = {
             'with_date': with_date,
             'with_catalog': with_catalog,
+            'router': router_post['1'],
         }
         return self.render_string('modules/post/post_list.html', recs=recs, kwd=kwd)
 
@@ -70,6 +72,7 @@ class post_random(tornado.web.UIModule):
         kwd = {
             'with_date': with_date,
             'with_catalog': with_catalog,
+            'router': router_post['1'],
         }
         return self.render_string('modules/post/post_list.html',
                                   recs=recs, kwd=kwd)
@@ -82,6 +85,7 @@ class post_cat_random(tornado.web.UIModule):
         kwd = {
             'with_date': with_date,
             'with_catalog': with_catalog,
+            'router': router_post['1'],
         }
         return self.render_string('modules/post/post_list.html',
                                   recs=recs, kwd=kwd)
@@ -94,6 +98,7 @@ class post_recent_most_view(tornado.web.UIModule):
         kwd = {
             'with_date': with_date,
             'with_catalog': with_catalog,
+            'router': router_post['1'],
         }
         return self.render_string('modules/post/post_list.html', recs=recs, kwd=kwd)
 
@@ -114,6 +119,7 @@ class post_recent(tornado.web.UIModule):
         kwd = {
             'with_date': with_date,
             'with_catalog': with_catalog,
+            'router': router_post['1'],
         }
         return self.render_string('modules/post/post_list.html',
                                   recs=recs,
@@ -132,12 +138,15 @@ class link_list(tornado.web.UIModule):
 
 class post_category_recent(tornado.web.UIModule):
     def render(self, cat_id, num=10, with_catalog=True, with_date=True):
+        self.mcat = MCategory()
         self.mpost = MPost()
         self.mpost2cat = MPost2Catalog()
-        recs = self.mpost.query_cat_recent(cat_id, num)
+        catinfo = self.mcat.get_by_uid(cat_id)
+        recs = self.mpost.query_cat_recent(cat_id, num, kind = catinfo.kind)
         kwd = {
             'with_catalog': with_catalog,
             'with_date': with_date,
+            'router': router_post[catinfo.kind],
         }
         return self.render_string('modules/post/post_list.html',
                                   recs=recs,

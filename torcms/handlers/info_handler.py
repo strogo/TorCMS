@@ -80,6 +80,8 @@ class InfoHandler(PostHandler):
 
         if url_arr[0] in ['to_add', '_add']:
             self.add()
+        elif url_arr[0] in ['cat_add', '_cat_add']:
+            self.add(catid = url_arr[1])
         elif url_arr[0] == 'rel':
             if self.get_current_user():
                 self.add_relation(url_arr[1])
@@ -127,10 +129,14 @@ class InfoHandler(PostHandler):
         :param info_id:
         :return: Nonthing.
         '''
+
         postinfo = self.mpost.get_by_uid(info_id)
+        print('info kind: ', postinfo.kind)
+        # If not, there must be something wrong.
         if postinfo.kind == self.kind:
             pass
         else:
+            # self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], info_id))
             return
 
         if postinfo:
@@ -195,6 +201,7 @@ class InfoHandler(PostHandler):
             'parentlist': self.mcat.get_parent_list(),
             'parentname': '',
             'catname': '',
+            'router': router_post[postinfo.kind]
         }
         self.mpost.view_count_increase(info_id)
         if self.get_current_user():
@@ -223,6 +230,8 @@ class InfoHandler(PostHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
+
+
 
                     recent_apps=recent_apps,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
@@ -534,7 +543,8 @@ class InfoHandler(PostHandler):
         self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], uid))
 
     @tornado.web.authenticated
-    def add(self, uid=''):
+    def add(self, uid='', catid = ''):
+        print('info adding: ', 'catid: ', catid, 'infoid:', uid)
 
         if self.check_post_role(self.userinfo)['ADD']:
             pass
@@ -548,12 +558,22 @@ class InfoHandler(PostHandler):
                 ext_dic[key] = self.get_argument(key)
             else:
                 post_data[key] = self.get_arguments(key)[0]
+        post_data['user_name'] = self.userinfo.user_name
+        post_data['kind'] = self.kind
+        if catid == '':
+            pass
+        else:
+            catinfo = self.mcat.get_by_uid(catid)
+            if catinfo:
+                post_data['kind'] = catinfo.kind
+                print('Got category inf: ',  catinfo.name, 'kind: ', catinfo.kind)
+            else:
+                print('Could not find the category: ', catid)
 
         if uid == '':
             uid = self.gen_uid()
 
-        post_data['user_name'] = self.userinfo.user_name
-        post_data['kind'] = self.kind
+
 
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
