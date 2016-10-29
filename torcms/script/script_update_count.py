@@ -9,7 +9,7 @@ def run_update_count():
     mapp2cat = MInfor2Catalog()
     mappcat = MCategory()
 
-    for kd in ['1', '2', 'm', 's']:
+    for kd in ['1', '2', 'm', 's', 'w']:
         for rec in mappcat.query_all( kind = kd ):
             uid= rec.uid
             print(rec.name)
