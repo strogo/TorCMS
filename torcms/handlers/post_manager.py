@@ -13,7 +13,6 @@ class PostManHandler(BaseHandler):
         self.init()
         self.mpost = MPost()
         self.mposthist = MPostHist()
-        self.tmpl_dir = 'post_man'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -64,7 +63,7 @@ class PostManHandler(BaseHandler):
         else:
             return False
         post_rec = self.mpost.get_by_uid(postid)
-        self.render('{0}/post_man_edit.html'.format(self.tmpl_dir),
+        self.render('man_post/post_man_edit.html',
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     postinfo=post_rec,
@@ -95,7 +94,7 @@ class PostManHandler(BaseHandler):
 
         postinfo = self.mpost.get_by_id(histinfo.post_id)
         self.mposthist.delete(uid)
-        self.redirect('/post_man/view/{0}'.format(postinfo.uid))
+        self.redirect('/man_post/view/{0}'.format(postinfo.uid))
 
     def view(self, uid):
         postinfo = self.mpost.get_by_id(uid)
@@ -114,7 +113,7 @@ class PostManHandler(BaseHandler):
 
             html_diff_arr.append({'hist_uid': hist_rec.uid, 'html_diff': infobox})
 
-        self.render('{0}/post_man_view.html'.format(self.tmpl_dir),
+        self.render('man_post/post_man_view.html',
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     view=postinfo,

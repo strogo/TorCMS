@@ -13,7 +13,6 @@ class WikiManHandler(BaseHandler):
         self.init()
         self.mpost = MWiki()
         self.mposthist = MWikiHist()
-        self.tmpl_dir = 'wiki_man'
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
@@ -69,7 +68,7 @@ class WikiManHandler(BaseHandler):
         else:
             return False
         post_rec = self.mpost.get_by_uid(postid)
-        self.render('{0}/wiki_man_edit.html'.format(self.tmpl_dir),
+        self.render('main_wiki/wiki_man_edit.html',
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     postinfo=post_rec,
@@ -91,7 +90,7 @@ class WikiManHandler(BaseHandler):
 
         postinfo = self.mpost.get_by_id(histinfo.wiki_id)
         self.mposthist.delete(uid)
-        self.redirect('/wiki_man/view/{0}'.format(postinfo.uid))
+        self.redirect('/man_wiki/view/{0}'.format(postinfo.uid))
 
     def view(self, uid):
         postinfo = self.mpost.get_by_id(uid)
@@ -111,7 +110,7 @@ class WikiManHandler(BaseHandler):
 
             html_diff_arr.append({'hist_uid': hist_rec.uid, 'html_diff': infobox})
 
-        self.render('{0}/wiki_man_view.html'.format(self.tmpl_dir),
+        self.render('man_wiki/wiki_man_view.html',
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     view=postinfo,  # Deprecated
