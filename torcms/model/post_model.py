@@ -22,6 +22,12 @@ class MPost(MSuperTable):
         ).where(g_Post.uid == uid)
         entry.execute()
 
+    def update_kind(self, uid, kind):
+        entry = g_Post.update(
+            kind = kind
+        ).where(g_Post.uid == uid)
+        entry.execute()
+
     def update_cnt(self, uid, post_data):
 
         entry = g_Post.update(
