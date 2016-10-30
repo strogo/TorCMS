@@ -12,6 +12,8 @@ from torcms.core.torcms_redis import redisvr
 
 from html2text import html2text
 
+from torcms.core.tools import logger
+
 '''
 关键词过滤，涉及到不同分类，使用  session 来处理。
 分类下面的过滤，则使用GET的url的参数。
@@ -27,8 +29,8 @@ class InfoListHandler(BaseHandler):
 
     def get(self, url_str=''):
         url_arr = self.parse_url(url_str)
-        print('-' * 30)
-        print('infocat get url_str:', url_str)
+
+        logger.info('infocat get url_str: {0}'.format(url_str))
         if len(url_str) == 4:
             self.list(url_str)
         elif len(url_str) > 4:
@@ -51,7 +53,7 @@ class InfoListHandler(BaseHandler):
         return condition
 
     def echo_html(self, url_str):
-        print('info echo html:', url_str)
+        logger.info('info echo html: {0}'.format( url_str))
 
         condition = self.gen_redis_kw()
 
@@ -190,13 +192,14 @@ class InfoListHandler(BaseHandler):
         '''
         print('infocat input:', input)
         condition = self.gen_redis_kw()
-
         sig = input
         bread_title = ''
         bread_crumb_nav_str = '<li>当前位置：<a href="/">信息</a></li>'
 
-        catinfo = self.mcat.get_by_uid(input )
-        if catinfo.pid == '0000':
+        _catinfo = self.mcat.get_by_uid(input)
+        if _catinfo.pid == '0000':
+            pcatinfo = _catinfo
+            catinfo = None
             parent_id = input
             parent_catname = self.mcat.get_by_id(parent_id).name
             condition['parentid'] = [parent_id]
@@ -205,8 +208,10 @@ class InfoListHandler(BaseHandler):
             bread_title = '{1}'.format(sig, catname)
 
         else:
+            catinfo = _catinfo
+            pcatinfo = self.mcat.get_by_uid(_catinfo.pid)
             condition['catid'] = [sig]
-            parent_id = catinfo.uid
+            parent_id = _catinfo.uid
             parent_catname = self.mcat.get_by_id(parent_id).name
             catname = self.mcat.get_by_id(sig).name
             bread_crumb_nav_str += '<li><a href="/list/{0}">{1}</a></li>'.format(parent_id, parent_catname)
@@ -239,9 +244,12 @@ class InfoListHandler(BaseHandler):
             kw_condition_arr.append(x.decode('utf-8'))
         self.render('autogen/list/list_{1}.html'.format(self.template_dir_name, input),
                     userinfo=self.userinfo,
+
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
                     cat_enum=self.mcat.get_qian2(parent_id[:2]),
+                    pcatinfo = pcatinfo,
+                    catinfo = catinfo,
 
                     )
