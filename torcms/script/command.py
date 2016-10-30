@@ -3,16 +3,16 @@
 import sys, getopt
 
 from .script_migrate import run_migrate
-from .gen_category import run_gen_category
+from .script_gen_category import run_gen_category
 from .script_init_database_shema import run_init_tables
 from .script_update_count import run_update_count
 from .script_sendemail_all import run_send_all, run_send_nologin
 from .script_edit_diff import run_edit_diff
 from .script_create_admin import run_create_admin
-# from .script_migrate_database import run_migrate_db
 from .script_fetch_fe2lib import run_fetch_f2elib
 from .script_sitemap import run_sitemap
 from .script_check_kind import run_check_kind
+from .script_crud import run_crud
 
 
 def entry(argv):
