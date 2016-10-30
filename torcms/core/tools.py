@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-
 import uuid
 import random
 import tornado.escape
@@ -11,8 +10,34 @@ import time
 import hashlib
 import re
 from difflib import HtmlDiff
+#
+# import logging
+# # import logging.config
+# # logging.config.fileConfig("./logging.conf")    # 采用配置文件
+# # logger = logging.getLogger("simpleExample")
+#
+# logging.basicConfig(level=logging.INFO)
+#
+# logger = logging
+#
 
+import logging
+# 配置日志信息
+logging.basicConfig(level=logging.DEBUG,
+          format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+          datefmt='%m-%d %H:%M',
+          filename='xx_torcms.log',
+          filemode='w')
+# 定义一个Handler打印INFO及以上级别的日志到sys.stderr
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+# 设置日志打印格式
+formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+console.setFormatter(formatter)
+# 将定义好的console日志handler添加到root logger
+logging.getLogger('').addHandler(console)
 
+logger = logging
 
 def diff_table(rawinfo, newinfo):
     return HtmlDiff.make_table(HtmlDiff(), rawinfo.split('\n'), newinfo.split('\n'),

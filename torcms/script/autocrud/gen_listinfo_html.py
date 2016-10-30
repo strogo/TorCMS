@@ -2,6 +2,7 @@
 
 import os
 from .tpl import tpl_listinfo
+
 try:
     from xxtmp_html_dic import *
     from xxtmp_array_add_edit_view import *
@@ -39,12 +40,10 @@ def do_for_dir(html_tpl):
             with open(outfile, 'w') as outfileo:
                 outfileo.write(html_tpl.replace('xxxxxx',
                                                 ''.join(html_view_str_arr)).replace('yyyyyy',
-                                                var_name.split('_')[1][:2]).replace(
+                                                                                    var_name.split('_')[1][:2]).replace(
                     'ssssss', subdir
                 ).replace('kkkk', eval('kind_' + var_name.split('_')[-1]))
-                )
-
-
+                               )
 
 
 def run_gen_listinfo():

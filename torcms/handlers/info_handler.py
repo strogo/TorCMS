@@ -18,6 +18,7 @@ from torcms.model.reply_model import MReply
 from torcms.handlers.post_handler import PostHandler
 from torcms.model.info_hist_model import MInfoHist
 from config import router_post
+from torcms.core.tools import logger
 
 class InfoHandler(PostHandler):
     def initialize(self, hinfo=''):
@@ -81,7 +82,7 @@ class InfoHandler(PostHandler):
         if url_arr[0] in ['to_add', '_add']:
             self.add()
         elif url_arr[0] in ['cat_add', '_cat_add']:
-            self.add(catid = url_arr[1])
+            self.add(catid=url_arr[1])
         elif url_arr[0] == 'rel':
             if self.get_current_user():
                 self.add_relation(url_arr[1])
@@ -99,29 +100,9 @@ class InfoHandler(PostHandler):
                 self.add_relation(url_arr[1], url_arr[2])
             else:
                 self.redirect('/user/login')
-        # elif url_arr[0] == 'comment_add':
-        #     self.add_comment(url_arr[1])
+
         else:
             return False
-
-    # @tornado.web.authenticated
-    # def add_comment(self, id_post):
-    #     post_data = {}
-    #     for key in self.request.arguments:
-    #         post_data[key] = self.get_arguments(key)
-    #     post_data['user_id'] = self.userinfo.uid
-    #     post_data['user_name'] = self.userinfo.user_name
-    #     comment_uid = self.mreply.insert_data(post_data, id_post)
-    #     if comment_uid:
-    #         output = {
-    #             'pinglun': comment_uid,
-    #         }
-    #     else:
-    #         output = {
-    #             'pinglun': 0,
-    #         }
-    #     return json.dump(output, self)
-
 
     def view_info(self, info_id):
         '''
@@ -129,9 +110,9 @@ class InfoHandler(PostHandler):
         :param info_id:
         :return: Nonthing.
         '''
-
         postinfo = self.mpost.get_by_uid(info_id)
-        print('info kind: ', postinfo.kind)
+        logger.warning('info kind:{0} '.format(postinfo.kind))
+
         # If not, there must be something wrong.
         if postinfo.kind == self.kind:
             pass
@@ -154,10 +135,11 @@ class InfoHandler(PostHandler):
         for cat_rec in cats:
             cat_uid = cat_rec.tag.uid
             cat_uid_arr.append(cat_uid)
-        print('info category:', cat_uid_arr)
+        logger.info('info category: {0}'.format(cat_uid_arr))
 
         rel_recs = self.mrel.get_app_relations(postinfo.uid, 8, kind=postinfo.kind)
-        print('rel_recs count:', rel_recs.count())
+        logger.info('rel_recs count: {0}'.format(rel_recs.count()))
+
         if len(cat_uid_arr) > 0:
             rand_recs = self.mpost.query_cat_random(cat_uid_arr[0], 4 - rel_recs.count() + 4)
         else:
@@ -176,10 +158,6 @@ class InfoHandler(PostHandler):
         else:
             ext_catid = ''
 
-        # parent_name = ''
-        # cat_name = ''
-        # parentname = ''
-        # catname = ''
         catinfo = None
         p_catinfo = None
         if ext_catid != '':
@@ -229,8 +207,6 @@ class InfoHandler(PostHandler):
                     unescape=tornado.escape.xhtml_unescape,
                     ad_switch=random.randint(1, 18),
                     tag_info=self.mpost2label.get_by_id(info_id),
-
-
 
                     recent_apps=recent_apps,
                     cat_enum=self.mcat.get_qian2(ext_catid2[:2]) if ext_catid else [],
@@ -295,11 +271,8 @@ class InfoHandler(PostHandler):
         f_cats = self.mpost2catalog.query_by_entity_uid(f_uid)
         t_cats = self.mpost2catalog.query_by_entity_uid(t_uid)
         flag = False
-
         for f_cat in f_cats:
-            print(f_cat.tag)
             for t_cat in t_cats:
-                print(t_cat.tag)
                 if f_cat.tag == t_cat.tag:
                     flag = True
         if flag:
@@ -460,7 +433,6 @@ class InfoHandler(PostHandler):
                     catinfo=catinfo,
                     pcatinfo=p_catinfo,
 
-
                     userinfo=self.userinfo,
 
                     unescape=tornado.escape.xhtml_unescape,
@@ -475,10 +447,10 @@ class InfoHandler(PostHandler):
         ext_cat_uid = {}
         if 'def_cat_uid' in post_data:
             ext_cat_uid['def_cat_uid'] = post_data['def_cat_uid']
-            ext_cat_uid['def_cat_pid'] =  self.mcat.get_by_uid( post_data['def_cat_uid']).pid
+            ext_cat_uid['def_cat_pid'] = self.mcat.get_by_uid(post_data['def_cat_uid']).pid
         if 'gcat0' in post_data:
             ext_cat_uid['def_cat_uid'] = post_data['gcat0']
-            ext_cat_uid['def_cat_pid'] =  self.mcat.get_by_uid( post_data['gcat0']).pid
+            ext_cat_uid['def_cat_pid'] = self.mcat.get_by_uid(post_data['gcat0']).pid
         print(ext_cat_uid)
         return ext_cat_uid
 
@@ -538,11 +510,10 @@ class InfoHandler(PostHandler):
         print('post kind:' + self.kind)
         print('update jump to:', '/{0}/{1}'.format(router_post[self.kind], uid))
 
-        # Todo: won't work with self.kind
         self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], uid))
 
     @tornado.web.authenticated
-    def add(self, uid='', catid = ''):
+    def add(self, uid='', catid=''):
         print('info adding: ', 'catid: ', catid, 'infoid:', uid)
 
         if self.check_post_role(self.userinfo)['ADD']:
@@ -565,14 +536,12 @@ class InfoHandler(PostHandler):
             catinfo = self.mcat.get_by_uid(catid)
             if catinfo:
                 post_data['kind'] = catinfo.kind
-                print('Got category inf: ',  catinfo.name, 'kind: ', catinfo.kind)
+                print('Got category inf: ', catinfo.name, 'kind: ', catinfo.kind)
             else:
                 print('Could not find the category: ', catid)
 
         if uid == '':
             uid = self.gen_uid()
-
-
 
         if 'valid' in post_data:
             post_data['valid'] = int(post_data['valid'])
