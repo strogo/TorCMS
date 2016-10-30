@@ -56,7 +56,7 @@ class PostLabelHandler(BaseHandler):
 
         }
 
-        self.render('post{0}/label_list.html'.format(kind),
+        self.render('post_{0}/label_list.html'.format(kind),
                     infos=self.mapp2tag.query_pager_by_slug( tag_slug, kind =  kind, current_page_num = current_page_number),
                     unescape=tornado.escape.xhtml_unescape,
                     kwd=kwd,
