@@ -38,6 +38,7 @@ def entry(argv):
             print('  create_admin: ')
             print('       sitemap: ')
             print('    check_kind: ')
+            print('          crud: ')
 
             sys.exit()
         elif opt in ("-i"):

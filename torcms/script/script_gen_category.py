@@ -11,7 +11,11 @@ from torcms.model.category_model import MCategory
 
 def gen_infor_category():
     wb = load_workbook(filename='./database/meta/info_tags.xlsx')
-    sheet_ranges_arr = [wb['Sheet1'], wb['Sheet2']]
+    sheet_ranges_arr = [wb['Sheet1']]
+    try:
+        sheet_ranges_arr.append(wb['Sheet2'])
+    except:
+        pass
     try:
         sheet_ranges_arr.append(wb['Sheet3'])
     except:

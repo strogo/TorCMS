@@ -22,7 +22,7 @@ class app_json(tornado.web.UIModule):
 
         }
 
-        return self.render_string('map_theme/modules/app_json.html',
+        return self.render_string('modules/map/map_json.html',
                                   json_recs = json_recs,
                                   app_id = app_id,
                                   kwd=kwd)
@@ -42,6 +42,6 @@ class app_layout(tornado.web.UIModule):
 
         }
 
-        return self.render_string('map_theme/modules/app_layout.html',
+        return self.render_string('modules/map/map_layout.html',
                                   layout_recs = layout_recs,
                                   kwd=kwd)

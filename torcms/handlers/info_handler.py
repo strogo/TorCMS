@@ -20,6 +20,7 @@ from torcms.model.info_hist_model import MInfoHist
 from config import router_post
 from torcms.core.tools import logger
 
+
 class InfoHandler(PostHandler):
     def initialize(self, hinfo=''):
         self.init()
@@ -42,15 +43,15 @@ class InfoHandler(PostHandler):
             self.index()
         elif url_arr[0] in ['cat_add', '_cat_add']:
             self.to_add_with_category(url_arr[1])
-        elif url_arr[0] in ['_add', 'add_document']:
-            self.to_add()
-        # elif url_arr[0] == 'catalog':
-        #     self.catalog()
+        elif url_arr[0] in ['_add', 'add_document', 'add']:
+            if len(url_arr) == 2:
+                self.to_add(url_arr[1])
+            else:
+                self.to_add()
         elif len(url_arr) == 2:
             if url_arr[0] in ['edit', 'modify', '_edit']:
                 self.to_edit(url_arr[1])
-            elif url_arr[0] == 'add':
-                self.to_add(url_arr[1])
+
             elif url_arr[0] == 'delete':
                 self.to_del_app(url_arr[1])
             else:
@@ -79,8 +80,12 @@ class InfoHandler(PostHandler):
 
         url_arr = self.parse_url(url_str)
 
-        if url_arr[0] in ['to_add', '_add']:
-            self.add()
+        if url_arr[0] in ['to_add', '_add', 'add']:
+            if len(url_arr) == 2:
+                self.add(uid=url_arr[1])
+            else:
+                self.add()
+
         elif url_arr[0] in ['cat_add', '_cat_add']:
             self.add(catid=url_arr[1])
         elif url_arr[0] == 'rel':
@@ -92,8 +97,7 @@ class InfoHandler(PostHandler):
         #     self.add_comment(url_arr[1])
         elif url_arr[0] in ['edit', '_edit']:
             self.update(url_arr[1])
-        elif url_arr[0] == 'add':
-            self.add(url_arr[1])
+
 
         elif url_arr[0] == 'rel':
             if self.get_current_user():
@@ -347,7 +351,7 @@ class InfoHandler(PostHandler):
             # todo:
             # self.redirect('/{0}/edit/{1}'.format(self.app_url_name, uid))
             pass
-        self.render('post{0}/add.html'.format(self.kind),
+        self.render('post_{0}/add.html'.format(self.kind),
                     tag_infos=self.mcat.query_all(by_order=True, kind=self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': uid,}
