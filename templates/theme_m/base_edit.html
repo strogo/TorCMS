@@ -1,0 +1,45 @@
+{% extends "base_zhu.html" %}
+
+{% block head %}
+
+
+{% module use_f2e('codemirror') %}
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        // jquery.validate.js 验证
+        $("#form_post").validate(
+                {
+                    rules: {
+                        title: {
+                            required: true
+                        },
+                        cnt_md: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        title: {
+                            required: "<span class='red'>请输入标题</span>"
+
+                        },
+                        cnt_md: {
+                            required: "<span class='red'>请输入内容</span>"
+                        }
+                    }
+                }
+        );
+    });
+</script>
+
+{% end %}
+{% block base_top_header %}
+
+<div class="container">
+    <div style="padding-top:80px;">
+    </div>
+{% block edit %}
+{% end %}
+</div>
+{% end %}   

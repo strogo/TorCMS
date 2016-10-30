@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="applicable-device" content="pc,mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="bukun">
+    <meta name="Copyright" content="Maplet">
+    <link rel="icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">
+
+<script src="{{ static_url('f2elib/jquery/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ static_url('f2elib/bootstrap_3.3.7/js/bootstrap.min.js') }}"></script>
+<script src="{{ static_url('f2elib/jquery-validate_1.15.0/jquery.validate.min.js') }}"></script>
+<link rel="stylesheet" href="{{ static_url('f2elib/bootstrap_3.3.7/css/bootstrap.min.css')}}">
+
+<script src="{{ static_url('f2elib/leaflet_1.0.1/leaflet.js') }}"></script>
+<link rel="stylesheet" href="{{ static_url('f2elib/leaflet_1.0.1/leaflet.css') }}">
+
+
+    <link rel="stylesheet" href="{{ static_url('tass/css/style.css')}}">
+
+
+
+
+
+
+    {% block head %}{% end %}
+
+ {% if userinfo and userinfo.role[1] > '0' %}
+    {% else %}
+    <script type="text/javascript">
+  var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.www.osgeo.cn"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+  (function() {
+      var u="//101.201.80.15/piwik/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', '3']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+    </script>
+    {% end %}
+
+
+</head>
+<body>
+
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-globe"></span>OSGeo中国</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/map/">地图</a></li>
+
+                        <li class="dropdown">
+                            <a href="/page/help" class="dropdown-toggle" data-toggle="dropdown">用户<b
+                                    class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% if 1 ==2 %}
+                                <li class="pure-menu-item">
+                                    <a class="pure-menu-link" href="/toolbox">我的工具箱</a></li>
+                                {% end %}
+
+                                <li><a href="/user_list/user_recent">最近使用</a></li>
+                                <li><a href="/user_list/user_most">使用最多</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/collect/list">我的收藏</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/user/info">我的信息</a></li>
+
+                            </ul>
+                        </li>
+
+                        {% if 1== 2 %}
+                        <li><a href="http://www.yunsuan.org" target="_blank" style="color:red;">
+                                <span class="badge" style="color:yellow">云算</span></a> </li>
+                        {% end %}
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <div>
+                                {% module widget_search() %}
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+               </div>
+    </div>
+
+
+{% block base_top_header %}
+
+{% end %}
+
+<footer class="footer">
+    <div class="container">
+
+{% block link_list %}
+        {% end %}
+
+
+        <div class="row">
+            <div class="col-sm-8"  >
+
+                <div class="row">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/page/about">关于</a></li>
+                        <li><a href="/page/terms">免责声明</a></li>
+                        <li><a href="/page/contact">联系我们</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/page/how-to-use">如何使用</a></li>
+                        <li><a href="/page/volunteers">志愿者</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="row">
+                    <div class="bg-waring text-info">本网站的开发与维护，得到下面机构的经费与技术支持,特此表示感谢:</div>
+                    <br>
+                    <div class="col-sm-8 col-md-offset-2" >
+                            <a href="http://www.geodata.cn" target="_blank" class="thumbnail" style="text-align: center">
+                                <img src="{{ static_url('fixed/geodata.png') }}"
+                                     alt="国家科技基础平台地球系统科学数据共享网">
+                            </a>
+                    </div>
+                </div>
+
+                <div class="row" style="font-size:.9em; color:darkgray; text-align: center; ">
+                    <span>&copy; 2016 OSGeo中国中心 (www.osgeo.cn) 版权所有</span>
+                    <p>Powered by <a href="https://github.com/bukun/TorCMS" target="_blank">TorCMS</a></p>
+                </div>
+            </div>
+            <div class="col-sm-4" >
+                <img src="{{ static_url('fixed/maplet_qrcode.png') }} " width="200px" /> 
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+</body>
+        <script type="text/javascript" src="{{ static_url('jslib/dst/gscript.js') }}"></script>
+
+</html>

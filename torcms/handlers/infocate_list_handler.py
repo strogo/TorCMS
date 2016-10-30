@@ -186,21 +186,21 @@ class InfoListHandler(BaseHandler):
             pass
         self.write(fenye_str)
 
-    def list(self, input):
+    def list(self, catid):
         '''
         页面打开后的渲染方法，不包含 list 的查询结果与分页导航
         '''
-        print('infocat input:', input)
+        print('infocat input:', catid)
         condition = self.gen_redis_kw()
-        sig = input
+        sig = catid
         bread_title = ''
         bread_crumb_nav_str = '<li>当前位置：<a href="/">信息</a></li>'
 
-        _catinfo = self.mcat.get_by_uid(input)
+        _catinfo = self.mcat.get_by_uid(catid)
         if _catinfo.pid == '0000':
             pcatinfo = _catinfo
             catinfo = None
-            parent_id = input
+            parent_id = catid
             parent_catname = self.mcat.get_by_id(parent_id).name
             condition['parentid'] = [parent_id]
             catname = self.mcat.get_by_id(sig).name
@@ -223,7 +223,7 @@ class InfoListHandler(BaseHandler):
         num = self.minfo.get_num_condition(condition)
 
         kwd = {
-            'catid': input,
+            'catid': catid,
             'daohangstr': bread_crumb_nav_str,
             'breadtilte': bread_title,
             'parentid': parent_id,
@@ -233,7 +233,7 @@ class InfoListHandler(BaseHandler):
             'rec_num': num,
         }
 
-        cat_rec = self.mcat.get_by_uid(input)
+        cat_rec = self.mcat.get_by_uid(catid)
 
         if self.get_current_user():
             redis_kw = redisvr.smembers(config.redis_kw + self.userinfo.user_name)
@@ -242,9 +242,8 @@ class InfoListHandler(BaseHandler):
         kw_condition_arr = []
         for x in redis_kw:
             kw_condition_arr.append(x.decode('utf-8'))
-        self.render('autogen/list/list_{1}.html'.format(self.template_dir_name, input),
+        self.render('autogen/list/list_{0}.html'.format(catid),
                     userinfo=self.userinfo,
-
                     kwd=kwd,
                     widget_info=kwd,
                     condition_arr=kw_condition_arr,
