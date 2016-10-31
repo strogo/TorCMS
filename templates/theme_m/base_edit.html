@@ -30,6 +30,35 @@
                     }
                 }
         );
+
+
+        function g_load_kindcat() {
+        if ($('#pcat' + ii.toString()).val() == 0) {
+            $('#gcat' + ii.toString()).empty();
+        }
+        else {
+            $.ajax({
+                url: '/category/j_kindcat/' + $('#kcat').val(),
+                type: 'GET',
+                data: {},
+                timeout: 1000,
+                error: function () {
+                    alert('重新加载');
+                },
+                success: function (result) {
+                    var data = eval("(" + result + ")");
+                    $('#gcat' + ii.toString()).empty();
+                    $.each(data, function (tagidx, tagname) {
+                        $("<option></option>")
+                            .val(tagidx)
+                            .text(tagname)
+                            .appendTo($('#gcat' + ii.toString()));
+                    });
+                }
+            });
+        }
+    }
+
     });
 </script>
 

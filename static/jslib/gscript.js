@@ -105,6 +105,9 @@ $.ready()
         }
     }
 
+
+
+
     function g_load_infocat(ii) {
         if ($('#pcat' + ii.toString()).val() == 0) {
             $('#gcat' + ii.toString()).empty();

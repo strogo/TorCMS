@@ -23,7 +23,9 @@ class MCategory(MSuperTable):
         '''
         return self.tab.select().where( self.tab.uid.startswith(qian2)).order_by(
             self.tab.order)
-    
+    def query_kind_cat(self, kind_sig):
+        return self.tab.select().where((self.tab.kind == kind_sig) & (self.tab.pid == '0000') ).order_by(   self.tab.order)
+
     def query_sub_cat(self, pid):
         return self.tab.select().where(self.tab.pid == pid ).order_by(   self.tab.order)
     def query_pcat(self, kind='1'):

@@ -29,6 +29,8 @@ class CategoryHandler(BaseHandler):
         elif len(url_arr) == 2:
             if url_arr[0] == 'j_subcat':
                 self.ajax_subcat_arr(url_arr[1])
+            elif url_arr[0] == 'j_kindcat':
+                self.ajax_kindcat_arr(url_arr[1])
             else:
                 self.list_catalog(url_arr[0], url_arr[1])
         else:
@@ -43,6 +45,20 @@ class CategoryHandler(BaseHandler):
         # cur_cat = self.mcat.query_uid_starts_with(qian2)
         cur_cat = self.mcat.query_sub_cat(pid)
 
+
+        out_arr = {}
+        for x in cur_cat:
+            out_arr[x.uid] = x.name
+        json.dump(out_arr, self)
+
+    def ajax_kindcat_arr(self, kind_sig):
+        '''
+        Get the sub category.
+        :param qian2:
+        :return:
+        '''
+        # cur_cat = self.mcat.query_uid_starts_with(qian2)
+        cur_cat = self.mcat.query_sub_cat(kind_sig)
 
         out_arr = {}
         for x in cur_cat:
