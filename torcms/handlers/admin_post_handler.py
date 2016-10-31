@@ -6,6 +6,7 @@ import tornado.escape
 import tornado.web
 import tornado.gen
 
+import json
 from torcms.core import tools
 from torcms.model.infor2label_model import MInfor2Label
 from torcms.model.info_model import MInfor
@@ -63,11 +64,14 @@ class AdminPostHandler(PostHandler):
 
     @tornado.web.authenticated
     def to_edit(self, post_uid):
-        postinfo = self.mpost.get_by_uid(post_uid)
+        postinfo = self.mpost.get_by_uid(post_uid,)
+        json_cnt = json.dumps(postinfo.extinfo,  indent=True)
         self.render('man_post/admin_post.html',
                     postinfo=postinfo,
                     sig_dic=router_post,
                     userinfo=self.userinfo,
+                    unescape=tornado.escape.xhtml_unescape,
+                    json_cnt = json_cnt,
                     )
 
     @tornado.web.authenticated
