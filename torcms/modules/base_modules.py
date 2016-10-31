@@ -47,9 +47,9 @@ class previous_post_link(tornado.web.UIModule):
         self.mpost = MPost()
         prev_record = self.mpost.get_previous_record(current_id)
         if prev_record is None:
-            outstr = '<a>已经是最后一篇了</a>'
+            outstr = '<a>The last post.</a>'
         else:
-            outstr = '''<a href="/post/{0}">上一篇</a>'''.format(prev_record.uid, prev_record.title)
+            outstr = '''<a href="/post/{0}">Previous Post</a>'''.format(prev_record.uid, prev_record.title)
         return outstr
 
 
@@ -183,9 +183,9 @@ class next_post_link(tornado.web.UIModule):
         self.mpost = MPost()
         next_record = self.mpost.get_next_record(current_id)
         if next_record is None:
-            outstr = '<a>已经是最新一篇了</a>'
+            outstr = '<a>The newest post.</a>'
         else:
-            outstr = '''<a href="/post/{0}">下一篇</a>'''.format(next_record.uid)
+            outstr = '''<a href="/post/{0}">Next Post</a>'''.format(next_record.uid)
         return outstr
 
 

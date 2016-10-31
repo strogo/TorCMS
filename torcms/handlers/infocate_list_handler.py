@@ -141,10 +141,10 @@ class InfoListHandler(BaseHandler):
                 pager_home = '''
 
                   <li class="{0}" name='fenye' onclick='change(this);'
-                  value='{1}'><a>首页</a></li>'''.format('', 1)
+                  value='{1}'><a>_("First Page")</a></li>'''.format('', 1)
 
                 pager_pre = ''' <li class="{0}" name='fenye' onclick='change(this);'
-                  value='{1}'><a>上一页</a></li>'''.format('', fenye_num - 1)
+                  value='{1}'><a>_("Previous Page")</a></li>'''.format('', fenye_num - 1)
             if fenye_num > 5:
                 cur_num = fenye_num - 4
             else:
@@ -172,11 +172,11 @@ class InfoListHandler(BaseHandler):
                 pager_next = '''
 
                   <li class="{0}" name='fenye' onclick='change(this);'
-                  value='{1}'><a>下一页</a></li>'''.format('', fenye_num + 1)
+                  value='{1}'><a>_("Next Page")</a></li>'''.format('', fenye_num + 1)
                 pager_last = '''
 
                   <li class="{0}" name='fenye' onclick='change(this);'
-                  value='{1}'><a>末页</a></li>'''.format('', pagination_num)
+                  value='{1}'><a>_("End Page")</a></li>'''.format('', pagination_num)
 
 
             fenye_str += pager_home + pager_pre + pager_mid + pager_next + pager_last
