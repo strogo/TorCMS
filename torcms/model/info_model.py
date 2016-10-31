@@ -30,7 +30,12 @@ class MInforBase(MSuperTable):
     def get_all(self, kind='2'):
         return (self.tab_app.select().where((self.tab_app.kind == kind) & (self.tab_app.valid == 1)).order_by(
             self.tab_app.time_update.desc()))
-
+    def update_kind(self, uid, kind):
+        entry = self.tab_app.update(
+            kind = kind,
+        ).where(self.tab_app.uid == uid)
+        entry.execute()
+        return True
     def update_jsonb(self, uid, extinfo):
         cur_extinfo = self.get_by_uid(uid).extinfo
         for key in extinfo:

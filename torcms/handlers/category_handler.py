@@ -58,7 +58,7 @@ class CategoryHandler(BaseHandler):
         :return:
         '''
         # cur_cat = self.mcat.query_uid_starts_with(qian2)
-        cur_cat = self.mcat.query_sub_cat(kind_sig)
+        cur_cat = self.mcat.query_kind_cat(kind_sig)
 
         out_arr = {}
         for x in cur_cat:

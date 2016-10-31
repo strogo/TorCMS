@@ -34,60 +34,56 @@ class AdminPostHandler(PostHandler):
         self.mreply = MReply()
         self.mpost_hist = MInfoHist()
 
-
     def get(self, url_str=''):
+        if self.userinfo and self.userinfo.role[2] >= '3':
+            pass
+        else:
+            return False
         url_arr = self.parse_url(url_str)
 
-        if url_str == '':
-            self.index()
-        elif len(url_arr) == 2:
+        if len(url_arr) == 2:
             if url_arr[0] in ['_edit']:
                 self.to_edit(url_arr[1])
         else:
             return False
 
+    def post(self, url_str=''):
+        if self.userinfo and self.userinfo.role[2] >= '3':
+            pass
+        else:
+            return False
+
+        url_arr = self.parse_url(url_str)
+
+        if len(url_arr) == 2:
+            if url_arr[0] in ['_edit']:
+                self.update(url_arr[1])
+        else:
+            return False
+
+    @tornado.web.authenticated
     def to_edit(self, post_uid):
         postinfo = self.mpost.get_by_uid(post_uid)
-        print('gotit')
         self.render('man_post/admin_post.html',
-                    postinfo = postinfo,
-                    sig_dic = router_post,
-                    tag_infos=self.mcat.query_all(),
-                    tag_infos2=self.mcat.query_all(),
-                    unescape=tornado.escape.xhtml_unescape,
-                    userinfo = self.userinfo,
+                    postinfo=postinfo,
+                    sig_dic=router_post,
+                    userinfo=self.userinfo,
                     )
 
+    @tornado.web.authenticated
+    def update(self, post_uid):
+        post_data = self.get_post_data()
 
-    # def post(self, url_str=''):
-    #
-    #     url_arr = self.parse_url(url_str)
-    #
-    #     if url_arr[0] in ['to_add', '_add', 'add']:
-    #         if len(url_arr) == 2:
-    #             self.add(uid=url_arr[1])
-    #         else:
-    #             self.add()
-    #
-    #     elif url_arr[0] in ['cat_add', '_cat_add']:
-    #         self.add(catid=url_arr[1])
-    #     elif url_arr[0] == 'rel':
-    #         if self.get_current_user():
-    #             self.add_relation(url_arr[1])
-    #         else:
-    #             self.redirect('/user/login')
-    #     # elif url_arr[0] == 'comment_add':
-    #     #     self.add_comment(url_arr[1])
-    #     elif url_arr[0] in ['edit', '_edit']:
-    #         self.update(url_arr[1])
-    #
-    #
-    #     elif url_arr[0] == 'rel':
-    #         if self.get_current_user():
-    #             self.add_relation(url_arr[1], url_arr[2])
-    #         else:
-    #             self.redirect('/user/login')
-    #
-    #     else:
-    #         return False
-    #
+        logger.info('admin post update: {0}'.format(post_data))
+
+        ext_dic = {}
+        ext_dic['def_uid'] = post_uid
+        ext_dic['def_cat_uid'] = post_data['gcat0']
+        ext_dic['def_cat_pid'] = self.mcat.get_by_uid(post_data['gcat0']).pid
+
+        self.mpost.update_kind(post_uid, post_data['kcat'])
+        self.mpost.update_jsonb(post_uid, ext_dic)
+        self.update_category(post_uid)
+
+        self.redirect('/{0}/{1}'.format(router_post[post_data['kcat']], post_uid))
+

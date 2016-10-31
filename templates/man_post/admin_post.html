@@ -47,51 +47,22 @@
                     <div class="col-sm-3">
                         <select name="pcat{{ii}}" id="pcat{{ii}}" class="form-control" onchange="g_load_infocat({{ii}})">
                             <option value="">请选择</option>
-                            {% for taginfo in tag_infos %}
-                            {% if taginfo.uid.endswith('00') %}
-                            <option value="{{ taginfo.uid }}"
-                                    {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.tag.uid.startswith(taginfo.uid[:2]) %}
-                                    selected
-                                    {% end %}
-                                    {% end %} >{{ taginfo.name }}
-                            </option>
-                            {% else %}
 
-                            {% end %}
-                            {% end %}
+                            <option >
+
+                            </option>
+
                         </select>
                     </div>
 
                     <div class="col-sm-4">
                         <select name="gcat{{ii}}" id="gcat{{ii}}" class="form-control" >
                             <option value="">请选择</option>
-                            {# 设置父类ID，用在下面子类是否显示看 #}
-                            {% set pcatid = 'xx' %}
-                            {% for taginfo in tag_infos %}
-                                {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.tag.uid == taginfo.uid %}
-                                        {% set pcatid = tt.tag.uid[:2] %}
-                                    {% end %}
-                                {% end %}
-                            {% end %}
 
+                            <option value="">
 
-
-                            {% for taginfo in tag_infos2 %}
-                            {% if taginfo.uid.startswith(pcatid) %}
-                            {% if not taginfo.uid.endswith('00') %}
-                            <option value="{{ taginfo.uid }}"
-                                    {% for tt in app2tag_info %}
-                                    {% if tt.order== ii and tt.tag.uid== taginfo.uid %}
-                                    selected
-                                    {% end %}
-                                    {% end %}  >{{ taginfo.name }}
                             </option>
-                            {% else %}
-                            {% end %}
-                            {% end %}
-                            {% end %}
+
 
                         </select>
                     </div>

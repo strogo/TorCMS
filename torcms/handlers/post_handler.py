@@ -13,6 +13,7 @@ from torcms.model.post2catalog_model import MPost2Catalog
 from torcms.model.post_hist_model import MPostHist
 from torcms.model.relation_model import MRelation
 from config import router_post
+from torcms.core.tools import logger
 
 
 class PostHandler(BaseHandler):
@@ -55,10 +56,8 @@ class PostHandler(BaseHandler):
             self.render('html/404.html', kwd=kwd,
                         userinfo=self.userinfo, )
 
-
-
     def post(self, url_str=''):
-        print('post url:', url_str)
+        logger.info('post url: {0}'.format(url_str))
         url_arr = self.parse_url(url_str)
 
         if url_arr[0] in ['modify', 'edit', '_edit']:
@@ -72,11 +71,11 @@ class PostHandler(BaseHandler):
             self.redirect('html/404.html')
 
     def index(self):
-        print('index', self.kind)
         self.render('post_{0}/index.html'.format(self.kind),
                     userinfo=self.userinfo,
                     kwd={'uid': '',}
                     )
+
     def ajax_count_plus(self, uid):
         output = {
             'status': 1 if self.mpost.update_view_count_by_uid(uid) else 0,
@@ -135,9 +134,6 @@ class PostHandler(BaseHandler):
                     format_date=tools.format_date,
                     unescape=tornado.escape.xhtml_unescape,
                     cfg=config.cfg, )
-
-    # def get_random(self):
-    #     return self.mpost.query_random()
 
     def view_or_add(self, uid):
         print('self.kind:', self.kind, uid)
@@ -322,12 +318,10 @@ class PostHandler(BaseHandler):
 
         postinfo = self.mpost.get_by_id(post_id)
 
-
         if postinfo.kind == self.kind:
             pass
         else:
-            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], post_id),  permanent=True)
-
+            self.redirect('/{0}/{1}'.format(router_post[postinfo.kind], post_id), permanent=True)
 
         if not postinfo:
             kwd = {
