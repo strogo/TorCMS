@@ -15,7 +15,7 @@ from torcms.core import tools
 from torcms.core.base_handler import BaseHandler
 from torcms.core.tool.send_email import send_mail
 from torcms.model.user_model import MUser
-
+from torcms.core.tools import logger
 
 class SumForm(Form):
     user_name = StringField('user_name', validators=[Required()])
@@ -565,6 +565,7 @@ class UserHandler(BaseHandler):
                 if send_mail([userinfo.user_email], "{0}|密码重置".format(config.smtp_cfg['name']), email_cnt):
                     self.muser.update_time_reset_passwd(username, timestamp)
                     self.set_status(200)
+                    logger.info('password has been reset.')
                     return True
                 else:
                     self.set_status(400)
