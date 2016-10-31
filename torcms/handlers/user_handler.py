@@ -443,7 +443,7 @@ class UserHandler(BaseHandler):
             kwd = {
                 'info': '密码验证出错，请<a href="/user/login">重新登陆</a>。'
             }
-            self.render('html/404.html',
+            self.render('user/relogin.html',
                         cfg=config.cfg,
                         kwd=kwd,
                         userinfo=self.userinfo, )
