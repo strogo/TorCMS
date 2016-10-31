@@ -68,7 +68,7 @@ class WikiManHandler(BaseHandler):
         else:
             return False
         post_rec = self.mpost.get_by_uid(postid)
-        self.render('main_wiki/wiki_man_edit.html',
+        self.render('man_wiki/wiki_man_edit.html',
                     userinfo=self.userinfo,
                     unescape=tornado.escape.xhtml_unescape,
                     postinfo=post_rec,
