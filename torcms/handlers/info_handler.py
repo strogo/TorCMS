@@ -166,7 +166,8 @@ class InfoHandler(PostHandler):
         p_catinfo = None
         if ext_catid != '':
             catinfo = self.mcat.get_by_uid(ext_catid)
-            p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+            if catinfo:
+                p_catinfo = self.mcat.get_by_uid(catinfo.pid)
 
         kwd = {
             'pager': '',
@@ -409,7 +410,8 @@ class InfoHandler(PostHandler):
         p_catinfo = None
         if catid != '':
             catinfo = self.mcat.get_by_uid(catid)
-            p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+            if catinfo:
+                p_catinfo = self.mcat.get_by_uid(catinfo.pid)
 
         kwd = {
             'def_cat_uid': catid,
