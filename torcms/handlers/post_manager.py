@@ -94,7 +94,7 @@ class PostManHandler(BaseHandler):
 
         postinfo = self.mpost.get_by_id(histinfo.post_id)
         self.mposthist.delete(uid)
-        self.redirect('/man_post/view/{0}'.format(postinfo.uid))
+        self.redirect('/post_man/view/{0}'.format(postinfo.uid))
 
     def view(self, uid):
         postinfo = self.mpost.get_by_id(uid)

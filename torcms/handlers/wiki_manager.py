@@ -90,7 +90,7 @@ class WikiManHandler(BaseHandler):
 
         postinfo = self.mpost.get_by_id(histinfo.wiki_id)
         self.mposthist.delete(uid)
-        self.redirect('/man_wiki/view/{0}'.format(postinfo.uid))
+        self.redirect('/wiki_man/view/{0}'.format(postinfo.uid))
 
     def view(self, uid):
         postinfo = self.mpost.get_by_id(uid)
