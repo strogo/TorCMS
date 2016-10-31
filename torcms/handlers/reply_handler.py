@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 
+import json
 import tornado.escape
 import tornado.web
 from torcms.core.base_handler import BaseHandler
 from torcms.model.reply_model import MReply
 from torcms.model.reply2user_model import MReply2User
-
-import json
+from torcms.core.tools import logger
 
 class ReplyHandler(BaseHandler):
     def initialize(self):
@@ -46,7 +46,7 @@ class ReplyHandler(BaseHandler):
     def get_by_id(self, reply_id):
 
         reply = self.tab.get_by_uid(reply_id)
-        print('get_reply:', reply_id, reply.cnt_md)
+        logger.info('get_reply: {0}'.format(reply_id) )
 
         self.render('reply/show_reply.html',
                            reply=reply,
@@ -57,18 +57,7 @@ class ReplyHandler(BaseHandler):
                            userinfo=self.userinfo,
                            unescape=tornado.escape.xhtml_unescape,
                            )
-        #
-        # uu =  self.render_string('reply/show_reply.html',
-        #             reply = reply,
-        #             username=reply.user_name,
-        #             date=reply.date,
-        #             vote=reply.vote,
-        #             uid=reply.uid,
-        #             userinfo=self.userinfo,
-        #             unescape=tornado.escape.xhtml_unescape,
-        #             )
-        # print('reply cnt', uu)
-        # return uu
+
     def add(self, post_id):
         post_data = self.get_post_data()
 
@@ -81,14 +70,14 @@ class ReplyHandler(BaseHandler):
                 'pinglun': post_data['cnt_reply'],
                 'uid': replyid
             }
-            print('add reply result dic:', out_dic)
+            logger.info('add reply result dic: {0}'.format( out_dic))
             return json.dump(out_dic, self)
 
 
     # @tornado.web.authenticated
     def zan(self, id_reply):
 
-        print('zan', id_reply)
+        logger.info('zan: {0}'.format(id_reply))
         # 先在外部表中更新，然后更新内部表字段的值。
         # 有冗余，但是查看的时候避免了联合查询
         self.mreply2user.insert_data(self.userinfo.uid, id_reply)
@@ -102,7 +91,7 @@ class ReplyHandler(BaseHandler):
             output = {
                 'text_zan': 0,
             }
-        print('zan dic:', cur_count)
+        logger.info('zan dic: {0}'.format(cur_count))
 
         return json.dump(output, self)
 

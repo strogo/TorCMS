@@ -14,24 +14,17 @@ from torcms.handlers.post_label_handler import PostLabelHandler
 from torcms.handlers.link_handler import LinkHandler, LinkAjaxHandler
 from torcms.handlers.maintain_handler import MaintainCategoryHandler, MaintainCategoryAjaxHandler
 from torcms.handlers.maintain_info_handler import MaintainPycateCategoryHandler
-# from torcms.handlers.meta_handler import MetaHandler
 from torcms.handlers.page_handler import PageHandler, PageAjaxHandler
-# from torcms.handlers.post2reply_handler import Post2ReplyHandler
 from torcms.handlers.post_handler import PostHandler, PostAjaxHandler
 from torcms.handlers.reply_handler import ReplyHandler
 from torcms.handlers.search_handler import SearchHandler
 from torcms.handlers.user_handler import UserHandler, UserAjaxHandler
-# from torcms.handlers.widget_handler import WidgetHandler
 from torcms.handlers.wiki_handler import WikiHandler
 
-from torcms.handlers.index import IndexHandler as  AppIndexHandler
 from torcms.handlers.user_info_list_handler import UserListHandler
-# from torcms.handlers.label_hander import AppLabelHandler
-# from torcms.handlers.labellist_hander import AppLabellistHandler
 from torcms.handlers.collect_handler import CollectHandler
 from torcms.handlers.evaluation_handler import EvaluationHandler
 from torcms.handlers.post_info_relation_handler import RelHandler
-# from torcms.handlers.info2reply_handler import Info2ReplyHandler
 
 from torcms.handlers.post_manager import PostManHandler
 from torcms.handlers.wiki_manager import WikiManHandler
@@ -40,8 +33,9 @@ from torcms.handlers.rating_handler import RatingHandler
 from torcms.handlers.geojson import GeoJsonHandler
 from torcms.handlers.layout_handler import LayoutHandler
 from torcms.handlers.map_handler import MapPostHandler
-from torcms.handlers.overlay_handler import MapOverlayHandler
+from torcms.handlers.map_overlay_handler import MapOverlayHandler
 from torcms.handlers.admin_post_handler import AdminPostHandler
+
 urls = [
 
     ('/map/overlay/(.*)', MapOverlayHandler, dict()),
@@ -76,10 +70,6 @@ urls = [
     ("/search/(.*)", SearchHandler, dict()),
     ("/reply/(.*)", ReplyHandler, dict()),
 
-    # ("/widget/(.*)", WidgetHandler, dict(hinfo={})),
-
-    # ('/meta/(.*)', PostHandler, dict()),
-    # ("/info/reply/(.*)", Info2ReplyHandler, dict()),
     ("/info/(.*)", torcms.handlers.info_handler.InfoHandler, dict(hinfo={})),
 
     ("/maintain/claslitecategory/(.*)", MaintainPycateCategoryHandler, dict()),

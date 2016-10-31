@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-
 import random
 import tornado.escape
 import tornado.web
@@ -59,8 +58,6 @@ class InfoHandler(PostHandler):
                 从相关计算中过来的。
                 '''
                 pass
-                # self.mrel.update_relation(url_arr[1], url_arr[0])
-                # self.redirect('/{0}/{1}'.format(self.app_url_name, url_arr[0]))
 
         elif len(url_arr) == 1:
             if len(url_str) in [4, 5]:
@@ -93,8 +90,7 @@ class InfoHandler(PostHandler):
                 self.add_relation(url_arr[1])
             else:
                 self.redirect('/user/login')
-        # elif url_arr[0] == 'comment_add':
-        #     self.add_comment(url_arr[1])
+
         elif url_arr[0] in ['edit', '_edit']:
             self.update(url_arr[1])
 
@@ -133,7 +129,7 @@ class InfoHandler(PostHandler):
                         kwd=kwd,
                         userinfo=self.userinfo, )
             return False
-        #
+
         cats = self.mpost2catalog.query_by_entity_uid(info_id, kind=postinfo.kind)
         cat_uid_arr = []
         for cat_rec in cats:
@@ -168,7 +164,6 @@ class InfoHandler(PostHandler):
         post2catinfo = self.mpost2catalog.get_entry_catalog(postinfo.uid)
         if post2catinfo:
             catid = post2catinfo.tag.uid
-            # if ext_catid != '':
             catinfo = self.mcat.get_by_uid(catid)
             if catinfo:
                 p_catinfo = self.mcat.get_by_uid(catinfo.pid)
@@ -293,26 +288,6 @@ class InfoHandler(PostHandler):
         self.mrel.add_relation(t_uid, f_uid, 1)
         return True
 
-    # def add_relation(self, f_uid, t_uid):
-    #     if False == self.mpost.get_by_uid(t_uid):
-    #         return False
-    #     if f_uid == t_uid:
-    #         '''
-    #         关联其本身
-    #         '''
-    #         return False
-    #     self.mrel.add_relation(f_uid, t_uid, 2)
-    #     self.mrel.add_relation(t_uid, f_uid, 1)
-    #     return True
-
-    #
-    #
-    # def catalog(self):
-    #     self.render('post{0}/catalog.html'.format(self.kind),
-    #                 userinfo=self.userinfo,
-    #                 kwd={'uid': '',}
-    #                 )
-
 
     def gen_uid(self):
         cur_uid = self.kind + tools.get_uu4d()
@@ -402,26 +377,13 @@ class InfoHandler(PostHandler):
         else:
             catid = ''
 
-        # p_name = ''
-        # if catid != '':
-        #     if self.mcat.get_by_id(catid[:2] + 'zz'):
-        #         p_name = self.mcat.get_by_id(catid[:2] + 'zz').name
-        # c_name = ''
-        # if catid != '':
-        #     if self.mcat.get_by_id(catid):
-        #         c_name = self.mcat.get_by_id(catid).name
-
         catinfo = None
         p_catinfo = None
-        # if catid != '':
-        #     catinfo = self.mcat.get_by_uid(catid)
-        #     if catinfo:
-        #         p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+
 
         post2catinfo = self.mpost2catalog.get_entry_catalog( postinfo.uid)
         if post2catinfo:
             catid = post2catinfo.tag.uid
-            # if ext_catid != '':
             catinfo = self.mcat.get_by_uid(catid)
             if catinfo:
                 p_catinfo = self.mcat.get_by_uid(catinfo.pid)
@@ -441,8 +403,7 @@ class InfoHandler(PostHandler):
         else:
             tmpl = 'post_{0}/edit.html'.format(self.kind)
 
-        # print('site_type: ', cfg['site_type'])
-        # print('Meta template:', tmpl)
+        logger.info('Meta template: {0}'.format(tmpl))
 
         self.render(tmpl,
                     kwd=kwd,
@@ -498,7 +459,6 @@ class InfoHandler(PostHandler):
                 post_data[key] = self.get_arguments(key)[0]
 
         post_data['user_name'] = self.userinfo.user_name
-        # post_data['kind'] = self.kind
 
 
 

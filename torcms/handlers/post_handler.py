@@ -187,8 +187,8 @@ class PostHandler(BaseHandler):
         else:
             self.mpost_hist.insert_data(postinfo)
 
-        print('upadte, ', uid)
-        print('post_data:', post_data)
+        logger.info('upadte: {0}'.format(uid))
+        logger.info('Update post_data: {0}'.format(post_data))
         self.mpost.update(uid, post_data, update_time=is_update_time)
         self.update_category(uid)
         self.update_tag(uid)
