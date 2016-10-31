@@ -164,8 +164,12 @@ class InfoHandler(PostHandler):
 
         catinfo = None
         p_catinfo = None
-        if ext_catid != '':
-            catinfo = self.mcat.get_by_uid(ext_catid)
+
+        post2catinfo = self.mpost2catalog.get_entry_catalog(postinfo.uid)
+        if post2catinfo:
+            catid = post2catinfo.tag.uid
+            # if ext_catid != '':
+            catinfo = self.mcat.get_by_uid(catid)
             if catinfo:
                 p_catinfo = self.mcat.get_by_uid(catinfo.pid)
 
@@ -381,6 +385,7 @@ class InfoHandler(PostHandler):
             return False
 
         rec_info = self.mpost.get_by_uid(infoid)
+        postinfo = rec_info
 
         if rec_info:
             pass
@@ -408,10 +413,20 @@ class InfoHandler(PostHandler):
 
         catinfo = None
         p_catinfo = None
-        if catid != '':
+        # if catid != '':
+        #     catinfo = self.mcat.get_by_uid(catid)
+        #     if catinfo:
+        #         p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+
+        post2catinfo = self.mpost2catalog.get_entry_catalog( postinfo.uid)
+        if post2catinfo:
+            catid = post2catinfo.tag.uid
+            # if ext_catid != '':
             catinfo = self.mcat.get_by_uid(catid)
             if catinfo:
                 p_catinfo = self.mcat.get_by_uid(catinfo.pid)
+
+
 
         kwd = {
             'def_cat_uid': catid,

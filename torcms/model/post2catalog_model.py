@@ -110,4 +110,4 @@ class MPost2Catalog(MSuperTable):
         if uu.count() > 0:
             return uu.get()
         else:
-            return False
+            return None
