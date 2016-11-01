@@ -150,6 +150,10 @@ class InfoHandler(PostHandler):
 
         if 'def_cat_uid' in postinfo.extinfo:
             ext_catid = postinfo.extinfo['def_cat_uid']
+            if ext_catid:
+                pass
+            else:
+                ext_catid = ''
         else:
             ext_catid = ''
 
