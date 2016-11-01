@@ -255,6 +255,8 @@ class MInfor(MInforBase):
         return recs
 
     def add_meta(self, uid, data_dic, extinfo={}):
+        if len(uid) < 4:
+            return False
         title = data_dic['title'].strip()
         if len(title) < 2:
             return False
@@ -311,6 +313,8 @@ class MInfor(MInforBase):
         return (uid)
 
     def addata_init(self, data_dic, ext_dic={}):
+        if len(data_dic['sig']) < 4:
+            return False
         title = data_dic['title'].strip()
         if len(title) < 2:
             return False
