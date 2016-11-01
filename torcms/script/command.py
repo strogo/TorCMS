@@ -13,6 +13,7 @@ from .script_fetch_fe2lib import run_fetch_f2elib
 from .script_sitemap import run_sitemap
 from .script_check_kind import run_check_kind
 from .script_crud import run_crud
+from .script_nocat import run_nocat
 
 
 def entry(argv):
@@ -39,6 +40,7 @@ def entry(argv):
             print('       sitemap: ')
             print('    check_kind: ')
             print('          crud: ')
+            print('         nocat: ')
 
             sys.exit()
         elif opt in ("-i"):
