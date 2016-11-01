@@ -27,8 +27,7 @@ class MSuperTable():
     def query_old(self):
         return self.tab.select().order_by('time_update').limit(10)
 
-    def query_random(self, num=6, kind = '1'):
-        return self.tab.select().where(self.tab.kind == kind).order_by(peewee.fn.Random()).limit(num)
+
 
     def get_parent_list(self, kind='1'):
         db_data = self.tab.select().where((self.tab.kind == kind) & (self.tab.uid.endswith('00'))).order_by(
@@ -58,6 +57,8 @@ class MSuperTable():
             else:
                 return self.tab.select().limit(limit_num)
 
+    def query_random(self, num=6, kind = '1'):
+        return self.tab.select().where(self.tab.kind == kind).order_by(peewee.fn.Random()).limit(num)
     def query_recent(self, num=8, kind = '1'):
         return self.tab.select().where(self.tab.kind == kind).limit(num)
 

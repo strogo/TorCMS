@@ -111,3 +111,5 @@ class MWiki(MSuperTable):
         return self.tab.select().where(self.tab.kind == self.kind).order_by(peewee.fn.Random()).limit(num)
     def query_recent(self, num=8):
         return self.tab.select().where(self.tab.kind == self.kind).order_by(self.tab.time_update).limit(num)
+
+

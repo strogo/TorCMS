@@ -68,6 +68,7 @@ core_modules = {'ModuleCatMenu': ModuleCatMenu,
                 'use_f2e': use_f2e,
 'app_layout': app_layout,
                 'app_json': app_json,
+                'navigate_panel': navigate_panel,
 
 
 }
