@@ -55,7 +55,9 @@ class MUsage(object):
         print('usage: add ')
         tt = self.get_by_signature(user_id, post_id)
         uu = self.mapp2catalog.get_entry_catalog(post_id)
-        if uu == False:
+        if uu:
+            pass
+        else:
             return False
         cat_id = uu.tag.uid
         if tt.count() > 0:
