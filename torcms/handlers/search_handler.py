@@ -49,8 +49,8 @@ class SearchHandler(BaseHandler):
         else:
             current_page_number = int(p_index)
         res_all = self.ysearch.get_all_num(keyword)
-        results = self.ysearch.search_pager(keyword, page_index=p_index, doc_per_page=20)
-        page_num = int(res_all / 20)
+        results = self.ysearch.search_pager(keyword, page_index=p_index, doc_per_page=config.page_num)
+        page_num = int(res_all / config.page_num)
         kwd = {'title': '查找结果',
                'pager': '',
                'count': res_all,

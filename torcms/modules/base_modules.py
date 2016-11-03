@@ -394,6 +394,7 @@ class search_pager(tornado.web.UIModule):
         res_all = self.ysearch.get_all_num(tag_slug)
         page_num = int(res_all / config.page_num)
 
+
         kwd = {
             'page_home': False if current <= 1 else True,
             'page_end': False if current >= page_num else True,
