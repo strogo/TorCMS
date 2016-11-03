@@ -341,13 +341,13 @@ class info_label_pager(tornado.web.UIModule):
                                   )
 
 
-class doc_label_pager(tornado.web.UIModule):
-    def render(self, *args, **kwargs):
+class label_pager(tornado.web.UIModule):
+    def render(self,kind, *args, **kwargs):
         self.mapp2tag = MPost2Label()
         tag_slug = args[0]
         current = int(args[1])
 
-        page_num = int(self.mapp2tag.total_number(tag_slug) / config.page_num)
+        page_num = int(self.mapp2tag.total_number(tag_slug,kind) / config.page_num)
 
         kwd = {
             'page_home': False if current <= 1 else True,
@@ -356,11 +356,12 @@ class doc_label_pager(tornado.web.UIModule):
             'page_next': False if current >= page_num else True,
         }
 
-        return self.render_string('modules/post/doc_label_pager.html',
+        return self.render_string('modules/post/label_pager.html',
                                   kwd=kwd,
                                   cat_slug=tag_slug,
                                   pager_num=page_num,
                                   page_current=current,
+                                  kind = kind,
                                   )
 class tag_pager(tornado.web.UIModule):
     def render(self, *args, **kwargs):
