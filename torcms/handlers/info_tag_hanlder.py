@@ -62,6 +62,7 @@ class InforTagHandler(CategoryHandler):
             'tag_name': tag_name,
             'tag_slug': tag_slug,
             'title': tag_name,
+            'current_page': current_page_number,
         }
         # postinfos = self.mapp2tag.query_pager_by_slug(tag_slug, current_page_number, kind=taginfo.kind)
         # print(postinfos.count())

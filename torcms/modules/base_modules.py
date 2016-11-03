@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+from  math import ceil as math_ceil
 import bs4
 import tornado.escape
 import tornado.web
@@ -12,6 +12,8 @@ from torcms.model.info_model import MInfor as  MInfor
 from torcms.model.label_model import MPost2Label
 from torcms.model.reply_model import MReply
 from torcms.model.page_model import MPage
+from torcms.model.infor2catalog_model import MInfor2Catalog
+from torcms.core.tool.whoosh_tool import yunsearch
 import config
 from config import router_post
 
@@ -355,6 +357,51 @@ class doc_label_pager(tornado.web.UIModule):
         }
 
         return self.render_string('modules/post/doc_label_pager.html',
+                                  kwd=kwd,
+                                  cat_slug=tag_slug,
+                                  pager_num=page_num,
+                                  page_current=current,
+                                  )
+class tag_pager(tornado.web.UIModule):
+    def render(self, *args, **kwargs):
+        self.mapp2tag = MInfor2Catalog()
+        self.mcat = MCategory()
+        tag_slug = args[0]
+        current = int(args[1])
+        taginfo = self.mcat.get_by_slug(tag_slug)
+        num_of_tag = self.mapp2tag.count_of_certain_category(taginfo.uid)
+        page_num = math_ceil(num_of_tag / config.page_num)
+
+        kwd = {
+            'page_home': False if current <= 1 else True,
+            'page_end': False if current >= page_num else True,
+            'page_pre': False if current <= 1 else True,
+            'page_next': False if current >= page_num else True,
+        }
+
+        return self.render_string('modules/post/tag_pager.html',
+                                  kwd=kwd,
+                                  cat_slug=tag_slug,
+                                  pager_num=page_num,
+                                  page_current=current,
+                                  )
+class search_pager(tornado.web.UIModule):
+    def render(self, *args, **kwargs):
+
+        self.ysearch = yunsearch()
+        tag_slug = args[0]
+        current = int(args[1])
+        res_all = self.ysearch.get_all_num(tag_slug)
+        page_num = int(res_all / config.page_num)
+
+        kwd = {
+            'page_home': False if current <= 1 else True,
+            'page_end': False if current >= page_num else True,
+            'page_pre': False if current <= 1 else True,
+            'page_next': False if current >= page_num else True,
+        }
+
+        return self.render_string('modules/post/search_pager.html',
                                   kwd=kwd,
                                   cat_slug=tag_slug,
                                   pager_num=page_num,

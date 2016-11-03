@@ -43,7 +43,11 @@ class SearchHandler(BaseHandler):
             self.redirect('/search/{0}/{1}/1'.format(catid, keyword))
 
 
-    def search(self, keyword, p_index=1):
+    def search(self, keyword, p_index=''):
+        if p_index == '' or p_index == '-1':
+            current_page_number = 1
+        else:
+            current_page_number = int(p_index)
         res_all = self.ysearch.get_all_num(keyword)
         results = self.ysearch.search_pager(keyword, page_index=p_index, doc_per_page=20)
         page_num = int(res_all / 20)
@@ -51,6 +55,7 @@ class SearchHandler(BaseHandler):
                'pager': '',
                'count': res_all,
                'keyword': keyword,
+               'current_page': current_page_number,
                }
         self.render('doc/search/search.html',
                     kwd=kwd,

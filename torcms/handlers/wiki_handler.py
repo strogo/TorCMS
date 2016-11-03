@@ -99,8 +99,9 @@ class WikiHandler(BaseHandler):
         post_data = self.get_post_data()
 
         post_data['user_name'] = self.get_current_user()
-        self.mwiki.update(uid, post_data)
         self.mwiki_hist.insert_data(raw_data)
+        self.mwiki.update(uid, post_data)
+
         self.redirect('/wiki/{0}'.format(tornado.escape.url_escape(post_data['title'])))
 
     @tornado.web.authenticated
