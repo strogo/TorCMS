@@ -157,10 +157,10 @@ class post_category_recent(tornado.web.UIModule):
 
 
 class showout_recent(tornado.web.UIModule):
-    def render(self, cat_id, num=10, with_catalog=True, with_date=True, width=160, height=120):
+    def render(self, cat_id, kind,num=10, with_catalog=True, with_date=True, width=160, height=120):
         self.mpost = MPost()
         self.mpost2cat = MPost2Catalog()
-        recs = self.mpost.query_cat_recent(cat_id, num)
+        recs = self.mpost.query_cat_recent(cat_id, num,kind)
 
         kwd = {
             'with_catalog': with_catalog,
