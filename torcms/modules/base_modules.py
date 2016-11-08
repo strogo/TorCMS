@@ -179,6 +179,9 @@ class site_url(tornado.web.UIModule):
     def render(self):
         return config.site_url
 
+class site_title(tornado.web.UIModule):
+    def render(self):
+        return config.site_title
 
 class next_post_link(tornado.web.UIModule):
     def render(self, current_id):
