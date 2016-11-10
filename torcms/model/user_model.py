@@ -143,7 +143,7 @@ class MUser(MSuperTable):
         if 'role' in post_data:
             role = post_data['role']
         else:
-            role = '0000'
+            role = '1000'
 
         g_Member.create(uid=tools.get_uuid(),
                         user_name=post_data['user_name'],
