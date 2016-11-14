@@ -111,6 +111,10 @@ class InfoHandler(PostHandler):
         :return: Nonthing.
         '''
         postinfo = self.mpost.get_by_uid(info_id)
+        if postinfo:
+            pass
+        else:
+            self.to_add(info_id)
         logger.warning('info kind:{0} '.format(postinfo.kind))
 
         # If not, there must be something wrong.
